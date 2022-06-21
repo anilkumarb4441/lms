@@ -1,0 +1,74 @@
+.modal.generateReport{
+    width:30%;
+    border-radius: 5px;
+    background-color: #363638;
+    top:40%;
+   
+}
+
+.modal.generateReport .modalBody{
+  padding:0;
+}
+
+.generateModalHeading{
+    text-align: center;
+    background-color: var(--primary);
+    border-radius: 5px 5px 0px 0px;
+    padding: 4% 0%;
+    font-weight: 600;
+    font-size:20px;
+}
+
+.generateReportRadioContainer{
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0% auto;
+    position: relative;
+}
+
+.customInputHolder.radio.generateReportInput>p{
+   color:var(--white);
+   font-size:20px;
+   font-weight: 400
+   ;
+}
+.customInput.radio.generateReportInput{
+    width:20px;
+    height:20px;
+}
+
+.rdrDateRangePickerWrapper.genReportDateRange, .rdrCalendarWrapper.genReportDateRange{
+    position: absolute;
+    top: 40px;
+    left: -12%;
+    z-index: 22;
+}
+
+.generateReportBtn{
+    text-align: center;
+    display: block;
+    margin: 0% auto;
+    border: none;
+    color: var(--black);
+    background-color: #707070;
+    border-radius: 5px;
+    padding: 10px 20px;
+    width: fit-content;
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.generateReport .innerBody{
+    display: flex;
+    flex-direction: column;
+    height: 40vh;
+    justify-content: space-evenly;
+
+}
+
+.generateReportRadioContainer img.disabled{
+    opacity:0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+}

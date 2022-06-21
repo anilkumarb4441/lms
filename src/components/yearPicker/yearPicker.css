@@ -1,0 +1,57 @@
+.yearPickerWrapper{
+    position:relative;
+    width: 160px;
+}
+
+.yearPickerHeader{
+    display: flex;
+    justify-content: space-between;
+    border: solid 1px var(--primary);
+    width:100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 7px;
+    background-color: var(--secondary);
+    color: var(--primary);
+}
+
+.yearPickerHeader img{
+    cursor:pointer
+}
+
+.yearPickerBody{
+    display: flex;
+     flex-wrap: wrap;
+     background-color: var(--secondary);
+     width:160px;
+     padding:10px;
+     position: absolute;
+     border-radius: 4px;
+     top:100%;
+     left:0;
+     pointer-events: none;
+     opacity: 0;
+     transition: visibility 0s, opacity 0.5s;
+}
+
+.yearPickerBody.active{
+    opacity: 1;
+    pointer-events: all;
+}
+
+.yearPickerLabel{
+    width:33%;
+    color:var(--primary);
+    border-radius: 20px;
+    border:none;
+    padding: 5px;
+    font-size: 14px;
+    text-align: center;
+    cursor:pointer
+}
+
+.yearPickerLabel:hover{
+   background-color: var(--primary);
+   color: var(--secondary);
+   
+}

@@ -1,0 +1,71 @@
+
+.modal.newServiceModal{
+    width: 36%;
+   
+    background-color:#534E4D;
+    border-radius: 10px;
+}
+
+
+.modal.newServiceModal form{
+    padding:20px 20px;
+    border-radius: 10px;
+    background-color: #797375;
+
+}
+
+
+
+.newServiceModalFooter{
+    display: flex;
+    justify-content: space-between;
+    margin: 5% 0 ;
+}
+
+.newServiceModalFooter button{
+    display: block;
+    border-radius: 17px;
+    background-color:var(--primary);
+    color:var(--white);
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    padding: 10px 20px;
+    border:none
+}
+
+.newServiceModalFooter>button:nth-of-type(1){
+    background-color:var(--black);
+    color:var(--white);
+}
+
+.uploadServiceImg{
+    display:flex;
+    margin-bottom: 20px;
+}
+
+.uploadServiceImg  label{
+    display: block;
+}
+
+.uploadServiceImg label>img{
+    padding: 14px;
+    background-color: #827A78;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: block;
+    border:solid 1px var(--primary);
+    cursor:pointer;
+}
+
+.uploadServiceImg input{
+    display: none;
+}
+
+.uploadServiceImg p{
+    color: var(--white);
+    align-self: center;
+    margin-left: 13px;
+    font-size: 13px;
+}

@@ -1,0 +1,31 @@
+.dotsParent{
+    position: relative;
+}
+
+.dotsParent .absOptions{
+    position: absolute;
+    width: 100%;
+    border-radius: 4px;
+    background-color: white;
+    padding: 2% 1% 2% 1%;
+    top: 125%;
+    right: 45%;
+}
+
+.absOptions p{
+    font-size: 13px;
+    margin: 5% 0%;
+    padding: 3% 6%;
+    cursor: pointer;
+    text-align: left;
+    font-weight: 400;
+}
+
+.absOptions p:hover{
+    background-color: #c6c7ca;
+}
+
+.dotsParent img{
+    width: 12%;
+    cursor: pointer;
+}

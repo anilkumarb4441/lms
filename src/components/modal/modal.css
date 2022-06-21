@@ -1,0 +1,47 @@
+.modal{
+    position: absolute;
+    z-index: 111111;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background-color: white;
+    font-size: 1rem;
+    width: 50%;
+}
+
+.modalHeader{
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    background-color: inherit;
+    border-radius: inherit;
+}
+
+
+.modalHeader .modalTitle{
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    display: flex;
+    font-weight: 400;
+    color: #ECECEC;
+}
+
+.modalHeader .modalTitle>p{
+    align-self: center;
+    margin: 0 0 0 10px;
+}
+
+.modalHeader .modalClose{
+    cursor: pointer;
+    font-size: 30px;
+    color:var(--white);
+}
+
+.modalBody,.modalFooter{
+    padding: 20px 20px 30px 20px;
+}
+
+.modalFooter{
+    margin-bottom: 3%;
+}

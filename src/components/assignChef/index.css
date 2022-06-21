@@ -1,0 +1,79 @@
+.modal.assignChef {
+    background-color: #48464A;
+    border-radius: 10px;
+    width: 40%;
+    left: 34%;
+    transform: none;
+    top:5%;
+ }
+
+ .modal.assignChef form{
+    background-color:#6F6F76;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.modal.assignChef .customInputHolder{
+    margin-bottom: 20px;
+}
+
+.modal.assignChef .customInput{
+    font-weight: 400;
+    font-size: 13px;
+    padding: 10px 15px;
+}
+
+.inputFlexContainer{
+    display:flex;
+    justify-content:space-between;
+}
+
+.inputFlexContainer .customInputHolder{
+    width: 45%;
+}
+
+.addHelper{
+    display: flex;
+    padding-bottom: 20px;
+    justify-content: space-between
+}
+
+.addHelper .customInputHolder{
+    width: 87%;
+    margin-bottom: 0 !important;
+}
+
+.addHelper svg{
+    color: #fff;
+    align-self: center;
+    padding: 3px;
+    display: block;
+    background-color: #544E4D;
+   
+    height: 37px;
+    width: 37px;
+    cursor: pointer;
+    border-radius: 5px;
+    border: solid 1px var(--primary);
+    font-weight: 500;
+}
+.assignChefBtnContainer{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.assignChefBtnContainer>button{
+    padding:10px 15px;
+    border-radius: 20px;
+    font-size:13px;
+    font-weight: 400;
+    background-color: var(--primary);
+    color: var(--black);
+}
+
+.assignChefBtnContainer>button:nth-of-type(1){
+background-color: #CA0909;
+color:var(--white);
+}
+ 

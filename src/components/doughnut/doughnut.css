@@ -1,0 +1,23 @@
+.doughParent{
+    position: relative;
+    padding: 0% 5%;
+}
+
+.doughParent p{
+    /* color: #63626A; */
+    color: white;
+    font-size: 12px;
+}
+
+.doughParent .absD1{
+    position: absolute;
+    top: 40%;
+    width: 90%;
+    text-align: center;
+}
+.doughParent .absD2{
+    position: absolute;
+    top: 50%;
+    width: 90%;
+    text-align: center;
+}

@@ -1,0 +1,90 @@
+.navBar{
+    background-color:var(--secondary);
+}
+
+.sideNav{
+    position: fixed;
+    top:0;
+    left:0;
+    width:21%;
+    height:100vh;
+    background-color:var(--secondary);
+}
+
+.navLogoContainer{
+    text-align:center;
+    color: var(--white);
+    padding: 5% 0;
+}
+
+.navLogoContainer p{
+    font-size: 12px;
+    margin: 20px 0 10px;
+}
+
+.navLogoContainer span{
+    width: 80%;
+    margin: 0 auto;
+    height: 0px;
+    display: block;
+    border-top: solid 1px #707070A3;
+    border-bottom: none;
+}
+
+
+.navLinkContainer{
+    overflow-y: scroll;
+    height: 70vh;
+} 
+.navLinkContainer a{
+    display: flex;
+    color: var(--white);
+    font-family: 'Roboto';
+    width: 80%;
+    margin: 0% auto;
+    font-size: 14px;
+    font-weight: 300;
+    /* padding: 8px 0; */
+    padding: 12px 0;
+    /* border-left: 5px solid transparent; */
+}
+
+.navLinkContainer a:hover,.navLinkContainer a.active{
+    background-color:var(--primary80);  
+    border-radius: 7px;
+    /* border-left: 5px solid #E6AA55; */
+}
+
+.navLinkContainer a>img{
+    margin: 0 20px;
+    align-self: center;
+}
+
+.navLinkContainer a>p{
+    align-self: center;
+}
+
+.navLinkContainer a>p.active{
+    color: #E6AA55;
+}
+
+.horizontalNav{
+    padding: 7vh 0;
+    margin-left: 21%;
+}
+
+
+.navLinkContainer .paAnchor{
+    display: flex;
+    margin: 8% auto;
+}
+
+.navLinkContainer .paAnchor>p{
+    border-left: 5px solid transparent;
+    border-radius: 10px 0px 0px 10px;
+}
+
+.navLinkContainer .paAnchor>p.active{
+    border-left: 5px solid #E6AA55;
+    border-radius: 10px 0px 0px 10px;
+}

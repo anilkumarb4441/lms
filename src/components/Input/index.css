@@ -1,0 +1,99 @@
+.customInputHolder p{
+    color:var(--primary);
+    font-size:14px;
+    font-weight: 500;
+    margin:  0 0 12px 0;
+}
+
+.customInput{
+    display: block;
+    width: 100%;
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-weight: 600;
+    outline: none;
+    font-size: 15px;
+    background-color: #544E4D;
+}
+
+.customInput::placeholder{
+    color: rgba(255, 255, 255, 0.45);
+}
+
+textarea.customInput{
+    resize: none;
+    height:100px;
+}
+
+.customInputHolder.radio,.customInputHolder.checkbox{
+    display: flex;
+    flex-direction: row-reverse;
+    width: fit-content;
+}
+
+.customInputHolder.radio p,.customInputHolder.checkbox p{
+    margin:0;
+    align-self: center;
+    
+}
+
+.customInput.radio,.customInput.checkbox{
+    padding:0;
+    margin: 0 10px 0 0;
+    box-shadow:none;
+    border:none;
+    align-self: center;
+    width:auto;
+    
+}
+
+
+select.customInput{
+  width:fit-content;
+ -webkit-appearance: none;
+ -moz-appearance: none;
+  appearance: none;
+  background: url("../../assets/icons/selectArr.svg") no-repeat;
+  background-size: 11px 6px;
+  background-position: 95% center;
+    padding: 8px 40px 8px 15px;
+    cursor:pointer;
+}
+select.customInput>option{
+    cursor:pointer;
+}
+.customInput[type='file']{
+    display: none;
+}
+
+.customInputFileBar{
+    display: flex;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #70707059;
+    box-shadow: inset 0px 1px 3px #00000029;
+    color: var(--primary);
+    justify-content: space-between;
+}
+
+.customInputFileBar p{
+    display: block;
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    align-self: center;
+    font-size: 12px;
+    margin-left:10px;
+}
+
+.customInputFileBar label{
+    display: block;
+    padding: 8px 20px;
+    background-color: #DEDEDE;
+    border-radius: 5px;
+    border-left: 1px solid #70707059;
+   cursor:pointer;
+}
