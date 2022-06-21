@@ -1,0 +1,44 @@
+.primaryToggle{
+    display: flex;
+    background-color: #3D3C44;
+    border-radius: 6px;
+    width:173px;
+    text-align: center;
+    position: relative;
+
+  }
+  .primaryToggle>p{
+    width:50%;
+    color:var(--white);
+    font-weight: 400;
+    font-size:16px;
+    border-radius: inherit;
+    padding:10px;
+    cursor:pointer !important;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s;
+  }
+
+  .primaryToggle>p.active{
+      color:var(--black);   
+      font-weight: 500; 
+  }
+
+  .primaryToggle>div{
+      position: absolute;
+      left:0;
+      top:0;
+      width:50%;
+      background-color:var(--primary);
+      border-radius:inherit;
+     
+      height: 100%;
+      transition: all 0.3s;
+  }
+
+  .userFeedCardContainer{
+      background-color: var(--secondary);
+      padding:2%;
+      border-radius: 10px;
+  }

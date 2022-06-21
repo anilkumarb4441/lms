@@ -1,0 +1,4 @@
+export const OPEN_REVIEWS ='OPEN_REVIEWS'
+export const CLOSE_REVIEWS ='CLOSE_REVIEWS'
+export const SET_FORM_MODAL = 'SET_FORM_MODAL'
+export const ON_LOAD = 'ON_SERVICE_LOAD'
