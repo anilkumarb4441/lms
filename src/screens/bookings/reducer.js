@@ -4,7 +4,7 @@ import { CLOSE_INVOICE, OPEN_INVOICE,SET_STATUS } from "./actionTypes";
 const initialState = {
   openInvoice: false,
   status: "all",
-  title: "Bookings",
+  title: "Leads",
 };
 
 const reducer = (state = initialState, action) => {
