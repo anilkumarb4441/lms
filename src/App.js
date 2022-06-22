@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 //components
 import NavBar from "./components/navBar/index"
 import DashBoard from './screens/dashboard';
-import Bookings from './screens/bookings';
+import Leads from './screens/leads/leads';
 import ChefOverView from './screens/chefOverview';
 
 // Screens
@@ -18,7 +18,7 @@ import Settingscreen from './screens/settingscreen/settingscreen';
 
 function App() {
   const routes = [{path:'/',element:<DashBoard/>},
-  {path:'/bookings',element:<Bookings/>},
+  {path:'/leads',element:<Leads/>},
    {path:'/chefOverview',element:<ChefOverView/>},
    {path:'/chefAttendance',element:<ChefAttendance/>},
   {path:'/services',element:<Services/>},

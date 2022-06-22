@@ -4,7 +4,7 @@ import {openBooking,closeBooking,setStatus} from "./actions.js"
 import {IoIosArrowBack} from "react-icons/io";
 import {camelToSentence} from "../../constants"
 //css
-import "./index.css";
+import "./leads.css";
 
 //assets
 import clientProfile from "../../assets/bookings/clientProfile.png"
@@ -18,7 +18,7 @@ import AssignChef from "../../components/assignChef/index.js";
 
 
 
-function Bookings() {
+function Leads() {
 
   const [leadtabs, setleadtabs] = useState("normal")
   const dispatch  =useDispatch()
@@ -265,4 +265,4 @@ function Bookings() {
    </>);
 }
 
-export default Bookings;
+export default Leads;

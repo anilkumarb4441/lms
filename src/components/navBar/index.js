@@ -33,7 +33,7 @@ import { Link, useLocation } from "react-router-dom";
 function NavBar() {
   const [navData, setNavData] = useState([
     { name: "Dashboard", path: "/", img: Dashboard, Colorimg: ColorDashboard },
-    { name: "Leads", path: "/bookings", img: Bookings, Colorimg: ColorBookings },
+    { name: "Leads", path: "/leads", img: Bookings, Colorimg: ColorBookings },
     { name: "My Team", path: "/chefOverview", img: ChefView, Colorimg: ColorChefView },
     // { name: "Chef Attendance", path: "/chefAttendance", img: ChefView, Colorimg: ColorChefView },
     // { name: "Client Overview", path: "/clientOverview", img: ClientView, Colorimg: ColorClientView },
