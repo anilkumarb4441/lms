@@ -33,16 +33,16 @@ import { Link, useLocation } from "react-router-dom";
 function NavBar() {
   const [navData, setNavData] = useState([
     { name: "Dashboard", path: "/", img: Dashboard, Colorimg: ColorDashboard },
-    { name: "Bookings", path: "/bookings", img: Bookings, Colorimg: ColorBookings },
-    { name: "Chef Overview", path: "/chefOverview", img: ChefView, Colorimg: ColorChefView },
-    { name: "Chef Attendance", path: "/chefAttendance", img: ChefView, Colorimg: ColorChefView },
-    { name: "Client Overview", path: "/clientOverview", img: ClientView, Colorimg: ColorClientView },
-    { name: "Chat System", path: "/chatSystem", img: Dashboard, Colorimg: Dashboard },
-    { name: "Calendar", path: "/calendar", img: Calendar, Colorimg: Calendar },
-    { name: "Services", path: "/services", img: Services, Colorimg: ColorServices },
-    { name: "Pricing", path: "/pricing", img: Feed, Colorimg: Feed },
-    { name: "Feed", path: "/feed", img: Feed, Colorimg: Feed },
-    { name: "Settings", path: "/settings", img: Settings, Colorimg: ColorSettings },
+    { name: "Leads", path: "/bookings", img: Bookings, Colorimg: ColorBookings },
+    { name: "My Team", path: "/chefOverview", img: ChefView, Colorimg: ColorChefView },
+    // { name: "Chef Attendance", path: "/chefAttendance", img: ChefView, Colorimg: ColorChefView },
+    // { name: "Client Overview", path: "/clientOverview", img: ClientView, Colorimg: ColorClientView },
+    // { name: "Chat System", path: "/chatSystem", img: Dashboard, Colorimg: Dashboard },
+    // { name: "Calendar", path: "/calendar", img: Calendar, Colorimg: Calendar },
+    // { name: "Services", path: "/services", img: Services, Colorimg: ColorServices },
+    // { name: "Pricing", path: "/pricing", img: Feed, Colorimg: Feed },
+    // { name: "Feed", path: "/feed", img: Feed, Colorimg: Feed },
+    // { name: "Settings", path: "/settings", img: Settings, Colorimg: ColorSettings },
   ]);
 
   const location = useLocation();
