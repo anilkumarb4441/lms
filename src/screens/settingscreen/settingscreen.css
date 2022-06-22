@@ -11,6 +11,7 @@
     width: 20%;
     background-color: #0D0D0D42;
     padding: 2% 0% 0% 0%;
+    /* height: 100%; */
 }
 
 .settingsParent .navSetting h2{

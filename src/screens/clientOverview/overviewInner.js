@@ -4,18 +4,94 @@ import { IoIosArrowBack } from "react-icons/io";
 import mailIcon from "../../assets/chefview/mailIcon.svg"
 import phoneIcon from "../../assets/chefview/phoneIcon.svg"
 import locationIcon from "../../assets/clientView/locationIcon.svg"
-import booked from "../../assets/clientView/booked.svg"
+// import booked from "../../assets/clientView/booked.svg"
+
+
 //css
 import './overviewInner.css'
+
+
+// Components
+import Clientcard from "../../components/clientovercard/clientovercard"
 import DoughnutComp from '../../components/doughnut/doughnut';
 import { Chart, registerables, ArcElement } from "chart.js";
 import { Doughnut } from 'react-chartjs-2';
+
+
 const OverViewInner = ({ selectedclient, setSelectedClient }) =>
 {
   Chart.register(...registerables);
 Chart.register(ArcElement);
   const [tickets, setTickets] = useState([]);
   const trackValue = 30;
+
+
+  const objTemp = [
+    {
+      orderId:"#12345",
+      issue:false,
+      bookedOn:"09.02.22",
+      deliveredon:"11.02.22",
+      assignedChef:"NA",
+      amountTotal:"1500 INR",
+      occasion:"House Party",
+      totalPersons:"20",
+      ordered:true,
+      pending:true,
+      chefAssign:true,
+      shipping:true,
+      done:""
+    },
+    {
+      orderId:"#12345",
+      issue:false,
+      bookedOn:"09.02.22",
+      deliveredon:"11.02.22",
+      assignedChef:"NA",
+      amountTotal:"1500 INR",
+      occasion:"House Party",
+      totalPersons:"20",
+      ordered:true,
+      pending:true,
+      chefAssign:true,
+      shipping:true,
+      done:true
+    },
+    {
+      orderId:"#12345",
+      issue:true,
+      bookedOn:"09.02.22",
+      deliveredon:"11.02.22",
+      assignedChef:"NA",
+      amountTotal:"1500 INR",
+      occasion:"House Party",
+      totalPersons:"20",
+      ordered:true,
+      pending:true,
+      chefAssign:true,
+      shipping:true,
+      done:true
+    },
+    {
+      orderId:"#12345",
+      issue:false,
+      bookedOn:"09.02.22",
+      deliveredon:"11.02.22",
+      assignedChef:"NA",
+      amountTotal:"1500 INR",
+      occasion:"House Party",
+      totalPersons:"20",
+      ordered:true,
+      pending:true,
+      chefAssign:true,
+      shipping:true,
+      done:true
+    }
+  ]
+
+  const [dataOrder, setdataOrder] = useState(objTemp)
+
+
   return (
       <div className="overviewInner">
                   <div className="flexalign">
@@ -38,7 +114,7 @@ Chart.register(ArcElement);
               <img src={phoneIcon} alt="MailIcon" />
                   <a href="tel:9123456789">9123456789</a>
                       </div>
-            <div className="contactItem">
+              <div className="contactItem">
                          <img src={locationIcon} alt="MailIcon" style={{width: "76px"}}/>
                   <a href="tel:9123456789">Sed ut perspiciatis unde omnis iste natus error sit voluptatem  doloremque laudantium, totam rem aperiam.</a>
                       </div>
@@ -51,49 +127,19 @@ Chart.register(ArcElement);
                     <div className='tickets'>
                     </div>
               </div>
-            </div>
-      <div className="section2">
-        <div className="secCards"> <div className="header"><div>Order-#1234</div> <button className='header-btn booked'>Booked</button></div>
-        <div className="orderInfo">  <div class="pie-wrapper progress-45 style-2">
-  <img src={booked} alt="" />
-    <div class="pie">
-      <div class="left-side half-circle"></div>
-      <div class="right-side half-circle"></div>
-    </div>
-    <div class="shadow"></div>
-  </div></div>
-        <div className="orderStatus"></div>
-        </div>
-        <div className="secCards"> <div className="header"><div>Order-#1234</div> <button className='header-btn hasIssue'>Booked</button></div>
-          <div className="orderInfo" style={{height:"150px",wisth:"150px"}}>
-            <div className="leftInfo">
-                                    <Doughnut
-                      data={{
-                        datasets:[
-                          {
-                            data:[trackValue,100-trackValue],
-                            backgroundColor:["#45B0F5","#707070A3"],
-                            circumference:360,
-                            cutout:50,
-                            borderColor:"transparent",
-                          }
-                        ],
-                      }}
-                    >            
-                    </Doughnut>
-                      <img src={booked} alt="" />
-            </div>
-            <div className="rightInfo">
-              <div className="infoElements">
-                <p>Booked on:</p>
-                <p>09.02.22</p>
-              </div>
-            </div>
-          </div>
-        <div className="orderStatus"></div>
-        </div>
-          </div>
-          
+      </div>
+
+      {/* Section 2 */}
+      <div className='CardinClient'>
+        {
+          dataOrder.map((val,key)=>{
+            return(
+              <Clientcard {...val} />
+            )
+          })
+        }
+      </div>
+        
      </div>
   )
 }

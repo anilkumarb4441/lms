@@ -32,7 +32,7 @@ function Settingplan({...val}) {
     }
 
     function submitData(){
-        console.log(checkArray,pricingData,"555555555555555");
+        // console.log(checkArray,pricingData,"555555555555555");
     }
 
   return (
@@ -40,6 +40,7 @@ function Settingplan({...val}) {
             <div style={{textAlign:"right"}}>
                 <BiEdit onClick={(e)=>setdisabletoggle(!disabletoggle)} style={{color:"white", fontSize:"24px"}} />
             </div>
+            <p className="previewText">Card Preview*</p>
             <div className="prcingParent">
                   <div className="imgParent">
                       <h3>{pricingData.planName}</h3>

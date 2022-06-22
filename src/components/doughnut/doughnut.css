@@ -3,6 +3,12 @@
     padding: 0% 5%;
 }
 
+.doughParentnew{
+    position: relative;
+    padding: 0% 0%;
+    width: 30%;
+}
+
 .doughParent p{
     /* color: #63626A; */
     color: white;
@@ -20,4 +26,15 @@
     top: 50%;
     width: 90%;
     text-align: center;
+}
+
+.doughParentnew .imgHolderClient{
+    position: absolute;
+    top: 45%;
+    text-align: center;
+    width: 100%;
+}
+
+.doughParentnew canvas {
+    width: 30%;
 }

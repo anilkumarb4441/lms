@@ -13,11 +13,12 @@ import pricingplan from "../../assets/settings/pricingplan.svg"
 // Components
 import Input from "../../components/Input/index"
 import Settingplan from "../../components/settingsplan/settingsplan"
+import Createplan from "../../components/createPlan/createplan"
 
 
 function Settingscreen() {
     
-    const [openNav, setOpenNav] = useState("pricing");
+    const [openNav, setOpenNav] = useState("createPlans");
 
     const objSettings = [
         {
@@ -67,7 +68,6 @@ function Settingscreen() {
                         objSettings.map((val,i)=>{
                             return(
                                 <div key={i}>
-                                    <p className="previewText">Card Preview*</p>
                                     <Settingplan {...val} />
                                 </div>
                             )
@@ -75,6 +75,9 @@ function Settingscreen() {
                     }
 
                   </div>
+                  :
+                  openNav==="createPlans"?
+                  <Createplan />
                   :null
               }
           </div>

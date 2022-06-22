@@ -1,0 +1,94 @@
+.createPLan{
+    padding: 2% 1%;
+}
+
+.createPLan>h2{
+    color: white;
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.createPLan .createForm{
+    border-radius: 5px;
+    margin: 2% 0% 0% 0%;
+    background-color: #1F1E26;
+    padding: 2% 5%;
+}
+
+.createForm .flexedRepresent{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0% 0% 5% 0%;
+}
+
+.flexedRepresent label{
+    color: white;
+    font-size: 15px;
+}
+
+.flexedRepresent input{
+    width: 40%;
+    padding: 1.5% 2%;
+    border-radius: 5px;
+    background-color: #292929;
+    border: none;
+    color: white;
+    border: 1px solid transparent;
+}
+
+.flexedRepresent input:focus-visible{
+    outline: none;
+    background-color: #313235;
+    border: 1px solid var(--primary);
+}
+
+.createForm .flexedRepresent.One{
+    /* display: flex; */
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.flexedRepresent.One label{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.flexedRepresent.One label svg{
+    margin: 0% 0% 0% 0%;
+    font-size: 24px;
+}
+
+.flexedRepresent.One input{
+    width: 100%;
+    margin: 3% 0% 0% 0%;
+}
+
+.createForm form button{
+    font-size: 20px;
+    color: #000000;
+    padding: 1% 4%;
+    background-color: #E6AA55;
+    border: 1px solid #E6AA55;
+    border-radius: 5px;
+}
+
+.flexedRepresent .newDiv{
+    display: flex;
+    width: 100%;
+    align-items: center;
+    margin: 3% 0% 0% 0%;
+    justify-content: space-between;
+}
+
+.flexedRepresent.One .newDiv input{
+    width: 95%;
+    margin: 0% 0% 0% 0%;
+}
+
+.newDiv svg{
+    font-size: 24px;
+    color: #E6AA55;
+}
