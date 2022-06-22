@@ -1,0 +1,61 @@
+.modal.addLeadModal {
+    background-color:#3D3C3E;
+    border-radius: 10px;
+    width:56%;
+    left: 56%;
+ }
+ 
+ .modal.addLeadModal .modalBody{
+     padding:0
+ }
+ .addLead{
+    display:flex;
+}
+
+.addLeadCol1{
+    width:100%;
+    text-align:center;
+    color:var(--white);
+    padding: 0 0px;
+}
+ 
+ .customInputHolder.addLeadInput{
+     margin-bottom: 5%;
+     width: 50%;
+ }
+ 
+ .customInput.addLeadInput::placeholder{
+     color:var(--white)
+ }
+ 
+ .customInput.addLeadInput{
+     padding: 9px 15px;
+     font-weight: 300;
+     font-size: 13px;
+     width:90%;
+     margin: 0 auto;
+ 
+ }
+ 
+ .addLead form>div:nth-of-type(1){
+     height: 56vh;
+     overflow-y: scroll;
+     display: flex;
+     align-items: baseline;
+     flex-wrap: wrap;
+ }
+ 
+ .addLeadCol1>p{
+     padding: 3% 0;
+ }
+ 
+ .addLead .saveBtn{
+     display: block;
+     margin: 6% auto;
+     width: 25%;
+     padding: 12px 0px;
+     border-radius: 5px;
+     background-color: var(--primary);
+     font-size: 15px;
+     font-weight: 600;   
+ }
