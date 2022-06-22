@@ -1,0 +1,21 @@
+<svg id="Group_5451" data-name="Group 5451" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="29.417" height="29.417" viewBox="0 0 29.417 29.417">
+  <defs>
+    <linearGradient id="linear-gradient" x1="1" y1="0.252" x2="0" y2="0.892" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#b58537"/>
+      <stop offset="0.077" stop-color="#c59a3f"/>
+      <stop offset="0.167" stop-color="#d3ac46"/>
+      <stop offset="0.432" stop-color="#fedd87"/>
+      <stop offset="0.609" stop-color="#e8c15b"/>
+      <stop offset="0.703" stop-color="#d2ab45"/>
+      <stop offset="0.783" stop-color="#c19a35"/>
+      <stop offset="0.934" stop-color="#966e05"/>
+      <stop offset="1" stop-color="#966e05"/>
+    </linearGradient>
+  </defs>
+  <ellipse id="Ellipse_259" data-name="Ellipse 259" cx="12.831" cy="12.831" rx="12.831" ry="12.831" transform="translate(1.878 1.878)" fill="url(#linear-gradient)"/>
+  <g id="Ellipse_260" data-name="Ellipse 260" transform="translate(0)" fill="none" stroke="#dbb44e" stroke-width="1" stroke-dasharray="2">
+    <ellipse cx="14.709" cy="14.709" rx="14.709" ry="14.709" stroke="none"/>
+    <ellipse cx="14.709" cy="14.709" rx="14.209" ry="14.209" fill="none"/>
+  </g>
+  <path id="Icon_material-email" data-name="Icon material-email" d="M11.971,6H4A1,1,0,0,0,3,7l0,5.981a1,1,0,0,0,1,1h7.974a1,1,0,0,0,1-1V7A1,1,0,0,0,11.971,6Zm0,1.994L7.984,10.486,4,7.994V7L7.984,9.489,11.971,7Z" transform="translate(6.725 4.721)"/>
+</svg>

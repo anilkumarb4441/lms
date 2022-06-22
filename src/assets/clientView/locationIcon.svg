@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="31.839" height="31.839" viewBox="0 0 31.839 31.839">
+  <defs>
+    <linearGradient id="linear-gradient" x1="1" y1="0.252" x2="0" y2="0.892" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#b58537"/>
+      <stop offset="0.077" stop-color="#c59a3f"/>
+      <stop offset="0.167" stop-color="#d3ac46"/>
+      <stop offset="0.432" stop-color="#fedd87"/>
+      <stop offset="0.609" stop-color="#e8c15b"/>
+      <stop offset="0.703" stop-color="#d2ab45"/>
+      <stop offset="0.783" stop-color="#c19a35"/>
+      <stop offset="0.934" stop-color="#966e05"/>
+      <stop offset="1" stop-color="#966e05"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_18762" data-name="Group 18762" transform="translate(-37 -237.84)">
+    <g id="Group_18750" data-name="Group 18750" transform="translate(37 237.84)">
+      <ellipse id="Ellipse_259" data-name="Ellipse 259" cx="13.887" cy="13.887" rx="13.887" ry="13.887" transform="translate(2.032 2.032)" fill="url(#linear-gradient)"/>
+      <g id="Ellipse_260" data-name="Ellipse 260" transform="translate(0)" fill="none" stroke="#dbb44e" stroke-width="1" stroke-dasharray="2">
+        <ellipse cx="15.919" cy="15.919" rx="15.919" ry="15.919" stroke="none"/>
+        <ellipse cx="15.919" cy="15.919" rx="15.419" ry="15.419" fill="none"/>
+      </g>
+    </g>
+    <path id="Icon_material-location-on" data-name="Icon material-location-on" d="M10.944,3A3.442,3.442,0,0,0,7.5,6.444c0,2.583,3.444,6.4,3.444,6.4s3.444-3.813,3.444-6.4A3.442,3.442,0,0,0,10.944,3Zm0,4.674a1.23,1.23,0,1,1,1.23-1.23A1.231,1.231,0,0,1,10.944,7.674Z" transform="translate(41.975 245.84)"/>
+  </g>
+</svg>

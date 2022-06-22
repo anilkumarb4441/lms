@@ -1,0 +1,169 @@
+/* .wrapperContainer{
+    padding: 0%;
+} */
+
+.settingsParent{
+    padding: 2% 0%;
+    display: flex;
+}
+
+.settingsParent .navSetting{
+    width: 20%;
+    background-color: #0D0D0D42;
+    padding: 2% 0% 0% 0%;
+}
+
+.settingsParent .navSetting h2{
+    color: white;
+    font-size: 24px;
+    font-weight: 400;
+    padding: 0% 0% 0% 7%;
+}
+
+.navSetting .navList{
+    margin: 20% 0% 0% 0%;
+}
+
+.navList button{
+    display: flex;
+    background-color: transparent;
+    border: none;
+    align-items: center;
+    width: 100%;
+    margin: 5% 0%;    
+    padding: 4% 3% 4% 3%;
+}
+
+.navList button.active{
+    background-color: rgb(230, 170, 85, 0.46);
+}
+
+.navList button img{
+    width: 12%;
+    margin: 0% 10% 0% 0%;
+}
+
+.navList button p{
+    color: white;
+    font-size: 18px;
+}
+
+.settingsParent .setNavTab{
+    width: 80%;
+    background-color: #17161E;
+    padding: 4% 0% 0% 3%;
+}
+
+.setPlanComponent{
+    margin: 0% 0% 5% 0%;
+}
+
+.setNavTab h2{
+    color: white;
+    font-size: 23px;
+    font-weight: 400;
+}
+
+.setNavTab .prcingParent{
+    display: flex;
+}
+
+.setNavTab .previewText{
+    color: white;
+    font-size: 12px;
+    margin: 2% 0%;
+}
+
+.prcingParent .imgParent{
+    width: 26%;
+    border-radius: 10px;
+    background-color: #57585E;
+    text-align: center;
+}
+
+.imgParent h3{
+    background-color: #7C7D83;
+    color: black;
+    border-radius: 5px;
+    font-size: 15px;
+    text-align: center;
+    padding: 2% 1%;
+    border: 1px solid #707070;
+}
+
+.imgParent div>img{
+    width: 35%;
+    display: inline-block;
+    margin: 7% 0% 3% 0%;
+}
+
+.imgParent div>p:nth-of-type(1){
+    font-size: 22px;
+    color: #F3A351;
+    margin: 3% 0%;
+}
+
+.imgParent div>p:nth-of-type(2){
+    color: white;
+    font-size: 10px;
+    text-align: left;
+    padding: 2% 5% 2% 10%;
+    margin: 5% 0% 0% 0%;
+}
+
+.imgParent div .dupBtn{
+    color: black;
+    background-color: white;
+    border-radius: 5px;
+    padding: 4% 5%;
+    /* margin: 5% 10% 7% 10%; */
+    margin: 8% 10% 7% 10%;
+    font-weight: 500;
+}
+
+
+.prcingParent .prcindDetailsInfo{
+    width: 70%;
+    padding: 2% 0% 0% 5%;
+}
+
+.prcindDetailsInfo .inputSetFlex{
+    display: flex;
+    margin: 2% 0%;
+    justify-content: space-between;
+    margin: 1% 0% 6% 0%;
+    align-items: center;
+}
+
+.inputSetFlex label{
+    color: white;
+    font-size: 15px;
+}
+
+.inputSetFlex .setInput{
+    width: 75%;
+}
+
+.inputSetFlex input[type="text"]:disabled{
+    background-color: #313235;
+}
+
+.setPlanComponent .NoteInfo{
+    background-color: #292929;
+    border-radius: 5px;
+    padding: 2% 2%;
+    margin: 2% 0%;
+}
+
+.NoteInfo p{
+    color: white;
+    font-size: 15px;
+}
+
+.setPlanComponent .saveBtnSet{
+    background-color: #E6AA55;
+    border: 1px solid #E6AA55;
+    border-radius: 5px;
+    padding: 1% 4%;
+    font-size: 20px;
+}

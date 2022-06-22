@@ -1,38 +1,101 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
+
+
+
+:root{
+  --primary:#E6AA55;
+  --primary85:#E6AA5585;
+  --primary83:#E6AA5583;
+  --primary80:#E6AA5580;
+  --secondary:#1F1E26;
+  --wrapperColor:#17161E;
+  --white:#fff;
+  --black:#000;
+  --booked:#1286EA;
+  --hasIssue:#FC2626;
+  --completed:#40921D;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+  font-family: 'Roboto','sans-serif';
+  scroll-behavior: smooth;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* width */
+::-webkit-scrollbar {
+  width: 2px;
+  height: 1px;;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Track */
+::-webkit-scrollbar-track {
+  /* background: var(--secondary); */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+ 
+  background: var(--primary);
+}
+
+a{
+  text-decoration: none;
+}
+
+button{
+  cursor:pointer;
+  border:none;
+}
+
+.wrapperContainer{
+   background-color: var(--wrapperColor);
+   margin-left: 21%;
+   padding: 2% 6% 0% 4%;
+   height: 86vh;
+   overflow-y: scroll;
+   box-shadow: inset 0px 3px 6px #100707;
+}
+
+.screenTitleContainer{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
+  padding-bottom: 2%;
 }
 
-.App-link {
-  color: #61dafb;
+.screenTitleContainer>div{
+  display: flex;
+  align-self: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.screenTitle{
+  color: var(--white);
+  font-family: 'Roboto Condensed';
+  font-size:24px;
+  align-self: center;
 }
+
+button.btnPrimary {
+  background-color: #35343C;
+  color: var(--primary);
+  border: solid 1px;
+  border-radius: 9px;
+  padding: 10px 21px;
+  font-size: 14px;
+    padding: 10px 40px;
+}
+
+.goBack{
+   fill: rgb(255, 255, 255);
+    margin-right: 10px;
+    align-self: center;
+    font-size: 26px;
+    cursor: pointer;
+}
+/* 
+.react-calendar{
+  background-color:var(--prima) !important
+} */

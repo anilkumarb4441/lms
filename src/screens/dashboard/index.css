@@ -1,0 +1,265 @@
+.dashboardCardContainer{
+    display: flex;
+    justify-content: space-between;
+    margin: 5% 0 0 0;
+}
+
+.dashboardCard{
+    width: 23%;
+    background-color: #1F1E26;
+    border-radius: 10px;
+    display: flex;
+    padding: 3% 2% 3% 2%;
+   
+}
+
+.dashboardCard img{  
+    display: block;
+    width: 55px;
+    height: 55px;
+    margin-right: 15%;
+}
+
+.dashboardCard div{
+    color:var(--white);
+    align-self: center;
+    text-align:center;
+}
+.dashboardCard div p:nth-of-type(1){
+    font-weight: 700;
+    font-size: 23px;
+    line-height:150%;
+}
+
+.dashboardCard div p:nth-of-type(2){
+    font-weight: 300;
+    font-size: 13px;
+}
+
+.dboardGraphContainer{
+    background-color: var(--secondary);
+    margin:5% 0%;
+    width:75%;
+    padding:2%;
+    border-radius: 10px;
+}
+
+.dgraphHeader{
+    display:flex;
+    justify-content:space-between;
+    color:var(--white);  
+}
+
+.dashBoardScreen .flexedgrapghParent{
+    display: flex;
+    justify-content: space-between;
+}
+
+.flexedgrapghParent .dboardGraphContainer{
+    width: 47%;
+}
+
+.dashBoardScreen .ticketsGrapghParent{
+    display: flex;
+    justify-content: space-between;
+    margin: 0% 0% 3% 0%;
+}
+
+.ticketsGrapghParent .chartPieConatiner{
+    width: 40%;
+    box-shadow: 0px 3px 6px #00000029;
+    background-color: #1F1E26;
+    border-radius: 10px;
+    padding: 2% 1%;
+}
+
+.chartPieConatiner .pieParent{
+    display: flex;
+}
+
+.pieParent .pieName{
+    font-size: 12px;
+    text-align: center;
+    color: white;
+    font-weight: 300;
+    margin: 15% 0% 0% 0%;
+}
+
+.pieParent>div{
+    width: 50% !important;
+    position: relative;
+}
+
+.ticketsGrapghParent .userTicketsSection{
+    width: 58%;
+    background-color: #1F1E26;
+    border-radius: 10px;
+    box-shadow: 0px 3px 6px #00000029;
+    padding: 2% 2% 0% 2%;
+}
+
+.userTicketsSection .ticketHead{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ticketsGrapghParent h4{
+    color: white;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+.chartPieConatiner .ticketHead{
+    margin: 0% 0% 10% 0%;
+}
+
+.ticketHead .checkParentBox{
+    display: flex;
+    width: 62%;
+    justify-content: space-between;
+}
+
+.ticketHead .linkfull{
+    color: white;
+    display: flex;
+    align-items: center;
+    margin: 0%;
+    width: 35%;
+}
+
+.linkfull img{
+    width: 13%;
+    margin: 0% 5% 0% 0%;
+}
+
+
+.chartPieConatiner canvas{
+    width: 100% !important;
+}
+
+/* Toggle Btn */
+
+.checkParentBox .checkBox{
+    width: 38%;
+    position: relative;
+}
+
+.checkBox .flexedtoggle{
+    display: flex;
+    justify-content: space-between;
+    background-color: #40352E;
+    border-radius: 20px;
+    padding: 2% 0%;
+}
+
+.checkBox label{
+    width: 100%;
+}
+
+.checkBox .visbilityNone{
+    visibility: hidden;
+    position: absolute;
+}
+
+.flexedtoggle p{
+    color: white;
+    border-radius: 10px;
+    font-size: 13px;
+    /* padding: 2%; */
+    padding: 3% 10%;
+}
+
+.flexedtoggle p.active{
+    background-color: #E6AA55;
+    color: black;
+}
+
+
+.tickets{
+    padding: 2% 0%;
+}
+
+.tickets .tickectParent{
+    display: flex;
+    padding: 2% 0%;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2% 0%;
+}
+
+.tickectParent .tickImg{
+    width: 10%;
+}
+
+.tickImg img{
+    width: 100%;
+    border-radius: 50%;
+}
+
+.tickectParent .ticketContentHolder{
+    width: 86%;
+    padding: 0% 0% 0% 0%;
+}
+
+.ticketContentHolder .TuserName{
+    color: #A89D9D;
+    font-size: 14px;
+    margin: 0% 0% 2% 0%;
+}
+
+.ticketContentHolder .ticketDescript{
+    font-size: 12px;
+    color: #A89D9D;
+    margin: 0%;
+}
+
+.recentConatiner{
+    background: #1F1E26 0% 0% no-repeat padding-box;
+    box-shadow: 0px 3px 6px #00000029;
+    border-radius: 8px;
+    padding: 3% 2%;
+    margin: 0% 0% 3% 0%;
+}
+
+.recentConatiner h4{
+    color: white;
+    font-size: 14px;
+}
+
+.recentConatiner table{
+    width: 100%;
+    background-color: #45444C;
+    border-radius: 8px;
+    margin: 3% 0% 0% 0%;
+}
+
+.recentConatiner th{
+    color: white;
+    font-size: 13px;
+    padding: 1.5% 0%;
+}
+
+.pieParent .abstexd{
+    position: absolute;
+    top: 37%;
+    color: white;
+    font-size: 40px;
+    left: 35%;
+    font-weight: 300;
+}
+
+.recentConatiner td{
+    color: #DCDBDB;
+    text-align: center;
+    font-size: 13px;
+    padding: 1% 0%;
+}
+
+.recentConatiner tbody tr:hover{
+    background-color: #E6AA55;
+}
+
+.recentConatiner tbody tr:hover td{
+    color: black;
+}

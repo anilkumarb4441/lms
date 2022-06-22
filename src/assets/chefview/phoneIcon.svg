@@ -1,0 +1,21 @@
+<svg id="Group_5452" data-name="Group 5452" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="29.694" height="29.694" viewBox="0 0 29.694 29.694">
+  <defs>
+    <linearGradient id="linear-gradient" x1="1" y1="0.252" x2="0" y2="0.892" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#b58537"/>
+      <stop offset="0.077" stop-color="#c59a3f"/>
+      <stop offset="0.167" stop-color="#d3ac46"/>
+      <stop offset="0.432" stop-color="#fedd87"/>
+      <stop offset="0.609" stop-color="#e8c15b"/>
+      <stop offset="0.703" stop-color="#d2ab45"/>
+      <stop offset="0.783" stop-color="#c19a35"/>
+      <stop offset="0.934" stop-color="#966e05"/>
+      <stop offset="1" stop-color="#966e05"/>
+    </linearGradient>
+  </defs>
+  <ellipse id="Ellipse_261" data-name="Ellipse 261" cx="12.951" cy="12.951" rx="12.951" ry="12.951" transform="translate(1.895 1.895)" fill="url(#linear-gradient)"/>
+  <g id="Ellipse_262" data-name="Ellipse 262" transform="translate(0)" fill="none" stroke="#dbb44e" stroke-width="1" stroke-dasharray="2">
+    <ellipse cx="14.847" cy="14.847" rx="14.847" ry="14.847" stroke="none"/>
+    <ellipse cx="14.847" cy="14.847" rx="14.347" ry="14.347" fill="none"/>
+  </g>
+  <path id="Icon_awesome-phone-alt" data-name="Icon awesome-phone-alt" d="M10.055,7.314l-2.264-.97a.485.485,0,0,0-.566.139l-1,1.225A7.493,7.493,0,0,1,2.64,4.127l1.225-1A.484.484,0,0,0,4,2.558L3.034.294A.488.488,0,0,0,2.478.013L.376.5A.485.485,0,0,0,0,.971a9.379,9.379,0,0,0,9.38,9.38.485.485,0,0,0,.473-.376l.485-2.1a.491.491,0,0,0-.283-.558Z" transform="translate(9.672 9.727)"/>
+</svg>
