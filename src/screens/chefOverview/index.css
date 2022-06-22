@@ -3,21 +3,12 @@
 }
 
 .addChefCol1{
-    width:50%;
+    width:100%;
     text-align:center;
     color:var(--white);
     padding: 0 0px;
 }
 
-.addChefCol2{
-    width:50%;
-    
-}
-
-.addChefCol2 img{
-    display: block;
-    width:100%;
-}
 
 .modal.addChefModal {
    background-color:#3D3C3E;
@@ -33,6 +24,7 @@
 
 .customInputHolder.addChefInput{
     margin-bottom: 5%;
+    width: 50%;
 }
 
 .customInput.addChefInput::placeholder{
@@ -51,16 +43,19 @@
 .addChef form>div:nth-of-type(1){
     height: 56vh;
     overflow-y: scroll;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
 }
 
 .addChefCol1>p{
-    padding:6% 0;
+    padding: 3% 0;
 }
 
 .addChef .saveBtn{
     display: block;
-    margin: 6% auto 0;
-    width: 90%;
+    margin: 6% auto;
+    width: 25%;
     padding: 12px 0px;
     border-radius: 5px;
     background-color: var(--primary);

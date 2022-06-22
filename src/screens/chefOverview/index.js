@@ -228,9 +228,6 @@ function ChefOverView() {
               <button className = 'saveBtn' type='submit'>Save</button>
               </form>
           </div>
-          <div className = 'addChefCol2'>
-              <img alt = 'chef' src = {chefImg}/>
-          </div>
       </div>
   }
       />}
