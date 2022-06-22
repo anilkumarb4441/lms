@@ -19,9 +19,11 @@ import AssignChef from "../../components/assignChef/index.js";
 
 
 function Bookings() {
+
+  const [leadtabs, setleadtabs] = useState("normal")
   const dispatch  =useDispatch()
   const reducer = useSelector(state=>state.bookings);
-  const [openModal,setOpenModal] = useState(true)
+  const [openModal,setOpenModal] = useState(false)
   const [statusArr, setStatusArr] = useState([
     { name: 'All', value: "all" },
     { name: "New Order", value: "newOrder" },
@@ -140,12 +142,24 @@ function Bookings() {
   useEffect(()=>{
    handleStatus(reducer.status)
   },[reducer.status])
-  return (<>
-    <div className="bookingsScreen">
+  return (
+  <>
+     <p className="screenTitle">{reducer.title}</p>
+
+    <div className="tabsSection">
+      <button onClick={(e)=>setleadtabs("normal")} className={leadtabs==="normal"?"active":null}>
+        Normal Leads
+      </button>
+      <button onClick={(e)=>setleadtabs("closed")} className={leadtabs==="closed"?"active":null}>
+        Closed Leads
+      </button>
+    </div>
+    {
+      leadtabs==="normal"?
+      <div className="bookingsScreen">
       <div className="screenTitleContainer"> 
      <div>
      {reducer.openInvoice && <IoIosArrowBack className = 'goBack' onClick = {()=>{dispatch(closeBooking())}}/>}
-     <p className="screenTitle">{reducer.title}</p>
      </div>
         
         <div>
@@ -232,11 +246,15 @@ function Bookings() {
    </div>
 </div>
 
-      </div>
-}
+          </div>
+    }
 
 <AssignChef formObj = {formObj} setFormObj = {setFormObj} submitForm = {(e)=>submitForm(e)}  showModal = {openModal} open={(e)=>{setOpenModal(e)}}/>
-</div>
+      </div>
+      :
+      leadtabs==="closed"?
+      "Hello":null
+    }
    </>);
 }
 

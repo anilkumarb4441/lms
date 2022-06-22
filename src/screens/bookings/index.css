@@ -219,3 +219,23 @@
 }
 
 
+
+/* New Styles */
+
+.tabsSection{
+    display: flex;
+    justify-content: center;
+}
+
+.tabsSection button{
+    padding: 1% 2%;
+    border-radius: 5px;
+    border: none;
+    background-color: transparent;
+    color: white;
+}
+
+.tabsSection button.active{
+    background-color: var(--primary);
+    color: black;
+}
