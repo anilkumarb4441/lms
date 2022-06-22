@@ -158,9 +158,16 @@ function Bookings() {
       leadtabs==="normal"?
       <div className="bookingsScreen">
       <div className="screenTitleContainer"> 
-     <div>
-     {reducer.openInvoice && <IoIosArrowBack className = 'goBack' onClick = {()=>{dispatch(closeBooking())}}/>}
-     </div>
+        <div>
+          {
+            reducer.openInvoice?<IoIosArrowBack className = 'goBack' onClick = {()=>{dispatch(closeBooking())}}/>
+            :
+            <div className="btnFlexLead">
+              <button className="normLead">Create Normal Lead</button>
+              <button className="normLead">Bulk Upload</button>
+            </div>
+          }
+        </div>
         
         <div>
           {!reducer.openInvoice &&<Input

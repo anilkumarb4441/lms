@@ -239,3 +239,16 @@
     background-color: var(--primary);
     color: black;
 }
+
+.screenTitleContainer .btnFlexLead{
+    display: flex;
+}
+
+.screenTitleContainer .normLead{
+    padding: 1.5% 1%;
+    border-radius: 5%;
+    background-color: var(--primary);
+    cursor: pointer;
+    color: black;
+    margin: 0% 2%;
+}
