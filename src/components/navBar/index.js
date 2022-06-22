@@ -53,7 +53,7 @@ function NavBar() {
       <div className="sideNav">
         <div className="navLogoContainer">
           <img src={logo} alt="logo" />
-          <p>Admin Dashboard</p>
+          <p>Lead Management System</p>
           <span></span>
         </div>
         <div className="navLinkContainer">
