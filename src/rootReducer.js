@@ -1,9 +1,9 @@
 import {combineReducers} from 'redux'
-import bookingsReducer from "./screens/bookings/reducer"
+import leadsReducer from "./screens/leads/reducer"
 import servicesReducer from "./screens/services/reducer"
 
 const rootReducer = combineReducers({
-    bookings:bookingsReducer,
+    leads:leadsReducer,
     services:servicesReducer
 })
 

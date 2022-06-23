@@ -22,22 +22,20 @@ function Leads() {
 
   const [leadtabs, setleadtabs] = useState("normal")
   const dispatch  =useDispatch()
-  const reducer = useSelector(state=>state.bookings);
+  const reducer = useSelector(state=>state.leads);
   const [openModal,setOpenModal] = useState(false)
   const [statusArr, setStatusArr] = useState([
     { name: 'All', value: "all" },
-    { name: "New Order", value: "newOrder" },
-    { name: "Reschedule", value: "reschedule" },
-    { name: "Delivered", value: "delivered" },
-    { name: "On Delivery", value: "onDelivery" },
+    { name: "Cold Lead", value: "coldLead" },
+    { name: "Hot Lead", value: "coldLead" },
   ]);
   
   const [columns, setColumns] = useState([
     {
-      Header: "Order Id",
-      accessor: "orderId",
+      Header: "Lead Name",
+      accessor: "name",
       Cell:(props)=>{
-        return <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {()=>openInner(props.cell.row.original)} className = {props.cell.row.original.orderId}>{props.cell.row.original.orderId}</p>
+        return <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {()=>openInner(props.cell.row.original)}>{props.cell.row.original.leadId}</p>
  }
     },
     {
@@ -67,7 +65,7 @@ function Leads() {
 
   const [originalData, setOriginalData] = useState([
     {
-      orderId: "#58797",
+      leadId: "#58797",
       date: "26 Feb 2022, 11:30am",
       clientName: "Manish Arora",
       location: "HSR Layout, Sec 3, 500102",
@@ -75,7 +73,7 @@ function Leads() {
       status: "newOrder",
     },
     {
-      orderId: "#58796",
+      leadId: "#58796",
       date: "26 Feb 2022, 11:30am",
       clientName: "Manish Arora",
       location: "HSR Layout, Sec 3, 500102",
@@ -83,7 +81,7 @@ function Leads() {
       status: "onDelivery",
     },
     {
-      orderId: "#58796",
+      leadId: "#58796",
       date: "26 Feb 2022, 11:30am",
       clientName: "Manish Arora",
       location: "HSR Layout, Sec 3, 500102",
@@ -91,7 +89,7 @@ function Leads() {
       status: "newOrder",
     },
     {
-      orderId: "#58796",
+      leadId: "#58796",
       date: "26 Feb 2022, 11:30am",
       clientName: "Manish Arora",
       location: "HSR Layout, Sec 3, 500102",
@@ -99,7 +97,7 @@ function Leads() {
       status: "reschedule",
     },
     {
-      orderId: "#58796",
+      leadId: "#58796",
       date: "26 Feb 2022, 11:30am",
       clientName: "Manish Arora",
       location: "HSR Layout, Sec 3, 500102",
@@ -107,7 +105,7 @@ function Leads() {
       status: "newOrder",
     },
     {
-      orderId: "#58796",
+      leadId: "#58796",
       date: "26 Feb 2022, 11:30am",
       clientName: "Manish Arora",
       location: "HSR Layout, Sec 3, 500102",
