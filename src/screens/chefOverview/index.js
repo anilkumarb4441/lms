@@ -12,6 +12,7 @@ import chefImg from "../../assets/chefview/chef.png"
 // Components
 import ParticularChef from "./particularChefOverview"
 import Dots from "../../components/dots/dots"
+import OverViewInner from "../clientOverview/overviewInner";
 
 function ChefOverView() {
 
@@ -87,46 +88,6 @@ function ChefOverView() {
       salary: "1700 INR",
       totalBookings: 21,
     },
-    {
-      chefId: "ch0587",
-      joiningDate: "26 Feb 2022",
-      chefName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      salary: "1700 INR",
-      totalBookings: 21,
-    },
-    {
-      chefId: "ch0587",
-      joiningDate: "26 Feb 2022",
-      chefName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      salary: "1700 INR",
-      totalBookings: 21,
-    },
-    {
-      chefId: "ch0587",
-      joiningDate: "26 Feb 2022",
-      chefName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      salary: "1700 INR",
-      totalBookings: 21,
-    },
-    {
-      chefId: "ch0587",
-      joiningDate: "26 Feb 2022",
-      chefName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      salary: "1700 INR",
-      totalBookings: 21,
-    },
-    {
-      chefId: "ch0587",
-      joiningDate: "26 Feb 2022",
-      chefName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      salary: "1700 INR",
-      totalBookings: 21,
-    },
   ]);
   const [tableData,setTableData] = useState(originalData);
   const [columns, setColumns] = useState([
@@ -191,7 +152,8 @@ function ChefOverView() {
   return (
 <>
     {
-      particularChef?<ParticularChef chefId={chefId} setParticularChef={setParticularChef} />:
+      // particularChef?<ParticularChef chefId={chefId} setParticularChef={setParticularChef} />:
+      particularChef?<OverViewInner chefId={chefId} particularChef={particularChef} setParticularChef={setParticularChef} />:
       <div className = 'chefOverviewScreen'>
       <div className="screenTitleContainer">
           <p className="screenTitle">Chef Overview</p>
