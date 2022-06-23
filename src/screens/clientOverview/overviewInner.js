@@ -18,10 +18,10 @@ import { Chart, registerables, ArcElement } from "chart.js";
 import { Doughnut } from 'react-chartjs-2';
 
 
-const OverViewInner = ({ selectedclient, setSelectedClient }) =>
+const OverViewInner = ({ particularChef,chefId, setParticularChef }) =>
 {
   Chart.register(...registerables);
-Chart.register(ArcElement);
+  Chart.register(ArcElement);
   const [tickets, setTickets] = useState([]);
   const trackValue = 30;
 
@@ -95,8 +95,8 @@ Chart.register(ArcElement);
   return (
       <div className="overviewInner">
                   <div className="flexalign">
-          <IoIosArrowBack className = 'goBack' onClick={(e)=>setSelectedClient(false)}/>
-          <h1>Client-{selectedclient}</h1>
+          <IoIosArrowBack className = 'goBack' onClick={(e)=>setParticularChef(false)}/>
+          <h1>Client-{chefId}</h1>
         </div>
       <div className="section1">
               <div className="clientInfoCard">
@@ -104,7 +104,7 @@ Chart.register(ArcElement);
             <div className="imgHold">
                   </div>
             <h2>Ekka Singh</h2>
-            <p>{selectedclient}</p>
+            <p>{chefId}</p>
                 </div>
                 <div className="clientContact">
             <div className="contactItem">
