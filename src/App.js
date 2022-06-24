@@ -6,7 +6,7 @@ import { Link, useLocation } from "react-router-dom";
 import NavBar from "./components/navBar/index"
 import DashBoard from './screens/dashboard';
 import Leads from './screens/leads/leads';
-import ChefOverView from './screens/chefOverview';
+import Myteam from './screens/Myteam';
 
 // Screens
 import Services from "./screens/services/services"
@@ -19,7 +19,7 @@ import Settingscreen from './screens/settingscreen/settingscreen';
 function App() {
   const routes = [{path:'/',element:<DashBoard/>},
   {path:'/leads',element:<Leads/>},
-   {path:'/chefOverview',element:<ChefOverView/>},
+   {path:'/myteam',element:<Myteam/>},
    {path:'/chefAttendance',element:<ChefAttendance/>},
   {path:'/services',element:<Services/>},
   {path:'/feed',element:<UserFeed/>},
