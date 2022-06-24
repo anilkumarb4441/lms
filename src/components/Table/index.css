@@ -124,10 +124,66 @@
     padding: 4px;
   }
 
-  /* .actionsTable td:last-child,.actionsTable th:last-child{
-      position: sticky;
-      right:0;
-      background: inherit;
-  } */
+  
+
+  /* TABLE CSS */
+
+  .Table,.Table thead,.Table tbody, .Table th, .Table td{
+    display: block;
+}
+
+.Table tr{
+   display: flex;
+   align-items: center;
+}
+
+.Table thead>tr{
+    margin-bottom:20px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    border-radius: 5px;
+   
+}
+.Table thead>tr>th{
+    font-size: 14px;
+    color: var(--black);
+    font-weight:500;
+    text-align: center;
+    background-color: inherit;
+    border-radius: inherit;
+    align-self: center;
+    padding: 10px 0px;
+}
+
+.Table tbody{
+    background-color: #63626A;
+    border-radius: 5px;
+    border-radius: 8px;
+ 
+}
+
+
+
+.Table tbody>tr:hover{
+    background-color: var(--black);
+}
+
+.Table tbody>tr>td{
+   font-size: 13px;
+   
+   color:var(--white);
+   font-weight: 300;
+   text-align: center;
+   align-self: center;
+   padding: 10px 0px;
+}
+
+.Table.leadTable{
+    width: 2000px;
+}
+
+.Table.leadTable.myteam{
+    width: 100%;
+}
 
   
