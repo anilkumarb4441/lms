@@ -13,8 +13,8 @@ import ticketPhotoTemp from "../../assets/dashboard/ticketPhotoTemp.png"
 import tempPhoto from "../../assets/dashboard/tempPhoto.png"
 
 
-import {MONTHS} from "../../constants.js"
-import {WEEKDAYS} from "../../constants.js"
+import {MONTHS} from "../../utils/constants.js"
+import {WEEKDAYS} from "../../utils/constants.js"
 
 //components
 import { Chart, registerables, ArcElement } from "chart.js";

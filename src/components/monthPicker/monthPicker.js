@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import calendarIcon from "../../assets/icons/calendarIcon.svg";
 import "./monthPicker.css";
-import { MONTHS } from "../../constants.js";
+import { MONTHS } from "../../utils/constants.js";
 
 function MonthPicker({
   defaultMonth,

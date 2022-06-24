@@ -30,4 +30,5 @@
 .dotsParent img{
     width: 12%;
     cursor: pointer;
+    height: 20px;
 }

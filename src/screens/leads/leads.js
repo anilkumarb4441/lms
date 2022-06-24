@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { openBooking, closeBooking, setStatus } from "./actions.js";
-import { IoIosArrowBack } from "react-icons/io";
-import { camelToSentence } from "../../constants";
+import * as actions from "./actions.js";
+import { camelToSentence } from "../../utils/constants";
+
 //css
 import "./leads.css";
 
@@ -13,28 +13,52 @@ import locIcon from "../../assets/bookings/location.svg";
 //components
 import Input from "../../components/Input";
 import Table from "../../components/Table";
-
-import AssignChef from "../../components/assignChef/index.js";
 import Tabs from "../../components/tabs/tabs.js";
+import { IoIosArrowBack } from "react-icons/io";
+import Dots from "../../components/dots/dots.js";
 
 function Leads() {
   const dispatch = useDispatch();
   const reducer = useSelector((state) => state.leads);
   // const [openModal, setOpenModal] = useState(false);
   const [mainTabArr, setMainTabArr] = useState([
-    { name: "Normal Leads", value: "normalLeads" },
-    { name: "Normal Leads", value: "normalLeads" },
+    { name: "Pending Leads", value: "pendingLeads" },
+    { name: "Untouched Leads", value: "untouchedLeads" },
+    { name: "Closed Leads", value: "closedLeads" },
   ]);
+
   const [statusArr, setStatusArr] = useState([
     { name: "All", value: "all" },
-    { name: "Cold Lead", value: "hotLead" },
-    { name: "Hot Lead", value: "coldLead" },
+    { name: "Cold Lead", value: "coldLead" },
+    { name: "Hot Lead", value: "hotLead" },
+  ]);
+
+  const handleAction = (name)=>{
+    switch(name){
+      case 'Edit Lead':
+        actions.editLead()  
+    }
+     
+  }
+  const [actionOptions, setActionOptions] = useState([
+    {
+      name: "Edit Lead",
+      color: "orange",
+    },
+    {
+      name: "Assign to",
+      color: "green",
+    },
+    {
+      name:"Delete Lead",
+      color:'red'
+    }
   ]);
 
   const [columns, setColumns] = useState([
     {
-      Header: "Lead Name",
-      accessor: "name",
+      Header: "Lead Id",
+      accessor: "leadId",
       Cell: (props) => {
         return (
           <p
@@ -46,22 +70,40 @@ function Leads() {
         );
       },
     },
+    { Header: "Name", accessor: "name" },
     {
-      Header: "Date",
-      accessor: "date",
+      Header: "Phone",
+      accessor: "phone",
     },
     {
-      Header: "Client Name",
-      accessor: "clientName",
+      Header: "College",
+      accessor: "college",
     },
     {
-      Header: "Location",
-      accessor: "location",
+      Header: "Branch",
+      accessor: "branch",
     },
     {
-      Header: "Amount",
-      accessor: "amount",
+      Header: "Year of Pass Out",
+      accessor: "year_of_pass_out",
     },
+    {
+      Header: "Experience",
+      accessor: (row) =>
+        parseInt(row.year_of_pass_out) < new Date().getFullYear()
+          ? `${row.experience} yrs`
+          : "---",
+    },
+    {
+      Header:'Lead Response',
+      accessor:"leadResponse"
+    },
+
+    {
+      Header:'Call Count',
+      accessor:"callCount"
+    },
+
     {
       Header: "Status",
       accessor: "status",
@@ -73,62 +115,93 @@ function Leads() {
         );
       },
     },
+    {
+      Header: "Actions",
+      accessor: "actions",
+      Cell: () => {
+        return <Dots options={actionOptions} onclick={handleAction} />;
+      },
+    },
   ]);
 
   const [originalData, setOriginalData] = useState([
     {
       leadId: "#58797",
-      date: "26 Feb 2022, 11:30am",
-      clientName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      amount: "1700 INR",
-      status: "newOrder",
+      name: "Nirmal Rajana",
+      phone: "9999999999",
+      college: "VVVSS College of Engineering",
+      branch: "Computer Science",
+      year_of_pass_out: 2019,
+      experience: 4,
+      status: "hotLead",
+      leadResponse:'Not Answered',
+      callCount:2,
     },
     {
-      leadId: "#58796",
-      date: "26 Feb 2022, 11:30am",
-      clientName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      amount: "1700 INR",
-      status: "onDelivery",
+      leadId: "#58797",
+      name: "Manoj Kumar",
+      phone: "9999999999",
+      college: "SS College of Engineering",
+      branch: "Computer Science",
+      year_of_pass_out: 2019,
+      experience: 4,
+      status: "coldLead",
+      leadResponse:'Not Answered',
+      callCount:2,
     },
     {
-      leadId: "#58796",
-      date: "26 Feb 2022, 11:30am",
-      clientName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      amount: "1700 INR",
-      status: "newOrder",
+      leadId: "#58797",
+      name: "Karthik S",
+      phone: "9999999999",
+      college: "VVSS College of Engineering",
+      branch: "Computer Science",
+      year_of_pass_out: 2019,
+      experience: 4,
+      status: "coldLead",
+      leadResponse:'Not Answered',
+      callCount:2,
     },
     {
-      leadId: "#58796",
-      date: "26 Feb 2022, 11:30am",
-      clientName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      amount: "1700 INR",
-      status: "reschedule",
+      leadId: "#58797",
+      name: "Tanisha G",
+      phone: "9999999999",
+      college: "VSS College of Engineering",
+      branch: "Computer Science",
+      year_of_pass_out: 2022,
+      experience: 4,
+      status: "hotLead",
+      leadResponse:'Not Answered',
+      callCount:2,
     },
     {
-      leadId: "#58796",
-      date: "26 Feb 2022, 11:30am",
-      clientName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      amount: "1700 INR",
-      status: "newOrder",
+      leadId: "#58797",
+      name: "Nirmal Rajana",
+      phone: "9999999999",
+      college: "VVVSS College of Engineering",
+      branch: "Computer Science",
+      year_of_pass_out: 2019,
+      experience: 4,
+      status: "hotLead",
+      leadResponse:'Not Answered',
+      callCount:2,
     },
     {
-      leadId: "#58796",
-      date: "26 Feb 2022, 11:30am",
-      clientName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      amount: "1700 INR",
-      status: "newOrder",
+      leadId: "#58797",
+      name: "Nirmal Rajana",
+      phone: "9999999999",
+      college: "VVVSS College of Engineering",
+      branch: "Computer Science",
+      year_of_pass_out: 2019,
+      experience: 4,
+      status: "coldLead",
+      leadResponse:'Not Answered',
+      callCount:2,
     },
   ]);
   const [tableData, setTableData] = useState(originalData);
 
   const openInner = (rowObj) => {
-    dispatch(openBooking(rowObj));
+    dispatch(actions.openBooking(rowObj));
   };
 
   const [formObj, setFormObj] = useState({
@@ -147,28 +220,31 @@ function Leads() {
     "Item 4(Main Course)",
   ];
 
-  const handleStatus = (status) => {
-    if (status === "all") {
-      setTableData(originalData);
-      return;
-    }
-    let newArr = originalData.filter((obj) => obj.status === status);
-    setTableData(newArr);
-  };
-
   const submitForm = (e) => {
     e.preventDefault();
     console.log(formObj);
   };
 
+  // status change function
   useEffect(() => {
-    handleStatus(reducer.status);
+    if (reducer.status === "all") {
+      setTableData(originalData);
+      return;
+    }
+    let newArr = originalData.filter((obj) => obj.status === reducer.status);
+    setTableData(newArr);
   }, [reducer.status]);
   return (
     <>
       <p className="screenTitle">{reducer.title}</p>
 
-      <Tabs tabArr={mainTabArr} handleTab={handleMainTab} />
+      {!reducer.openInvoice && (
+        <Tabs
+          tabArr={mainTabArr}
+          handleTab={(item) => dispatch(actions.handleMainTab(item))}
+        />
+      )}
+
       {
         <div className="bookingsScreen">
           <div className="screenTitleContainer">
@@ -177,7 +253,7 @@ function Leads() {
                 <IoIosArrowBack
                   className="goBack"
                   onClick={() => {
-                    dispatch(closeBooking());
+                    dispatch(actions.closeBooking());
                   }}
                 />
               ) : (
@@ -193,9 +269,9 @@ function Leads() {
                 <Input
                   value={reducer.status}
                   element="select"
-                  inputClass="bTable"
+                  inputClass="leadTable"
                   change={(e) => {
-                    dispatch(setStatus(e.target.value));
+                    dispatch(actions.setStatus(e.target.value));
                   }}
                   selectHeading={"Status"}
                   selectArr={statusArr}
@@ -214,7 +290,7 @@ function Leads() {
                 search={true}
                 columns={columns}
                 data={tableData}
-                tClass="bTable"
+                tClass="leadTable actionsTable"
               />
             </div>
           )}

@@ -3,15 +3,29 @@
     justify-content: center;
 }
 
-.tabsSection button{
-    padding: 1% 2%;
-    border-radius: 5px;
-    border: none;
-    background-color: transparent;
-    color: white;
+.tabsSection>button{
+    padding: 10px 20px;
+    border: solid 1px var(--white);
+    background-color: #918989;
+    color: var(--secondary);
+    font-weight: 600;
+    transition:  background-color 0.5s
 }
 
-.tabsSection button.active{
+.tabsSection>button.active{
     background-color: var(--primary);
     color: black;
+}
+
+.tabsSection>button:hover{
+    color: var(--white);
+    background-color: var(--primary);
+}
+
+.tabsSection>button:nth-of-type(1){
+    border-radius:   5px 0px 0px 5px;
+}
+
+.tabsSection>button:nth-last-of-type(1){
+    border-radius:  0 5px 5px 0;
 }

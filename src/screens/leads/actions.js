@@ -1,27 +1,48 @@
-import {OPEN_INVOICE} from  './actionTypes'
-import {CLOSE_INVOICE} from  './actionTypes'
-import {SET_STATUS} from './actionTypes'
+import * as actionTypes from "./actionTypes"
 
-
+//action to open leadInner
 export const openBooking =(rowObj)=>{
     return {
-        type :OPEN_INVOICE,
+        type :actionTypes.OPEN_INVOICE,
         status:rowObj.status,
-        title:`Booking Id ${rowObj.orderId}`
+        title:`Booking Id ${rowObj.leadId}`
     }
 }
 
+// action to close leadInner
 export const closeBooking =()=>{
     return {
-        type :CLOSE_INVOICE,
+        type :actionTypes.CLOSE_INVOICE,
         status:'',
         title:'Booking'
     }
 }
 
+// action to set lead status
 export const setStatus = (status)=>{
     return {
-        type:SET_STATUS,
+        type:actionTypes.SET_STATUS,
         status:status
     }
+}
+
+// action to handle MainTab Click
+export const handleMainTab = (item)=>{
+    return{
+        type:actionTypes.HANDLE_MAIN_TAB,
+        mainLeadTab:item.value
+    }
+}
+
+// action to handle subTab Click
+export const handleSubTab = (item)=>{
+    return{
+        type:actionTypes.HANDLE_SUB_TAB,
+        subLeadTab:item.value
+    }
+}
+
+//action to Edit Lead
+export const editLead = (row)=>{
+    
 }

@@ -39,16 +39,6 @@ function ClientOverview() {
           Header: "Last Booking",
           accessor:'lastbooking',
         },
-        {
-            Header: "Options",
-            accessor:'options',
-            Cell:(props)=>{
-              return (
-                <Dots />
-                // <Dots chefObj={props.row.original} setFormData={setFormData} formData={formData} setOpenForm={setOpenForm} setChefId={setChefId} chefId={props.cell.row.original.chefId} setParticularChef={setParticularChef} />
-              )
-            }
-        },
       ]);
 
       const [selectedclient,setSelectedClient]=useState("")
@@ -140,7 +130,7 @@ function ClientOverview() {
               </select>
           </div>
           <div>
-            <Table search = {true} columns={columns} data={originalData} tClass="bTable" />
+            <Table search = {true} columns={columns} data={originalData} tClass="leadTable" />
           </div>
       </div>}</>
   );
