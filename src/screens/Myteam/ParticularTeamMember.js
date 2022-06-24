@@ -399,7 +399,7 @@ const [columns, setColumns] = useState([
               <h4>Total Tasks List</h4>
               <div className="tableParent">
                 {/* <Table /> */}
-                <Table search = {true} columns={columns} data={tableData} tClass="leadTable myteam" />
+                <Table search = {true} columns={columns} data={tableData} tClass="myteam" />
                 {/* <table>
                   <thead>
                     <tr>

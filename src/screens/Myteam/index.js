@@ -177,7 +177,7 @@ function Myteam() {
               </button> */}
           </div>
       </div>
-    <div><Table search = {true} columns={columns} data={tableData} tClass="leadTable myteam" /></div>
+    <div><Table search = {true} columns={columns} data={tableData} tClass="myteam" /></div>
     
       {openForm && 
       <Modal
