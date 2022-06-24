@@ -81,42 +81,62 @@ function ChefOverView() {
   ]);
   const [originalData, setOriginalData] = useState([
     {
-      chefId: "ch0587",
-      joiningDate: "26 Feb 2022",
-      chefName: "Manish Arora",
-      location: "HSR Layout, Sec 3, 500102",
-      salary: "1700 INR",
-      totalBookings: 21,
+      memId: "NAN",
+      memberName: "Manu",
+      email: "manojkumarobulasetty785@gmail.com",
+      phone: 7729088005,
+    },
+    {
+      memId: "NAN",
+      memberName: "Manu",
+      email: "manojkumarobulasetty785@gmail.com",
+      phone: 7729088005,
+    },
+    {
+      memId: "NAN",
+      memberName: "Manu",
+      email: "manojkumarobulasetty785@gmail.com",
+      phone: 7729088005,
+    },
+    {
+      memId: "NAN",
+      memberName: "Manu",
+      email: "manojkumarobulasetty785@gmail.com",
+      phone: 7729088005,
+    },
+    {
+      memId: "NAN",
+      memberName: "Manu",
+      email: "manojkumarobulasetty785@gmail.com",
+      phone: 7729088005,
+    },
+    {
+      memId: "NAN",
+      memberName: "Manu",
+      email: "manojkumarobulasetty785@gmail.com",
+      phone: 7729088005,
     },
   ]);
   const [tableData,setTableData] = useState(originalData);
   const [columns, setColumns] = useState([
     {
-      Header: "Chef Id",
-      accessor: "chefId",
+      Header: "Member Id",
+      accessor: "memId",
       Cell:(props)=>{
-        return <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setParticularChef(true),setChefId(props.cell.row.original.chefId))}>{props.cell.row.original.chefId}</p>
+        return <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setParticularChef(true),setChefId(props.cell.row.original.memId))}>{props.cell.row.original.memId}</p>
       }
     },
     {
-      Header: "Joining Date",
-      accessor: "joiningDate",
+      Header: "Member Name",
+      accessor: "memberName",
     },
     {
-      Header: "Chef Name",
-      accessor: "chefName",
+      Header: "Email",
+      accessor: "email",
     },
     {
-      Header: "Location",
-      accessor: "location",
-    },
-    {
-      Header: "Salary",
-      accessor: "salary",
-    },
-    {
-      Header: "Total Bookings",
-      accessor:'totalBookings'
+      Header: "Phone Number",
+      accessor:'phone'
     },
   ]);
 
@@ -143,21 +163,21 @@ function ChefOverView() {
   return (
 <>
     {
-      // particularChef?<ParticularChef chefId={chefId} setParticularChef={setParticularChef} />:
-      particularChef?<OverViewInner chefId={chefId} particularChef={particularChef} setParticularChef={setParticularChef} />:
+      particularChef?<ParticularChef chefId={chefId} setParticularChef={setParticularChef} />:
+      // particularChef?<OverViewInner chefId={chefId} particularChef={particularChef} setParticularChef={setParticularChef} />:
       <div className = 'chefOverviewScreen'>
       <div className="screenTitleContainer">
-          <p className="screenTitle">Chef Overview</p>
+          <p className="screenTitle">My Team</p>
           <div>
-              <button className = 'btnPrimary' style = {{marginRight:'20px'}} onClick = {()=>{setOpenForm(true);}}>
+              {/* <button className = 'btnPrimary' style = {{marginRight:'20px'}} onClick = {()=>{setOpenForm(true);}}>
                   Add New Chef
               </button>
               <button className = 'btnPrimary'>
                   Chef Attendance
-              </button>
+              </button> */}
           </div>
       </div>
-    <div><Table search = {true} columns={columns} data={tableData} tClass="leadTable" /></div>
+    <div><Table search = {true} columns={columns} data={tableData} tClass="leadTable myteam" /></div>
     
       {openForm && 
       <Modal

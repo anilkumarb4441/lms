@@ -7,11 +7,12 @@ import { Chart, registerables, ArcElement } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { Line } from "react-chartjs-2";
 import { Doughnut } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 Chart.register(...registerables);
 Chart.register(ArcElement);
 
 
-function DoughnutComp({type,digit,subtext,donughtfor,issue}){
+function DoughnutComp({type,digit,subtext,donughtfor,issue,pieData}){
     // console.log(type,digit,subtext,"555555555");
     return(
             donughtfor==="clientprogress"?
@@ -37,6 +38,10 @@ function DoughnutComp({type,digit,subtext,donughtfor,issue}){
                 </div>
             </div>
             :
+            donughtfor==="Pie"?
+            <>
+                          <Pie   data = {pieData}/>
+            </>:
             <div className='doughParent'>
                 <Doughnut
                     data={{

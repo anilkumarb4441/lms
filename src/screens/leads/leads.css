@@ -65,6 +65,10 @@
     width: 2000px;
 }
 
+.Table.leadTable.myteam{
+    width: 100%;
+}
+
 /* .Table.leadTable.actionsTable td:last-child{
     background-color: #63626A;
 }

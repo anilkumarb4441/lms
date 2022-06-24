@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import {Link} from 'react-router-dom'
+// import { Chart, registerables, ArcElement } from "chart.js";
+// import { Bar } from "react-chartjs-2";
+// import { Line } from "react-chartjs-2";
+// import { Doughnut } from "react-chartjs-2";
+// import { Pie } from "react-chartjs-2";
 
 //css
 import "./particularChefOverview.css";
@@ -16,11 +21,98 @@ import {IoIosArrowBack} from "react-icons/io";
 //components
 import DoughnutComp from "../../components/doughnut/doughnut"
 import Input from "../../components/Input/index"
+import Table from "../../components/Table";
 
+// Chart.register(...registerables);
+// Chart.register(ArcElement);
 
 function ParticularChef({chefId,setParticularChef}) {
 
-  // const[nextScreen,setNextScreen] = useState(false);
+  const[pieData,setpieData] = useState({
+    
+    labels: [
+      'Pending',
+      'Closed',
+      'Untouched'
+    ],
+    datasets: [{
+      data: [300, 50, 100],
+      backgroundColor: [
+        'red',
+        'green',
+        'skyblue'
+      ],
+      hoverOffset: 4
+    }]
+  
+})
+
+// Table
+
+const [originalData, setOriginalData] = useState([
+  {
+    memId: "NAN54163",
+    memberName: "Manu",
+    email: "manojkumarobulasetty785@gmail.com",
+    phone: 7729088005,
+  },
+  {
+    memId: "NAN",
+    memberName: "Manu",
+    email: "manojkumarobulasetty785@gmail.com",
+    phone: 7729088005,
+  },
+  {
+    memId: "NAN",
+    memberName: "Manu",
+    email: "manojkumarobulasetty785@gmail.com",
+    phone: 7729088005,
+  },
+  {
+    memId: "NAN",
+    memberName: "Manu",
+    email: "manojkumarobulasetty785@gmail.com",
+    phone: 7729088005,
+  },
+  {
+    memId: "NAN",
+    memberName: "Manu",
+    email: "manojkumarobulasetty785@gmail.com",
+    phone: 7729088005,
+  },
+  {
+    memId: "NAN",
+    memberName: "Manu",
+    email: "manojkumarobulasetty785@gmail.com",
+    phone: 7729088005,
+  },
+]);
+const [tableData,setTableData] = useState(originalData);
+const [columns, setColumns] = useState([
+  {
+    Header: "Member Id",
+    accessor: "memId",
+    Cell:(props)=>{
+      return <Link to="#" target="_blank" style={{color:"white"}}>{props.cell.row.original.memId}</Link>
+    }
+  },
+  {
+    Header: "Member Name",
+    accessor: "memberName",
+  },
+  {
+    Header: "Email",
+    accessor: "email",
+  },
+  {
+    Header: "Phone Number",
+    accessor:'phone'
+  },
+  // {
+  //   Header: "Options",
+  //   accessor:'options',
+  // },
+]);
 
   const[checkArray,setcheckArray] = useState({profileVisibility:false,taskNotification:false})
   const tempTicketsArray = [
@@ -226,10 +318,10 @@ function ParticularChef({chefId,setParticularChef}) {
           <IoIosArrowBack className = 'goBack' onClick={(e)=>setParticularChef(false)}/>
           <h1>ChefId-#{chefId}</h1>
         </div>
-        <div className="chefNav">
+        {/* <div className="chefNav">
           <button onClick={(e)=>setProfileScreen(false)} className={profileScreen?null:"active"}>Chef Profile</button>
           <button onClick={(e)=>setProfileScreen(true)} className={profileScreen?"active":null}>Profile Settings</button>
-        </div>
+        </div> */}
         {
           profileScreen?
           <div className="profileParent">
@@ -274,13 +366,16 @@ function ParticularChef({chefId,setParticularChef}) {
               <div className='userTicketsSection'>
                     <div className='ticketHead'>
                       <h4>Tickets Raised</h4>
-                        <Link to="#" className='linkfull'>
+                        {/* <Link to="#" className='linkfull'>
                           <img src={fullScreen} alt="FullIcon" />
                           <p>Full Screen</p>
-                        </Link>
+                        </Link> */}
                     </div>
                     <div className='tickets'>
-                      {
+                      <div>
+                        <DoughnutComp donughtfor="Pie" pieData={pieData} />
+                      </div>
+                      {/* {
                         dataTickets.map((val,key)=>{
                           return(
                             <div className='tickectParent' key={key}>
@@ -294,7 +389,7 @@ function ParticularChef({chefId,setParticularChef}) {
                             </div>
                           )
                         })
-                      }
+                      } */}
                     </div>
               </div>
             </div>
@@ -303,7 +398,9 @@ function ParticularChef({chefId,setParticularChef}) {
             <div className="totalTasksPart">
               <h4>Total Tasks List</h4>
               <div className="tableParent">
-                <table>
+                {/* <Table /> */}
+                <Table search = {true} columns={columns} data={tableData} tClass="leadTable myteam" />
+                {/* <table>
                   <thead>
                     <tr>
                       <th>preview</th>
@@ -330,12 +427,12 @@ function ParticularChef({chefId,setParticularChef}) {
                         )
                       })}
                   </tbody>
-                </table>
+                </table> */}
               </div>
             </div>
 
             {/* Dought Nut */}
-            <div className="ChefReview">
+            {/* <div className="ChefReview">
               <div className="subparent">
                 <h3>Ratings</h3>
                 <DoughnutComp type="Ratings" digit="3.5" subtext="(11)" />
@@ -352,7 +449,7 @@ function ParticularChef({chefId,setParticularChef}) {
                 <h3>Ratings</h3>
                 <DoughnutComp type="Attendance" digit="80" subtext="Presence"/>
               </div>
-            </div>
+            </div> */}
           </div>
         }
 
