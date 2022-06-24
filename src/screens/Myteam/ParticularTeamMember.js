@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom'
 // import { Pie } from "react-chartjs-2";
 
 //css
-import "./particularChefOverview.css";
+import "./ParticularTeamMember.css";
 
 //assets
 import dummy from "../../assets/chefview/dummy.png"
@@ -26,7 +26,7 @@ import Table from "../../components/Table";
 // Chart.register(...registerables);
 // Chart.register(ArcElement);
 
-function ParticularChef({chefId,setParticularChef}) {
+function ParticularTeamMember({chefId,setParticularChef}) {
 
   const[pieData,setpieData] = useState({
     
@@ -458,4 +458,4 @@ const [columns, setColumns] = useState([
   );
 }
 
-export default ParticularChef;
+export default ParticularTeamMember;
