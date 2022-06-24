@@ -28,21 +28,6 @@
     background-color: inherit;
     border-radius: inherit;
     align-self: center;
-<<<<<<< HEAD
-}
-
-.Table.bTable tbody{
-    background-color: #63626A;
-    border-radius: 5px;
-    border-radius: 8px;
-    /* max-height: 64vh; */
-    overflow-y: scroll;
-    /* min-height: 50vh; */
-}
-
-.Table.bTable tbody>tr{
-=======
->>>>>>> 0c38ac92ca1f1b2be431b392b36e9edf5744418b
     padding: 10px 0px;
 }
 
@@ -73,6 +58,10 @@
 
 .Table.leadTable{
     width: 2000px;
+}
+
+.Table.leadTable.myteam{
+    width: 100%;
 }
 
 /* .Table.leadTable.actionsTable td:last-child{

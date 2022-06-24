@@ -177,7 +177,7 @@ function ChefOverView() {
               </button> */}
           </div>
       </div>
-    <div><Table search = {true} columns={columns} data={tableData} tClass="leadTable" /></div>
+    <div><Table search = {true} columns={columns} data={tableData} tClass="leadTable myteam" /></div>
     
       {openForm && 
       <Modal
