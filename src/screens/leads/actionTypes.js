@@ -1,5 +1,5 @@
-export const OPEN_INVOICE = "OPEN_INVOICE"
-export const CLOSE_INVOICE = "CLOSE_INVOICE"
+export const OPEN_INNER = "OPEN_INNER"
+export const CLOSE_INNER = "CLOSE_INNER"
 export const SET_STATUS = 'SET_STATUS'
 export const HANDLE_MAIN_TAB = "HANDLE_MAIN_TAB"
 export const HANDLE_SUB_TAB = "HANDLE_SUB_TAB"

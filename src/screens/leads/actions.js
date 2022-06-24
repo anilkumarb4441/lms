@@ -1,18 +1,18 @@
 import * as actionTypes from "./actionTypes"
 
 //action to open leadInner
-export const openBooking =(rowObj)=>{
+export const openInner =(rowObj)=>{
     return {
-        type :actionTypes.OPEN_INVOICE,
+        type :actionTypes.OPEN_INNER,
         status:rowObj.status,
         title:`Booking Id ${rowObj.leadId}`
     }
 }
 
 // action to close leadInner
-export const closeBooking =()=>{
+export const closeInner =()=>{
     return {
-        type :actionTypes.CLOSE_INVOICE,
+        type :actionTypes.CLOSE_INNER,
         status:'',
         title:'Booking'
     }
