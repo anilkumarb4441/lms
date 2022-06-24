@@ -1,10 +1,10 @@
 import * as actionTypes from "./actionTypes";
 
 const initialState = {
-  openInvoice: false,
+  openInner: false,
   openModal:false,
-  mainLeadTab:'pendingLeads',
-  subLeadTab:'',
+  mainLeadTab:'openLeads',
+  subLeadTab:'todayLeads',
   status: "hotLead",
   title: "Leads",
 };
@@ -21,14 +21,14 @@ const reducer = (state = initialState, action) => {
           subLeadTab:action.subLeadTab
         }
       
-    case actionTypes.OPEN_INVOICE:
+    case actionTypes.OPEN_INNER:
       return {
         ...state,
-        openInvoice: true,
+        openInner: true,
         status: action.status,
         title: action.title,
       };
-    case actionTypes.CLOSE_INVOICE:
+    case actionTypes.CLOSE_INNER:
       return initialState;
     case actionTypes.SET_STATUS:
       return { ...state, status: action.status };

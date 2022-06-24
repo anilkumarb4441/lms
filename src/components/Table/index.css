@@ -17,7 +17,7 @@
 
  .searchBar{ 
     display: flex;
-    background-color: var(--secondary);
+    background-color: #e5e4e9;
     border-radius: 5px;
     margin-right: 10px;
     align-self: center;
@@ -39,8 +39,8 @@
     padding: 0;
     outline:none;
     border-radius: 5px;
-    background-color: var(--secondary);
-    color:var(--primary);
+    background-color: #c5c4d1;
+    color: #000000;
   }
 
   

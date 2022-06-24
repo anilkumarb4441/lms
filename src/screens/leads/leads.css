@@ -1,3 +1,8 @@
+.leadTabs{
+    margin: 20px 0px;
+}
+
+
 .customInput.leadTable{
     background-color: #3D3C44;
     border: none;
@@ -67,6 +72,11 @@
     background-color: var(--black);
 } */
 
+.leads-filter-header{
+   display:flex;
+   justify-content: space-between;
+   align-items: center;
+}
 
 .bookingInner{
    background-color: #3D3C44;

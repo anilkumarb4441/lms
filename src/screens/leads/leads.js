@@ -22,9 +22,14 @@ function Leads() {
   const reducer = useSelector((state) => state.leads);
   // const [openModal, setOpenModal] = useState(false);
   const [mainTabArr, setMainTabArr] = useState([
-    { name: "Pending Leads", value: "pendingLeads" },
+    { name: "Open Leads", value: "openLeads" },
     { name: "Untouched Leads", value: "untouchedLeads" },
     { name: "Closed Leads", value: "closedLeads" },
+  ]);
+  const [subTabArr, setSubTabArr] = useState([
+    { name: "Today Leads", value: "openLeads" },
+    { name: "Old Leads", value: "oldLeads" },
+    
   ]);
 
   const [statusArr, setStatusArr] = useState([
@@ -201,7 +206,7 @@ function Leads() {
   const [tableData, setTableData] = useState(originalData);
 
   const openInner = (rowObj) => {
-    dispatch(actions.openBooking(rowObj));
+    dispatch(actions.openInner(rowObj));
   };
 
   const [formObj, setFormObj] = useState({
@@ -238,29 +243,22 @@ function Leads() {
     <>
       <p className="screenTitle">{reducer.title}</p>
 
-      {!reducer.openInvoice && (
+     
         <Tabs
           tabArr={mainTabArr}
+          tabsClass = "leadTabs"
           handleTab={(item) => dispatch(actions.handleMainTab(item))}
         />
-      )}
 
-      {
-        <div className="bookingsScreen">
-          <div className="">
+         <Tabs
+          tabArr={subTabArr}
+          tabsClass = "leadTabs"
+          handleTab={(item) => dispatch(actions.handleSubTab(item))}
+        />
+     
+        <div className="leadsScreen">
+          <div className="filter-header">
             <div>
-              {reducer.openInvoice && 
-                <IoIosArrowBack
-                  className="goBack"
-                  onClick={() => {
-                    dispatch(actions.closeBooking());
-                  }}
-                />
-              }
-            </div>
-
-            <div>
-              {!reducer.openInvoice && (
                 <Input
                   value={reducer.status}
                   element="select"
@@ -270,16 +268,11 @@ function Leads() {
                   }}
                   selectHeading={"Status"}
                   selectArr={statusArr}
-                />
-              )}
-              {reducer.openInvoice && (
-                <button className="btnPrimary">
-                  {camelToSentence(reducer.status)}
-                </button>
-              )}
+                />           
             </div>
+          
           </div>
-          {!reducer.openInvoice && (
+         
             <div>
               <Table
                 search={true}
@@ -288,8 +281,14 @@ function Leads() {
                 tClass="leadTable actionsTable"
               />
             </div>
-          )}
-          {reducer.openInvoice && (
+        
+          {reducer.openInner && (<>
+            <IoIosArrowBack
+            className="goBack"
+            onClick={() => {
+              dispatch(actions.closeInner());
+            }}
+          />
             <div className="bookingInner">
               <div className="bookingInvoiceContainer">
                 <div className="clientProfileContainer">
@@ -376,9 +375,9 @@ function Leads() {
                 </div>
               </div>
             </div>
-          )}
+          </>)}
         </div>
-      }
+      
     </>
   );
 }
