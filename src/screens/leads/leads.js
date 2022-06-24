@@ -247,21 +247,16 @@ function Leads() {
 
       {
         <div className="bookingsScreen">
-          <div className="screenTitleContainer">
+          <div className="">
             <div>
-              {reducer.openInvoice ? (
+              {reducer.openInvoice && 
                 <IoIosArrowBack
                   className="goBack"
                   onClick={() => {
                     dispatch(actions.closeBooking());
                   }}
                 />
-              ) : (
-                <div className="btnFlexLead">
-                  <button className="normLead">Create Normal Lead</button>
-                  <button className="normLead">Bulk Upload</button>
-                </div>
-              )}
+              }
             </div>
 
             <div>

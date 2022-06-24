@@ -66,10 +66,7 @@ button{
   padding-bottom: 2%;
 }
 
-.screenTitleContainer>div{
-  display: flex;
-  align-self: center;
-}
+
 
 .screenTitle{
   color: var(--white);
