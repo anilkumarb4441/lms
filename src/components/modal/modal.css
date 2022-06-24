@@ -10,10 +10,11 @@
 }
 
 .modalHeader{
-    padding: 10px 20px;
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     background-color: inherit;
+    align-items: center;
     border-radius: inherit;
 }
 

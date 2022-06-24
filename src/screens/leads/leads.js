@@ -16,35 +16,79 @@ import Table from "../../components/Table";
 import Tabs from "../../components/tabs/tabs.js";
 import { IoIosArrowBack } from "react-icons/io";
 import Dots from "../../components/dots/dots.js";
+import AddEditLeadForm from "../../components/addEditLeadForm/addEditLeadForm.js";
 
 function Leads() {
-  const dispatch = useDispatch();
   const reducer = useSelector((state) => state.leads);
-  // const [openModal, setOpenModal] = useState(false);
-  const [mainTabArr, setMainTabArr] = useState([
+  const dispatch = useDispatch();
+
+  const mainTabArr = [
     { name: "Open Leads", value: "openLeads" },
     { name: "Untouched Leads", value: "untouchedLeads" },
     { name: "Closed Leads", value: "closedLeads" },
-  ]);
-  const [subTabArr, setSubTabArr] = useState([
+  ];
+  const subTabArr = [
     { name: "Today Leads", value: "openLeads" },
     { name: "Old Leads", value: "oldLeads" },
-    
-  ]);
+  ];
 
-  const [statusArr, setStatusArr] = useState([
+  const statusArr = [
     { name: "All", value: "all" },
     { name: "Cold Lead", value: "coldLead" },
     { name: "Hot Lead", value: "hotLead" },
+  ];
+
+  const [formData, setFormData] = useState([
+    {
+      name: "name",
+      value: "",
+      type: "text",
+      placeholder: "Lead Name*",
+    },
+    {
+      name: "phone",
+      value: "",
+      type: "phone",
+      placeholder: "Mobile No*",
+      pattern: "[6-9]{1}[0-9]{9}",
+    },
+
+    {
+      name: "college",
+      value: "",
+      type: "text",
+      placeholder: "College",
+      required: false,
+    },
+    {
+      name: "branch",
+      value: "",
+      type: "text",
+      placeholder: "Branch Name",
+    },
+    {
+      name: "year_of_pass_out",
+      value: "",
+      type: "number",
+      placeholder: "Year Of Pass Out",
+      required: false,
+    },
+
+    {
+      name: "experience",
+      value: "",
+      type: "number",
+      placeholder: "Experience",
+      required: false,
+    },
+    {
+      name: "Source",
+      value: "",
+      type: "text",
+      placeholder: "Source*",
+    },
   ]);
 
-  const handleAction = (name)=>{
-    switch(name){
-      case 'Edit Lead':
-        actions.editLead()  
-    }
-     
-  }
   const [actionOptions, setActionOptions] = useState([
     {
       name: "Edit Lead",
@@ -55,12 +99,12 @@ function Leads() {
       color: "green",
     },
     {
-      name:"Delete Lead",
-      color:'red'
-    }
+      name: "Delete Lead",
+      color: "red",
+    },
   ]);
 
-  const [columns, setColumns] = useState([
+  const [originalColumns, setOriginalColumns] = useState([
     {
       Header: "Lead Id",
       accessor: "leadId",
@@ -94,19 +138,16 @@ function Leads() {
     },
     {
       Header: "Experience",
-      accessor: (row) =>
-        parseInt(row.year_of_pass_out) < new Date().getFullYear()
-          ? `${row.experience} yrs`
-          : "---",
+      accessor: "experience",
     },
     {
-      Header:'Lead Response',
-      accessor:"leadResponse"
+      Header: "Lead Response",
+      accessor: "leadResponse",
     },
 
     {
-      Header:'Call Count',
-      accessor:"callCount"
+      Header: "Call Count",
+      accessor: "callCount",
     },
 
     {
@@ -123,8 +164,13 @@ function Leads() {
     {
       Header: "Actions",
       accessor: "actions",
-      Cell: () => {
-        return <Dots options={actionOptions} onclick={handleAction} />;
+      Cell: (props) => {
+        return (
+          <Dots
+            options={actionOptions}
+            onclick={(name) => handleAction(name, props.cell.row.original)}
+          />
+        );
       },
     },
   ]);
@@ -137,10 +183,10 @@ function Leads() {
       college: "VVVSS College of Engineering",
       branch: "Computer Science",
       year_of_pass_out: 2019,
-      experience: 4,
+      experience: "2 months",
       status: "hotLead",
-      leadResponse:'Not Answered',
-      callCount:2,
+      leadResponse: "Not Answered",
+      callCount: 2,
     },
     {
       leadId: "#58797",
@@ -149,10 +195,10 @@ function Leads() {
       college: "SS College of Engineering",
       branch: "Computer Science",
       year_of_pass_out: 2019,
-      experience: 4,
+      experience: "2 months",
       status: "coldLead",
-      leadResponse:'Not Answered',
-      callCount:2,
+      leadResponse: "Not Answered",
+      callCount: 2,
     },
     {
       leadId: "#58797",
@@ -161,10 +207,10 @@ function Leads() {
       college: "VVSS College of Engineering",
       branch: "Computer Science",
       year_of_pass_out: 2019,
-      experience: 4,
+      experience: "2 months",
       status: "coldLead",
-      leadResponse:'Not Answered',
-      callCount:2,
+      leadResponse: "Not Answered",
+      callCount: 2,
     },
     {
       leadId: "#58797",
@@ -173,10 +219,10 @@ function Leads() {
       college: "VSS College of Engineering",
       branch: "Computer Science",
       year_of_pass_out: 2022,
-      experience: 4,
+      experience: "2 months",
       status: "hotLead",
-      leadResponse:'Not Answered',
-      callCount:2,
+      leadResponse: "Not Answered",
+      callCount: 2,
     },
     {
       leadId: "#58797",
@@ -185,10 +231,10 @@ function Leads() {
       college: "VVVSS College of Engineering",
       branch: "Computer Science",
       year_of_pass_out: 2019,
-      experience: 4,
+      experience: "2 months",
       status: "hotLead",
-      leadResponse:'Not Answered',
-      callCount:2,
+      leadResponse: "Not Answered",
+      callCount: 2,
     },
     {
       leadId: "#58797",
@@ -197,27 +243,28 @@ function Leads() {
       college: "VVVSS College of Engineering",
       branch: "Computer Science",
       year_of_pass_out: 2019,
-      experience: 4,
+      experience: "2 months",
       status: "coldLead",
-      leadResponse:'Not Answered',
-      callCount:2,
+      leadResponse: "Not Answered",
+      callCount: 2,
     },
   ]);
+
+  const [columns, setColumns] = useState(originalColumns);
+
   const [tableData, setTableData] = useState(originalData);
 
+  const handleAction = (name, rowData) => {
+    switch (name) {
+      case "Edit Lead":
+        dispatch(actions.editLead(rowData, formData));
+        return;
+    }
+  };
   const openInner = (rowObj) => {
     dispatch(actions.openInner(rowObj));
   };
 
-  const [formObj, setFormObj] = useState({
-    chefs: [""],
-    clientName: "",
-    address: "",
-    date: "",
-    time: "",
-    people: "",
-    ingredientsList: "",
-  });
   const menuArr = [
     "Item 1(Starter)",
     "Item 2(Starter)",
@@ -227,7 +274,27 @@ function Leads() {
 
   const submitForm = (e) => {
     e.preventDefault();
-    console.log(formObj);
+  };
+
+  //settig  columns change function
+  useEffect(() => {
+    switch (reducer.mainLeadTab) {
+      case "closedLeads":
+        let newCol = columns.filter((obj) => obj.accessor !== "actions");
+        setColumns(newCol);
+        return;
+      default:
+        setColumns(originalColumns);
+    }
+  }, [reducer.mainLeadTab]);
+
+  //handle Input Change
+  const handleInputChange = (e, i) => {
+    let newArr = [...reducer.formData];
+    let formObj = { ...newArr[i] };
+    formObj.value = e.target.value;
+    newArr.splice(i, 1, formObj);
+    setFormData([...newArr]);
   };
 
   // status change function
@@ -242,23 +309,23 @@ function Leads() {
   return (
     <>
       <p className="screenTitle">{reducer.title}</p>
+      <div className="leadsScreen">
+        {/* MAIN LEAD PAGE */}
+        {!reducer.openInner && (
+          <div>
+            <Tabs
+              tabArr={mainTabArr}
+              tabsClass="leadTabs"
+              handleTab={(item) => dispatch(actions.handleMainTab(item))}
+            />
 
-     
-        <Tabs
-          tabArr={mainTabArr}
-          tabsClass = "leadTabs"
-          handleTab={(item) => dispatch(actions.handleMainTab(item))}
-        />
-
-         <Tabs
-          tabArr={subTabArr}
-          tabsClass = "leadTabs"
-          handleTab={(item) => dispatch(actions.handleSubTab(item))}
-        />
-     
-        <div className="leadsScreen">
-          <div className="filter-header">
-            <div>
+            <Tabs
+              tabArr={subTabArr}
+              tabsClass="leadTabs"
+              handleTab={(item) => dispatch(actions.handleSubTab(item))}
+            />
+            <div className="lead-filter-header">
+              <div>
                 <Input
                   value={reducer.status}
                   element="select"
@@ -268,28 +335,57 @@ function Leads() {
                   }}
                   selectHeading={"Status"}
                   selectArr={statusArr}
-                />           
+                />
+              </div>
+              {reducer.mainLeadTab === "untouchedLeads" && (
+                <div>
+                  <button
+                    className="btnPrimary"
+                    onClick={() => {
+                      console.log(formData);
+                      dispatch(actions.addLead(formData));
+                    }}
+                  >
+                    Add Lead
+                  </button>
+                  <button className="btnPrimary">Bulk Upload</button>
+                </div>
+              )}
             </div>
-          
-          </div>
-         
+
             <div>
               <Table
                 search={true}
-                columns={columns}
+                columns={[...columns]}
                 data={tableData}
                 tClass="leadTable actionsTable"
               />
             </div>
-        
-          {reducer.openInner && (<>
+
+            {reducer.openForm && (
+              <AddEditLeadForm
+                show={reducer.openForm}
+                handleInputChange={(e, i) =>
+                  dispatch(actions.changeInput(e, i, [...reducer.formData]))
+                }
+                formData={[...reducer.formData]}
+                handleDisplay={(e) => dispatch(actions.closeForm())}
+                heading={reducer.formHeading}
+              />
+            )}
+          </div>
+        )}
+
+        {/* LEAD INNER PAGE */}
+        {reducer.openInner && (
+          <div className="leadsInner">
             <IoIosArrowBack
-            className="goBack"
-            onClick={() => {
-              dispatch(actions.closeInner());
-            }}
-          />
-            <div className="bookingInner">
+              className="goBack"
+              onClick={() => {
+                dispatch(actions.closeInner());
+              }}
+            />
+            <div className="leadsInnerWrapper">
               <div className="bookingInvoiceContainer">
                 <div className="clientProfileContainer">
                   <div className="clientProfile">
@@ -375,9 +471,9 @@ function Leads() {
                 </div>
               </div>
             </div>
-          </>)}
-        </div>
-      
+          </div>
+        )}
+      </div>
     </>
   );
 }

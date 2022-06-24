@@ -26,7 +26,7 @@ const IndeterminateCheckbox = React.forwardRef(
 function Table(options) {
     const columns = useMemo(() => options.columns, [options.columns]);
     const data = useMemo(() => options.data, [options.data]);
-    const [cellWidth,setCellWidth] = useState(100/options.columns.length)
+    const [cellWidth,setCellWidth] = useState('')
     const tableInstance = useTable({ columns, data },useRowSelect, hooks => {
         if(!options.selectRows){
           return
@@ -121,6 +121,10 @@ function Table(options) {
         })
         options.handleDelete(newArr);
       }
+
+      useEffect(()=>{
+        setCellWidth(100/options.columns.length)
+      },[options.columns])
 
     return (
         <>
