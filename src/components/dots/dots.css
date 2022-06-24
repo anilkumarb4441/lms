@@ -9,7 +9,9 @@
     background-color: white;
     padding: 2% 1% 2% 1%;
     top: 125%;
-    right: 45%;
+    right: 0%;
+    transform: translate(-44%, 0px);
+    z-index: 2;
 }
 
 .absOptions p{
@@ -28,4 +30,5 @@
 .dotsParent img{
     width: 12%;
     cursor: pointer;
+    height: 20px;
 }

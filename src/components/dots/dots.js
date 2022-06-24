@@ -1,41 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import "./dots.css";
 
 
 // Assets
-import dots from "../../assets/chefview/dots.svg"
+import dots from "../../assets/icons/dots.svg"
 
 
-function Dots({chefObj,setFormData,formData,setParticularChef,chefId,setChefId,setOpenForm}){
-
-    const[dispOptions, setdispOptions] = useState(false)
-
-    function deleteChef(x){
-        console.log(x);
+function Dots({options,onclick}){
+    const[display, setDisplay] = useState(false);
+    const dotRef = useRef()
+    const optionRef = useRef()
+    const dotClick = (event)=>{
+       if(dotRef?.current?.contains(event.target)||optionRef?.current?.contains(event.target)) return
+       setDisplay(false)
     }
-    function handleEdit(){
-        setOpenForm(true);
-        console.log(chefObj,"kkkkkkkkkk");
-        let newChefObj = {...chefObj}
-        const keys = Object.keys(chefObj)
-        const newArr = [...formData];
-        newArr.forEach(obj=>{
-              let key = keys.find(ke=>ke===obj.name)
-                obj.value = newChefObj[key]
-        })
-
-        setFormData(newArr);
-    }
+    useEffect(()=>{
+         document.body.addEventListener('click',dotClick);
+        return ()=>{
+             document.body.removeEventListener('click',dotClick)
+        }
+    },[])
 
     return(
         <div className="dotsParent">
-            <img src={dots} alt="Dots" onClick={(e)=>setdispOptions(!dispOptions)}/>
-            {dispOptions?
-                <div className="absOptions">
-                    <p style = {{color:"#0D6CA1"}} onClick = {(e)=>(setParticularChef(true),setChefId(chefId))}>View Details</p>
-                    <p style = {{color:"#1CA217"}} onClick = {(e)=>(handleEdit())}>Edit</p>
-                    <p style = {{color:"#EC951F"}} onClick = {(e)=>(setChefId(chefId))}>Assigned Task</p>
-                    <p style = {{color:"#EC1F25"}} onClick = {(e)=>deleteChef(chefId)}>Delete</p>
+            <img ref = {dotRef} src={dots} alt="Dots" onClick={()=>setDisplay(!display)}/>
+            {display?
+                <div ref= {optionRef} className="absOptions">
+                    {options && options.map((item,i)=>{
+                        return <p key = {i} style = {{color:item.color}} onClick = {()=>{onclick(item.name)}}>{item.name}</p> 
+                    })}              
                 </div>
                 :null
             }

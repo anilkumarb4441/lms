@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { camelToSentence } from "../../constants";
+import { camelToSentence } from "../../utils/constants";
 import { calendarIcon } from "../../assets/icons/calendarIcon.svg";
 import "./chefAttendance.css";
 
@@ -412,7 +412,7 @@ const [showGenerateModal,setShowGenerateModal]  = useState(false)
           <Table
             columns={dailyColumns}
             data={dailyData}
-            tClass="bTable attendanceTable"
+            tClass="leadTable attendanceTable"
           />
         )}
       </div>

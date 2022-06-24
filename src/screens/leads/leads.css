@@ -1,4 +1,4 @@
-.customInput.bTable{
+.customInput.leadTable{
     background-color: #3D3C44;
     border: none;
     color: var(--white);
@@ -13,18 +13,22 @@
    align-items: center;
 }
 
-.Table.bTable thead>tr{
+.Table.leadTable thead>tr{
     margin-bottom:20px;
+    border-radius: 5px;
     background-color: var(--primary);
     border-radius: 5px;
-    padding:10px 0px;
+   
 }
-.Table.bTable thead>tr>th{
+.Table.leadTable thead>tr>th{
     font-size: 14px;
     color: var(--black);
     font-weight:500;
     text-align: center;
+    background-color: inherit;
+    border-radius: inherit;
     align-self: center;
+<<<<<<< HEAD
 }
 
 .Table.bTable tbody{
@@ -37,20 +41,47 @@
 }
 
 .Table.bTable tbody>tr{
+=======
+>>>>>>> 0c38ac92ca1f1b2be431b392b36e9edf5744418b
     padding: 10px 0px;
 }
 
-.Table.bTable tbody>tr:hover{
+.Table.leadTable tbody{
+    background-color: #63626A;
+    border-radius: 5px;
+    border-radius: 8px;
+ 
+}
+
+.Table.leadTable tbody>tr{
+    
+}
+
+.Table.leadTable tbody>tr:hover{
     background-color: var(--black);
 }
 
-.Table.bTable tbody>tr>td{
+.Table.leadTable tbody>tr>td{
    font-size: 13px;
+   
    color:var(--white);
    font-weight: 300;
    text-align: center;
    align-self: center;
+   padding: 10px 0px;
 }
+
+.Table.leadTable{
+    width: 2000px;
+}
+
+/* .Table.leadTable.actionsTable td:last-child{
+    background-color: #63626A;
+}
+.Table.leadTable.actionsTable tr:hover>td:last-child{
+    background-color: var(--black);
+} */
+
 
 .bookingInner{
    background-color: #3D3C44;
@@ -223,23 +254,7 @@
 
 /* New Styles */
 
-.tabsSection{
-    display: flex;
-    justify-content: center;
-}
 
-.tabsSection button{
-    padding: 1% 2%;
-    border-radius: 5px;
-    border: none;
-    background-color: transparent;
-    color: white;
-}
-
-.tabsSection button.active{
-    background-color: var(--primary);
-    color: black;
-}
 
 .screenTitleContainer .btnFlexLead{
     display: flex;

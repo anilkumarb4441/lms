@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeReviews, openReviews, setFormModal } from "./actions";
-import { MONTHS } from "../../constants.js";
+import { MONTHS } from "../../utils/constants";
 //css
 import "./services.css";
 

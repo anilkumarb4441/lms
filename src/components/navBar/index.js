@@ -60,7 +60,7 @@ function NavBar() {
           {navData &&
             navData.map((item, i) => {
               return (
-              <div className="paAnchor">
+              <div key = {i} className="paAnchor">
                 <p className={location.pathname===item.path?"active":""}></p>
                 <Link to={item.path} key={item.name} className={location.pathname===item.path?"active":""}>
                   <img alt="navIcon" src={location.pathname===item.path?item.Colorimg:item.img}/>

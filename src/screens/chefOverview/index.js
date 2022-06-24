@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "../../components/modal/modal";
 import Input from "../../components/Input"
 import Table from "../../components/Table";
-import {camelToSentence} from "../../constants"
+import {camelToSentence} from "../../utils/constants"
 import "./index.css";
 
 // Assets
@@ -138,15 +138,6 @@ function ChefOverView() {
       Header: "Phone Number",
       accessor:'phone'
     },
-    {
-      Header: "Options",
-      accessor:'options',
-      Cell:(props)=>{
-        return (
-          <Dots chefObj={props.row.original} setFormData={setFormData} formData={formData} setOpenForm={setOpenForm} setChefId={setChefId} chefId={props.cell.row.original.chefId} setParticularChef={setParticularChef} />
-        )
-      }
-    },
   ]);
 
   const handleInputChange = (e,i)=>{
@@ -186,9 +177,7 @@ function ChefOverView() {
               </button> */}
           </div>
       </div>
-    <div>
-      <Table search = {true} columns={columns} data={tableData} tClass="bTable" />
-      </div>
+    <div><Table search = {true} columns={columns} data={tableData} tClass="leadTable" /></div>
     
       {openForm && 
       <Modal

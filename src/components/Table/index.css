@@ -124,4 +124,10 @@
     padding: 4px;
   }
 
+  /* .actionsTable td:last-child,.actionsTable th:last-child{
+      position: sticky;
+      right:0;
+      background: inherit;
+  } */
+
   
