@@ -34,7 +34,7 @@ function NavBar() {
   const [navData, setNavData] = useState([
     { name: "Dashboard", path: "/", img: Dashboard, Colorimg: ColorDashboard },
     { name: "Leads", path: "/leads", img: Bookings, Colorimg: ColorBookings },
-    { name: "My Team", path: "/chefOverview", img: ChefView, Colorimg: ColorChefView },
+    { name: "My Team", path: "/myteam", img: ChefView, Colorimg: ColorChefView },
     // { name: "Chef Attendance", path: "/chefAttendance", img: ChefView, Colorimg: ColorChefView },
     // { name: "Client Overview", path: "/clientOverview", img: ClientView, Colorimg: ColorClientView },
     // { name: "Chat System", path: "/chatSystem", img: Dashboard, Colorimg: Dashboard },

@@ -14,7 +14,7 @@ import ParticularChef from "./particularChefOverview"
 import Dots from "../../components/dots/dots"
 import OverViewInner from "../clientOverview/overviewInner";
 
-function ChefOverView() {
+function Myteam() {
 
   // ParticularChef State
 
@@ -217,4 +217,4 @@ function ChefOverView() {
 );
 }
 
-export default ChefOverView;
+export default Myteam;
