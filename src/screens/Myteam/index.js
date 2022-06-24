@@ -10,7 +10,7 @@ import chefImg from "../../assets/chefview/chef.png"
 
 
 // Components
-import ParticularChef from "./particularChefOverview"
+import ParticularTeamMember from "./ParticularTeamMember"
 import Dots from "../../components/dots/dots"
 import OverViewInner from "../clientOverview/overviewInner";
 
@@ -163,7 +163,7 @@ function Myteam() {
   return (
 <>
     {
-      particularChef?<ParticularChef chefId={chefId} setParticularChef={setParticularChef} />:
+      particularChef?<ParticularTeamMember chefId={chefId} setParticularChef={setParticularChef} />:
       // particularChef?<OverViewInner chefId={chefId} particularChef={particularChef} setParticularChef={setParticularChef} />:
       <div className = 'chefOverviewScreen'>
       <div className="screenTitleContainer">
