@@ -3,24 +3,25 @@ import "./addEditLeadForm.css";
 import Modal from "../modal/modal";
 import Input from "../Input";
 
-function addEditLeadForm({
+function AddEditLeadForm({
   show,
   handleDisplay,
   submitForm,
   handleInputChange,
   formData,
+  heading
 }) {
   return (
     <Modal
-      header={false}
-      modalClass="addChefModal"
+      title={heading}
+      header={true}
+      modalClass="addLeadModal"
       show={show}
-      bodyClick={true}
-      handleDisplay={(e) => handleDisplay(e)}
+      handleDisplay={handleDisplay}
       body={
         <div className="addLead">
           <div className="addLeadCol1">
-            <p>Add New Chef</p>
+          
             <form
               onSubmit={(e) => {
                 submitForm(e);
@@ -35,7 +36,7 @@ function addEditLeadForm({
                         required={true}
                         inputClass="addLeadInput"
                         key={i}
-                        change={(e) => handleInputChange(e, i)}
+                         change={(e) => handleInputChange(e, i)}
                       />
                     );
                   })}
@@ -51,4 +52,4 @@ function addEditLeadForm({
   );
 }
 
-export default addEditLeadForm;
+export default AddEditLeadForm;

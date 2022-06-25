@@ -6,7 +6,7 @@ function Input({
   name,
   placeholder,
   label,
-  required = true,
+  required,
   inputClass='',
   change,
   pattern,
@@ -18,10 +18,13 @@ function Input({
   id,
   checked,
   multiple,
-  disable
+  disabled
 })
   
 {
+  if(!type&&!element){
+    return
+  }
   return (
     <div
       className={
@@ -49,7 +52,7 @@ function Input({
           id={id}
           checked={checked}
           multiple={multiple}
-          disabled={disable}
+          disabled={disabled}
         />
       )}
       {type === "file" && (

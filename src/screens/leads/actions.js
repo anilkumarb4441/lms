@@ -1,11 +1,14 @@
 import * as actionTypes from "./actionTypes"
 
+
+
+
 //action to open leadInner
 export const openInner =(rowObj)=>{
     return {
         type :actionTypes.OPEN_INNER,
         status:rowObj.status,
-        title:`Booking Id ${rowObj.leadId}`
+        title:`Lead Id ${rowObj.leadId}`
     }
 }
 
@@ -42,7 +45,55 @@ export const handleSubTab = (item)=>{
     }
 }
 
-//action to Edit Lead
-export const editLead = (row)=>{
-    
+//action to edit Lead
+export const editLead = (rowData,formData)=>{
+    let newRowData = {...rowData}
+    let keys = Object.keys(rowData)
+    let newArr = [{name:'leadId',value:rowData.leadId}];
+    formData.forEach(obj=>{
+          let newObj = {...obj}
+          let keyFound = keys.find(key=>key===obj.name)
+          newObj.value = newRowData[keyFound]
+          newArr = [...newArr,newObj]
+        })
+    return{
+        type:actionTypes.EDIT_LEAD,
+        formData:newArr
+    }
 }
+
+//action to add Lead
+export const addLead = (formData)=>{
+    return{
+        type:actionTypes.ADD_LEAD, 
+        formData:formData
+   }
+}
+
+//action to open Form
+export const openForm = ()=>{
+    return{
+        type:actionTypes.OPEN_FORM,
+        openForm:true
+    }
+}
+
+//action to close Form
+export const closeForm = ()=>{
+    return{
+        type:actionTypes.CLOSE_FORM,
+        openForm:false
+    }
+}
+
+ //handle Input Change
+ export const changeInput = (e,i,formData)=>{
+    let newArr = [...formData];
+    let formObj = { ...newArr[i] };
+    formObj.value = e.target.value;
+    newArr.splice(i, 1, formObj);
+    return {
+        type:actionTypes.CHANGE_INPUT,
+        formData:newArr
+    }
+  }
