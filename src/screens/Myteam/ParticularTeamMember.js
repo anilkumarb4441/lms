@@ -14,13 +14,27 @@ import {IoIosArrowBack} from "react-icons/io";
 //components
 import DoughnutComp from "../../components/doughnut/doughnut"
 import Table from "../../components/Table";
+import Tabs from "../../components/tabs/tabs.js";
 
 function ParticularTeamMember({chefId,setParticularChef}) {
 
-// State for Nested Tabs
+// Tabs
 
+const mainTabArr = [
+  { name: "Team", value: "team" },
+  { name: "Analytics", value: "analytics" },
+  { name: "Leads", value: "leads" },
+];
+
+// State for Sub Tabs 
+
+const[subtabs, setsubtabs] = useState("team")
+
+
+// State for Nested Tabs
 const[tabcount, settabcount] = useState(0);
 const[tabarray, settabarray] = useState([])
+
 
   const[pieData,setpieData] = useState({
     
@@ -124,9 +138,6 @@ const [columns, setColumns] = useState([
 
   return (
       <div className="mainParticular">
-        {
-          console.log(tabarray,"lllll5l")
-        }
         <div className="flexalign">
           <IoIosArrowBack className = 'goBack' onClick={(e)=>setParticularChef(false)}/>
           <h1>Member Id:
@@ -177,16 +188,35 @@ const [columns, setColumns] = useState([
               </div>
             </div>
 
+            <div className="detailedSection">
             {/* Total Tasks */}
-            <div className="totalTasksPart">
-              <h4>Team Members</h4>
-              <div className="tableParent">
-                {/* <Table /> */}
+            <Tabs
+              tabArr={mainTabArr}
+              tabsClass="leadTabs"
+              handleTab={(e)=>setsubtabs(e.value)}
+            />
+            {
+              subtabs==="team"?
+              <div className="totalTasksPart">
+                <h4>Team Members</h4>
+                <div className="tableParent">
+                  {/* <Table /> */}
+                  <Table search = {true} columns={columns} data={tableData} tClass="myteam" />
+                </div>
+              </div>:
+              subtabs==="analytics"?
+              <div className="totalTasksPart">
+                <h4>Analytics</h4>
+
+              </div>:
+              subtabs==="leads"?
+              <div className="totalTasksPart">
+                <h4>Leads</h4>
                 <Table search = {true} columns={columns} data={tableData} tClass="myteam" />
-              </div>
+              </div>:null
+            }
             </div>
           </div>
-
       </div>
   );
 }

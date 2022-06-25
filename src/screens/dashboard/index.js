@@ -223,28 +223,28 @@ function DashBoard() {
                  <img src = {card1} alt = 'cardImg'/>
                  <div>
                      <p>89</p>
-                     <p>Total Chefs</p>
+                     <p>Total Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  <img src = {card2} alt = 'cardImg'/>
                  <div>
                      <p>206</p>
-                     <p>Total Clients</p>
+                     <p>Total Hot Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  <img src = {card3} alt = 'cardImg'/>
                  <div>
                      <p>206</p>
-                     <p>Total Bookings</p>
+                     <p>Total Untouched Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  <img src = {card3} alt = 'cardImg'/>
                  <div>
                      <p>26</p>
-                     <p>Pending Bookings</p>
+                     <p>Closed</p>
                  </div>
                </div>
             </div>
@@ -267,7 +267,7 @@ function DashBoard() {
                   <div>
                     <Doughnut
                       data={{
-                        labels:["Food Satisfaction"],
+                        labels:["Self"],
                         datasets:[
                           {
                             data:[75],
@@ -282,12 +282,12 @@ function DashBoard() {
                       
                     </Doughnut>
                     <h2 className='abstexd'>83%</h2>
-                    <h2 className='pieName'>Food Satisfaction</h2>
+                    <h2 className='pieName'>Self Converted Leads</h2>
                   </div>
                   <div>
                     <Doughnut
                       data={{
-                        labels:["Chef Review"],
+                        labels:["Team"],
                         datasets:[
                           {
                             data:[75],
@@ -302,19 +302,19 @@ function DashBoard() {
                       
                     </Doughnut>
                     <h2 className='abstexd'>91%</h2>
-                    <h2 className='pieName'>Food Satisfaction</h2>
+                    <h2 className='pieName'>Team Converted Leads</h2>
                   </div>
                 </div>
               </div>
               <div className='userTicketsSection'>
                 <div className='ticketHead'>
-                  <h4>User Tickets</h4>
+                  <h4>Data </h4>
                   <div className='checkParentBox'>
                     <div className='checkBox'>
                       <label>
                         <div className='flexedtoggle'>
-                          <p className={ticketDisplay==="Client"?"active":null}>Client</p>
-                          <p className={ticketDisplay==="Client"?null:"active"}>Chef</p>
+                          <p className={ticketDisplay==="Client"?"active":null}>Hot</p>
+                          <p className={ticketDisplay==="Client"?null:"active"}>Cold</p>
                         </div>
                         <input checked={ticketDisplay==="Client"?false:true} type="checkbox" className='visbilityNone' onChange={(e)=>ticketsDisplay(e)} />
                       </label>
@@ -345,7 +345,7 @@ function DashBoard() {
               </div>
             </div>
             <div className='recentConatiner'>
-              <h4>Recent Booking list</h4>
+              <h4>Recent Leads list</h4>
               <table>
                     <thead>
                         <tr>

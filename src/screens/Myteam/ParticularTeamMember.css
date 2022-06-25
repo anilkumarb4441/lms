@@ -227,3 +227,7 @@
     font-size: inherit;
     text-decoration: underline;
 }
+
+.mainParticular .detailedSection{
+    margin: 10% 0% 0% 0%;
+}
