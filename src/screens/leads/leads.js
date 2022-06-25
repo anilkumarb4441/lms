@@ -266,10 +266,10 @@ function Leads() {
   };
 
   const menuArr = [
-    "Item 1(Starter)",
-    "Item 2(Starter)",
-    "Item 3(Main Course)",
-    "Item 4(Main Course)",
+    "product ID # jkahd1t645",
+    "product ID # kjg4uyy265v",
+    "product ID # skjjhdu3vg",
+    "product ID # zgdg6geku8",
   ];
 
   const submitForm = (e) => {
@@ -422,7 +422,7 @@ function Leads() {
                     <p>1700</p>
                   </div>
                   <div>
-                    <p>Menu</p>
+                    <p>Product's</p>
                     <div>
                       {menuArr &&
                         menuArr.map((item, i) => {
@@ -435,11 +435,11 @@ function Leads() {
               <div className="feedBackContainer">
                 <div className="feedBackInner">
                   <div className="feedBackCard">
-                    <p>Client's FeedBack</p>
+                    <p>Product Details</p>
                     <div>
                       <img src={clientProfile} alt="clientProfile" />
                       <div>
-                        <p>Manish Arora</p>
+                        <p>Internship - Machine Learning - Self-Paced</p>
                         <p>
                           Lorem ipsum dolor sit amet, consetetur sadipscing
                           elitr, sed diam nonumy eirmod tempor invidunt ut
@@ -448,15 +448,16 @@ function Leads() {
                           invidunt ut labore et consetetur sadipscing elitr, sed
                           diam nonumy eirmod tempor invidunt ut labore et
                         </p>
+                        <p style={{marginTop:'10px' , borderRadius:'15px' , paddingLeft:'10px' , paddingRight:'10px' , paddingTop:'2px' , paddingBottom:'2px' , fontSize:'14px' , backgroundColor:'red' , display:'inline-block'}} > Pending </p>
                       </div>
                     </div>
                   </div>
                   <div className="feedBackCard">
-                    <p>Chef's FeedBack</p>
+                    <p>Product Details</p>
                     <div>
                       <img src={clientProfile} alt="clientProfile" />
                       <div>
-                        <p>Manish Arora</p>
+                        <p>Internship - Web Development - Mentorled</p>
                         <p>
                           Lorem ipsum dolor sit amet, consetetur sadipscing
                           elitr, sed diam nonumy eirmod tempor invidunt ut
@@ -465,6 +466,8 @@ function Leads() {
                           invidunt ut labore et consetetur sadipscing elitr, sed
                           diam nonumy eirmod tempor invidunt ut labore et
                         </p>
+                        <p style={{marginTop:'10px' , borderRadius:'15px' , paddingLeft:'10px' , paddingRight:'10px' , paddingTop:'2px' , paddingBottom:'2px' , fontSize:'14px' , backgroundColor:'green' , display:'inline-block'}} > Paid </p>
+
                       </div>
                     </div>
                   </div>
