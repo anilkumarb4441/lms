@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {Link, useLocation} from 'react-router-dom'
 
 //css
@@ -17,23 +17,20 @@ import Table from "../../components/Table";
 import Tabs from "../../components/tabs/tabs.js";
 
 function ParticularTeamMember({chefId,setParticularChef}) {
+  const mainref  =  useRef(null)
 
-// Tabs
+  // Tabs
+  const mainTabArr = [
+    { name: "Team", value: "team" },
+    { name: "Analytics", value: "analytics" },
+    { name: "Leads", value: "leads" },
+  ];
 
-const mainTabArr = [
-  { name: "Team", value: "team" },
-  { name: "Analytics", value: "analytics" },
-  { name: "Leads", value: "leads" },
-];
+  // State for Sub Tabs 
 
-// State for Sub Tabs 
-
-const[subtabs, setsubtabs] = useState("team")
-
-
-// State for Nested Tabs
-const[tabcount, settabcount] = useState(0);
-const[tabarray, settabarray] = useState([])
+  const[subtabs, setsubtabs] = useState("team")
+  // State for Nested Tabs
+  const[tabcount, settabcount] = useState(0);
 
 
   const[pieData,setpieData] = useState({
@@ -55,13 +52,27 @@ const[tabarray, settabarray] = useState([])
   
   })
 
-const [memId , setmemId] = useState(chefId)
+// const [parmemId , setparmemId] = useState(chefId)
+const[tabarray , settabarray] = useState([chefId]);
 
 function updatePage(x){
-  console.log(x);
-  tabarray.push(x);
-  // debugger;
-  settabarray(tabarray)
+  settabarray(tabarray => [...tabarray, x])
+  mainref.current.scrollIntoView();
+}
+
+function getPartData(e,key){
+  settabarray(tabarray.slice(0,key+1))
+}
+
+
+useEffect(()=>{
+  getDataOfMem(tabarray[tabarray.length-1]);
+  // console.log(tabarray[tabarray.length-1]);
+},[tabarray])
+
+
+function getDataOfMem(x){
+
 }
 
 
@@ -93,7 +104,7 @@ const [originalData, setOriginalData] = useState([
     phone: 7729088005,
   },
   {
-    memId: "NAN",
+    memId: "NANjhk",
     memberName: "Manu",
     email: "manojkumarobulasetty785@gmail.com",
     phone: 7729088005,
@@ -137,20 +148,18 @@ const [columns, setColumns] = useState([
   const [profileScreen, setProfileScreen] = useState(false);
 
   return (
-      <div className="mainParticular">
+      <div className="mainParticular" ref={mainref}>
         <div className="flexalign">
           <IoIosArrowBack className = 'goBack' onClick={(e)=>setParticularChef(false)}/>
           <h1>Member Id:
-            {/* {
+            {
               tabarray.map((val,key)=>{
                 return(
-                  <>
-                  &nbsp;/&nbsp;
-                  <button className="meIds">{val}</button>
-                  </>
+                  // &nbsp;/&nbsp;
+                  <button onClick={(e)=>getPartData(val,key)} key={key} className="meIds">&nbsp;/&nbsp;<span>{val}</span></button>
                 )
               })
-            } */}
+            }
           </h1>
         </div>
 

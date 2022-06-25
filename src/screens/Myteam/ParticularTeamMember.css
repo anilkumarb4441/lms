@@ -225,6 +225,9 @@
     border: none;
     color: white;
     font-size: inherit;
+}
+
+.flexalign .meIds span{
     text-decoration: underline;
 }
 
