@@ -65,7 +65,9 @@
 }
 
 .navLinkContainer a>p.active{
-    color: #E6AA55;
+    /* color: #E6AA55; */
+    color: #e6aa55;
+    font-weight: 600;
 }
 
 .horizontalNav{
