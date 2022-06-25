@@ -95,7 +95,7 @@ function Leads() {
       color: "orange",
     },
     {
-      name: "Assign to",
+      name: "Assign To",
       color: "green",
     },
     {
@@ -104,7 +104,24 @@ function Leads() {
     },
   ]);
 
-  const [originalColumns, setOriginalColumns] = useState([
+  // Temp
+  const [openactionOptions, setopenactionOptions] = useState([
+    {
+      name: "Edit Lead",
+      color: "orange",
+    },
+    {
+      name: "Add Response",
+      color: "green",
+    },
+    {
+      name: "Delete",
+      color: "red",
+    },
+  ]);
+
+  const [originalColumns, setOriginalColumns] = useState(
+    [
     {
       Header: "Lead Id",
       accessor: "leadId",
@@ -167,6 +184,7 @@ function Leads() {
       Cell: (props) => {
         return (
           <Dots
+          // options={reducer.mainLeadTab==="untouchedLeads"?actionOptions:openactionOptions}
             options={actionOptions}
             onclick={(name) => handleAction(name, props.cell.row.original)}
           />
@@ -174,6 +192,84 @@ function Leads() {
       },
     },
   ]);
+
+
+  // Temp Columns
+
+  var tempCol =    [
+    {
+      Header: "Lead Id",
+      accessor: "leadId",
+      Cell: (props) => {
+        return (
+          <p
+            style={{ textDecoration: "underline", cursor: "pointer" }}
+            onClick={() => openInner(props.cell.row.original)}
+          >
+            {props.cell.row.original.leadId}
+          </p>
+        );
+      },
+    },
+    { Header: "Name", accessor: "name" },
+    {
+      Header: "Phone",
+      accessor: "phone",
+    },
+    {
+      Header: "College",
+      accessor: "college",
+    },
+    {
+      Header: "Branch",
+      accessor: "branch",
+    },
+    {
+      Header: "Year of Pass Out",
+      accessor: "year_of_pass_out",
+    },
+    {
+      Header: "Experience",
+      accessor: "experience",
+    },
+    {
+      Header: "Lead Response",
+      accessor: "leadResponse",
+    },
+
+    {
+      Header: "Call Count",
+      accessor: "callCount",
+    },
+
+    {
+      Header: "Status",
+      accessor: "status",
+      Cell: (props) => {
+        return (
+          <p className={props.cell.row.original.status}>
+            {camelToSentence(props.cell.row.original.status)}
+          </p>
+        );
+      },
+    },
+    {
+      Header: "Actions",
+      accessor: "actions",
+      Cell: (props) => {
+        console.log(openactionOptions)
+        return (
+          <Dots
+            options={openactionOptions}
+            onclick={(name) => handleAction(name, props.cell.row.original)}
+          />
+        );
+      },
+    },
+  ]
+
+  // 
+  const [openColumns, setopenColumns] = useState(tempCol)
 
   const [originalData, setOriginalData] = useState([
     {
@@ -283,6 +379,12 @@ function Leads() {
         let newCol = columns.filter((obj) => obj.accessor !== "actions");
         setColumns(newCol);
         return;
+      case "openLeads":
+        setColumns(openColumns);
+        return;
+      case "untouchedLeads":
+        setColumns(originalColumns);
+        return;
       default:
         setColumns(originalColumns);
     }
@@ -311,6 +413,9 @@ function Leads() {
       <p className="screenTitle">{reducer.title}</p>
       <div className="leadsScreen">
         {/* MAIN LEAD PAGE */}
+        {
+          console.log(reducer.mainLeadTab)
+        }
         {!reducer.openInner && (
           <div>
             <Tabs
