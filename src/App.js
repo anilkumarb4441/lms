@@ -19,13 +19,14 @@ import Settingscreen from './screens/settingscreen/settingscreen';
 function App() {
   const routes = [{path:'/',element:<DashBoard/>},
   {path:'/leads',element:<Leads/>},
-   {path:'/myteam',element:<Myteam/>},
-   {path:'/chefAttendance',element:<ChefAttendance/>},
-  {path:'/services',element:<Services/>},
-  {path:'/feed',element:<UserFeed/>},
-  {path:'/pricing',element:<Pricing/>},
-  {path:'/clientOverview',element:<ClientOverview/>},
-  {path:'/settings',element:<Settingscreen/>},
+  {path:'/myteam',element:<Myteam/>},
+  // {path:"/meminner/:leadidname" ,element:<ChefAttendance/>},
+  // {path:'/chefAttendance',element:<ChefAttendance/>},
+  // {path:'/services',element:<Services/>},
+  // {path:'/feed',element:<UserFeed/>},
+  // {path:'/pricing',element:<Pricing/>},
+  // {path:'/clientOverview',element:<ClientOverview/>},
+  // {path:'/settings',element:<Settingscreen/>},
 ]
 
   const Wrapper = ()=>{
