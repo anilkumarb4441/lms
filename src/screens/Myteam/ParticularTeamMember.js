@@ -156,7 +156,7 @@ const [columns, setColumns] = useState([
               tabarray.map((val,key)=>{
                 return(
                   // &nbsp;/&nbsp;
-                  <button onClick={(e)=>getPartData(val,key)} key={key} className="meIds">&nbsp;/&nbsp;<span>{val}</span></button>
+                  <button onClick={(e)=>getPartData(val,key)} key={key} className="meIds">&nbsp;/<span>{val}</span></button>
                 )
               })
             }
