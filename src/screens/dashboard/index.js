@@ -278,7 +278,7 @@ function DashBoard() {
                             data:[75],
                             backgroundColor:"red",
                             circumference:300,
-                            cutout:80,
+                            cutout:60,
                             borderColor:"transparent",
                           }
                         ],
@@ -298,7 +298,7 @@ function DashBoard() {
                             data:[75],
                             backgroundColor:"skyblue",
                             circumference:330,
-                            cutout:80,
+                            cutout:60,
                             borderColor:"transparent",
                           }
                         ],
