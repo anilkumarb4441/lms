@@ -43,9 +43,9 @@ function ParticularTeamMember({chefId,setParticularChef}) {
     datasets: [{
       data: [300, 50, 100],
       backgroundColor: [
-        'red',
-        'green',
-        'skyblue'
+        '#311f03',
+        '#5a5348',
+        '#E6AA5580'
       ],
       hoverOffset: 4
     }]
