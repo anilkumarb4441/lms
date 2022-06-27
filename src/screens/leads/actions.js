@@ -70,6 +70,21 @@ export const addLead = (formData)=>{
    }
 }
 
+//action to assign lead
+export const assignLead = (rowObj)=>{
+    return{
+        type:actionTypes.ASSIGN_LEAD,
+        rowObj:rowObj
+    }
+}
+
+//action to close assign modal
+export const closeAssignModal = ()=>{
+    return {
+        type:actionTypes.CLOSE_ASSIGN_MODAL
+    }
+}
+
 //action to open Form
 export const openForm = ()=>{
     return{
@@ -89,9 +104,9 @@ export const closeForm = ()=>{
  //handle Input Change
  export const changeInput = (e,i,formData)=>{
     let newArr = [...formData];
-    let formObj = { ...newArr[i] };
-    formObj.value = e.target.value;
-    newArr.splice(i, 1, formObj);
+    let formInput = { ...newArr[i] };
+    formInput.value = e.target.value;
+    newArr.splice(i, 1, formInput);
     return {
         type:actionTypes.CHANGE_INPUT,
         formData:newArr

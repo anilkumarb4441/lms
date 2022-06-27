@@ -17,6 +17,7 @@ import Tabs from "../../components/tabs/tabs.js";
 import { IoIosArrowBack } from "react-icons/io";
 import Dots from "../../components/dots/dots.js";
 import AddEditLeadForm from "../../components/addEditLeadForm/addEditLeadForm.js";
+import AssignToModal from "../../components/assignToModal/assignToModal.js";
 
 function Leads() {
   const reducer = useSelector((state) => state.leads);
@@ -350,11 +351,15 @@ function Leads() {
 
   const [tableData, setTableData] = useState(originalData);
 
+  // function to handle table row action btns
   const handleAction = (name, rowData) => {
     switch (name) {
       case "Edit Lead":
         dispatch(actions.editLead(rowData, formData));
         return;
+      case "Assign To":
+        dispatch(actions.assignLead(rowData));
+
     }
   };
   const openInner = (rowObj) => {
@@ -390,14 +395,7 @@ function Leads() {
     }
   }, [reducer.mainLeadTab]);
 
-  //handle Input Change
-  const handleInputChange = (e, i) => {
-    let newArr = [...reducer.formData];
-    let formObj = { ...newArr[i] };
-    formObj.value = e.target.value;
-    newArr.splice(i, 1, formObj);
-    setFormData([...newArr]);
-  };
+
 
   // status change function
   useEffect(() => {
@@ -474,10 +472,21 @@ function Leads() {
                   dispatch(actions.changeInput(e, i, [...reducer.formData]))
                 }
                 formData={[...reducer.formData]}
-                handleDisplay={(e) => dispatch(actions.closeForm())}
+                handleDisplay={() => dispatch(actions.closeForm())}
                 heading={reducer.formHeading}
               />
+              
             )}
+            {reducer.openAssignModal &&
+              <AssignToModal
+               rowObj = {{...reducer.rowObj}}
+               callback = {()=>{
+                 console.log('callback')
+               }}
+               show = {reducer.openAssignModal}
+               handleDisplay = {()=>dispatch(actions.closeAssignModal())}
+              />
+              }
           </div>
         )}
 

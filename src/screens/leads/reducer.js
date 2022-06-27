@@ -3,12 +3,14 @@ import * as actionTypes from "./actionTypes";
 const initialState = {
   openInner: false,
   openForm: false,
+  openAssignModal:false,
   mainLeadTab: "openLeads",
   subLeadTab: "todayLeads",
   status: "hotLead",
   title: "Leads",
   formHeading:'',
-  formData:[]
+  formData:[],
+  rowObj:{}
 };
 
 const reducer = (state = initialState, action) => {
@@ -17,6 +19,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         mainLeadTab: action.mainLeadTab,
+        subLeadTab: "todayLeads",
       };
 
     case actionTypes.HANDLE_SUB_TAB:
@@ -51,7 +54,21 @@ const reducer = (state = initialState, action) => {
        openForm:true,
        formData:action.formData
       } 
-      
+    
+    case actionTypes.ASSIGN_LEAD:
+      return {
+        ...state,
+        openAssignModal:true,
+        rowObj:action.rowObj
+
+      }
+
+    case actionTypes.CLOSE_ASSIGN_MODAL:
+      return{
+        ...state,
+        openAssignModal:false,
+        rowObj:{}
+      }    
     case actionTypes.CLOSE_FORM:   
       return{
        ...state,
