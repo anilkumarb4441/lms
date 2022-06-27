@@ -387,6 +387,7 @@ function Leads() {
         return;
       default:
         setColumns(originalColumns);
+        return;
     }
   }, [reducer.mainLeadTab]);
 
