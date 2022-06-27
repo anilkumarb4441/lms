@@ -1,0 +1,39 @@
+.addLeadCol1 .parentMainBulk{
+    width: 60%;
+    margin: auto;
+    flex-direction: column;
+    align-items: center !important;
+    height: fit-content !important;
+    padding: 0% 0% 3% 0%;
+}
+
+.parentMainBulk select{
+    background: url(https://cmsbackend.verzeo.com/assets/upload/file-0-1640702224577.svg);
+    background-repeat: no-repeat;
+    background-position: 93%;
+    background-size: 13px 7px;
+    padding: 10px 43px 10px 15px;
+    appearance: none;
+    width: 30%;
+    border-radius: 6px;
+    background-color: aliceblue;
+}
+
+.parentMainBulk select:focus-visible{
+    outline:none
+}
+
+.parentMainBulk .BtnBulk{
+    display: block;
+    margin: 6% auto;
+    /* width: 25%; */
+    padding: 12px 20px;
+    border-radius: 5px;
+    background-color: var(--primary);
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.addLead .saveBtn{
+    margin: 3% auto 2% auto !important;
+}
