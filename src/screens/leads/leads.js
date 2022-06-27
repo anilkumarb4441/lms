@@ -258,7 +258,6 @@ function Leads() {
       Header: "Actions",
       accessor: "actions",
       Cell: (props) => {
-        console.log(openactionOptions)
         return (
           <Dots
             options={openactionOptions}
@@ -412,9 +411,6 @@ function Leads() {
       <p className="screenTitle">{reducer.title}</p>
       <div className="leadsScreen">
         {/* MAIN LEAD PAGE */}
-        {
-          console.log(reducer.mainLeadTab)
-        }
         {!reducer.openInner && (
           <div>
             <Tabs

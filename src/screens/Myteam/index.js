@@ -13,6 +13,7 @@ import chefImg from "../../assets/chefview/chef.png"
 import ParticularTeamMember from "./ParticularTeamMember"
 import Dots from "../../components/dots/dots"
 import OverViewInner from "../clientOverview/overviewInner";
+import BulkUpload from "../../components/bulkUpload/bulkupload"
 
 function Myteam() {
 
@@ -106,6 +107,7 @@ function Myteam() {
     
       </div>
     }
+      <BulkUpload />
 
   </>
 );
