@@ -78,11 +78,17 @@ button{
 button.btnPrimary {
   background-color: #35343C;
   color: var(--primary);
+  cursor:pointer;
   border: solid 1px;
   border-radius: 9px;
   padding: 10px 21px;
   font-size: 14px;
     padding: 10px 40px;
+}
+
+button.btnPrimary:hover{
+  color: #35343C;
+  background-color: var(--primary);
 }
 
 .goBack{
