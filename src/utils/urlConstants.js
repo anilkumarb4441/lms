@@ -1,6 +1,6 @@
 
 //BASE URL
-const BASE_URL = "http://192.168.1.48:2002"
+const BASE_URL = "http://192.168.1.69:2002"
 module.exports = {
   URLS: { 
 
@@ -11,6 +11,10 @@ module.exports = {
     createLead:BASE_URL+"/leads/createLead",
     
     //autoComplete search of emplyess
-    getAutoSearchData:BASE_URL +'/leads/search/employee'
+    getAutoSearchData:BASE_URL +'/leads/search/employee',
+
+    // Lead Bulk Upload
+    leadBulkUpload:BASE_URL +'/leads/upload'
+
   },
 };

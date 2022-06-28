@@ -5,6 +5,7 @@ import Input from "../Input";
 import xlsxParser from 'xlsx-parse-json';
 import exportFromJSON from 'export-from-json';
 import axios from "axios";
+import {URLS} from "../../utils/urlConstants"
 
 // Assets
 import close from "../../assets/Bulkupload/close.svg"
@@ -23,14 +24,9 @@ function BulkUpload({
     const[errorfile, seterrorfile] = useState(false)
 
     function downloadCSV(){
-      var csv = 'employeeid,status,date_of_leaving,leftTheOrganization,reason\n';
+      var csv = 'name,phone,email\n';
       var data = [
-          {employeeid:'VZEOXXX', status:'AWOL', date_of_leaving:'2022-05-11', leftTheOrganization:false,reason:"Reason Here"},
-          {employeeid:'VZEOXXX', status:'SICK', date_of_leaving:'2022-05-14', leftTheOrganization:false,reason:"Reason Here"},
-          {employeeid:'VZEOXXX', status:'AWOL', date_of_leaving:'2022-02-11', leftTheOrganization:false,reason:"Reason Here"},
-          {employeeid:'VZEOXXX', status:'SICK', date_of_leaving:'2022-01-11', leftTheOrganization:true,reason:"Reason Here"},
-          {employeeid:'VZEOXXX', status:'AWOL', date_of_leaving:'2022-03-01', leftTheOrganization:true,reason:"Reason Here"},
-          {employeeid:'VZEOXXX', status:'AWOL', date_of_leaving:'2022-04-08', leftTheOrganization:false,reason:"Reason Here"},
+          {name:"Tanisha",phone:"7894561230",email:"tanisha.g@verzeo.com"},
       ];
       const fileName = 'sheet1'
       const exportType = 'csv'
@@ -43,19 +39,26 @@ function BulkUpload({
         // console.log(data,fosrmref.current);
         // formref.current.value="";
         console.log(bulkData);
-        // axios({
-        //     method:'post',
-        //     url:URLS.getAutoSearchData,
-        //     data:{data:text}
-        // }).then((res)=>{
-        //     if(res.status===200){
-        //         console.log(res)
-        //         let data = res?.data?.directMembers?res.data.directMembers:[]
-        //       setSuggestions(data)
-        //     }
-        // }).catch((err)=>{
-        //   setSuggestions([])
-        // }) 
+        axios({
+            method:'post',
+            url:URLS.leadBulkUpload,
+            data:bulkData
+        }).then((res)=>{
+            if(res.status===201){
+                console.log(res)
+                alert(res.data)
+                setfilename("");
+                formref.current.value="";
+                setbulkData({...bulkData,["leads"]:""})
+                handleDisplay();
+            }
+        }).catch((err)=>{
+          alert("Something went wrong");
+          // setSuggestions([])
+          setfilename("");
+          formref.current.value="";
+          setbulkData({...bulkData,["leads"]:""})
+        }) 
     }
 
     const checkForEmptyValues = (data) => {
@@ -76,7 +79,7 @@ function BulkUpload({
         if (e.target.files[0])
             xlsxParser.onFileSelection(e.target.files[0]).then((data) => {
                 sheetData = data['Sheet1'];
-                setbulkData({...bulkData,["data"]:sheetData})
+                setbulkData({...bulkData,["leads"]:sheetData})
                 if (!checkForEmptyValues(sheetData)) {
                     alert("File contains invalid data")
                     // setErrorMsg('File contains invalid data');
@@ -126,7 +129,7 @@ function BulkUpload({
                             filename!=""?<img src={close} alt="Close SVG" onClick={(e)=>{
                             setfilename("");
                             formref.current.value="";
-                            setbulkData({...bulkData,["data"]:""})
+                            setbulkData({...bulkData,["leads"]:""})
                           }} />:null}
                         </div>
                 {
@@ -140,12 +143,13 @@ function BulkUpload({
                 }
               </div>
               {
-                errorfile===false && bulkData.source!="" && bulkData.data!="" ?
+                errorfile===false && bulkData.source!="" && bulkData.leads!="" ?
                     <button className="saveBtn" type="button" onClick={(e)=>sendBulkData()}>
                         Upload
                     </button>
                     :null
               }
+              <button className="downBtn" onClick={downloadCSV}>Click to download sample file</button>
             </form>
           </div>
         </div>
