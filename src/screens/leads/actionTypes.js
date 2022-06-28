@@ -1,6 +1,7 @@
+export const SET_DEFAULT_STATE = "SET_DEFAULT_STATE"
 export const OPEN_INNER = "OPEN_INNER"
 export const CLOSE_INNER = "CLOSE_INNER"
-export const SET_STATUS = 'SET_STATUS'
+export const SET_LEAD_GEN= 'SET_LEAD_GEN'
 export const HANDLE_MAIN_TAB = "HANDLE_MAIN_TAB"
 export const HANDLE_SUB_TAB = "HANDLE_SUB_TAB"
 export const EDIT_LEAD = "EDIT_LEAD"

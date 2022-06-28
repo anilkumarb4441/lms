@@ -50,7 +50,7 @@ function Input({
           required={required}
           accept={accept}
           id={id}
-          checked={checked}
+          checked={value}
           multiple={multiple}
           disabled={disabled}
         />

@@ -5,9 +5,9 @@ const initialState = {
   openForm: false,
   openAssignModal:false,
   openBulkModal:false,
-  mainLeadTab: "openLeads",
+  mainLeadTab: "pending",
   subLeadTab: "todayLeads",
-  status: "hotLead",
+  leadGen: "hot",
   title: "Leads",
   formHeading:'',
   formData:[],
@@ -30,7 +30,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         openInner: true,
-        status: action.status,
         title: action.title,
       };
 
@@ -96,8 +95,12 @@ const reducer = (state = initialState, action) => {
         formData:action.formData
       }
 
-    case actionTypes.SET_STATUS:
-      return { ...state, status: action.status };
+    case actionTypes.SET_LEAD_GEN:
+      return { ...state, leadGen: action.leadGen };
+    
+    case actionTypes.SET_DEFAULT_STATE:
+        return initialState  
+   
     default:
       return initialState;
   }

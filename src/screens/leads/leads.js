@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./actions.js";
 import { camelToSentence } from "../../utils/constants";
 import axios from "axios"
-
+import {URLS} from "../../utils/urlConstants"
 //css
 import "./leads.css";
 
@@ -26,19 +26,20 @@ function Leads() {
   const dispatch = useDispatch();
 
   const mainTabArr = [
-    { name: "Open Leads", value: "openLeads" },
-    { name: "Untouched Leads", value: "untouchedLeads" },
-    { name: "Closed Leads", value: "closedLeads" },
+    { name: "Open Leads", value: "pending" },
+    { name: "Untouched Leads", value: "untouched" },
+    { name: "Closed Leads", value: "closed" },
   ];
+  
   const subTabArr = [
-    { name: "Today Leads", value: "openLeads" },
+    { name: "Today Leads", value: "todayLeads" },
     { name: "Old Leads", value: "oldLeads" },
   ];
 
-  const statusArr = [
+  const leadGenArr = [
     { name: "All", value: "all" },
-    { name: "Cold Lead", value: "coldLead" },
-    { name: "Hot Lead", value: "hotLead" },
+    { name: "Cold Lead", value: "cold" },
+    { name: "Hot Lead", value: "hot" },
   ];
 
   const [formData, setFormData] = useState([
@@ -46,44 +47,64 @@ function Leads() {
       name: "name",
       value: "",
       type: "text",
-      placeholder: "Lead Name*",
+      label: "Lead Name*",
+      required: true,
     },
     {
       name: "phone",
       value: "",
       type: "phone",
-      placeholder: "Mobile No*",
+      label: "Mobile No*",
       pattern: "[6-9]{1}[0-9]{9}",
+      required: true,
+    },
+
+    {
+      name:'email',
+      value:'',
+      type:'email',
+      label:'Email',
+      required: false
     },
 
     {
       name: "college",
       value: "",
       type: "text",
-      placeholder: "College",
+      label: "College",
       required: false,
     },
     {
       name: "branch",
       value: "",
       type: "text",
-      placeholder: "Branch Name",
+      label: "Branch Name",
+      required: false,
     },
     {
-      name: "year_of_pass_out",
+      name: "yearOfPassOut",
       value: "",
       type: "number",
-      placeholder: "Year Of Pass Out",
+      label: "Year Of Pass Out",
       required: false,
     },
     {
       name: "source",
       value: "",
       type: "text",
-      placeholder: "Source*",
+      label: "Source*",
+      required: true,
+    },
+    {
+      name:'isCampaign',
+      value:true,
+      type:'checkbox',
+      label:'Campaign Generated',
+      required:false
     },
   ]);
 
+  // action options for untouched leads
   const [actionOptions, setActionOptions] = useState([
     {
       name: "Edit Lead",
@@ -99,7 +120,7 @@ function Leads() {
     },
   ]);
 
-  // Temp
+  // action options for pending leads
   const [openactionOptions, setopenactionOptions] = useState([
     {
       name: "Edit Lead",
@@ -115,6 +136,7 @@ function Leads() {
     },
   ]);
 
+  
   const [originalColumns, setOriginalColumns] = useState(
     [
     {
@@ -146,11 +168,7 @@ function Leads() {
     },
     {
       Header: "Year of Pass Out",
-      accessor: "year_of_pass_out",
-    },
-    {
-      Header: "Experience",
-      accessor: "experience",
+      accessor: "yearOfPassOut",
     },
     {
       Header: "Lead Response",
@@ -163,12 +181,12 @@ function Leads() {
     },
 
     {
-      Header: "Status",
-      accessor: "status",
+      Header: "Lead Gen",
+      accessor: "leadGen",
       Cell: (props) => {
         return (
-          <p className={props.cell.row.original.status}>
-            {camelToSentence(props.cell.row.original.status)}
+          <p className={props.cell.row.original.leadGen}>
+            {camelToSentence(props.cell.row.original.leadGen)}
           </p>
         );
       },
@@ -187,158 +205,10 @@ function Leads() {
       },
     },
   ]);
-
-
-  // Temp Columns
-
-  var tempCol =    [
-    {
-      Header: "Lead Id",
-      accessor: "leadId",
-      Cell: (props) => {
-        return (
-          <p
-            style={{ textDecoration: "underline", cursor: "pointer" }}
-            onClick={() => openInner(props.cell.row.original)}
-          >
-            {props.cell.row.original.leadId}
-          </p>
-        );
-      },
-    },
-    { Header: "Name", accessor: "name" },
-    {
-      Header: "Phone",
-      accessor: "phone",
-    },
-    {
-      Header: "College",
-      accessor: "college",
-    },
-    {
-      Header: "Branch",
-      accessor: "branch",
-    },
-    {
-      Header: "Year of Pass Out",
-      accessor: "year_of_pass_out",
-    },
-    {
-      Header: "Lead Response",
-      accessor: "leadResponse",
-    },
-
-    {
-      Header: "Call Count",
-      accessor: "callCount",
-    },
-
-    {
-      Header: "Status",
-      accessor: "status",
-      Cell: (props) => {
-        return (
-          <p className={props.cell.row.original.status}>
-            {camelToSentence(props.cell.row.original.status)}
-          </p>
-        );
-      },
-    },
-    {
-      Header: "Actions",
-      accessor: "actions",
-      Cell: (props) => {
-        return (
-          <Dots
-            options={openactionOptions}
-            onclick={(name) => handleAction(name, props.cell.row.original)}
-          />
-        );
-      },
-    },
-  ]
-
-  // 
-  const [openColumns, setopenColumns] = useState(tempCol)
-
-  const [originalData, setOriginalData] = useState([
-    {
-      leadId: "#58797",
-      name: "Nirmal Rajana",
-      phone: "9999999999",
-      college: "VVVSS College of Engineering",
-      branch: "Computer Science",
-      year_of_pass_out: 2019,
-      experience: "2 months",
-      status: "hotLead",
-      leadResponse: "Not Answered",
-      callCount: 2,
-    },
-    {
-      leadId: "#58797",
-      name: "Manoj Kumar",
-      phone: "9999999999",
-      college: "SS College of Engineering",
-      branch: "Computer Science",
-      year_of_pass_out: 2019,
-      experience: "2 months",
-      status: "coldLead",
-      leadResponse: "Not Answered",
-      callCount: 2,
-    },
-    {
-      leadId: "#58797",
-      name: "Karthik S",
-      phone: "9999999999",
-      college: "VVSS College of Engineering",
-      branch: "Computer Science",
-      year_of_pass_out: 2019,
-      experience: "2 months",
-      status: "coldLead",
-      leadResponse: "Not Answered",
-      callCount: 2,
-    },
-    {
-      leadId: "#58797",
-      name: "Tanisha G",
-      phone: "9999999999",
-      college: "VSS College of Engineering",
-      branch: "Computer Science",
-      year_of_pass_out: 2022,
-      experience: "2 months",
-      status: "hotLead",
-      leadResponse: "Not Answered",
-      callCount: 2,
-    },
-    {
-      leadId: "#58797",
-      name: "Nirmal Rajana",
-      phone: "9999999999",
-      college: "VVVSS College of Engineering",
-      branch: "Computer Science",
-      year_of_pass_out: 2019,
-      experience: "2 months",
-      status: "hotLead",
-      leadResponse: "Not Answered",
-      callCount: 2,
-    },
-    {
-      leadId: "#58797",
-      name: "Nirmal Rajana",
-      phone: "9999999999",
-      college: "VVVSS College of Engineering",
-      branch: "Computer Science",
-      year_of_pass_out: 2019,
-      experience: "2 months",
-      status: "coldLead",
-      leadResponse: "Not Answered",
-      callCount: 2,
-    },
-  ]);
-
-  const [columns, setColumns] = useState(originalColumns);
-
-  const [tableData, setTableData] = useState(originalData);
+  const [originalData, setOriginalData] = useState([]);
+ 
+  const [columns, setColumns] = useState([]);
+  const [tableData, setTableData] = useState([]);
 
   // function to handle table row action btns
   const handleAction = (name, rowData) => {
@@ -362,57 +232,98 @@ function Leads() {
     "product ID # zgdg6geku8",
   ];
 
+   //get leads data based on filter
+   const getLeadsByFilters = ()=>{
+    axios({
+      method:'post',
+      url:URLS.getLeadsBasedOnFilter,
+      data:{
+        mainFilter:reducer.mainLeadTab,
+        subFilter:reducer.subLeadTab,
+        subMostFilter:reducer.leadGen
+      }
+    }).then((res)=>{
+        if(res.status===200){
+          setTableData([])
+        }
+    })
+  }
+
   // submit add edit lead form
   const submitForm = (e) => {
     e.preventDefault();
-    return
-    let leadObject = formData.reduce(
+
+    let leadObject = reducer.formData.reduce(
       (prev, current) => {
         return { ...prev, [current.name]: current.value };
       },
       {}
     );
+    console.log(leadObject)
+    let url = URLS.createLead
     axios({
-      url:'',
-      method:'',
+      url:url,
+      method:'post',
       data:leadObject
     }).then((res)=>{
-         
+         if(res.status===200){
+            let newData = [...tableData]
+            newData[0] = res.data;
+           alert("Lead SuccesFully Created");
+         }
     }).catch((err)=>{
       console.log(err)
+      alert("Something went wrong. Please try later")
     })
   };
 
-  //settig  columns change function
+  //setting  columns change function
   useEffect(() => {
+  
     switch (reducer.mainLeadTab) {
-      case "closedLeads":
-        let newCol = columns.filter((obj) => obj.accessor !== "actions");
-        setColumns(newCol);
+      case "closed": 
+      let newCol1 = originalColumns.filter((obj) => obj.accessor!== "actions");
+        setColumns(newCol1);
         return;
-      case "openLeads":
-        setColumns(openColumns);
+      case "pending":
+        let newCol2 = originalColumns.filter((obj) => obj.accessor!== "actions");
+        let actionCol2 = {
+          Header: "Actions",
+          accessor: "actions",
+          Cell: (props) => {
+            return (
+              <Dots
+                options={openactionOptions}
+                onclick={(name) => handleAction(name, props.cell.row.original)}
+              />
+            );
+          },
+        }
+        newCol2 = [...newCol2,actionCol2]
+        setColumns(newCol2);
         return;
-      case "untouchedLeads":
-        setColumns(originalColumns);
+      case "untouched":
+        let newCol3 = originalColumns.filter((obj)=>obj.accessor!== "leadResponse");
+        setColumns(newCol3);
         return;
       default:
-        setColumns(originalColumns);
+        setColumns([]);
         return;
     }
   }, [reducer.mainLeadTab]);
 
-
-
   // status change function
   useEffect(() => {
-    if (reducer.status === "all") {
-      setTableData(originalData);
-      return;
-    }
-    let newArr = originalData.filter((obj) => obj.status === reducer.status);
-    setTableData(newArr);
-  }, [reducer.status]);
+    getLeadsByFilters()
+  }, [reducer.leadGen,reducer.mainLeadTab,reducer.subLeadTab]);
+
+ 
+
+  // default reducer state on load
+  useEffect(()=>{
+    dispatch(actions.setDefaultState())
+  },[])
+
   return (
     <>
       <p className="screenTitle">{reducer.title}</p>
@@ -434,17 +345,17 @@ function Leads() {
             <div className="lead-filter-header">
               <div>
                 <Input
-                  value={reducer.status}
+                  value={reducer.leadGen}
                   element="select"
                   inputClass="leadTable"
                   change={(e) => {
-                    dispatch(actions.setStatus(e.target.value));
+                    dispatch(actions.setLeadGen(e.target.value));
                   }}
                   selectHeading={"Status"}
-                  selectArr={statusArr}
+                  selectArr={leadGenArr}
                 />
               </div>
-              {reducer.mainLeadTab === "untouchedLeads" && (
+              {reducer.mainLeadTab === "untouched" && (
                 <div>
                   <button
                     className="btnPrimary"
@@ -462,6 +373,7 @@ function Leads() {
             <div>
               <Table
                 search={true}
+                showColumns = {false}
                 columns={[...columns]}
                 data={tableData}
                 tClass="leadTable actionsTable"
@@ -608,3 +520,26 @@ function Leads() {
 }
 
 export default Leads;
+/*
+branch: "branch 1"
+college: "College 11234"
+date: "2022-06-28T18:30:00.000Z"
+email: "hr@smackhire.com"
+isAssigned: false
+isCampaign: "true"
+isCustomer: false
+leadGen: "cold"
+leadId: "96OS8"
+name: "NIRMAL"
+occurrence: 1
+phone: "8374370427"
+status: "untouched"
+yearOfPassOut: "2020"
+_id: "62badb71323fbc8e11aa716a"
+
+
+Leads filter data
+{mainFilter:'untouched'||'completed'||'pending'}
+{subFilter:'todayLeads'||'oldLeads'}
+{subMostFilter:'all'||'hot'||'cold'}
+*/

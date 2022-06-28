@@ -33,7 +33,6 @@ function AddEditLeadForm({
                     return (
                       <Input
                         {...item}
-                        required={true}
                         inputClass="addLeadInput"
                         key={i}
                          change={(e) => handleInputChange(e, i)}

@@ -1,13 +1,14 @@
 import * as actionTypes from "./actionTypes"
 
-
-
+// action to set Default State
+export const setDefaultState  = ()=>{
+   return{type:actionTypes.SET_DEFAULT_STATE}
+}
 
 //action to open leadInner
 export const openInner =(rowObj)=>{
     return {
         type :actionTypes.OPEN_INNER,
-        status:rowObj.status,
         title:`Lead Id ${rowObj.leadId}`
     }
 }
@@ -16,16 +17,14 @@ export const openInner =(rowObj)=>{
 export const closeInner =()=>{
     return {
         type :actionTypes.CLOSE_INNER,
-        status:'',
-        title:'Booking'
     }
 }
 
-// action to set lead status
-export const setStatus = (status)=>{
+// action to set lead gen
+export const setLeadGen = (leadGen)=>{
     return {
-        type:actionTypes.SET_STATUS,
-        status:status
+        type:actionTypes.SET_LEAD_GEN,
+        leadGen:leadGen
     }
 }
 
@@ -119,7 +118,11 @@ export const closeForm = ()=>{
  export const changeInput = (e,i,formData)=>{
     let newArr = [...formData];
     let formInput = { ...newArr[i] };
-    formInput.value = e.target.value;
+    if(e.target.type==="checkbox"){
+        formInput.value = e.target.checked;
+    }else{
+        formInput.value = e.target.value;
+    }
     newArr.splice(i, 1, formInput);
     return {
         type:actionTypes.CHANGE_INPUT,
