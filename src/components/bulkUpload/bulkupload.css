@@ -1,4 +1,4 @@
-.addLeadCol1 .parentMainBulk{
+ .parentMainBulk{
     width: 60%;
     margin: auto;
     flex-direction: column;
@@ -14,7 +14,6 @@
     background-size: 13px 7px;
     padding: 10px 43px 10px 15px;
     appearance: none;
-    width: 30%;
     border-radius: 6px;
     background-color: aliceblue;
 }
