@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./actions.js";
 import { camelToSentence } from "../../utils/constants";
+import axios from "axios"
 
 //css
 import "./leads.css";
@@ -374,6 +375,19 @@ function Leads() {
 
   const submitForm = (e) => {
     e.preventDefault();
+    let leadObject = formData.reduce(
+      (prev, current) => {
+        return { ...prev, [current.name]: current.value };
+      },
+      {}
+    );
+    axios({
+      url:'',
+      method:'',
+      data:''
+    }).then((res)=>{
+      
+    })
   };
 
   //settig  columns change function
@@ -471,6 +485,7 @@ function Leads() {
                 formData={[...reducer.formData]}
                 handleDisplay={() => dispatch(actions.closeForm())}
                 heading={reducer.formHeading}
+                submitForm = {submitForm}
               />
               
             )}

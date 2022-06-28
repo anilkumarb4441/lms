@@ -6,6 +6,10 @@ module.exports = {
 
     //Assign Lead
     assignLead:BASE_URL + "/leads/assign",
+
+    //create single lead
+    createLead:BASE_URL+"/leads/createLead",
+    
     //autoComplete search of emplyess
     getAutoSearchData:BASE_URL +'/leads/search/employee'
   },
