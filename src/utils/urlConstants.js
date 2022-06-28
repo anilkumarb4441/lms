@@ -13,6 +13,10 @@ module.exports = {
     getAutoSearchData:BASE_URL +'/leads/search/employee',
 
     // get leads based on filter
-    getLeadsBasedOnFilter:BASE_URL+ "/leads/filterLeads"
+    getLeadsBasedOnFilter:BASE_URL+ "/leads/filterLeads",
+   
+    // Lead Bulk Upload
+    leadBulkUpload:BASE_URL +'/leads/upload'
+
   },
 };

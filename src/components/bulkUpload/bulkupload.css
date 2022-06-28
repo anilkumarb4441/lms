@@ -36,3 +36,26 @@
 .addLead .saveBtn{
     margin: 3% auto 2% auto !important;
 }
+
+.parentMainBulk .btnCrosParent{
+    display: flex;
+    align-items: center;
+}
+
+.btnCrosParent img{
+    width: 20px;
+    height: 20px;
+    background-color: var(--primary);
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 0% 0% 0% 12px;
+}
+
+.addLeadCol1 form .downBtn{
+    background-color: transparent;
+    border: none;
+    text-decoration: underline;
+    margin-bottom: 3%;
+    color: var(--primary);
+}
