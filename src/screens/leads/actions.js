@@ -85,6 +85,20 @@ export const closeAssignModal = ()=>{
     }
 }
 
+//action to open bulk Modal
+export const openBulkModal = ()=>{
+    return {
+        type:actionTypes.OPEN_BULK_MODAL
+    }
+}
+
+//action to close bulk Modal
+export const closeBulkModal = ()=>{
+    return {
+        type:actionTypes.CLOSE_BULK_MODAL
+    }
+}
+
 //action to open Form
 export const openForm = ()=>{
     return{

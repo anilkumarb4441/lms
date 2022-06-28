@@ -19,6 +19,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import Dots from "../../components/dots/dots.js";
 import AddEditLeadForm from "../../components/addEditLeadForm/addEditLeadForm.js";
 import AssignToModal from "../../components/assignToModal/assignToModal.js";
+import BulkUpload from "../../components/bulkUpload/bulkupload.js";
 
 function Leads() {
   const reducer = useSelector((state) => state.leads);
@@ -75,16 +76,8 @@ function Leads() {
       placeholder: "Year Of Pass Out",
       required: false,
     },
-
     {
-      name: "experience",
-      value: "",
-      type: "number",
-      placeholder: "Experience",
-      required: false,
-    },
-    {
-      name: "Source",
+      name: "source",
       value: "",
       type: "text",
       placeholder: "Source*",
@@ -231,10 +224,6 @@ function Leads() {
       accessor: "year_of_pass_out",
     },
     {
-      Header: "Experience",
-      accessor: "experience",
-    },
-    {
       Header: "Lead Response",
       accessor: "leadResponse",
     },
@@ -373,8 +362,10 @@ function Leads() {
     "product ID # zgdg6geku8",
   ];
 
+  // submit add edit lead form
   const submitForm = (e) => {
     e.preventDefault();
+    return
     let leadObject = formData.reduce(
       (prev, current) => {
         return { ...prev, [current.name]: current.value };
@@ -384,7 +375,7 @@ function Leads() {
     axios({
       url:'',
       method:'',
-      data:''
+      data:leadObject
     }).then((res)=>{
          
     }).catch((err)=>{
@@ -458,13 +449,12 @@ function Leads() {
                   <button
                     className="btnPrimary"
                     onClick={() => {
-                      console.log(formData);
                       dispatch(actions.addLead(formData));
                     }}
                   >
                     Add Lead
                   </button>
-                  <button className="btnPrimary">Bulk Upload</button>
+                  <button  onClick = {()=>dispatch(actions.openBulkModal())} className="btnPrimary">Bulk Upload</button>
                 </div>
               )}
             </div>
@@ -488,9 +478,17 @@ function Leads() {
                 handleDisplay={() => dispatch(actions.closeForm())}
                 heading={reducer.formHeading}
                 submitForm = {submitForm}
-              />
-              
+              /> 
             )}
+            { 
+               reducer.openBulkModal && (
+                 <BulkUpload
+                 show  ={reducer.openBulkModal}
+                 handleDisplay = {()=>dispatch(actions.closeBulkModal())}
+                
+                 />
+               )
+            }
             {reducer.openAssignModal &&
               <AssignToModal
                rowObj = {{...reducer.rowObj}}

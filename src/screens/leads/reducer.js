@@ -4,6 +4,7 @@ const initialState = {
   openInner: false,
   openForm: false,
   openAssignModal:false,
+  openBulkModal:false,
   mainLeadTab: "openLeads",
   subLeadTab: "todayLeads",
   status: "hotLead",
@@ -54,6 +55,18 @@ const reducer = (state = initialState, action) => {
        openForm:true,
        formData:action.formData
       } 
+    
+    case actionTypes.OPEN_BULK_MODAL:   
+      return{
+       ...state,
+       openBulkModal:true,
+      } 
+      
+    case actionTypes.CLOSE_BULK_MODAL:   
+      return{
+       ...state,
+       openBulkModal:false,
+      }   
     
     case actionTypes.ASSIGN_LEAD:
       return {

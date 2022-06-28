@@ -8,15 +8,12 @@ import exportFromJSON from 'export-from-json';
 function BulkUpload({
   show,
   handleDisplay,
-  submitForm,
-  handleInputChange,
-  heading
 }) {
 
     const formref = useRef();
     let sheetData = useRef(0);
     
-    const[openModal, setopenModal] = useState(true)
+   
     const[bulkData, setbulkData] = useState({source:""})
     const [filename, setfilename] = useState("");
     const[errorfile, seterrorfile] = useState(false)
@@ -63,8 +60,8 @@ function BulkUpload({
       title={"Bulk Upload"}
       header={true}
       modalClass="addLeadModal"
-      show={openModal}
-      handleDisplay={setopenModal}
+      show={show}
+      handleDisplay={handleDisplay}
       body={
         <div className="addLead">
           <div className="addLeadCol1">
