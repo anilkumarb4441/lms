@@ -386,7 +386,9 @@ function Leads() {
       method:'',
       data:''
     }).then((res)=>{
-      
+         
+    }).catch((err)=>{
+      console.log(err)
     })
   };
 
