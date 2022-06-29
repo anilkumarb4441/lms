@@ -22,6 +22,10 @@
     align-items: center;
 }
 
+.customInput.leadsSearch{
+    width:24%;
+    margin:10px 0;
+}
 
 
 /* LEADS INNER PAGE */

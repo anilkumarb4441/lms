@@ -1,21 +1,21 @@
 import React from "react";
 import "./tabs.css";
 
-function Tabs({ tabArr, handleTab, defaultActiveKey = 0, tabsClass = "" }) {
-  const [defaultKey, setDefaultKey] = React.useState(defaultActiveKey);
-  const onclick = (item, i) => {
-    handleTab(item);
-    setDefaultKey(i);
-  };
+function Tabs({ tabArr, handleTab, activeValue='',  tabsClass = "" }) {
+ 
+ 
+  
+  
+  
   return (
     <div className={"tabsSection " + tabsClass}>
       {tabArr &&
         tabArr.map((item, i) => {
           return (
             <button
-              className={i === defaultKey ? "active" : ""}
+              className={item.value === activeValue ? "active" : ""}
               key={i}
-              onClick={() => onclick(item, i)}
+              onClick={() =>handleTab(item)}
             >
               {item.name}
             </button>

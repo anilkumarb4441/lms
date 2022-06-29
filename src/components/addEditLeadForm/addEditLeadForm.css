@@ -37,13 +37,14 @@
  }
  
  .addLead form>div:nth-of-type(1){
-    height: 56vh;
+    max-height: 56vh;
     overflow-y: scroll;
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
     justify-content: space-between;
     padding: 3% 3% 0;
+    gap: 30px 0px;
  }
  
  .addLeadCol1>p{

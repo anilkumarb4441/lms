@@ -7,8 +7,9 @@ const initialState = {
   openBulkModal:false,
   mainLeadTab: "pending",
   subLeadTab: "todayLeads",
-  leadGen: "hot",
+  leadGen: "all",
   title: "Leads",
+  search:'',
   formHeading:'',
   formData:[],
   rowObj:{}
@@ -21,6 +22,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         mainLeadTab: action.mainLeadTab,
         subLeadTab: "todayLeads",
+        leadGen:'all'
       };
 
     case actionTypes.HANDLE_SUB_TAB:
@@ -54,6 +56,14 @@ const reducer = (state = initialState, action) => {
        openForm:true,
        formData:action.formData
       } 
+
+    case  actionTypes.UPDATE_CALL_RESPONSE:
+      return {
+        ...state,
+           formHeading:"Update Call",
+           formData:action.formData,
+           openForm:true
+      }
     
     case actionTypes.OPEN_BULK_MODAL:   
       return{
@@ -98,6 +108,9 @@ const reducer = (state = initialState, action) => {
     case actionTypes.SET_LEAD_GEN:
       return { ...state, leadGen: action.leadGen };
     
+    case actionTypes.HANDLE_SEARCH:
+      return {...state, search:action.search}
+
     case actionTypes.SET_DEFAULT_STATE:
         return initialState  
    

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./actions.js";
 import { camelToSentence } from "../../utils/constants";
-import axios from "axios"
-import {URLS} from "../../utils/urlConstants"
+import axios from "axios";
+import { URLS } from "../../utils/urlConstants";
 //css
 import "./leads.css";
 
@@ -24,13 +24,21 @@ import BulkUpload from "../../components/bulkUpload/bulkupload.js";
 function Leads() {
   const reducer = useSelector((state) => state.leads);
   const dispatch = useDispatch();
-
+  const wrapperRef = useRef(); //Table Wrapper Ref
   const mainTabArr = [
     { name: "Open Leads", value: "pending" },
     { name: "Untouched Leads", value: "untouched" },
-    { name: "Closed Leads", value: "closed" },
+    { name: "Closed Leads", value: "completed" },
   ];
-  
+
+  const callStatusArr = [
+    {name:"Untouched",value:'untouched'},
+    {name:"Interested",value:'interested'},
+    {name:"Not Interested",value:'notInterested'},
+    {name:"Not Answered",value:'notAnswered'},
+    {name:"Switched Off",value:'switchedOff'},
+    {name:"Wrong Number",value:'wrongNumber'},
+  ];
   const subTabArr = [
     { name: "Today Leads", value: "todayLeads" },
     { name: "Old Leads", value: "oldLeads" },
@@ -42,6 +50,7 @@ function Leads() {
     { name: "Hot Lead", value: "hot" },
   ];
 
+  // lead details form Data
   const [formData, setFormData] = useState([
     {
       name: "name",
@@ -60,11 +69,11 @@ function Leads() {
     },
 
     {
-      name:'email',
-      value:'',
-      type:'email',
-      label:'Email',
-      required: false
+      name: "email",
+      value: "",
+      type: "email",
+      label: "Email",
+      required: false,
     },
 
     {
@@ -96,11 +105,32 @@ function Leads() {
       required: true,
     },
     {
-      name:'isCampaign',
-      value:true,
-      type:'checkbox',
-      label:'Campaign Generated',
-      required:false
+      name: "isCampaign",
+      value: true,
+      type: "checkbox",
+      label: "Campaign Generated",
+      required: false,
+    },
+  ]);
+
+  // call form Data
+  const [callFormData, setCallFormData] = useState([
+    {
+      name: "response",
+      value: "",
+      required: true,
+      label: "Call Response",
+      type: "text",
+    },
+
+    {
+      name: "status",
+      value: "",
+      required: true,
+      label:'Call Status',
+      element: "select",
+      selectHeading: " Select Call Status",
+      selectArr: callStatusArr,
     },
   ]);
 
@@ -114,10 +144,6 @@ function Leads() {
       name: "Assign To",
       color: "green",
     },
-    {
-      name: "Delete Lead",
-      color: "red",
-    },
   ]);
 
   // action options for pending leads
@@ -127,18 +153,12 @@ function Leads() {
       color: "orange",
     },
     {
-      name: "Add Response",
+      name: "Update Call Response",
       color: "green",
-    },
-    {
-      name: "Delete",
-      color: "red",
     },
   ]);
 
-  
-  const [originalColumns, setOriginalColumns] = useState(
-    [
+  const [originalColumns, setOriginalColumns] = useState([
     {
       Header: "Lead Id",
       accessor: "leadId",
@@ -171,8 +191,13 @@ function Leads() {
       accessor: "yearOfPassOut",
     },
     {
-      Header: "Lead Response",
-      accessor: "leadResponse",
+      Header: "Call Response",
+      accessor: (row) => row.callLogs?.response,
+    },
+
+    {
+      Header: "Call Status",
+      accessor: (row) => row.callLogs?.status,
     },
 
     {
@@ -197,7 +222,7 @@ function Leads() {
       Cell: (props) => {
         return (
           <Dots
-          // options={reducer.mainLeadTab==="untouchedLeads"?actionOptions:openactionOptions}
+            // options={reducer.mainLeadTab==="untouchedLeads"?actionOptions:openactionOptions}
             options={actionOptions}
             onclick={(name) => handleAction(name, props.cell.row.original)}
           />
@@ -206,7 +231,7 @@ function Leads() {
     },
   ]);
   const [originalData, setOriginalData] = useState([]);
- 
+
   const [columns, setColumns] = useState([]);
   const [tableData, setTableData] = useState([]);
 
@@ -214,11 +239,15 @@ function Leads() {
   const handleAction = (name, rowData) => {
     switch (name) {
       case "Edit Lead":
+        //  if(rowData.assignedTo===rowData.)
         dispatch(actions.editLead(rowData, formData));
         return;
       case "Assign To":
         dispatch(actions.assignLead(rowData));
-
+        return
+      case "Update Call Response":
+        dispatch(actions.updateCallResponse(rowData,callFormData));
+        return
     }
   };
   const openInner = (rowObj) => {
@@ -232,61 +261,106 @@ function Leads() {
     "product ID # zgdg6geku8",
   ];
 
-   //get leads data based on filter
-   const getLeadsByFilters = ()=>{
+  //get leads data based on filter
+  const getLeadsByFilters = () => {
     axios({
-      method:'post',
-      url:URLS.getLeadsBasedOnFilter,
-      data:{
-        mainFilter:reducer.mainLeadTab,
-        subFilter:reducer.subLeadTab,
-        subMostFilter:reducer.leadGen
-      }
-    }).then((res)=>{
-        if(res.status===200){
-          setTableData([])
-        }
+      method: "post",
+      url: URLS.getLeadsBasedOnFilter,
+      data: {
+        mainFilter: reducer.mainLeadTab,
+        subFilter: reducer.subLeadTab,
+        subMostFilter: reducer.leadGen,
+      },
     })
-  }
+      .then((res) => {
+        if (res.status === 200) {
+          setTableData(res.data);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Something went wrong. Please try later");
+      });
+  };
 
-  // submit add edit lead form
+  // submit add edit lead form/ call update form
   const submitForm = (e) => {
     e.preventDefault();
 
-    let leadObject = reducer.formData.reduce(
-      (prev, current) => {
-        return { ...prev, [current.name]: current.value };
-      },
-      {}
-    );
-    console.log(leadObject)
-    let url = URLS.createLead
-    axios({
-      url:url,
-      method:'post',
-      data:leadObject
-    }).then((res)=>{
-         if(res.status===200){
-            let newData = [...tableData]
-            newData[0] = res.data;
-           alert("Lead SuccesFully Created");
-         }
-    }).catch((err)=>{
-      console.log(err)
-      alert("Something went wrong. Please try later")
-    })
+    let leadObject = reducer.formData.reduce((prev, current) => {
+      return { ...prev, [current.name]: current.value };
+    }, {});
+    switch (reducer.formHeading) {
+      case "Add Lead":
+        axios({
+          url: URLS.createLead,
+          method: "post",
+          data: leadObject,
+        })
+          .then((res) => {
+            if (res.status === 200) {
+              let newData = [...tableData];
+              newData[0] = {...res.data};
+              setTableData(newData)
+              alert("Lead SuccesFully Created");
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("Something went wrong. Please try later");
+          });
+        return;
+
+      case "Edit Lead":
+        axios({
+          method:'post',
+          url:URLS.editLead,
+          data:leadObject
+        }).then((res)=>{
+             if(res.status===200){
+               debugger;
+               let index = tableData.findIndex(obj=>obj.leadId===res.data.leadId)
+               let newData = [...tableData]
+                  newData[index] ={...res.data}
+                  setTableData(newData)
+                  alert("Lead SuccesFully Edited")
+                  dispatch(actions.closeForm())
+             }
+        }).catch((err)=>{
+           console.log(err)
+           alert("Something went wrong. Please try later");
+        })
+        return;
+
+      case "Update Call":
+        axios({
+          method: "post",
+          url: URLS.updateCallLog,
+          data: leadObject,
+        })
+          .then((res) => {
+            dispatch(actions.closeForm())
+          })
+          .catch((err) => {
+            console.log(err)
+            alert("Something went wrong. Please try later");
+          });
+    }
   };
 
   //setting  columns change function
   useEffect(() => {
-  
     switch (reducer.mainLeadTab) {
-      case "closed": 
-      let newCol1 = originalColumns.filter((obj) => obj.accessor!== "actions");
+      case "completed":
+        let newCol1 = originalColumns.filter(
+          (obj) => obj.accessor !== "actions"
+        );
         setColumns(newCol1);
         return;
       case "pending":
-        let newCol2 = originalColumns.filter((obj) => obj.accessor!== "actions");
+        let newCol2 = originalColumns.filter(
+          (obj) => obj.accessor !== "actions"
+        );
         let actionCol2 = {
           Header: "Actions",
           accessor: "actions",
@@ -298,12 +372,14 @@ function Leads() {
               />
             );
           },
-        }
-        newCol2 = [...newCol2,actionCol2]
+        };
+        newCol2 = [...newCol2, actionCol2];
         setColumns(newCol2);
         return;
       case "untouched":
-        let newCol3 = originalColumns.filter((obj)=>obj.accessor!== "leadResponse");
+        let newCol3 = originalColumns.filter(
+          (obj) => obj.accessor !== "leadResponse"
+        );
         setColumns(newCol3);
         return;
       default:
@@ -314,15 +390,17 @@ function Leads() {
 
   // status change function
   useEffect(() => {
-    getLeadsByFilters()
-  }, [reducer.leadGen,reducer.mainLeadTab,reducer.subLeadTab]);
+    getLeadsByFilters();
+  }, [reducer.leadGen, reducer.mainLeadTab, reducer.subLeadTab]);
 
- 
+  useEffect(() => {
+    wrapperRef?.current?.scrollTo(0, 0);
+  }, [reducer.mainLeadTab, reducer.subLeadTab]);
 
   // default reducer state on load
-  useEffect(()=>{
-    dispatch(actions.setDefaultState())
-  },[])
+  useEffect(() => {
+    dispatch(actions.setDefaultState());
+  }, []);
 
   return (
     <>
@@ -334,12 +412,14 @@ function Leads() {
             <Tabs
               tabArr={mainTabArr}
               tabsClass="leadTabs"
+              activeValue={reducer.mainLeadTab}
               handleTab={(item) => dispatch(actions.handleMainTab(item))}
             />
 
             <Tabs
               tabArr={subTabArr}
               tabsClass="leadTabs"
+              activeValue={reducer.subLeadTab}
               handleTab={(item) => dispatch(actions.handleSubTab(item))}
             />
             <div className="lead-filter-header">
@@ -365,15 +445,30 @@ function Leads() {
                   >
                     Add Lead
                   </button>
-                  <button  onClick = {()=>dispatch(actions.openBulkModal())} className="btnPrimary">Bulk Upload</button>
+                  <button
+                    onClick={() => dispatch(actions.openBulkModal())}
+                    className="btnPrimary"
+                  >
+                    Bulk Upload
+                  </button>
                 </div>
               )}
             </div>
 
             <div>
+              <Input
+                placeholder="Search By Name"
+                inputClass="leadsSearch"
+                type="search"
+                value={reducer.search}
+                change={(e) => {
+                  dispatch(actions.handleSearch(e));
+                }}
+              />
               <Table
-                search={true}
-                showColumns = {false}
+                wrapperRef={wrapperRef}
+                search={false}
+                showColumns={false}
                 columns={[...columns]}
                 data={tableData}
                 tClass="leadTable actionsTable"
@@ -389,28 +484,25 @@ function Leads() {
                 formData={[...reducer.formData]}
                 handleDisplay={() => dispatch(actions.closeForm())}
                 heading={reducer.formHeading}
-                submitForm = {submitForm}
-              /> 
-            )}
-            { 
-               reducer.openBulkModal && (
-                 <BulkUpload
-                 show  ={reducer.openBulkModal}
-                 handleDisplay = {()=>dispatch(actions.closeBulkModal())}
-                
-                 />
-               )
-            }
-            {reducer.openAssignModal &&
-              <AssignToModal
-               rowObj = {{...reducer.rowObj}}
-               callback = {()=>{
-                 console.log('callback')
-               }}
-               show = {reducer.openAssignModal}
-               handleDisplay = {()=>dispatch(actions.closeAssignModal())}
+                submitForm={submitForm}
               />
-              }
+            )}
+            {reducer.openBulkModal && (
+              <BulkUpload
+                show={reducer.openBulkModal}
+                handleDisplay={() => dispatch(actions.closeBulkModal())}
+              />
+            )}
+            {reducer.openAssignModal && (
+              <AssignToModal
+                rowObj={{ ...reducer.rowObj }}
+                callback={() => {
+                  console.log("callback");
+                }}
+                show={reducer.openAssignModal}
+                handleDisplay={() => dispatch(actions.closeAssignModal())}
+              />
+            )}
           </div>
         )}
 
@@ -486,7 +578,22 @@ function Leads() {
                           invidunt ut labore et consetetur sadipscing elitr, sed
                           diam nonumy eirmod tempor invidunt ut labore et
                         </p>
-                        <p style={{marginTop:'10px' , borderRadius:'15px' , paddingLeft:'10px' , paddingRight:'10px' , paddingTop:'2px' , paddingBottom:'2px' , fontSize:'14px' , backgroundColor:'red' , display:'inline-block'}} > Pending </p>
+                        <p
+                          style={{
+                            marginTop: "10px",
+                            borderRadius: "15px",
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            paddingTop: "2px",
+                            paddingBottom: "2px",
+                            fontSize: "14px",
+                            backgroundColor: "red",
+                            display: "inline-block",
+                          }}
+                        >
+                          {" "}
+                          Pending{" "}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -504,8 +611,22 @@ function Leads() {
                           invidunt ut labore et consetetur sadipscing elitr, sed
                           diam nonumy eirmod tempor invidunt ut labore et
                         </p>
-                        <p style={{marginTop:'10px' , borderRadius:'15px' , paddingLeft:'10px' , paddingRight:'10px' , paddingTop:'2px' , paddingBottom:'2px' , fontSize:'14px' , backgroundColor:'green' , display:'inline-block'}} > Paid </p>
-
+                        <p
+                          style={{
+                            marginTop: "10px",
+                            borderRadius: "15px",
+                            paddingLeft: "10px",
+                            paddingRight: "10px",
+                            paddingTop: "2px",
+                            paddingBottom: "2px",
+                            fontSize: "14px",
+                            backgroundColor: "green",
+                            display: "inline-block",
+                          }}
+                        >
+                          {" "}
+                          Paid{" "}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -531,9 +652,14 @@ isCustomer: false
 leadGen: "cold"
 leadId: "96OS8"
 name: "NIRMAL"
-occurrence: 1
+occurrence: 1  
 phone: "8374370427"
-status: "untouched"
+callLogs :    // Open Leads
+{
+status: "untouched","interested","notInterested","notAnswered","switchedOff","wrongNumber"
+response:""
+}
+callCount:''  // Open Leads
 yearOfPassOut: "2020"
 _id: "62badb71323fbc8e11aa716a"
 
