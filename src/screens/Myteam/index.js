@@ -4,6 +4,8 @@ import Input from "../../components/Input"
 import Table from "../../components/Table";
 import {camelToSentence} from "../../utils/constants"
 import "./index.css";
+import axios from "axios";
+import {URLS} from "../../utils/urlConstants"
 
 // Assets
 import chefImg from "../../assets/chefview/chef.png"
@@ -61,21 +63,21 @@ function Myteam() {
       phone: 7729088005,
     },
   ]);
-  const [tableData,setTableData] = useState(originalData);
+  const [tableData,setTableData] = useState([]);
   const [columns, setColumns] = useState([
     {
-      Header: "Member Id",
-      accessor: "memId",
+      Header: "userId",
+      accessor: "userId",
       Cell:(props)=>{
-        return <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setParticularChef(true),setChefId(props.cell.row.original.memId))}>{props.cell.row.original.memId}</p>
+        return <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setParticularChef(true),setChefId(props.cell.row.original.userId))}>{props.cell.row.original.userId}</p>
       }
     },
     {
-      Header: "Member Name",
-      accessor: "memberName",
+      Header: "name",
+      accessor: "name",
     },
     {
-      Header: "Email",
+      Header: "email",
       accessor: "email",
     },
     {
@@ -83,6 +85,25 @@ function Myteam() {
       accessor:'phone'
     },
   ]);
+  useEffect(() => {
+    getMyTeamData()
+  }, []);
+
+  function getMyTeamData(){
+    axios({
+        method:'post',
+        url:URLS.myteammembers,
+        data:{userId:"62bc18a0a9b4547f2491ebcc"}
+    }).then((res)=>{
+        if(res.status===200){
+            // console.log(res.data[0].directMembers)
+            setTableData(res.data[0].directMembers)
+        }
+    }).catch((err)=>{
+      console.error(err)
+      alert("Something went wrong");
+    })
+  }
 
 
   return (
@@ -94,12 +115,7 @@ function Myteam() {
       <div className="screenTitleContainer">
           <p className="screenTitle">My Team</p>
           <div>
-              {/* <button className = 'btnPrimary' style = {{marginRight:'20px'}} onClick = {()=>{setOpenForm(true);}}>
-                  Add New Chef
-              </button>
-              <button className = 'btnPrimary'>
-                  Chef Attendance
-              </button> */}
+            {console.log(tableData)}
           </div>
       </div>
     <div><Table search = {true} columns={columns} data={tableData} tClass="myteam" /></div>
