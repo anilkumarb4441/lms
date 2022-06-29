@@ -9,6 +9,9 @@ import deleteIcon from "../../assets/icons/editIcon.svg"
 import downArrow from "../../assets/icons/selectArr.svg"
 import searchIcon from "../../assets/icons/searchIcon.svg"
 
+//components
+import Pagination from "../pagination/pagination"
+
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
       const defaultRef = React.useRef();
@@ -126,6 +129,8 @@ function Table(options) {
         setCellWidth(100/options.columns.length)
       },[options.columns])
 
+
+
     return (
         <>
         <div className="tableHeader">
@@ -178,7 +183,7 @@ function Table(options) {
            } 
           </div>
         </div>
-        <div className={"TableContainer " + options.tClass}>
+        <div ref = {options.wrapperRef} className={"TableContainer " + options.tClass}>
           <table className={"Table " + options.tClass} {...getTableProps()}>
             <thead>
               {
@@ -233,6 +238,18 @@ function Table(options) {
             </tbody>
           </table>
         </div>
+        {
+                options.pagination &&
+              
+        <Pagination
+        className="pagination-bar"
+        currentPage={options.currentPage}
+        totalCount={options.totalCount}
+        pageSize={options.pageSize}
+        onPageChange={page => options.onPageChange(page)}
+      />
+              
+       }
       </>
     )
 }

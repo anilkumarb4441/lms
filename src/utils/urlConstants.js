@@ -8,7 +8,14 @@ module.exports = {
 
     //create single lead
     createLead:BASE_URL+"/leads/createLead",
-    
+
+    //edit single lead
+    editLead:BASE_URL+"/leads/leadUpdate",
+
+    //update/create call logs
+    updateCallLog:BASE_URL +"/logs/createCallLog",
+
+
     //autoComplete search of emplyess
     getAutoSearchData:BASE_URL +'/leads/search/employee',
 
