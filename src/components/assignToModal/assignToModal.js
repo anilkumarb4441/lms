@@ -1,10 +1,151 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Modal from "../../components/modal/modal";
 import "./assignToModal.css";
 import {debounce} from "../../utils/constants"
 import {URLS} from "../../utils/urlConstants"
 import axios from "axios"
-//http://192.168.1.48:2002/leads/search
+import Input from "../Input";
+
+function AssignToModal({ show, handleDisplay, callback, rowObj,assignType=''}) {
+ 
+const [selectArr,setSelectArr] = useState([])
+const [leadCount,setLeadCount] = useState(1)
+const [userId,setUserId] = useState('');
+const [type,setType] = useState('')
+
+const handleCount = (num)=>{
+    setLeadCount(num)
+}
+
+const getTeamMembers = ()=>{
+  axios({
+    url:URLS.myteammembers,
+    method:'post',
+    data:{userId:"62bc18a0a9b4547f2491ebcc"}
+  }).then((res)=>{
+    if(res.status===200){
+       let teamData = res?.data[0]?.directMembers?res?.data[0]?.directMembers:[]
+       let arr =   teamData.reduce((prev,curr)=>{
+          return [...prev,{name:curr.name,value:curr.userId}]    
+        },[])
+        if(assignType=='bulk'){
+          setSelectArr([...arr,{name:'Assign To Team',value:'team'}])
+        }else{
+          setSelectArr([...arr])
+        }      
+    }
+}).catch((err)=>{
+  console.error(err)
+  alert("Something went wrong. Please try again later");
+})
+}
+
+
+const getUntouchedLeadsCount = ()=>{
+  axios({
+    method:'get',
+    url:URLS.getCountOfUntouchedLeads
+  }).then((res)=>{
+          console.log(res)
+  }).catch((err)=>{
+    console.log(err)
+  })
+}
+
+const assignLeads = (e)=>{
+  e.prevemtDefault()
+  if(assignType==='bulk'){  
+    let data = {level:2,leadCount:leadCount}
+    if(userId==="team"){
+       data.type = "group"
+       data.userId = userId
+    }else{
+      data.type='single'
+    }
+    axios({
+      url:URLS.assignLead,
+      method:'post',
+      data:{
+        level:2,
+        type:'group',
+        leadCount:leadCount,
+        userId:userId
+      }
+    }).then((res)=>{
+          callback(res,null);
+    }).catch((err)=>{
+         callback(null,err);
+    }) 
+  }
+  
+  else{ 
+    axios({
+      url:URLS.assignLead,
+      method:'post',
+      data:{
+        leadRefId:rowObj.leadId,
+        userId:'',
+        type:"single"
+      }
+    }).then((res)=>{
+        
+          callback(res,null);
+    }).catch((err)=>{
+         callback(null,err)
+    })   
+  }
+  
+}
+
+useEffect(() => {
+  getTeamMembers()  
+  getUntouchedLeadsCount()
+}, [])
+  return (
+    <Modal
+      show={show}
+      header={true}
+      modalClass = 'AssignToModal'
+      title="Assign To"
+      handleDisplay={handleDisplay}
+      body={
+        <form onSubmit = {(e)=>assignLeads(e)}>
+         <p>Total Untouched leads : <span>100</span></p>
+         <Input 
+          element = "select"
+          name = 'userId'
+          value = {userId}
+          selectHeading = "Assign To"
+          selectArr ={selectArr}
+          change = {(e)=>{setUserId(e.target.value)}}
+          required = {true}
+         />
+       {assignType==="bulk" &&  <Input 
+          type= 'number'
+          change = {(e)=>{handleCount(e.target.value)}}
+          value = {leadCount}
+          name = 'leadCount'
+          max = {100}
+          min = {1}
+          required = {true}
+         />}
+         <button className = "btnPrimary" type = "subm">Assign Lead</button>
+        </form>
+      }
+    />
+  );
+}
+
+export default AssignToModal;
+
+/*
+
+leadRefId,
+userId
+type:single
+
+ASSIGN LEADS BASED ON AUTO SEARCH
+
 function AssignToModal({ show, handleDisplay, callback, rowObj }) {
  
   const [suggestions, setSuggestions] = useState([]);
@@ -126,8 +267,4 @@ function AssignToModal({ show, handleDisplay, callback, rowObj }) {
     />
   );
 }
-
-export default AssignToModal;
-//leadRefId,
-//userId
-//type:single
+*/ 

@@ -100,7 +100,9 @@ function Leads() {
     {
       name: "source",
       value: "",
-      type: "text",
+      element:'select',
+      selectHeading:'Select Source',
+      selectArr : [{name:"Facebook",value:'facebook'},{name:"Linkedin",value:'linkedIn'}],
       label: "Source*",
       required: true,
     },
@@ -173,10 +175,15 @@ function Leads() {
         );
       },
     },
-    { Header: "Name", accessor: "name" },
+    { Header: "Name", 
+    accessor: "name" },
     {
       Header: "Phone",
       accessor: "phone",
+    },
+    {
+      Header: "Email",
+      accessor: "email",
     },
     {
       Header: "College",
@@ -243,13 +250,14 @@ function Leads() {
         dispatch(actions.editLead(rowData, formData));
         return;
       case "Assign To":
-        dispatch(actions.assignLead(rowData));
+        dispatch(actions.assignLead(rowData,'single'));
         return
       case "Update Call Response":
         dispatch(actions.updateCallResponse(rowData,callFormData));
         return
     }
   };
+
   const openInner = (rowObj) => {
     dispatch(actions.openInner(rowObj));
   };
@@ -351,12 +359,14 @@ function Leads() {
   //setting  columns change function
   useEffect(() => {
     switch (reducer.mainLeadTab) {
+     
       case "completed":
         let newCol1 = originalColumns.filter(
           (obj) => obj.accessor !== "actions"
         );
         setColumns(newCol1);
         return;
+     
       case "pending":
         let newCol2 = originalColumns.filter(
           (obj) => obj.accessor !== "actions"
@@ -376,12 +386,14 @@ function Leads() {
         newCol2 = [...newCol2, actionCol2];
         setColumns(newCol2);
         return;
+      
       case "untouched":
         let newCol3 = originalColumns.filter(
           (obj) => obj.accessor !== "leadResponse"
         );
         setColumns(newCol3);
         return;
+      
       default:
         setColumns([]);
         return;
@@ -454,8 +466,8 @@ function Leads() {
                 </div>
               )}
             </div>
-
-            <div>
+            <div className="lead-filter-header">
+              <div>
               <Input
                 placeholder="Search By Name"
                 inputClass="leadsSearch"
@@ -465,6 +477,17 @@ function Leads() {
                   dispatch(actions.handleSearch(e));
                 }}
               />
+              </div>
+            
+              
+             <div>
+              {reducer.mainLeadTab==="untouched" && <button onClick = {()=>{dispatch(actions.assignLead(null,'bulk'))}} className = "btnPrimary">Assign Leads</button>}
+             </div>
+            
+            </div>
+
+            <div>
+              
               <Table
                 wrapperRef={wrapperRef}
                 search={false}
@@ -496,6 +519,7 @@ function Leads() {
             {reducer.openAssignModal && (
               <AssignToModal
                 rowObj={{ ...reducer.rowObj }}
+                assignType = {reducer.assignType}
                 callback={() => {
                   console.log("callback");
                 }}

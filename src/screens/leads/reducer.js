@@ -12,7 +12,8 @@ const initialState = {
   search:'',
   formHeading:'',
   formData:[],
-  rowObj:{}
+  rowObj:null,
+  assignType:''
 };
 
 const reducer = (state = initialState, action) => {
@@ -81,6 +82,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         openAssignModal:true,
+        assignType:action.assignType,
         rowObj:action.rowObj
 
       }
@@ -89,7 +91,8 @@ const reducer = (state = initialState, action) => {
       return{
         ...state,
         openAssignModal:false,
-        rowObj:{}
+        assignType:'',
+        rowObj:null
       }    
     case actionTypes.CLOSE_FORM:   
       return{

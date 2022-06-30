@@ -46,5 +46,20 @@
 }
 
 .modal.AssignToModal .btnPrimary{
-   margin: 20px 0;
+   margin: 15px 0;
+}
+
+.modal.AssignToModal  .customInput{
+    margin:15px auto;
+    width:fit-content
+}
+
+.modal.AssignToModal  form p{
+    color: #fff;
+    font-weight: 400;
+}
+
+.modal.AssignToModal  form p>span{
+    color:var(--primary);
+    font-weight: 600;
 }

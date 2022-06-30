@@ -107,6 +107,7 @@ function BulkUpload({
           
             <form
               onSubmit={(e) => {
+                e.preventDefault()
                 sendBulkData(e);
               }}
             >

@@ -1,3 +1,4 @@
+import React from "react"
 import './App.css';
 import {BrowserRouter as Router,useRoutes} from 'react-router-dom'
 import { Link, useLocation } from "react-router-dom";
@@ -15,35 +16,34 @@ import UserFeed from './screens/userFeed';
 import ChefAttendance from './screens/chefAttendance/chefAttendance';
 import ClientOverview from './screens/clientOverview/clientoverview';
 import Settingscreen from './screens/settingscreen/settingscreen';
+import Login from './components/login/login';
+import localStorageService from "./utils/localStorageService"
 
 function App() {
+  const {setToken,getAccessToken}  = localStorageService
+  const [isToken,setIsToken] = React.useState(false)
   const routes = [{path:'/',element:<DashBoard/>},
   {path:'/leads',element:<Leads/>},
   {path:'/myteam',element:<Myteam/>},
-  // {path:"/meminner/:leadidname" ,element:<ChefAttendance/>},
-  // {path:'/chefAttendance',element:<ChefAttendance/>},
-  // {path:'/services',element:<Services/>},
-  // {path:'/feed',element:<UserFeed/>},
-  // {path:'/pricing',element:<Pricing/>},
-  // {path:'/clientOverview',element:<ClientOverview/>},
-  // {path:'/settings',element:<Settingscreen/>},
 ]
 
   const Wrapper = ()=>{
     return useRoutes(routes)
   }
-  // const location = useLocation();
-
-  return (
-    <Router>
-      <NavBar/>
-      <div className = "wrapperContainer">
-      <Wrapper/>
-      </div>
-   
-    </Router>
-    
-  );
+   if(!getAccessToken()){
+    return <Login setToken  = {setToken} setIsToken={setIsToken}/>
+   }else{
+    return (<>
+    {(isToken || getAccessToken() !== null) &&   <Router>  
+        <NavBar/>
+        <div className = "wrapperContainer">
+        <Wrapper/>
+        </div>
+      </Router>}
+    </>);
+   }
+  
+  
 }
 
 export default App;

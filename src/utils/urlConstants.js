@@ -1,8 +1,12 @@
 
 //BASE URL
-const BASE_URL = "http://192.168.1.69:2002"//"https://leadserver.verzeo.com"
+const BASE_URL = "http://192.168.1.29:2002"//"https://leadserver.verzeo.com"
 module.exports = {
   URLS: { 
+
+   //Login
+   login:BASE_URL+"/auth/login",
+
     //Assign Lead
     assignLead:BASE_URL + "/leads/assign",
 
@@ -23,10 +27,13 @@ module.exports = {
     getLeadsBasedOnFilter:BASE_URL+ "/leads/filterLeads",
    
     // Lead Bulk Upload
-    leadBulkUpload:BASE_URL +'/leads/upload',
+    leadBulkUpload:BASE_URL +'/leads/bulk/upload',
 
     // Myteam
-    myteammembers:BASE_URL +'/leads/direct/members'
+    myteammembers:BASE_URL +'/leads/direct/members',
+
+    //get untouched leads count
+    getCountOfUntouchedLeads:BASE_URL+"/leads/getUntouchedLeads"
 
   },
 };

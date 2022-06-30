@@ -57,7 +57,9 @@ export const addLead = (formData) => {
 //action to edit Lead
 export const editLead = (rowData, formData) => {
   let newRowData = { ...rowData };
-  let keys =Object.keys(rowData).filter(k=>(k!=='source'&&k!=='isCampaign'));
+   let keys = formData.reduce((prev,current)=>{
+       return [...prev,current.name]
+   },[]).filter(k=>(k!=='source'&&k!=='isCampaign'));
   let newArr = [{ name: "leadId", value: rowData.leadId }];
   formData.forEach((obj) => {
     let newObj = { ...obj };
@@ -103,9 +105,10 @@ export const updateCallResponse = (rowData, formData) => {
 };
 
 //action to assign lead
-export const assignLead = (rowObj) => {
+export const assignLead = (rowObj,assignType) => {
   return {
     type: actionTypes.ASSIGN_LEAD,
+    assignType:assignType,
     rowObj: rowObj,
   };
 };

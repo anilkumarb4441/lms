@@ -16,6 +16,9 @@ function Input({
   selectArr,
   selectHeading,
   id,
+  max,
+  autoComplete,
+  min,
   checked,
   multiple,
   disabled
@@ -47,9 +50,12 @@ function Input({
           pattern={pattern}
           placeholder={placeholder}
           name={name}
+          autoComplete = {autoComplete}
           required={required}
           accept={accept}
           id={id}
+          max = {max}
+          min = {min}
           checked={value}
           multiple={multiple}
           disabled={disabled}

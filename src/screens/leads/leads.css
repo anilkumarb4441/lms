@@ -18,13 +18,13 @@
 
 .lead-filter-header>div{
     display:flex;
-    gap:10px;
+    gap:20px;
     align-items: center;
 }
 
 .customInput.leadsSearch{
-    width:24%;
-    margin:10px 0;
+    width:auto;
+ 
 }
 
 
