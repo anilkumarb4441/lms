@@ -23,7 +23,8 @@ function BulkUpload({
     const [filename, setfilename] = useState("");
     const[errorfile, seterrorfile] = useState(false)
 
-    function downloadCSV(){
+    function downloadCSV(e){
+      e.preventDefault();
       var csv = 'name,phone,email\n';
       var data = [
           {name:"Tanisha",phone:"7894561230",email:"tanisha.g@verzeo.com"},
@@ -33,12 +34,13 @@ function BulkUpload({
       exportFromJSON({ data,fileName,exportType });
    }
 
-    function sendBulkData(){
+    function sendBulkData(e){
+      e.preventDefault()
         // console.log(sheetData,bulkData);
         // let data = {sheetData:sheetData,source:bulkData.source}
         // console.log(data,fosrmref.current);
         // formref.current.value="";
-        console.log(bulkData);
+        // console.log(bulkData);
         axios({
             method:'post',
             url:URLS.leadBulkUpload,
@@ -105,12 +107,7 @@ function BulkUpload({
         <div className="addLead">
           <div className="addLeadCol1">
           
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                sendBulkData(e);
-              }}
-            >
+            <form>
                 {/* <p></p> */}
               <div className="parentMainBulk">
               <input
@@ -145,12 +142,12 @@ function BulkUpload({
               </div>
               {
                 errorfile===false && bulkData.source!="" && bulkData.leads!="" ?
-                    <button className="saveBtn" type="button" onClick={(e)=>sendBulkData()}>
+                    <button className="saveBtn" type="button" onClick={(e)=>sendBulkData(e)}>
                         Upload
                     </button>
                     :null
               }
-              <button className="downBtn" onClick={downloadCSV}>Click to download sample file</button>
+              <button className="downBtn" onClick={(e)=>downloadCSV(e)}>Click to download sample file</button>
             </form>
           </div>
         </div>
