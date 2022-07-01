@@ -5,6 +5,7 @@ const initialState = {
   openForm: false,
   openAssignModal:false,
   openBulkModal:false,
+  filter:{mainLeadTab:'pending',subLeadTab:'todayLeads',leadGen:'all'},
   mainLeadTab: "pending",
   subLeadTab: "todayLeads",
   leadGen: "all",
@@ -21,13 +22,11 @@ const reducer = (state = initialState, action) => {
     case actionTypes.HANDLE_MAIN_TAB:
       return {
         ...state,
-        mainLeadTab: action.mainLeadTab,
-        subLeadTab: "todayLeads",
-        leadGen:'all'
+        filter:{mainLeadTab:action.mainLeadTab, subLeadTab: "todayLeads",leadGen:'all'},
       };
 
     case actionTypes.HANDLE_SUB_TAB:
-      return { ...state, subLeadTab: action.subLeadTab };
+      return { ...state,filter:{...state.filter,subLeadTab:action.subLeadTab}};
 
     case actionTypes.OPEN_INNER:
       return {
@@ -109,16 +108,16 @@ const reducer = (state = initialState, action) => {
       }
 
     case actionTypes.SET_LEAD_GEN:
-      return { ...state, leadGen: action.leadGen };
+      return { ...state, filter:{...state.filter,leadGen: action.leadGen}};
     
     case actionTypes.HANDLE_SEARCH:
       return {...state, search:action.search}
 
     case actionTypes.SET_DEFAULT_STATE:
-        return initialState  
+        return {...initialState,filter:{...initialState.filter}}  
    
     default:
-      return initialState;
+      return {...initialState,filter:{...initialState.filter}}
   }
 };
 

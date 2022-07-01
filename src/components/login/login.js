@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState,useEffect} from "react";
 import "./login.css";
 import axios from "axios";
 import Input from "../Input";
-import URLS from "../../utils/urlConstants"
+import {URLS} from "../../utils/urlConstants"
 function Login({setToken,setIsToken}) {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const updateCredentials = (e) => {
@@ -12,23 +12,26 @@ function Login({setToken,setIsToken}) {
  
   const submitForm = (e) => {
     e.preventDefault();
-    console.log(credentials)
+  
+   
     axios({
       method: "post",
-      url: URLS.login,
+      url: URLS.userLogin,
       data: credentials,
     }).then((res) => {
-        if (res.status === 200) {
+        if (res.status === 200 && res.data.success) {
               setToken(res.data);
               setIsToken(true);
+        }else{
+          alert(res.data.msg);
+          setIsToken(false);
         }
       })
       .catch((err) => {
-          if(err.msg){
-              console(err.msg)
-          }
+          alert('Something went wrong. Please try again later')
       });
   };
+
  
   return (
     <div className="login-wrappper">

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import {useLocation} from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./actions.js";
 import { camelToSentence } from "../../utils/constants";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import { URLS } from "../../utils/urlConstants";
 //css
 import "./leads.css";
@@ -23,6 +24,7 @@ import BulkUpload from "../../components/bulkUpload/bulkupload.js";
 
 function Leads() {
   const reducer = useSelector((state) => state.leads);
+  const location  = useLocation()
   const dispatch = useDispatch();
   const wrapperRef = useRef(); //Table Wrapper Ref
   const mainTabArr = [
@@ -32,7 +34,6 @@ function Leads() {
   ];
 
   const callStatusArr = [
-    {name:"Untouched",value:'untouched'},
     {name:"Interested",value:'interested'},
     {name:"Not Interested",value:'notInterested'},
     {name:"Not Answered",value:'notAnswered'},
@@ -146,6 +147,11 @@ function Leads() {
       name: "Assign To",
       color: "green",
     },
+    {
+      name: "Update Call Response",
+      color: "red",
+    },
+
   ]);
 
   // action options for pending leads
@@ -229,7 +235,7 @@ function Leads() {
       Cell: (props) => {
         return (
           <Dots
-            // options={reducer.mainLeadTab==="untouchedLeads"?actionOptions:openactionOptions}
+            // options={reducer.filter.mainLeadTab==="untouchedLeads"?actionOptions:openactionOptions}
             options={actionOptions}
             onclick={(name) => handleAction(name, props.cell.row.original)}
           />
@@ -246,8 +252,9 @@ function Leads() {
   const handleAction = (name, rowData) => {
     switch (name) {
       case "Edit Lead":
-        //  if(rowData.assignedTo===rowData.)
-        dispatch(actions.editLead(rowData, formData));
+          if(rowData.assignedTo===rowData.assignedBy){
+            dispatch(actions.editLead(rowData, formData));
+          }
         return;
       case "Assign To":
         dispatch(actions.assignLead(rowData,'single'));
@@ -270,15 +277,12 @@ function Leads() {
   ];
 
   //get leads data based on filter
-  const getLeadsByFilters = () => {
-    axios({
+  const getLeadsByFilters = (data) => {
+ 
+    axiosInstance({
       method: "post",
       url: URLS.getLeadsBasedOnFilter,
-      data: {
-        mainFilter: reducer.mainLeadTab,
-        subFilter: reducer.subLeadTab,
-        subMostFilter: reducer.leadGen,
-      },
+      data: {mainFilter:data.mainLeadTab,subFilter:data.subLeadTab,subMostFilter:data.leadGen}
     })
       .then((res) => {
         if (res.status === 200) {
@@ -300,7 +304,7 @@ function Leads() {
     }, {});
     switch (reducer.formHeading) {
       case "Add Lead":
-        axios({
+        axiosInstance({
           url: URLS.createLead,
           method: "post",
           data: leadObject,
@@ -320,13 +324,12 @@ function Leads() {
         return;
 
       case "Edit Lead":
-        axios({
+        axiosInstance({
           method:'post',
           url:URLS.editLead,
           data:leadObject
         }).then((res)=>{
              if(res.status===200){
-               debugger;
                let index = tableData.findIndex(obj=>obj.leadId===res.data.leadId)
                let newData = [...tableData]
                   newData[index] ={...res.data}
@@ -341,13 +344,25 @@ function Leads() {
         return;
 
       case "Update Call":
-        axios({
+        axiosInstance({
           method: "post",
           url: URLS.updateCallLog,
           data: leadObject,
         })
           .then((res) => {
-            dispatch(actions.closeForm())
+            if(res.status===200){
+              let index = tableData.findIndex(obj=>obj.leadId===res.data.leadId)
+              let newData = [...tableData]
+                if(reducer.filter.mainLeadTab==="pending"){
+                 newData[index] ={...res.data}
+                } else{
+                  newData.splice(index,1)
+                }
+                 setTableData(newData)
+                 alert("Call Status Updated")
+                 dispatch(actions.closeForm())
+            }
+           
           })
           .catch((err) => {
             console.log(err)
@@ -358,7 +373,7 @@ function Leads() {
 
   //setting  columns change function
   useEffect(() => {
-    switch (reducer.mainLeadTab) {
+    switch (reducer.filter.mainLeadTab) {
      
       case "completed":
         let newCol1 = originalColumns.filter(
@@ -389,25 +404,25 @@ function Leads() {
       
       case "untouched":
         let newCol3 = originalColumns.filter(
-          (obj) => obj.accessor !== "leadResponse"
+          (obj) => (obj.Header!== "Call Response"&& obj.Header!== "Call Count" && obj.Header!== "Call Status")
         );
-        setColumns(newCol3);
+        setColumns(originalColumns);
         return;
       
       default:
         setColumns([]);
         return;
     }
-  }, [reducer.mainLeadTab]);
+  }, [reducer.filter.mainLeadTab]);
 
   // status change function
   useEffect(() => {
-    getLeadsByFilters();
-  }, [reducer.leadGen, reducer.mainLeadTab, reducer.subLeadTab]);
-
-  useEffect(() => {
+    console.log(reducer.filter)
+    getLeadsByFilters(reducer.filter);
     wrapperRef?.current?.scrollTo(0, 0);
-  }, [reducer.mainLeadTab, reducer.subLeadTab]);
+  }, [reducer.filter]);
+
+ 
 
   // default reducer state on load
   useEffect(() => {
@@ -424,20 +439,20 @@ function Leads() {
             <Tabs
               tabArr={mainTabArr}
               tabsClass="leadTabs"
-              activeValue={reducer.mainLeadTab}
+              activeValue={reducer.filter.mainLeadTab}
               handleTab={(item) => dispatch(actions.handleMainTab(item))}
             />
 
             <Tabs
               tabArr={subTabArr}
               tabsClass="leadTabs"
-              activeValue={reducer.subLeadTab}
+              activeValue={reducer.filter.subLeadTab}
               handleTab={(item) => dispatch(actions.handleSubTab(item))}
             />
             <div className="lead-filter-header">
               <div>
                 <Input
-                  value={reducer.leadGen}
+                  value={reducer.filter.leadGen}
                   element="select"
                   inputClass="leadTable"
                   change={(e) => {
@@ -447,7 +462,7 @@ function Leads() {
                   selectArr={leadGenArr}
                 />
               </div>
-              {reducer.mainLeadTab === "untouched" && (
+              {reducer.filter.mainLeadTab === "untouched" && (
                 <div>
                   <button
                     className="btnPrimary"
@@ -481,7 +496,7 @@ function Leads() {
             
               
              <div>
-              {reducer.mainLeadTab==="untouched" && <button onClick = {()=>{dispatch(actions.assignLead(null,'bulk'))}} className = "btnPrimary">Assign Leads</button>}
+              {reducer.filter.mainLeadTab==="untouched" && <button onClick = {()=>{dispatch(actions.assignLead(null,'bulk'))}} className = "btnPrimary">Assign Leads</button>}
              </div>
             
             </div>
@@ -521,7 +536,7 @@ function Leads() {
                 rowObj={{ ...reducer.rowObj }}
                 assignType = {reducer.assignType}
                 callback={() => {
-                  console.log("callback");
+               
                 }}
                 show={reducer.openAssignModal}
                 handleDisplay={() => dispatch(actions.closeAssignModal())}

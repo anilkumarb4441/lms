@@ -4,36 +4,39 @@ const BASE_URL = "http://192.168.1.29:2002"//"https://leadserver.verzeo.com"
 module.exports = {
   URLS: { 
 
+    //baseURL
+    baseURL:BASE_URL,
+
    //Login
-   login:BASE_URL+"/auth/login",
+   userLogin:"/auth/login",
 
     //Assign Lead
-    assignLead:BASE_URL + "/leads/assign",
+    assignLead: "/leads/assign",
 
     //create single lead
-    createLead:BASE_URL+"/leads/createLead",
+    createLead:"/leads/createLead",
 
     //edit single lead
-    editLead:BASE_URL+"/leads/leadUpdate",
+    editLead:"/leads/leadUpdate",
 
     //update/create call logs
-    updateCallLog:BASE_URL +"/logs/createCallLog",
+    updateCallLog:"/logs/createCallLog",
 
 
     //autoComplete search of emplyess
-    getAutoSearchData:BASE_URL +'/leads/search/employee',
+    getAutoSearchData:'/leads/search/employee',
 
     // get leads based on filter
-    getLeadsBasedOnFilter:BASE_URL+ "/leads/filterLeads",
+    getLeadsBasedOnFilter: "/leads/filterLeads",
    
     // Lead Bulk Upload
-    leadBulkUpload:BASE_URL +'/leads/bulk/upload',
+    leadBulkUpload:'/leads/bulk/upload',
 
     // Myteam
-    myteammembers:BASE_URL +'/leads/direct/members',
+    myteammembers:'/leads/direct/members',
 
     //get untouched leads count
-    getCountOfUntouchedLeads:BASE_URL+"/leads/getUntouchedLeads"
+    getCountOfUntouchedLeads:"/leads/getUntouchedLeads"
 
   },
 };

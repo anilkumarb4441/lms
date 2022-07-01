@@ -3,7 +3,7 @@ import Modal from "../../components/modal/modal";
 import "./assignToModal.css";
 import {debounce} from "../../utils/constants"
 import {URLS} from "../../utils/urlConstants"
-import axios from "axios"
+import axiosInstance from "../../utils/axiosInstance"
 import Input from "../Input";
 
 function AssignToModal({ show, handleDisplay, callback, rowObj,assignType=''}) {
@@ -11,20 +11,23 @@ function AssignToModal({ show, handleDisplay, callback, rowObj,assignType=''}) {
 const [selectArr,setSelectArr] = useState([])
 const [leadCount,setLeadCount] = useState(1)
 const [userId,setUserId] = useState('');
+const [level,setLevel] = useState()
 const [type,setType] = useState('')
+const [untouchedCount,setUntouchedCount] = useState()
 
 const handleCount = (num)=>{
     setLeadCount(num)
 }
 
 const getTeamMembers = ()=>{
-  axios({
+  axiosInstance({
     url:URLS.myteammembers,
     method:'post',
     data:{userId:"62bc18a0a9b4547f2491ebcc"}
   }).then((res)=>{
     if(res.status===200){
        let teamData = res?.data[0]?.directMembers?res?.data[0]?.directMembers:[]
+       setLevel(teamData[0]?.level)
        let arr =   teamData.reduce((prev,curr)=>{
           return [...prev,{name:curr.name,value:curr.userId}]    
         },[])
@@ -42,54 +45,54 @@ const getTeamMembers = ()=>{
 
 
 const getUntouchedLeadsCount = ()=>{
-  axios({
+  axiosInstance({
     method:'get',
     url:URLS.getCountOfUntouchedLeads
   }).then((res)=>{
-          console.log(res)
+          if(res.status===200)
+          setUntouchedCount(res.data)
   }).catch((err)=>{
     console.log(err)
   })
 }
 
 const assignLeads = (e)=>{
-  e.prevemtDefault()
+  e.preventDefault()
   if(assignType==='bulk'){  
-    let data = {level:2,leadCount:leadCount}
+    let data = {level:level,leadCount:parseInt(leadCount)}
     if(userId==="team"){
        data.type = "group"
-       data.userId = userId
     }else{
       data.type='single'
+      data.userId = userId
     }
-    axios({
+    axiosInstance({
       url:URLS.assignLead,
       method:'post',
-      data:{
-        level:2,
-        type:'group',
-        leadCount:leadCount,
-        userId:userId
-      }
+      data:data
     }).then((res)=>{
-          callback(res,null);
+           if(res.status===200){
+            callback(res,null);
+           }
+          
     }).catch((err)=>{
          callback(null,err);
     }) 
   }
   
   else{ 
-    axios({
+    axiosInstance({
       url:URLS.assignLead,
       method:'post',
       data:{
-        leadRefId:rowObj.leadId,
-        userId:'',
+        referenceId:rowObj.referenceId,
+        userId:userId,
         type:"single"
       }
-    }).then((res)=>{
-        
-          callback(res,null);
+    }).then((res)=>{  
+      if(res.status===200){
+        callback(res,null);
+       }
     }).catch((err)=>{
          callback(null,err)
     })   
@@ -110,7 +113,7 @@ useEffect(() => {
       handleDisplay={handleDisplay}
       body={
         <form onSubmit = {(e)=>assignLeads(e)}>
-         <p>Total Untouched leads : <span>100</span></p>
+         <p>Total Untouched leads : <span>{untouchedCount}</span></p>
          <Input 
           element = "select"
           name = 'userId'
@@ -125,11 +128,11 @@ useEffect(() => {
           change = {(e)=>{handleCount(e.target.value)}}
           value = {leadCount}
           name = 'leadCount'
-          max = {100}
+          max = {untouchedCount}
           min = {1}
           required = {true}
          />}
-         <button className = "btnPrimary" type = "subm">Assign Lead</button>
+         <button className = "btnPrimary" type = "submit">Assign Lead</button>
         </form>
       }
     />

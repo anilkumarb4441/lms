@@ -81,13 +81,14 @@ export const editLead = (rowData, formData) => {
 // Update Call Response
 export const updateCallResponse = (rowData, formData) => {
   let newRowData = {
-    status: rowData.callLogs?.callStatus,
-    response: rowData.callLogs?.callResponse,
+    status: rowData.callLogs?.status,
+    response: rowData.callLogs?.response,
   };
+  debugger;
   let keys = Object.keys(newRowData);
   let newArr = [
   { name: "leadId", value: rowData.leadId },
-  { name: "leadRefId", value: rowData.leadRefId }
+  { name: "referenceId", value: rowData.referenceId }
 ];
   formData.forEach((obj) => {
     let newObj = { ...obj };
