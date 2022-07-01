@@ -1,6 +1,6 @@
 
 //BASE URL
-const BASE_URL = "http://192.168.1.29:2002"//"https://leadserver.verzeo.com"
+const BASE_URL = "https://leadserver.verzeo.com"//"http://192.168.1.29:2002"
 module.exports = {
   URLS: { 
 
