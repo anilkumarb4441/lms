@@ -4,7 +4,7 @@ import Modal from "../modal/modal";
 import Input from "../Input";
 import xlsxParser from 'xlsx-parse-json';
 import exportFromJSON from 'export-from-json';
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import {URLS} from "../../utils/urlConstants"
 
 // Assets
@@ -41,7 +41,7 @@ function BulkUpload({
         // console.log(data,fosrmref.current);
         // formref.current.value="";
         // console.log(bulkData);
-        axios({
+        axiosInstance({
             method:'post',
             url:URLS.leadBulkUpload,
             data:bulkData

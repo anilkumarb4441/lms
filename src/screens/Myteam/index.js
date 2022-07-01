@@ -4,7 +4,7 @@ import Input from "../../components/Input"
 import Table from "../../components/Table";
 import {camelToSentence} from "../../utils/constants"
 import "./index.css";
-import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance";
 import {URLS} from "../../utils/urlConstants"
 
 // Assets
@@ -90,7 +90,7 @@ function Myteam() {
   }, []);
 
   function getMyTeamData(){
-    axios({
+    axiosInstance({
         method:'post',
         url:URLS.myteammembers,
         data:{userId:"62bc18a0a9b4547f2491ebcc"}
