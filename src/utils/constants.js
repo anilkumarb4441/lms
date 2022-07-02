@@ -1,3 +1,5 @@
+import {toast} from "react-toastify"
+
 export const MONTHS =['January', 'February','March','April','May','June','July','August','September','October','November','December']
 export const WEEKDAYS=['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
 
@@ -23,5 +25,42 @@ export const debounce = (func, delay) => {
   }; 
 };
 
-//BASE URL
-export const BASE_URL = "http://192.168.1.48:2002/leads"
+
+
+
+//Toast Messages
+export const toastSuccess = (msg)=>{
+  toast.success(msg, {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    });
+}
+
+export const toastWarning = (msg)=>{
+  toast.warn(msg, {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    });
+}
+
+export const toastError = (msg)=>{
+  toast.error(msg, {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    });
+}

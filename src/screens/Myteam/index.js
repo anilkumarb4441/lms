@@ -4,7 +4,7 @@ import Input from "../../components/Input"
 import Table from "../../components/Table";
 import {camelToSentence} from "../../utils/constants"
 import "./index.css";
-import axiosInstance from "../../utils/axiosInstance";
+import API_SERVICES from "../../utils/API"
 import {URLS} from "../../utils/urlConstants"
 
 // Assets
@@ -90,19 +90,12 @@ function Myteam() {
   }, []);
 
   function getMyTeamData(){
-    axiosInstance({
-        method:'post',
-        url:URLS.myteammembers,
-        data:{userId:"62bc18a0a9b4547f2491ebcc"}
-    }).then((res)=>{
-        if(res.status===200){
-            // console.log(res.data[0].directMembers)
-            setTableData(res.data[0].directMembers)
-        }
-    }).catch((err)=>{
-      console.error(err)
-      alert("Something went wrong");
-    })
+    let callback = (err,res)=>{
+      if(res && res.status===200){ 
+          setTableData(res.data[0].directMembers)
+      }
+    }
+    API_SERVICES.httpPOSTWithToken(URLS.myteammembers,{userId:''},callback)
   }
 
 
@@ -115,7 +108,7 @@ function Myteam() {
       <div className="screenTitleContainer">
           <p className="screenTitle">My Team</p>
           <div>
-            {console.log(tableData)}
+          
           </div>
       </div>
     <div><Table search = {true} columns={columns} data={tableData} tClass="myteam" /></div>

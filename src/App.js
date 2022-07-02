@@ -1,22 +1,16 @@
 import React from "react";
 import "./App.css";
+import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter as Router, useRoutes } from "react-router-dom";
-import { Link, useLocation } from "react-router-dom";
 
 //components
 import NavBar from "./components/navBar/index";
 import DashBoard from "./screens/dashboard";
 import Leads from "./screens/leads/leads";
 import Myteam from "./screens/Myteam";
-
-// Screens
-import Services from "./screens/services/services";
-import Pricing from "./screens/pricing";
-import UserFeed from "./screens/userFeed";
-import ChefAttendance from "./screens/chefAttendance/chefAttendance";
-import ClientOverview from "./screens/clientOverview/clientoverview";
-import Settingscreen from "./screens/settingscreen/settingscreen";
 import Login from "./components/login/login";
+
+
 import localStorageService from "./utils/localStorageService";
 
 function App() {
@@ -38,7 +32,7 @@ function App() {
   const getRoutes = () => {
     if (localStorageService.getAccessToken()) {
       let tokenObj = localStorageService.getTokenDecode();
-     // console.log(tokenObj)
+      console.log(tokenObj)
     }
     }
 

@@ -1,11 +1,11 @@
 import React, {useState, useRef} from "react";
 import "./bulkupload.css";
 import Modal from "../modal/modal";
-import Input from "../Input";
 import xlsxParser from 'xlsx-parse-json';
 import exportFromJSON from 'export-from-json';
-import axiosInstance from "../../utils/axiosInstance";
+import API_SERVICES from "../../utils/API"
 import {URLS} from "../../utils/urlConstants"
+import {toastSuccess,toastWarning,toastError} from "../../utils/constants"
 
 // Assets
 import close from "../../assets/Bulkupload/close.svg"
@@ -13,6 +13,7 @@ import close from "../../assets/Bulkupload/close.svg"
 function BulkUpload({
   show,
   handleDisplay,
+  callback
 }) {
 
     const formref = useRef();
@@ -36,31 +37,18 @@ function BulkUpload({
 
     function sendBulkData(e){
       e.preventDefault()
-        // console.log(sheetData,bulkData);
-        // let data = {sheetData:sheetData,source:bulkData.source}
-        // console.log(data,fosrmref.current);
-        // formref.current.value="";
-        // console.log(bulkData);
-        axiosInstance({
-            method:'post',
-            url:URLS.leadBulkUpload,
-            data:bulkData
-        }).then((res)=>{
-            if(res.status===201){
-                console.log(res)
-                alert(res.data)
-                setfilename("");
-                formref.current.value="";
-                setbulkData({...bulkData,["leads"]:""})
-                handleDisplay();
-            }
-        }).catch((err)=>{
-          alert("Something went wrong");
-          // setSuggestions([])
-          setfilename("");
-          formref.current.value="";
-          setbulkData({...bulkData,["leads"]:""})
-        }) 
+      const sendBulkDataCallBack = (err,res)=>{
+              
+              if(res && res.status===201){ 
+                  toastSuccess("Data Succesfully uploaded")   
+                  setfilename("");
+                  formref.current.value="";
+                  setbulkData({...bulkData,["leads"]:""})
+                  handleDisplay();
+                  callback();
+              }
+      }
+  API_SERVICES.httpPOSTWithToken(URLS.leadBulkUpload,bulkData,sendBulkDataCallBack)
     }
 
     const checkForEmptyValues = (data) => {
@@ -68,7 +56,7 @@ function BulkUpload({
         for (let row of data) {
             for (let key in row) {  
                 if (row[key] == '' && !(typeof row[key] =="boolean")) {
-                    console.log(key,"va",row[key])
+
                     return !checker;
                 }
             }
@@ -83,15 +71,11 @@ function BulkUpload({
                 sheetData = data['Sheet1'];
                 setbulkData({...bulkData,["leads"]:sheetData})
                 if (!checkForEmptyValues(sheetData)) {
-                    alert("File contains invalid data")
-                    // setErrorMsg('File contains invalid data');
+                    toastWarning("File contains invalid data");            
                     formref.current.reset();
                     seterrorfile(true);
                     return;
                 }
-                // else {
-                //     sendBulkData();
-                // }
             });
     };
 

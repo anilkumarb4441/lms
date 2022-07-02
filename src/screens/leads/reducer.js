@@ -18,6 +18,7 @@ const initialState = {
 };
 
 const reducer = (state = initialState, action) => {
+  let defaultFilter = {...initialState.filter}
   switch (action.type) {
     case actionTypes.HANDLE_MAIN_TAB:
       return {
@@ -114,10 +115,10 @@ const reducer = (state = initialState, action) => {
       return {...state, search:action.search}
 
     case actionTypes.SET_DEFAULT_STATE:
-        return {...initialState,filter:{...initialState.filter}}  
+        return {...initialState,filter:defaultFilter}  
    
     default:
-      return {...initialState,filter:{...initialState.filter}}
+      return {...initialState,filter:defaultFilter}
   }
 };
 

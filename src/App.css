@@ -55,7 +55,7 @@ button{
    background-color: var(--wrapperColor);
    margin-left: 21%;
    padding: 2% 6% 0% 4%;
-   height: 86vh;
+   height: 88vh;
    overflow-y: scroll;
    box-shadow: inset 0px 3px 6px #100707;
 }

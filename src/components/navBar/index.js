@@ -29,6 +29,7 @@ import ColorSettings from "../../assets/navbar/ORANGE/Settings.svg";
 // import servicecolored from "../../assets/navbar/servicecolored.svg"
 
 import { Link, useLocation } from "react-router-dom";
+import localStorageService from "../../utils/localStorageService";
 
 function NavBar() {
   const [navData, setNavData] = useState([
@@ -47,9 +48,16 @@ function NavBar() {
 
   const location = useLocation();
 
+  const logOut = ()=>{
+    localStorageService.clearToken()
+    window.location = "/"
+  }
+
   return (
     <div className = 'navBar'>
-      <div className="horizontalNav"></div>
+      <div className="horizontalNav">
+      <button className = "logOut" onClick = {logOut}>Log out</button>
+      </div>
       <div className="sideNav">
         <div className="navLogoContainer">
           <img src={logo} alt="logo" />
@@ -70,6 +78,7 @@ function NavBar() {
               );
             })}
         </div>
+      
       </div>
     </div>
   );

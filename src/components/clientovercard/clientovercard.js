@@ -13,7 +13,7 @@ import DoughnutComp from "../../components/doughnut/doughnut"
 function Clientcard({...val}){
 
 
-    console.log(val,"kkkkkkkkkkk");
+  
 
     return(
         <div className="clientCardProgress">

@@ -1,47 +1,53 @@
-import React, { useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./login.css";
-import axios from "axios";
+import API_Services from "../../utils/API";
 import Input from "../Input";
-import {URLS} from "../../utils/urlConstants"
-function Login({setToken,setIsToken}) {
+import {toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { URLS } from "../../utils/urlConstants";
+import {toastSuccess,toastWarning} from "../../utils/constants"
+function Login({ setToken, setIsToken }) {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const updateCredentials = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
- 
- 
+
   const submitForm = (e) => {
     e.preventDefault();
-  
-   
-    axios({
-      method: "post",
-      url: URLS.userLogin,
-      data: credentials,
-    }).then((res) => {
-        if (res.status === 200 && res.data.success) {
-              setToken(res.data);
-              setIsToken(true);
-        }else{
-          alert(res.data.msg);
-          setIsToken(false);
-        }
-      })
-      .catch((err) => {
-          alert('Something went wrong. Please try again later')
-      });
+    API_Services.httpPOST(URLS.userLogin, credentials, callback);
   };
 
- 
+  const callback = (err, res) => {
+    if (res) {
+      if (res.status === 200 && res.data.success) {
+        setToken(res.data);
+        toastSuccess("Logged in Succesfully")
+        setIsToken(true);
+      } else {
+        toastWarning(res.data.msg);
+        setIsToken(false);
+      }
+    } 
+  };
+
+  useEffect(()=>{
+   let email =  new URLSearchParams(window.location.search).get("email");
+   let password =  new URLSearchParams(window.location.search).get("password");
+   console.log(email,password)
+   if(email && password){
+    API_Services.httpPOST(URLS.userLogin, {email:email,password:password}, callback);
+   }
+  },[])
+
   return (
     <div className="login-wrappper">
       <form onSubmit={(e) => submitForm(e)} className="login-form">
-          <h2>Login</h2>
+        <h2>Login</h2>
         <Input
           label="Email"
           name="email"
           type="email"
-          placeholder = "xyz@gamil.com"
+          placeholder="xyz@gamil.com"
           value={credentials.email}
           change={updateCredentials}
           required={true}
@@ -49,8 +55,8 @@ function Login({setToken,setIsToken}) {
         <Input
           label="Password"
           name="password"
-          placeholder = "******"
-          autoComplete="current-password" 
+          placeholder="******"
+          autoComplete="current-password"
           id="current-password"
           type="password"
           value={credentials.password}

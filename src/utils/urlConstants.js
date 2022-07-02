@@ -1,6 +1,6 @@
 
 //BASE URL
-const BASE_URL = "https://leadserver.verzeo.com"//"http://192.168.1.29:2002"
+const BASE_URL = "http://192.168.1.29:2002"//"https://leadserver.verzeo.com"
 module.exports = {
   URLS: { 
 
@@ -20,7 +20,7 @@ module.exports = {
     editLead:"/leads/leadUpdate",
 
     //update/create call logs
-    updateCallLog:"/logs/createCallLog",
+    updateCallLog:"/logs/updateCallLog",
 
 
     //autoComplete search of emplyess
@@ -35,8 +35,11 @@ module.exports = {
     // Myteam
     myteammembers:'/leads/direct/members',
 
-    //get untouched leads count
-    getCountOfUntouchedLeads:"/leads/getUntouchedLeads"
+    //get Unassigned leads count
+    getUnassignedLeadsCount:"/leads/getUntouchedLeads",
+
+    // url to hit customer dashboard if lead response from call status comes as interested
+    createLeadBussiness:"https://obform.loca.lt/api/v2/leadgen/create-lead-business"
 
   },
 };

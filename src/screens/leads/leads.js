@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import {useLocation} from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./actions.js";
-import { camelToSentence } from "../../utils/constants";
-import axiosInstance from "../../utils/axiosInstance";
+import { camelToSentence,toastError,toastSuccess, toastWarning } from "../../utils/constants";
 import { URLS } from "../../utils/urlConstants";
+import localStorageService from "../../utils/localStorageService"
+import API_SERVICES from "../../utils/API"
 //css
 import "./leads.css";
 
@@ -21,6 +22,7 @@ import Dots from "../../components/dots/dots.js";
 import AddEditLeadForm from "../../components/addEditLeadForm/addEditLeadForm.js";
 import AssignToModal from "../../components/assignToModal/assignToModal.js";
 import BulkUpload from "../../components/bulkUpload/bulkupload.js";
+
 
 function Leads() {
   const reducer = useSelector((state) => state.leads);
@@ -252,14 +254,20 @@ function Leads() {
   const handleAction = (name, rowData) => {
     switch (name) {
       case "Edit Lead":
-          if(rowData.assignedTo===rowData.assignedBy){
-            dispatch(actions.editLead(rowData, formData));
-          }
+        dispatch(actions.editLead(rowData, formData));
+        // let tokenObj = localStorageService.getTokenDecode();
+        //   if(rowData.generatedBy===tokenObj.userId){
+        //    
+        //   }
         return;
       case "Assign To":
         dispatch(actions.assignLead(rowData,'single'));
         return
       case "Update Call Response":
+          if(rowData.callLogs?.status==="interested"){
+            toastWarning("Interseted leads cannot be edited");
+            return
+          }
         dispatch(actions.updateCallResponse(rowData,callFormData));
         return
     }
@@ -277,99 +285,117 @@ function Leads() {
   ];
 
   //get leads data based on filter
-  const getLeadsByFilters = (data) => {
- 
-    axiosInstance({
-      method: "post",
-      url: URLS.getLeadsBasedOnFilter,
-      data: {mainFilter:data.mainLeadTab,subFilter:data.subLeadTab,subMostFilter:data.leadGen}
-    })
-      .then((res) => {
-        if (res.status === 200) {
+  const getLeadsByFilters = (data) => { 
+    let postObj = {mainFilter:data.mainLeadTab,subFilter:data.subLeadTab,subMostFilter:data.leadGen}
+    let callback = (err,res)=>{
+      if(res &&res.status === 200){
           setTableData(res.data);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("Something went wrong. Please try later");
-      });
+      }
+ }
+     API_SERVICES.httpPOSTWithToken(URLS.getLeadsBasedOnFilter,postObj,callback)
   };
 
   // submit add edit lead form/ call update form
   const submitForm = (e) => {
     e.preventDefault();
-
     let leadObject = reducer.formData.reduce((prev, current) => {
       return { ...prev, [current.name]: current.value };
     }, {});
     switch (reducer.formHeading) {
       case "Add Lead":
-        axiosInstance({
-          url: URLS.createLead,
-          method: "post",
-          data: leadObject,
-        })
-          .then((res) => {
-            if (res.status === 200) {
-              let newData = [...tableData];
-              newData[0] = {...res.data};
-              setTableData(newData)
-              alert("Lead SuccesFully Created");
-            }
-          })
-          .catch((err) => {
-            console.log(err);
-            alert("Something went wrong. Please try later");
-          });
+           createLead(leadObject); 
         return;
 
       case "Edit Lead":
-        axiosInstance({
-          method:'post',
-          url:URLS.editLead,
-          data:leadObject
-        }).then((res)=>{
-             if(res.status===200){
-               let index = tableData.findIndex(obj=>obj.leadId===res.data.leadId)
-               let newData = [...tableData]
-                  newData[index] ={...res.data}
-                  setTableData(newData)
-                  alert("Lead SuccesFully Edited")
-                  dispatch(actions.closeForm())
-             }
-        }).catch((err)=>{
-           console.log(err)
-           alert("Something went wrong. Please try later");
-        })
+          editLead(leadObject);  
         return;
 
       case "Update Call":
-        axiosInstance({
-          method: "post",
-          url: URLS.updateCallLog,
-          data: leadObject,
-        })
-          .then((res) => {
-            if(res.status===200){
-              let index = tableData.findIndex(obj=>obj.leadId===res.data.leadId)
-              let newData = [...tableData]
-                if(reducer.filter.mainLeadTab==="pending"){
-                 newData[index] ={...res.data}
-                } else{
-                  newData.splice(index,1)
-                }
-                 setTableData(newData)
-                 alert("Call Status Updated")
-                 dispatch(actions.closeForm())
-            }
-           
-          })
-          .catch((err) => {
-            console.log(err)
-            alert("Something went wrong. Please try later");
-          });
+          updateCallStatus(leadObject)
+        return
     }
   };
+
+
+  // function to create new lead
+  const createLead = (data)=>{ 
+    const callback = (err,res)=>{
+           if(res && res.status === 200){
+              let newData = [...tableData];
+              newData[0] = {...res.data};
+              setTableData(newData)
+              toastSuccess("Lead SuccesFully Created");
+           }
+    }
+    API_SERVICES.httpPOSTWithToken(URLS.createLead,data,callback)
+  }
+
+  //function to edit lead
+  const editLead = (data)=>{
+    const callback = (err,res)=>{
+    if(res && res.status===200){    
+        let index = tableData.findIndex(obj=>obj.leadId===res.data.leadId)
+        let newData = [...tableData]
+           newData[index] ={...res.data}
+           setTableData(newData)
+           toastSuccess("Lead SuccesFully Edited")
+           dispatch(actions.closeForm())
+    }
+}
+    API_SERVICES.httpPOSTWithToken(URLS.editLead,data,callback)
+  }
+
+  // function to update call status
+  const updateCallStatus = (data)=>{
+   
+    const callback  = (err,res)=>{
+
+      if(res && res.status===200){ 
+             if(res.data?.callLogs?.status==="interested"){
+              createLeadBussiness(res.data);
+             }
+            let index = tableData.findIndex(obj=>obj.leadId===res.data.leadId)
+            let newData = [...tableData]
+              if(reducer.filter.mainLeadTab==="pending"){
+               newData[index] ={...res.data}
+              } else{
+                newData.splice(index,1)
+              }
+               setTableData(newData)
+               toastSuccess("Call Status Updated in Lead DashBoard")
+               dispatch(actions.closeForm())
+        }
+    }
+    API_SERVICES.httpPOSTWithToken(URLS.updateCallLog,data,callback);
+  }
+
+  //call back after assigning leads
+  const assignLeadCallBack = (err,res)=>{
+     if(res && res.status===200){
+      getLeadsByFilters(reducer.filter)
+         if(reducer.assignType==='single'){
+           dispatch(actions.closeAssignModal())
+         }
+     }
+  }
+
+  const createLeadBussiness = (data)=>{
+    let {name,email,phone} = {...data}
+    let newData = {name,email,phone}
+    newData.leadBy  = data.generatedBy
+    newData.referenceid = data.referenceId
+    newData.leadid =  data.leadId
+    const callback =  (err,res)=>{
+      if(err){
+        toastError("Could not update lead in Customer DashBoard");
+      }
+      if(res && res.status===200){
+          toastSuccess("Lead updated in Customer DashBoard");
+      }
+} 
+     API_SERVICES.httpPOST(URLS.createLeadBussiness,callback);
+  }
+   
 
   //setting  columns change function
   useEffect(() => {
@@ -417,16 +443,19 @@ function Leads() {
 
   // status change function
   useEffect(() => {
-    console.log(reducer.filter)
     getLeadsByFilters(reducer.filter);
     wrapperRef?.current?.scrollTo(0, 0);
   }, [reducer.filter]);
 
  
 
+  
   // default reducer state on load
   useEffect(() => {
-    dispatch(actions.setDefaultState());
+
+    return ()=>{
+      dispatch(actions.setDefaultState());
+    }
   }, []);
 
   return (
@@ -529,15 +558,14 @@ function Leads() {
               <BulkUpload
                 show={reducer.openBulkModal}
                 handleDisplay={() => dispatch(actions.closeBulkModal())}
+                callback = {()=>{getLeadsByFilters(reducer.filter)}}
               />
             )}
             {reducer.openAssignModal && (
               <AssignToModal
                 rowObj={{ ...reducer.rowObj }}
                 assignType = {reducer.assignType}
-                callback={() => {
-               
-                }}
+                assignLeadCallBack={assignLeadCallBack}
                 show={reducer.openAssignModal}
                 handleDisplay={() => dispatch(actions.closeAssignModal())}
               />

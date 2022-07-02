@@ -34,7 +34,8 @@
 
 .navLinkContainer{
     overflow-y: scroll;
-    height: 70vh;
+    height: 65vh;
+    padding: 0 0 3% 0
 } 
 .navLinkContainer a{
     display: flex;
@@ -71,8 +72,12 @@
 }
 
 .horizontalNav{
-    padding: 7vh 0;
+    padding: 0vh 0;
     margin-left: 21%;
+    height: 12vh;
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
 
 
@@ -89,4 +94,19 @@
 .navLinkContainer .paAnchor>p.active{
     border-left: 5px solid #E6AA55;
     border-radius: 10px 0px 0px 10px;
+}
+
+.logOut{
+    display: block;
+    width: fit-content;
+    margin: 0 2% 0 auto;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 15px;
+    color: var(--white);
+    background-color: #a10c0c;
+}
+
+.logOut:hover{
+    background-color:  #e74c3c63
 }
