@@ -26,15 +26,7 @@ function App() {
     return useRoutes(routes);
   };
 
-  React.useEffect(() => {
-    getRoutes();
-  }, [isToken]);
-  const getRoutes = () => {
-    if (localStorageService.getAccessToken()) {
-      let tokenObj = localStorageService.getTokenDecode();
-      console.log(tokenObj)
-    }
-    }
+ 
 
   if (!getAccessToken()) {
     return <Login setToken={setToken} setIsToken={setIsToken} />;

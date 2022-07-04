@@ -31,11 +31,12 @@ function Login({ setToken, setIsToken }) {
   };
 
   useEffect(()=>{
+    
    let email =  new URLSearchParams(window.location.search).get("email");
    let password =  new URLSearchParams(window.location.search).get("password");
-   console.log(email,password)
    if(email && password){
-    API_Services.httpPOST(URLS.userLogin, {email:email,password:password}, callback);
+     console.log(email,password);
+    API_Services.httpPOST(`${URLS.userLogin}?email=${email}&password=${password}`,{}, callback);
    }
   },[])
 

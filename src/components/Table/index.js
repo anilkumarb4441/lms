@@ -11,6 +11,7 @@ import searchIcon from "../../assets/icons/searchIcon.svg"
 
 //components
 import Pagination from "../pagination/pagination"
+import NoRecord from '../noRecord/noRecord';
 
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
@@ -130,7 +131,6 @@ function Table(options) {
       },[options.columns])
 
 
-
     return (
         <>
         <div className="tableHeader">
@@ -184,7 +184,7 @@ function Table(options) {
           </div>
         </div>
         <div ref = {options.wrapperRef} className={"TableContainer " + options.tClass}>
-          <table className={"Table " + options.tClass} {...getTableProps()}>
+        {options.data && options.data.length>0? <table className={"Table " + options.tClass} {...getTableProps()}>
             <thead>
               {
                 // Loop over the header rows
@@ -194,8 +194,8 @@ function Table(options) {
                     {
                       // Loop over the headers in each row
                       headerGroup.headers.map((column) => (
-                        // Apply the header cell props
-                        <th style = {{width:cellWidth+'%'}} {...column.getHeaderProps()}>
+                        // Apply the header cell props style = {{width:cellWidth+'%'}}
+                        <th  {...column.getHeaderProps()}>
                           {
                             // Render the header
                             column.render("Header")
@@ -208,7 +208,8 @@ function Table(options) {
               }
             </thead>
             {/* Apply the table body props */}
-            <tbody {...getTableBodyProps()}>
+         {
+          <tbody {...getTableBodyProps()}>
               {
                 // Loop over the table rows
                 rows.map((row) => {
@@ -222,7 +223,7 @@ function Table(options) {
                         row.cells.map((cell) => {
                           // Apply the cell props
                           return (
-                            <td style = {{width:cellWidth+'%'}} {...cell.getCellProps()}>
+                            <td  {...cell.getCellProps()}>
                               {
                                 // Render the cell contents
                                 cell.render("Cell")
@@ -236,8 +237,9 @@ function Table(options) {
                 })
               }
             </tbody>
-          </table>
-        </div>
+}
+          </table>:<NoRecord/>
+       } </div>
         {
                 options.pagination &&
               
@@ -246,7 +248,8 @@ function Table(options) {
         currentPage={options.currentPage}
         totalCount={options.totalCount}
         pageSize={options.pageSize}
-        onPageChange={page => options.onPageChange(page)}
+        pageSizeOptions = {options.pageSizeOptions}
+        onPageChange={(number,size) => {options.onPageChange(number,size)}}
       />
               
        }

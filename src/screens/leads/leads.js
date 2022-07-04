@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import {useLocation} from "react-router-dom"
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./actions.js";
-import { camelToSentence,toastError,toastSuccess, toastWarning } from "../../utils/constants";
+import {
+  camelToSentence,
+  toastError,
+  toastSuccess,
+  toastWarning,
+} from "../../utils/constants";
 import { URLS } from "../../utils/urlConstants";
-import localStorageService from "../../utils/localStorageService"
-import API_SERVICES from "../../utils/API"
+import { initialState } from "./reducer";
+import localStorageService from "../../utils/localStorageService";
+import API_SERVICES from "../../utils/API";
 //css
 import "./leads.css";
 
@@ -23,10 +28,9 @@ import AddEditLeadForm from "../../components/addEditLeadForm/addEditLeadForm.js
 import AssignToModal from "../../components/assignToModal/assignToModal.js";
 import BulkUpload from "../../components/bulkUpload/bulkupload.js";
 
-
 function Leads() {
   const reducer = useSelector((state) => state.leads);
-  const location  = useLocation()
+  const [totalCount, setTotalCount] = useState(0);
   const dispatch = useDispatch();
   const wrapperRef = useRef(); //Table Wrapper Ref
   const mainTabArr = [
@@ -36,18 +40,18 @@ function Leads() {
   ];
 
   const callStatusArr = [
-    {name:"Interested",value:'interested'},
-    {name:"Not Interested",value:'notInterested'},
-    {name:"Not Answered",value:'notAnswered'},
-    {name:"Switched Off",value:'switchedOff'},
-    {name:"Wrong Number",value:'wrongNumber'},
+    { name: "Interested", value: "interested" },
+    { name: "Not Interested", value: "notInterested" },
+    { name: "Not Answered", value: "notAnswered" },
+    { name: "Switched Off", value: "switchedOff" },
+    { name: "Wrong Number", value: "wrongNumber" },
   ];
   const subTabArr = [
     { name: "Today Leads", value: "todayLeads" },
     { name: "Old Leads", value: "oldLeads" },
   ];
 
-  const leadGenArr = [
+  const subMostFilterArr = [
     { name: "All", value: "all" },
     { name: "Cold Lead", value: "cold" },
     { name: "Hot Lead", value: "hot" },
@@ -103,9 +107,12 @@ function Leads() {
     {
       name: "source",
       value: "",
-      element:'select',
-      selectHeading:'Select Source',
-      selectArr : [{name:"Facebook",value:'facebook'},{name:"Linkedin",value:'linkedIn'}],
+      element: "select",
+      selectHeading: "Select Source",
+      selectArr: [
+        { name: "Facebook", value: "facebook" },
+        { name: "Linkedin", value: "linkedIn" },
+      ],
       label: "Source*",
       required: true,
     },
@@ -132,7 +139,7 @@ function Leads() {
       name: "status",
       value: "",
       required: true,
-      label:'Call Status',
+      label: "Call Status",
       element: "select",
       selectHeading: " Select Call Status",
       selectArr: callStatusArr,
@@ -153,7 +160,6 @@ function Leads() {
       name: "Update Call Response",
       color: "red",
     },
-
   ]);
 
   // action options for pending leads
@@ -183,8 +189,7 @@ function Leads() {
         );
       },
     },
-    { Header: "Name", 
-    accessor: "name" },
+    { Header: "Name", accessor: "name" },
     {
       Header: "Phone",
       accessor: "phone",
@@ -237,7 +242,7 @@ function Leads() {
       Cell: (props) => {
         return (
           <Dots
-            // options={reducer.filter.mainLeadTab==="untouchedLeads"?actionOptions:openactionOptions}
+            // options={reducer.filter.mainFilter==="untouchedLeads"?actionOptions:openactionOptions}
             options={actionOptions}
             onclick={(name) => handleAction(name, props.cell.row.original)}
           />
@@ -245,7 +250,6 @@ function Leads() {
       },
     },
   ]);
- 
 
   const [columns, setColumns] = useState([]);
   const [tableData, setTableData] = useState([]);
@@ -257,19 +261,19 @@ function Leads() {
         dispatch(actions.editLead(rowData, formData));
         // let tokenObj = localStorageService.getTokenDecode();
         //   if(rowData.generatedBy===tokenObj.userId){
-        //    
+        //
         //   }
         return;
       case "Assign To":
-        dispatch(actions.assignLead(rowData,'single'));
-        return
+        dispatch(actions.assignLead(rowData, "single"));
+        return;
       case "Update Call Response":
-          if(rowData.callLogs?.status==="interested"){
-            toastWarning("Interseted leads cannot be edited");
-            return
-          }
-        dispatch(actions.updateCallResponse(rowData,callFormData));
-        return
+        if (rowData.callLogs?.status === "interested") {
+          toastWarning("Interseted leads cannot be edited");
+          return;
+        }
+        dispatch(actions.updateCallResponse(rowData, callFormData));
+        return;
     }
   };
 
@@ -285,14 +289,23 @@ function Leads() {
   ];
 
   //get leads data based on filter
-  const getLeadsByFilters = (data) => { 
-    let postObj = {mainFilter:data.mainLeadTab,subFilter:data.subLeadTab,subMostFilter:data.leadGen}
-    let callback = (err,res)=>{
-      if(res &&res.status === 200){
-          setTableData(res.data);
+  const getLeadsByFilters = (data) => {
+    let postObj = data
+    let callback = (err, res) => {
+      if(err){
+        setTableData([])
+        setTotalCount([])
       }
- }
-     API_SERVICES.httpPOSTWithToken(URLS.getLeadsBasedOnFilter,postObj,callback)
+      if (res && res.status === 200) {
+        setTableData(res.data.data);
+        setTotalCount(res.data.total);
+      }
+    };
+    API_SERVICES.httpPOSTWithToken(
+      URLS.getLeadsBasedOnFilter,
+      postObj,
+      callback
+    );
   };
 
   // submit add edit lead form/ call update form
@@ -303,111 +316,111 @@ function Leads() {
     }, {});
     switch (reducer.formHeading) {
       case "Add Lead":
-           createLead(leadObject); 
+        createLead(leadObject);
         return;
 
       case "Edit Lead":
-          editLead(leadObject);  
+        editLead(leadObject);
         return;
 
       case "Update Call":
-          updateCallStatus(leadObject)
-        return
+        updateCallStatus(leadObject);
+        return;
     }
   };
 
-
   // function to create new lead
-  const createLead = (data)=>{ 
-    const callback = (err,res)=>{
-           if(res && res.status === 200){
-              let newData = [...tableData];
-              newData[0] = {...res.data};
-              setTableData(newData)
-              toastSuccess("Lead SuccesFully Created");
-           }
-    }
-    API_SERVICES.httpPOSTWithToken(URLS.createLead,data,callback)
-  }
+  const createLead = (data) => {
+    const callback = (err, res) => {
+      if (res && res.status === 201) {
+        let newData = [...tableData];
+        newData[0] = { ...res.data };
+        setTableData(newData);
+        dispatch(actions.closeForm())
+        toastSuccess("Lead SuccesFully Created");
+      }
+    };
+    API_SERVICES.httpPOSTWithToken(URLS.createLead, data, callback);
+  };
 
   //function to edit lead
-  const editLead = (data)=>{
-    const callback = (err,res)=>{
-    if(res && res.status===200){    
-        let index = tableData.findIndex(obj=>obj.leadId===res.data.leadId)
-        let newData = [...tableData]
-           newData[index] ={...res.data}
-           setTableData(newData)
-           toastSuccess("Lead SuccesFully Edited")
-           dispatch(actions.closeForm())
-    }
-}
-    API_SERVICES.httpPOSTWithToken(URLS.editLead,data,callback)
-  }
+  const editLead = (data) => {
+    const callback = (err, res) => {
+      if (res && res.status === 200) {
+        let index = tableData.findIndex(
+          (obj) => obj.leadId === res.data.leadId
+        );
+        let newData = [...tableData];
+        newData[index] = { ...res.data };
+        setTableData(newData);
+        toastSuccess("Lead SuccesFully Edited");
+        dispatch(actions.closeForm());
+      }
+    };
+    API_SERVICES.httpPOSTWithToken(URLS.editLead, data, callback);
+  };
 
   // function to update call status
-  const updateCallStatus = (data)=>{
-   
-    const callback  = (err,res)=>{
-
-      if(res && res.status===200){ 
-             if(res.data?.callLogs?.status==="interested"){
-              createLeadBussiness(res.data);
-             }
-            let index = tableData.findIndex(obj=>obj.leadId===res.data.leadId)
-            let newData = [...tableData]
-              if(reducer.filter.mainLeadTab==="pending"){
-               newData[index] ={...res.data}
-              } else{
-                newData.splice(index,1)
-              }
-               setTableData(newData)
-               toastSuccess("Call Status Updated in Lead DashBoard")
-               dispatch(actions.closeForm())
+  const updateCallStatus = (data) => {
+    const callback = (err, res) => {
+      if (res && res.status === 200) {
+        if (res.data?.callLogs?.status === "interested") {
+          createLeadBussiness(res.data);
         }
-    }
-    API_SERVICES.httpPOSTWithToken(URLS.updateCallLog,data,callback);
-  }
+        let index = tableData.findIndex(
+          (obj) => obj.leadId === res.data.leadId
+        );
+        let newData = [...tableData];
+        if (reducer.filter.mainFilter === "pending") {
+          newData[index] = { ...res.data };
+        } else {
+          newData.splice(index, 1);
+        }
+        setTableData(newData);
+        toastSuccess("Call Status Updated in Lead DashBoard");
+        dispatch(actions.closeForm());
+      }
+    };
+    API_SERVICES.httpPOSTWithToken(URLS.updateCallLog, data, callback);
+  };
 
   //call back after assigning leads
-  const assignLeadCallBack = (err,res)=>{
-     if(res && res.status===200){
-      getLeadsByFilters(reducer.filter)
-         if(reducer.assignType==='single'){
-           dispatch(actions.closeAssignModal())
-         }
-     }
-  }
+  const assignLeadCallBack = (err, res) => {
+    if (res && res.status === 200) {
+      getLeadsByFilters(reducer.filter);
+      if (reducer.assignType === "single") {
+        dispatch(actions.closeAssignModal());
+      }
+    }
+  };
 
-  const createLeadBussiness = (data)=>{
-    let {name,email,phone} = {...data}
-    let newData = {name,email,phone}
-    newData.leadBy  = data.generatedBy
-    newData.referenceid = data.referenceId
-    newData.leadid =  data.leadId
-    const callback =  (err,res)=>{
-      if(err){
+  const createLeadBussiness = (data) => {
+    let { name, email, phone } = { ...data };
+    let newData = { name, email, phone };
+    newData.leadBy = data.generatedBy;
+    newData.referenceid = data.referenceId;
+    newData.leadid = data.leadId;
+    const callback = (err, res) => {
+      if (err) {
         toastError("Could not update lead in Customer DashBoard");
       }
-      if(res && res.status===200){
-          toastSuccess("Lead updated in Customer DashBoard");
+      if (res && res.status === 200) {
+        toastSuccess("Lead updated in Customer DashBoard");
       }
-} 
-     API_SERVICES.httpPOST(URLS.createLeadBussiness,callback);
-  }
-   
+    };
+    API_SERVICES.httpPOST(URLS.createLeadBussiness, callback);
+  };
 
   //setting  columns change function
   useEffect(() => {
-    switch (reducer.filter.mainLeadTab) {
-     
+    switch (reducer.filter.mainFilter) {
       case "completed":
         let newCol1 = originalColumns.filter(
           (obj) => obj.accessor !== "actions"
         );
         setColumns(newCol1);
         return;
-     
+
       case "pending":
         let newCol2 = originalColumns.filter(
           (obj) => obj.accessor !== "actions"
@@ -427,19 +440,22 @@ function Leads() {
         newCol2 = [...newCol2, actionCol2];
         setColumns(newCol2);
         return;
-      
+
       case "untouched":
         let newCol3 = originalColumns.filter(
-          (obj) => (obj.Header!== "Call Response"&& obj.Header!== "Call Count" && obj.Header!== "Call Status")
+          (obj) =>
+            obj.Header !== "Call Response" &&
+            obj.Header !== "Call Count" &&
+            obj.Header !== "Call Status"
         );
         setColumns(originalColumns);
         return;
-      
+
       default:
         setColumns([]);
         return;
     }
-  }, [reducer.filter.mainLeadTab]);
+  }, [reducer.filter.mainFilter]);
 
   // status change function
   useEffect(() => {
@@ -447,15 +463,11 @@ function Leads() {
     wrapperRef?.current?.scrollTo(0, 0);
   }, [reducer.filter]);
 
- 
-
-  
   // default reducer state on load
   useEffect(() => {
-
-    return ()=>{
+    return () => {
       dispatch(actions.setDefaultState());
-    }
+    };
   }, []);
 
   return (
@@ -468,30 +480,55 @@ function Leads() {
             <Tabs
               tabArr={mainTabArr}
               tabsClass="leadTabs"
-              activeValue={reducer.filter.mainLeadTab}
-              handleTab={(item) => dispatch(actions.handleMainTab(item))}
+              activeValue={reducer.filter.mainFilter}
+              handleTab={(item) =>
+                dispatch(
+                  actions.setFilter({
+                    ...initialState.filter,
+                    mainFilter: item.value,
+                  })
+                )
+              }
             />
 
             <Tabs
               tabArr={subTabArr}
               tabsClass="leadTabs"
-              activeValue={reducer.filter.subLeadTab}
-              handleTab={(item) => dispatch(actions.handleSubTab(item))}
+              activeValue={reducer.filter.subFilter}
+              handleTab={(item) =>
+                dispatch(
+                  actions.setFilter({
+                    ...reducer.filter,
+                    subFilter: item.value,
+                    searchData:'',
+                    pageNumber: 1,
+                    pageRows: 10,
+                  })
+                )
+              }
             />
             <div className="lead-filter-header">
               <div>
                 <Input
-                  value={reducer.filter.leadGen}
+                  value={reducer.filter.subMostFilter}
                   element="select"
                   inputClass="leadTable"
                   change={(e) => {
-                    dispatch(actions.setLeadGen(e.target.value));
+                    dispatch(
+                      actions.setFilter({
+                        ...reducer.filter,
+                        subMostFilter: e.target.value,
+                        searchData: "",
+                        pageNumber:1,
+                        pageRows:10
+                      })
+                    );
                   }}
                   selectHeading={"Status"}
-                  selectArr={leadGenArr}
+                  selectArr={subMostFilterArr}
                 />
               </div>
-              {reducer.filter.mainLeadTab === "untouched" && (
+              {reducer.filter.mainFilter === "untouched" && (
                 <div>
                   <button
                     className="btnPrimary"
@@ -512,29 +549,49 @@ function Leads() {
             </div>
             <div className="lead-filter-header">
               <div>
-              <Input
-                placeholder="Search By Name"
-                inputClass="leadsSearch"
-                type="search"
-                value={reducer.search}
-                change={(e) => {
-                  dispatch(actions.handleSearch(e));
-                }}
-              />
+                <Input
+                  placeholder="Search By Name/Email"
+                  inputClass="leadsSearch"
+                  type="search"
+                  value={reducer.filter.searchData}
+                  change={(e) => {
+                    dispatch(actions.setFilter({...reducer.filter,searchData:e.target.value}));
+                  }}
+                />
               </div>
-            
-              
-             <div>
-              {reducer.filter.mainLeadTab==="untouched" && <button onClick = {()=>{dispatch(actions.assignLead(null,'bulk'))}} className = "btnPrimary">Assign Leads</button>}
-             </div>
-            
+
+              <div>
+                {reducer.filter.mainFilter === "untouched" && (
+                  <button
+                    onClick={() => {
+                      dispatch(actions.assignLead(null, "bulk"));
+                    }}
+                    className="btnPrimary"
+                  >
+                    Assign Leads
+                  </button>
+                )}
+              </div>
             </div>
 
             <div>
-              
               <Table
                 wrapperRef={wrapperRef}
                 search={false}
+                pagination={true}
+                currentPage={reducer.filter.pageNumber}
+                pageSize={reducer.filter.pageRows}
+                totalCount={totalCount}
+                onPageChange={(pageNumber, pageRows) => {
+                
+                  dispatch(actions.setFilter({
+                    ...reducer.filter,
+                    pageNumber: pageNumber,
+                    pageRows: pageRows,
+                  }));
+                }}
+                pageSizeOptions={[5, 10, 15, 20, 50, 100]}
+                page
                 showColumns={false}
                 columns={[...columns]}
                 data={tableData}
@@ -558,13 +615,15 @@ function Leads() {
               <BulkUpload
                 show={reducer.openBulkModal}
                 handleDisplay={() => dispatch(actions.closeBulkModal())}
-                callback = {()=>{getLeadsByFilters(reducer.filter)}}
+                callback={() => {
+                  getLeadsByFilters(reducer.filter);
+                }}
               />
             )}
             {reducer.openAssignModal && (
               <AssignToModal
                 rowObj={{ ...reducer.rowObj }}
-                assignType = {reducer.assignType}
+                assignType={reducer.assignType}
                 assignLeadCallBack={assignLeadCallBack}
                 show={reducer.openAssignModal}
                 handleDisplay={() => dispatch(actions.closeAssignModal())}
@@ -716,7 +775,7 @@ email: "hr@smackhire.com"
 isAssigned: false
 isCampaign: "true"
 isCustomer: false
-leadGen: "cold"
+subMostFilter: "cold"
 leadId: "96OS8"
 name: "NIRMAL"
 occurrence: 1  

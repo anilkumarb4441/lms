@@ -1,0 +1,35 @@
+.norecordMain{
+    background-color: white;
+    border-radius: 5px;
+    padding: 3% 0%;
+    margin:0% 0%;
+}
+
+.norecordMain .noimgparent{
+    text-align: center;
+}
+
+.norecordMain .imgNodata{
+    width: 10%;
+    animation: errorimg 1.5s infinite;
+}
+
+.norecordMain .textNo{
+    text-align: center;
+    font-size: 17px;
+    margin: 3% 0% 0% 0%;
+}
+
+@keyframes errorimg{
+    0%{
+        transform: translateY(0px);
+    }
+    50%{
+        transform: translateY(10px);
+    }
+    100%{
+        transform: translateY(0px);
+    }
+    
+}
+

@@ -1,9 +1,7 @@
 export const OPEN_INNER = "OPEN_INNER"
 export const SET_DEFAULT_STATE = "SET_DEFAULT_STATE"
 export const CLOSE_INNER = "CLOSE_INNER"
-export const SET_LEAD_GEN= 'SET_LEAD_GEN'
-export const HANDLE_MAIN_TAB = "HANDLE_MAIN_TAB"
-export const HANDLE_SUB_TAB = "HANDLE_SUB_TAB"
+export const SET_FILTER ="SET_LEAD_FILTER"
 export const EDIT_LEAD = "EDIT_LEAD"
 export const ADD_LEAD ="ADD_LEAD"
 export const UPDATE_CALL_RESPONSE = "UPDATE_CALL_RESPONSE"
@@ -15,6 +13,5 @@ export const ASSIGN_LEAD = "ASSIGN_LEAD"
 export const OPEN_FORM ="OPEN_FORM"
 export const CLOSE_FORM = "CLOSE_FORM"
 export const CHANGE_INPUT= "CHANGE_INPUT"
-export const HANDLE_SEARCH = "HANDLE_LEAD_SEARCH"
 
 

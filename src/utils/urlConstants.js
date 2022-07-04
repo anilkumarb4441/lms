@@ -39,7 +39,10 @@ module.exports = {
     getUnassignedLeadsCount:"/leads/getUntouchedLeads",
 
     // url to hit customer dashboard if lead response from call status comes as interested
-    createLeadBussiness:"https://obform.loca.lt/api/v2/leadgen/create-lead-business"
+    createLeadBussiness:"https://obform.loca.lt/api/v2/leadgen/create-lead-business",
+
+    //redirect to customer dashboard
+    redirectToCustomerDashBoard: BASE_URL+"/auth/redirect"
 
   },
 };

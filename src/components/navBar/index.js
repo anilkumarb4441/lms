@@ -7,29 +7,18 @@ import logo from "../../assets/navbar/codlogo.svg";
 import Dashboard from "../../assets/navbar/dashboard.svg";
 import Bookings from "../../assets/navbar/bookings.svg";
 import ChefView from "../../assets/navbar/chefview.svg";
-import ClientView from "../../assets/navbar/clientview.svg";
-import Calendar from "../../assets/navbar/calendar.svg";
-import ChatSystem from "../../assets/navbar/chatsystem.svg";
-import Services from "../../assets/navbar/services.svg";
-import Feed from "../../assets/navbar/feed.svg";
-import SocialMedia from "../../assets/navbar/socialmedia.svg";
-import Settings from "../../assets/navbar/settings.svg";
+
 
 
 import ColorDashboard from "../../assets/navbar/ORANGE/Dashboard.svg";
 import ColorBookings from "../../assets/navbar/ORANGE/Bookings.svg";
 import ColorChefView from "../../assets/navbar/ORANGE/Chef Overview.svg";
-import ColorClientView from "../../assets/navbar/ORANGE/Client Overview.svg";
-// import ColorCalendar from "../../assets/navbar/calendar.svg";
-// import ColorChatSystem from "../../assets/navbar/chatsystem.svg";
-import ColorServices from "../../assets/navbar/ORANGE/Services.svg";
-// import ColorFeed from "../../assets/navbar/feed.svg";
-// import ColorSocialMedia from "../../assets/navbar/socialmedia.svg";
-import ColorSettings from "../../assets/navbar/ORANGE/Settings.svg";
-// import servicecolored from "../../assets/navbar/servicecolored.svg"
+
 
 import { Link, useLocation } from "react-router-dom";
 import localStorageService from "../../utils/localStorageService";
+import { URLS } from "../../utils/urlConstants";
+import API_SERVICES from "../../utils/API"
 
 function NavBar() {
   const [navData, setNavData] = useState([
@@ -53,10 +42,21 @@ function NavBar() {
     window.location = "/"
   }
 
+  const Redirect = ()=>{
+    let {email,password} = localStorageService.getTokenDecode()
+     const callback = (err,res)=>{
+        if(res && res.data.success){
+            window.location = res.data.url
+         }
+     }
+    API_SERVICES.httpGET(`${URLS.redirectToCustomerDashBoard}?email=${email}&&password=${password}`,callback)
+  }
+
   return (
     <div className = 'navBar'>
       <div className="horizontalNav">
       <button className = "logOut" onClick = {logOut}>Log out</button>
+      <button className = "logOut" onClick = {Redirect}>Redirect</button>
       </div>
       <div className="sideNav">
         <div className="navLogoContainer">

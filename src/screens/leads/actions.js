@@ -20,30 +20,10 @@ export const closeInner = () => {
   };
 };
 
-// action to set lead gen
-export const setLeadGen = (leadGen) => {
-  return {
-    type: actionTypes.SET_LEAD_GEN,
-    leadGen: leadGen,
-  };
-};
-
-// action to handle MainTab Click
-export const handleMainTab = (item) => {
-  return {
-    type: actionTypes.HANDLE_MAIN_TAB,
-    mainLeadTab: item.value,
-  };
-};
-
-// action to handle subTab Click
-export const handleSubTab = (item) => {
-  return {
-    type: actionTypes.HANDLE_SUB_TAB,
-    subLeadTab: item.value,
-  };
-};
-
+// action to set all filter values 
+export const setFilter = (filter)=>{
+  return {type:actionTypes.SET_FILTER,filter:{...filter}}
+}
 
 //action to add Lead
 export const addLead = (formData) => {
@@ -52,7 +32,6 @@ export const addLead = (formData) => {
       formData: formData,
     };
   };
-
 
 //action to edit Lead
 export const editLead = (rowData, formData) => {
@@ -75,8 +54,6 @@ export const editLead = (rowData, formData) => {
     formData: newArr,
   };
 };
-
-
 
 // Update Call Response
 export const updateCallResponse = (rowData, formData) => {
@@ -166,10 +143,3 @@ export const changeInput = (e, i, formData) => {
   };
 };
 
-// handle search input change
-export const handleSearch = (e) => {
-  return {
-    type: actionTypes.HANDLE_SEARCH,
-    search: e.target.value,
-  };
-};
