@@ -84,7 +84,6 @@ export const updateCallResponse = (rowData, formData) => {
     status: rowData.callLogs?.status,
     response: rowData.callLogs?.response,
   };
-  debugger;
   let keys = Object.keys(newRowData);
   let newArr = [
   { name: "leadId", value: rowData.leadId },
