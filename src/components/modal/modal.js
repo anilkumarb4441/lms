@@ -20,7 +20,7 @@ function Modal({
 }) {
   const modalRef = useRef();
   const bodyClicked = (event) => {    
-  
+     debugger;
     if (modalRef.current && modalRef.current.contains(event.target)) {
       return;
     }
@@ -29,7 +29,7 @@ function Modal({
   useEffect(() => {
    
     if(bodyClick){
-      document.body.addEventListener("click", bodyClicked);
+      document.body.addEventListener("click", bodyClicked,true);
     }   
     return () => {
       document.body.removeEventListener("click", bodyClicked);
@@ -64,7 +64,7 @@ function Modal({
           </div>
           )}
         </div>
-        <Backdrop />
+        <Backdrop close ={()=>handleDisplay(false)}/>
       </>
     )
   );

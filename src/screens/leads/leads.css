@@ -27,6 +27,12 @@
  
 }
 
+.count{
+    color:var(--white);
+    font-weight:600;
+    text-align: left;
+}
+
 
 /* LEADS INNER PAGE */
 

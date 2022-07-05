@@ -17,7 +17,7 @@ function Login({ setToken, setIsToken }) {
     API_Services.httpPOST(URLS.userLogin, credentials, callback);
   };
 
-  const callback = (err, res) => {
+  const callback = (err,res) => {
     if (res) {
       if (res.status === 200 && res.data.success) {
         setToken(res.data);

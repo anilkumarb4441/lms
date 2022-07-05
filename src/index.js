@@ -6,10 +6,9 @@ import App from './App';
 import {ToastContainer} from 'react-toastify';
 import {Provider} from 'react-redux'
 import reportWebVitals from './reportWebVitals';
-import store from "./store.js"
+import configureAppStore from "./store.js"
 
-
-
+const store = configureAppStore()
 const container = document.getElementById('root');
 const root = createRoot(container);
 root.render(<>

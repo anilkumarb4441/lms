@@ -1,5 +1,6 @@
 .norecordMain{
-    background-color: white;
+    background: var(--secondary);
+    color: #fff;
     border-radius: 5px;
     padding: 3% 0%;
     margin:0% 0%;

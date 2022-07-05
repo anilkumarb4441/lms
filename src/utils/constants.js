@@ -16,6 +16,20 @@ export const getDaysinMonth = (month,year)=>{
      return daysInMonth
 }
 
+
+// New Date to yyyy-mm-dd
+export const DateObjectToString=(dateObj)=>{
+  let date = new Date(dateObj.getTime() + 19800000).toISOString().split("T")[0]
+  return date
+}
+
+// yyyy-mm-dd to  New Date
+export const StringtoDateObject=(dateString)=>{
+   let time = new Date(dateString).getTime()-19800000
+   let date = new Date(time);
+   return date
+}
+
 //DEBOUNCE FUNCTION
 export const debounce = (func, delay) => { 
   let timerId; 

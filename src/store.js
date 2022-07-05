@@ -1,17 +1,12 @@
-import {createStore, applyMiddleware,compose} from 'redux';
-import thunk from 'redux-thunk'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import rootReducer from './rootReducer' 
 
-const composeEnhancers =
-  typeof window === 'object' &&
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?   
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-    }) : compose;
+export default function configureAppStore(preloadedState) {
+  const store = configureStore({
+    reducer: rootReducer,
+    middleware:(getDefaultMiddleware) => [...getDefaultMiddleware({serializableCheck: false})],
+    preloadedState,
+  })
 
-const enhancer = composeEnhancers(
-  applyMiddleware(thunk),
-);
-const store = createStore(rootReducer, enhancer);
- 
-export default store
-
+  return store
+}

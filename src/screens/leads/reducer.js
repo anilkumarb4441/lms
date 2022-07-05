@@ -6,7 +6,15 @@ export const initialState = {
   openForm: false,
   openAssignModal: false,
   openBulkModal: false,
-  filter: { mainFilter: "pending", subFilter: "todayLeads", subMostFilter: "all",pageRows:10,pageNumber:1, searchData:"" },
+  filter: {
+    mainFilter: "pending",
+    subFilter: "todayLeads",
+    subMostFilter: "all",
+    pageRows: 10,
+    pageNumber: 1,
+    searchData: "",
+    range:null
+  },
   mainFilter: "pending",
   subFilter: "todayLeads",
   subMostFilter: "all",
@@ -19,10 +27,9 @@ export const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-
     case actionTypes.SET_FILTER:
-      return {...state,filter:action.filter}
-   
+      return { ...state, filter: action.filter };
+
     case actionTypes.OPEN_INNER:
       return {
         ...state,
@@ -103,12 +110,11 @@ const reducer = (state = initialState, action) => {
         formData: action.formData,
       };
 
-
     case actionTypes.SET_DEFAULT_STATE:
-      return { ...initialState, filter: {...initialState.filter} };
+      return { ...initialState, filter: { ...initialState.filter } };
 
     default:
-      return { ...initialState, filter: {...initialState.filter} };
+      return { ...initialState, filter: { ...initialState.filter } };
   }
 };
 

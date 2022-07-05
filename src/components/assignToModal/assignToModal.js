@@ -4,6 +4,7 @@ import "./assignToModal.css";
 import {URLS} from "../../utils/urlConstants"
 import API_SERVICES from "../../utils/API"
 import Input from "../Input";
+import { toastSuccess } from "../../utils/constants";
 
 function AssignToModal({ show, handleDisplay,assignLeadCallBack, rowObj,assignType=''}) {
  
@@ -48,7 +49,6 @@ const getUnassignedLeadsCount = ()=>{
 
 const assignLeads = (e)=>{
   e.preventDefault();
-  
   let data
   if(assignType==='bulk'){  
      data = {level:level,leadCount:parseInt(leadCount),type:"single",userId:userId}
@@ -63,15 +63,19 @@ const assignLeads = (e)=>{
       userId:userId,
       type:"single"
     }
-
-    const callback = (err,res)=>{
-      if(err) return
-      assignLeadCallBack(err,res);
-      getUnassignedLeadsCount();
-   
-    }
-    API_SERVICES.httpPOSTWithToken(URLS.assignLead,data,callback)  
   }  
+
+  const callback = (err,res)=>{
+  console.log(err,res)
+  if(res && res.status==200){
+    toastSuccess("Assigned Successfully")
+    getUnassignedLeadsCount(); 
+    assignLeadCallBack(err,res);
+  }
+ 
+ 
+  }
+  API_SERVICES.httpPOSTWithToken(URLS.assignLead,data,callback)  
 }
 
 useEffect(() => {

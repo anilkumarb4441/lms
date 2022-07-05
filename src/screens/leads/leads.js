@@ -1,22 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./actions.js";
-import {
-  camelToSentence,
-  toastError,
-  toastSuccess,
-  toastWarning,
-} from "../../utils/constants";
+import * as utils from "../../utils/constants";
 import { URLS } from "../../utils/urlConstants";
 import { initialState } from "./reducer";
 import localStorageService from "../../utils/localStorageService";
 import API_SERVICES from "../../utils/API";
+
 //css
 import "./leads.css";
 
 //assets
 import clientProfile from "../../assets/bookings/clientProfile.png";
 import locIcon from "../../assets/bookings/location.svg";
+import calendarIcon from "../../assets/icons/calendarIcon.svg";
 
 //components
 import Input from "../../components/Input";
@@ -27,10 +24,12 @@ import Dots from "../../components/dots/dots.js";
 import AddEditLeadForm from "../../components/addEditLeadForm/addEditLeadForm.js";
 import AssignToModal from "../../components/assignToModal/assignToModal.js";
 import BulkUpload from "../../components/bulkUpload/bulkupload.js";
+import CalendarModal from "../../components/calendarModal/calendarModal.js";
 
 function Leads() {
   const reducer = useSelector((state) => state.leads);
   const [totalCount, setTotalCount] = useState(0);
+  const [openCalendar,setOpenCalendar] = useState(false)
   const dispatch = useDispatch();
   const wrapperRef = useRef(); //Table Wrapper Ref
   const mainTabArr = [
@@ -38,6 +37,8 @@ function Leads() {
     { name: "Untouched Leads", value: "untouched" },
     { name: "Closed Leads", value: "completed" },
   ];
+
+  const [range,setRange] = useState()
 
   const callStatusArr = [
     { name: "Interested", value: "interested" },
@@ -231,7 +232,7 @@ function Leads() {
       Cell: (props) => {
         return (
           <p className={props.cell.row.original.leadGen}>
-            {camelToSentence(props.cell.row.original.leadGen)}
+            {utils.camelToSentence(props.cell.row.original.leadGen)}
           </p>
         );
       },
@@ -269,7 +270,7 @@ function Leads() {
         return;
       case "Update Call Response":
         if (rowData.callLogs?.status === "interested") {
-          toastWarning("Interseted leads cannot be edited");
+          utils.toastWarning("Interseted leads cannot be edited");
           return;
         }
         dispatch(actions.updateCallResponse(rowData, callFormData));
@@ -290,11 +291,13 @@ function Leads() {
 
   //get leads data based on filter
   const getLeadsByFilters = (data) => {
-    let postObj = data
+    let postObj = data;
+
+ if (data.range)   {console.log(data.range[0],data.range[1])}
     let callback = (err, res) => {
-      if(err){
-        setTableData([])
-        setTotalCount([])
+      if (err) {
+        setTableData([]);
+        setTotalCount(0);
       }
       if (res && res.status === 200) {
         setTableData(res.data.data);
@@ -336,8 +339,8 @@ function Leads() {
         let newData = [...tableData];
         newData[0] = { ...res.data };
         setTableData(newData);
-        dispatch(actions.closeForm())
-        toastSuccess("Lead SuccesFully Created");
+        dispatch(actions.closeForm());
+        utils.toastSuccess("Lead SuccesFully Created");
       }
     };
     API_SERVICES.httpPOSTWithToken(URLS.createLead, data, callback);
@@ -353,7 +356,7 @@ function Leads() {
         let newData = [...tableData];
         newData[index] = { ...res.data };
         setTableData(newData);
-        toastSuccess("Lead SuccesFully Edited");
+        utils.toastSuccess("Lead SuccesFully Edited");
         dispatch(actions.closeForm());
       }
     };
@@ -377,7 +380,7 @@ function Leads() {
           newData.splice(index, 1);
         }
         setTableData(newData);
-        toastSuccess("Call Status Updated in Lead DashBoard");
+        utils.toastSuccess("Call Status Updated in Lead DashBoard");
         dispatch(actions.closeForm());
       }
     };
@@ -386,11 +389,9 @@ function Leads() {
 
   //call back after assigning leads
   const assignLeadCallBack = (err, res) => {
-    if (res && res.status === 200) {
-      getLeadsByFilters(reducer.filter);
-      if (reducer.assignType === "single") {
-        dispatch(actions.closeAssignModal());
-      }
+    getLeadsByFilters(reducer.filter);
+    if (reducer.assignType === "single") {
+      dispatch(actions.closeAssignModal());
     }
   };
 
@@ -402,10 +403,10 @@ function Leads() {
     newData.leadid = data.leadId;
     const callback = (err, res) => {
       if (err) {
-        toastError("Could not update lead in Customer DashBoard");
+        utils.toastError("Could not update lead in Customer DashBoard");
       }
       if (res && res.status === 200) {
-        toastSuccess("Lead updated in Customer DashBoard");
+        utils.toastSuccess("Lead updated in Customer DashBoard");
       }
     };
     API_SERVICES.httpPOST(URLS.createLeadBussiness, callback);
@@ -500,9 +501,10 @@ function Leads() {
                   actions.setFilter({
                     ...reducer.filter,
                     subFilter: item.value,
-                    searchData:'',
+                    searchData: "",
                     pageNumber: 1,
                     pageRows: 10,
+                    range:null
                   })
                 )
               }
@@ -519,8 +521,8 @@ function Leads() {
                         ...reducer.filter,
                         subMostFilter: e.target.value,
                         searchData: "",
-                        pageNumber:1,
-                        pageRows:10
+                        pageNumber: 1,
+                        pageRows: 10,
                       })
                     );
                   }}
@@ -555,12 +557,20 @@ function Leads() {
                   type="search"
                   value={reducer.filter.searchData}
                   change={(e) => {
-                    dispatch(actions.setFilter({...reducer.filter,searchData:e.target.value}));
+                    dispatch(
+                      actions.setFilter({
+                        ...reducer.filter,
+                        searchData: e.target.value,
+                        pageNumber:1,
+                        pageSize:10
+                      })
+                    );
                   }}
                 />
               </div>
 
               <div>
+           {reducer.filter.subFilter === "oldLeads" && <img src={calendarIcon} onClick = {()=>setOpenCalendar(open=>!open)} />}
                 {reducer.filter.mainFilter === "untouched" && (
                   <button
                     onClick={() => {
@@ -575,6 +585,7 @@ function Leads() {
             </div>
 
             <div>
+              <p className = 'count'>TotalCount: {totalCount}</p>
               <Table
                 wrapperRef={wrapperRef}
                 search={false}
@@ -583,12 +594,13 @@ function Leads() {
                 pageSize={reducer.filter.pageRows}
                 totalCount={totalCount}
                 onPageChange={(pageNumber, pageRows) => {
-                
-                  dispatch(actions.setFilter({
-                    ...reducer.filter,
-                    pageNumber: pageNumber,
-                    pageRows: pageRows,
-                  }));
+                  dispatch(
+                    actions.setFilter({
+                      ...reducer.filter,
+                      pageNumber: pageNumber,
+                      pageRows: pageRows,
+                    })
+                  );
                 }}
                 pageSizeOptions={[5, 10, 15, 20, 50, 100]}
                 page
@@ -629,6 +641,7 @@ function Leads() {
                 handleDisplay={() => dispatch(actions.closeAssignModal())}
               />
             )}
+            
           </div>
         )}
 
@@ -762,6 +775,19 @@ function Leads() {
           </div>
         )}
       </div>
+      
+              <CalendarModal
+                show={openCalendar}
+                handleDisplay={(e) => setOpenCalendar(e)}
+                value={reducer.filter.range}
+                onChange={(arr)=>{
+                  setOpenCalendar(false);
+                 // console.log(arr)
+                  dispatch(actions.setFilter({...reducer.filter,range:[...arr],pageNumber:1,pageSize:10}));
+                 // setRange([...arr])
+                }}
+              />
+            
     </>
   );
 }
