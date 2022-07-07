@@ -19,17 +19,17 @@ import calendarIcon from "../../assets/icons/calendarIcon.svg";
 import Input from "../../components/Input";
 import Table from "../../components/Table";
 import Tabs from "../../components/tabs/tabs.js";
-import { IoIosArrowBack } from "react-icons/io";
 import Dots from "../../components/dots/dots.js";
 import AddEditLeadForm from "../../components/addEditLeadForm/addEditLeadForm.js";
 import AssignToModal from "../../components/assignToModal/assignToModal.js";
 import BulkUpload from "../../components/bulkUpload/bulkupload.js";
 import CalendarModal from "../../components/calendarModal/calendarModal.js";
+import LeadsInner from "../leadsInner/leadsInner.js";
 
 function Leads() {
   const reducer = useSelector((state) => state.leads);
   const [totalCount, setTotalCount] = useState(0);
-  const [openCalendar,setOpenCalendar] = useState(false)
+  const [openCalendar, setOpenCalendar] = useState(false);
   const dispatch = useDispatch();
   const wrapperRef = useRef(); //Table Wrapper Ref
   const mainTabArr = [
@@ -38,7 +38,7 @@ function Leads() {
     { name: "Closed Leads", value: "completed" },
   ];
 
-  const [range,setRange] = useState()
+  const [range, setRange] = useState();
 
   const callStatusArr = [
     { name: "Interested", value: "interested" },
@@ -171,7 +171,7 @@ function Leads() {
     },
     {
       name: "Update Call Response",
-      color: "green",
+      color: "red",
     },
   ]);
 
@@ -258,22 +258,24 @@ function Leads() {
   // function to handle table row action btns
   const handleAction = (name, rowData) => {
     switch (name) {
-      case "Edit Lead":
-        dispatch(actions.editLead(rowData, formData));
+       case "Edit Lead":
+         dispatch(actions.editLead(rowData, formData));
         // let tokenObj = localStorageService.getTokenDecode();
         //   if(rowData.generatedBy===tokenObj.userId){
         //
         //   }
         return;
-      case "Assign To":
-        dispatch(actions.assignLead(rowData, "single"));
+   
+        case "Assign To":
+         dispatch(actions.assignLead(rowData, "single"));
         return;
-      case "Update Call Response":
-        if (rowData.callLogs?.status === "interested") {
-          utils.toastWarning("Interseted leads cannot be edited");
+     
+        case "Update Call Response":
+         if (rowData.callLogs?.status === "interested"){
+          utils.toastWarning("Interseted leads call response cannot be updated");
           return;
         }
-        dispatch(actions.updateCallResponse(rowData, callFormData));
+         dispatch(actions.updateCallResponse(rowData, callFormData));
         return;
     }
   };
@@ -293,7 +295,9 @@ function Leads() {
   const getLeadsByFilters = (data) => {
     let postObj = data;
 
- if (data.range)   {console.log(data.range[0],data.range[1])}
+    if (data.range) {
+      console.log(data.range[0], data.range[1]);
+    }
     let callback = (err, res) => {
       if (err) {
         setTableData([]);
@@ -387,14 +391,7 @@ function Leads() {
     API_SERVICES.httpPOSTWithToken(URLS.updateCallLog, data, callback);
   };
 
-  //call back after assigning leads
-  const assignLeadCallBack = (err, res) => {
-    getLeadsByFilters(reducer.filter);
-    if (reducer.assignType === "single") {
-      dispatch(actions.closeAssignModal());
-    }
-  };
-
+  // update call status in customer dashboard if lead is interseted
   const createLeadBussiness = (data) => {
     let { name, email, phone } = { ...data };
     let newData = { name, email, phone };
@@ -412,7 +409,15 @@ function Leads() {
     API_SERVICES.httpPOST(URLS.createLeadBussiness, callback);
   };
 
-  //setting  columns change function
+  //call back after assigning leads
+  const assignLeadCallBack = (err, res) => {
+    getLeadsByFilters(reducer.filter);
+    if (reducer.assignType === "single") {
+      dispatch(actions.closeAssignModal());
+    }
+  };
+
+  // function to change columns after switching b/w main Tabs
   useEffect(() => {
     switch (reducer.filter.mainFilter) {
       case "completed":
@@ -426,7 +431,7 @@ function Leads() {
         let newCol2 = originalColumns.filter(
           (obj) => obj.accessor !== "actions"
         );
-        let actionCol2 = {
+       let actionCol2 = {
           Header: "Actions",
           accessor: "actions",
           Cell: (props) => {
@@ -443,12 +448,6 @@ function Leads() {
         return;
 
       case "untouched":
-        let newCol3 = originalColumns.filter(
-          (obj) =>
-            obj.Header !== "Call Response" &&
-            obj.Header !== "Call Count" &&
-            obj.Header !== "Call Status"
-        );
         setColumns(originalColumns);
         return;
 
@@ -464,7 +463,7 @@ function Leads() {
     wrapperRef?.current?.scrollTo(0, 0);
   }, [reducer.filter]);
 
-  // default reducer state on load
+  // setting reducer state to default after component gets unmounted
   useEffect(() => {
     return () => {
       dispatch(actions.setDefaultState());
@@ -504,7 +503,7 @@ function Leads() {
                     searchData: "",
                     pageNumber: 1,
                     pageRows: 10,
-                    range:null
+                    range: null,
                   })
                 )
               }
@@ -561,8 +560,8 @@ function Leads() {
                       actions.setFilter({
                         ...reducer.filter,
                         searchData: e.target.value,
-                        pageNumber:1,
-                        pageSize:10
+                        pageNumber: 1,
+                        pageSize: 10,
                       })
                     );
                   }}
@@ -570,7 +569,25 @@ function Leads() {
               </div>
 
               <div>
-           {reducer.filter.subFilter === "oldLeads" && <img src={calendarIcon} onClick = {()=>setOpenCalendar(open=>!open)} />}
+                {reducer.filter.range && (
+                  <>
+                    <p className="dateBlock">
+                      {utils.DateObjectToString(reducer.filter.range[0])}
+                    </p>
+                    <span style={{ color: "#fff" }}>-</span>
+                    <p className="dateBlock">
+                      {utils.DateObjectToString(reducer.filter.range[1])}
+                    </p>
+                  </>
+                )}
+                {reducer.filter.subFilter === "oldLeads" && (
+                  <img
+                    className = "calendar-icon"
+                    alt  ='calendar-icon'
+                    src={calendarIcon}
+                    onClick={() => setOpenCalendar((open) => !open)}
+                  />
+                )}
                 {reducer.filter.mainFilter === "untouched" && (
                   <button
                     onClick={() => {
@@ -585,7 +602,7 @@ function Leads() {
             </div>
 
             <div>
-              <p className = 'count'>TotalCount: {totalCount}</p>
+              <p className="count">Total Count: {totalCount}</p>
               <Table
                 wrapperRef={wrapperRef}
                 search={false}
@@ -641,183 +658,32 @@ function Leads() {
                 handleDisplay={() => dispatch(actions.closeAssignModal())}
               />
             )}
-            
+             <CalendarModal
+        show={openCalendar}
+        handleDisplay={(e) => setOpenCalendar(e)}
+        value={reducer.filter.range}
+        onChange={(arr) => {
+          setOpenCalendar(false);
+          // console.log(arr)
+          dispatch(
+            actions.setFilter({
+              ...reducer.filter,
+              range: [...arr],
+              pageNumber: 1,
+              pageSize: 10,
+            })
+          );
+          // setRange([...arr])
+        }}
+      />
           </div>
         )}
 
         {/* LEAD INNER PAGE */}
-        {reducer.openInner && (
-          <div className="leadsInner">
-            <IoIosArrowBack
-              className="goBack"
-              onClick={() => {
-                dispatch(actions.closeInner());
-              }}
-            />
-            <div className="leadsInnerWrapper">
-              <div className="bookingInvoiceContainer">
-                <div className="clientProfileContainer">
-                  <div className="clientProfile">
-                    <img src={clientProfile} alt="clientProfile" />
-                    <p>Manish Arora</p>
-                  </div>
-
-                  <div className="clientDescription">
-                    <p>Description</p>
-                    <p>
-                      Lorem ipsum dolor sit amet, consetetur sadipscing elitr,
-                      sed diam nonumy eirmod tempor invidunt ut labore et
-                    </p>
-                  </div>
-                  <div className="clientLocation">
-                    <img src={locIcon} alt="locationIcon" />
-                    <p>HSR Layout, Sec 3, 500102</p>
-                  </div>
-                </div>
-                <div className="bookingsInvoice">
-                  <p>Booking Invoice</p>
-                  <div>
-                    <p>Date</p>
-                    <p>02.01.2022</p>
-                    <p>Time</p>
-                    <p>9:30 am</p>
-                    <p>Day</p>
-                    <p>Sunday</p>
-                    <p>People</p>
-                    <p>10</p>
-                    <p>Requirements</p>
-                    <p>1 Cook + 1 helper</p>
-                    <p>Total Amount</p>
-                    <p>1700</p>
-                  </div>
-                  <div>
-                    <p>Product's</p>
-                    <div>
-                      {menuArr &&
-                        menuArr.map((item, i) => {
-                          return <p>{item}</p>;
-                        })}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="feedBackContainer">
-                <div className="feedBackInner">
-                  <div className="feedBackCard">
-                    <p>Product Details</p>
-                    <div>
-                      <img src={clientProfile} alt="clientProfile" />
-                      <div>
-                        <p>Internship - Machine Learning - Self-Paced</p>
-                        <p>
-                          Lorem ipsum dolor sit amet, consetetur sadipscing
-                          elitr, sed diam nonumy eirmod tempor invidunt ut
-                          labore et Lorem ipsum dolor sit amet, consetetur
-                          sadipscing elitr, sed diam nonumy eirmod tempor
-                          invidunt ut labore et consetetur sadipscing elitr, sed
-                          diam nonumy eirmod tempor invidunt ut labore et
-                        </p>
-                        <p
-                          style={{
-                            marginTop: "10px",
-                            borderRadius: "15px",
-                            paddingLeft: "10px",
-                            paddingRight: "10px",
-                            paddingTop: "2px",
-                            paddingBottom: "2px",
-                            fontSize: "14px",
-                            backgroundColor: "red",
-                            display: "inline-block",
-                          }}
-                        >
-                          {" "}
-                          Pending{" "}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="feedBackCard">
-                    <p>Product Details</p>
-                    <div>
-                      <img src={clientProfile} alt="clientProfile" />
-                      <div>
-                        <p>Internship - Web Development - Mentorled</p>
-                        <p>
-                          Lorem ipsum dolor sit amet, consetetur sadipscing
-                          elitr, sed diam nonumy eirmod tempor invidunt ut
-                          labore et Lorem ipsum dolor sit amet, consetetur
-                          sadipscing elitr, sed diam nonumy eirmod tempor
-                          invidunt ut labore et consetetur sadipscing elitr, sed
-                          diam nonumy eirmod tempor invidunt ut labore et
-                        </p>
-                        <p
-                          style={{
-                            marginTop: "10px",
-                            borderRadius: "15px",
-                            paddingLeft: "10px",
-                            paddingRight: "10px",
-                            paddingTop: "2px",
-                            paddingBottom: "2px",
-                            fontSize: "14px",
-                            backgroundColor: "green",
-                            display: "inline-block",
-                          }}
-                        >
-                          {" "}
-                          Paid{" "}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-      
-              <CalendarModal
-                show={openCalendar}
-                handleDisplay={(e) => setOpenCalendar(e)}
-                value={reducer.filter.range}
-                onChange={(arr)=>{
-                  setOpenCalendar(false);
-                 // console.log(arr)
-                  dispatch(actions.setFilter({...reducer.filter,range:[...arr],pageNumber:1,pageSize:10}));
-                 // setRange([...arr])
-                }}
-              />
-            
+        {reducer.openInner && <LeadsInner leadObj = {reducer.rowObj} goBack = {()=>dispatch(actions.closeInner())}/>}
+      </div>    
     </>
   );
 }
 
 export default Leads;
-/*
-branch: "branch 1"
-college: "College 11234"
-date: "2022-06-28T18:30:00.000Z"
-email: "hr@smackhire.com"
-isAssigned: false
-isCampaign: "true"
-isCustomer: false
-subMostFilter: "cold"
-leadId: "96OS8"
-name: "NIRMAL"
-occurrence: 1  
-phone: "8374370427"
-callLogs :    // Open Leads
-{
-status: "untouched","interested","notInterested","notAnswered","switchedOff","wrongNumber"
-response:""
-}
-callCount:''  // Open Leads
-yearOfPassOut: "2020"
-_id: "62badb71323fbc8e11aa716a"
-
-
-Leads filter data
-{mainFilter:'untouched'||'completed'||'pending'}
-{subFilter:'todayLeads'||'oldLeads'}
-{subMostFilter:'all'||'hot'||'cold'}
-*/

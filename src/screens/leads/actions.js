@@ -9,6 +9,7 @@ export const setDefaultState = () => {
 export const openInner = (rowObj) => {
   return {
     type: actionTypes.OPEN_INNER,
+    rowObj:rowObj,
     title: `Lead Id ${rowObj.leadId}`,
   };
 };

@@ -1,0 +1,75 @@
+/* LEADS INNER PAGE */
+
+.leadsInner>.goBack{
+    margin: 2% 10px 2% 0px;
+}
+.leadsInnerWrapper{
+   background-color: #3D3C44;
+   padding:4%;
+   border-radius: 8px;
+   color:var(--white);
+}
+
+
+.leadProfileContainer{
+    border-radius: 5px;
+    background-color: #63626A;
+    width: fit-content;
+    width: -moz-fit-content;
+    width: -webkit-fit-content;
+    margin: 0 3% 0 0;
+}
+
+.leadProfile{
+    border-top-right-radius: inherit;
+    border-top-left-radius: inherit;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.leadProfile>p{
+    font-size:16px;
+    font-weight: 500;
+    color:var(--primary)
+}
+
+
+.leadProfile>p>span{
+    color:var(--white);
+}
+
+
+.leadPurchaseContainer{
+    padding: 4% 0 0 0;
+}
+
+.modal.courseModal {
+    background-color: #3D3C3E;
+    border-radius: 10px;
+    width: 56%;
+    left: 56%;
+}
+
+.courseCard{
+    gap: 14px;
+    background: #897d6d;
+    width: 80%;
+    display: flex;
+    padding: 20px;
+    font-size: 14px;
+    color: #ffff;
+    border-radius: 5px;
+    flex-direction: column;
+}
+
+.courseCard>p:nth-of-type(1){
+  font-size: 16px;
+  color:var(--primary)
+}
+
+.courseCard>p>span{
+    color: var(--secondary);
+    font-weight: 600;
+}

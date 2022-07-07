@@ -32,17 +32,20 @@ module.exports = {
     // Lead Bulk Upload
     leadBulkUpload:'/leads/bulk/upload',
 
-    // Myteam
-    myteammembers:'/leads/direct/members',
-
     //get Unassigned leads count
     getUnassignedLeadsCount:"/leads/getUntouchedLeads",
+
+    // get Lead Purchase Details
+    getLeadPurchaseDetails:'/payment/getPurchaseDetails',
 
     // url to hit customer dashboard if lead response from call status comes as interested
     createLeadBussiness:"https://obform.loca.lt/api/v2/leadgen/create-lead-business",
 
     //redirect to customer dashboard
-    redirectToCustomerDashBoard: BASE_URL+"/auth/redirect"
+    redirectToCustomerDashBoard: BASE_URL+"/auth/redirect",
+
+     // Myteam
+     myteammembers:'/leads/direct/members',
 
   },
 };

@@ -99,6 +99,12 @@ button.btnPrimary:hover{
     cursor: pointer;
 }
 
+.calendar-icon{
+  width: 20px;
+  height:20px;
+  cursor:pointer;
+}
+
 
 
 

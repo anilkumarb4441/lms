@@ -35,6 +35,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         openInner: true,
         title: action.title,
+        rowObj:action.rowObj,
       };
 
     case actionTypes.CLOSE_INNER:
@@ -42,6 +43,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         openInner: false,
         title: "Leads",
+        rowObj:null,
       };
 
     case actionTypes.EDIT_LEAD:

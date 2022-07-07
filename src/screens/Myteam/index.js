@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Modal from "../../components/modal/modal";
-import Input from "../../components/Input"
+
 import Table from "../../components/Table";
-import {camelToSentence} from "../../utils/constants"
 import "./index.css";
 import API_SERVICES from "../../utils/API"
 import {URLS} from "../../utils/urlConstants"
 
-// Assets
-import chefImg from "../../assets/chefview/chef.png"
-
-
 // Components
 import ParticularTeamMember from "./ParticularTeamMember"
-import Dots from "../../components/dots/dots"
-import OverViewInner from "../clientOverview/overviewInner";
+import Input from "../../components/Input";
+
 
 function Myteam() {
 
@@ -22,7 +16,8 @@ function Myteam() {
 
   const[particularChef,setParticularChef] = useState(false);
   const [chefId, setChefId] = useState("")
-
+  const [filterQuery,setFilterQuery]  = useState({pageNumber:1,pageRows:5,search:''})
+  const [totalCount,setTotalCount] = useState(0)
   // const[openForm,setOpenForm]  = useState(false)
 
   const [originalData, setOriginalData] = useState([
@@ -87,15 +82,27 @@ function Myteam() {
   ]);
   useEffect(() => {
     getMyTeamData()
-  }, []);
+  }, [filterQuery]);
 
   function getMyTeamData(){
-    let callback = (err,res)=>{
-      if(res && res.status===200){ 
+    const callback = (err,res)=>{
+      if(err){
+        setTableData([]);
+        setTotalCount(0);
+        return
+   }
+      
+   if(res && res.status===200){ 
+        if(res.data[0]?.directMembers) {
           setTableData(res.data[0].directMembers)
-      }
+          setTotalCount(20)
+        }else{
+          setTableData([]);
+           setTotalCount(0);
+        }   
+      } 
     }
-    API_SERVICES.httpPOSTWithToken(URLS.myteammembers,{userId:''},callback)
+    API_SERVICES.httpPOSTWithToken(URLS.myteammembers,{...filterQuery,userId:''},callback)
   }
 
 
@@ -103,7 +110,7 @@ function Myteam() {
 <>
     {
       particularChef?<ParticularTeamMember chefId={chefId} setParticularChef={setParticularChef} />:
-      // particularChef?<OverViewInner chefId={chefId} particularChef={particularChef} setParticularChef={setParticularChef} />:
+    
       <div className = 'chefOverviewScreen'>
       <div className="screenTitleContainer">
           <p className="screenTitle">My Team</p>
@@ -111,7 +118,18 @@ function Myteam() {
           
           </div>
       </div>
-    <div><Table search = {true} columns={columns} data={tableData} tClass="myteam" /></div>
+    <div>   <Input inputClass='leadsSearch' type = "search"  placeholder="Search By Name/Email" name ="search" change = {(e)=>setFilterQuery({...filterQuery,pageNumber:1,search:e.target.value})} value = {filterQuery.search}/>
+             <Table 
+              pagination = {true}                 
+              currentPage={filterQuery.pageNumber}
+              pageSize={filterQuery.pageRows}
+              totalCount={totalCount} columns={columns} 
+              onPageChange={(pageNumber, pageRows) => {
+                  setFilterQuery({...filterQuery,pageNumber:pageNumber,pageRows:pageRows,search:''})
+              }}
+              data={tableData} tClass="myteam" 
+              />
+              </div>
     
       </div>
     }

@@ -62,6 +62,7 @@ function NavBar() {
         <div className="navLogoContainer">
           <img src={logo} alt="logo" />
           <p>Lead Management System</p>
+      { <p style = {{fontSize:'14px'}}>Welcome {localStorageService.getTokenDecode()?.name}</p>}
           <span></span>
         </div>
         <div className="navLinkContainer">
