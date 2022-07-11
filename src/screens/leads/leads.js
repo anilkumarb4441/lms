@@ -112,7 +112,9 @@ function Leads() {
       selectHeading: "Select Source",
       selectArr: [
         { name: "Facebook", value: "facebook" },
-        { name: "Linkedin", value: "linkedIn" },
+        { name: "Email", value: "email" },
+        { name: "Self", value: "self" },
+        { name: "CGFL", value: "cgfl" },
       ],
       label: "Source*",
       required: true,
