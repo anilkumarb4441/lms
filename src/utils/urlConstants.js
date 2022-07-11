@@ -43,7 +43,7 @@ module.exports = {
     createLeadBussiness:"https://demoadmin.verzeo.com/api/v2/leadgen/create-lead-business",
 
     //redirect to customer dashboard
-    redirectToCustomerDashBoard: "https://demoadmin.verzeo.com/auth/redirect",
+    redirectToCustomerDashBoard: BASE_URL+"/auth/redirect",
 
      // Myteam
      myteammembers:'/leads/direct/members',
