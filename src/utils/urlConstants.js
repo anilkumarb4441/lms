@@ -40,7 +40,7 @@ module.exports = {
     getLeadPurchaseDetails:'/payment/getPurchaseDetails',
 
     // url to hit customer dashboard if lead response from call status comes as interested
-    createLeadBussiness:"https://obform.loca.lt/api/v2/leadgen/create-lead-business",
+    createLeadBussiness:"https://demoadmin.verzeo.com/api/v2/leadgen/create-lead-business",
 
     //redirect to customer dashboard
     redirectToCustomerDashBoard: "https://demoadmin.verzeo.com/auth/redirect",
