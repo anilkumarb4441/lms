@@ -25,6 +25,7 @@ import AssignToModal from "../../components/assignToModal/assignToModal.js";
 import BulkUpload from "../../components/bulkUpload/bulkupload.js";
 import CalendarModal from "../../components/calendarModal/calendarModal.js";
 import LeadsInner from "../leadsInner/leadsInner.js";
+import Dropdown from "../../components/dropdown/dropdown.js";
 
 function Leads() {
   const reducer = useSelector((state) => state.leads);
@@ -483,19 +484,19 @@ function Leads() {
         {/* MAIN LEAD PAGE */}
         {!reducer.openInner && (
           <div>
-            <Tabs
-              tabArr={mainTabArr}
-              tabsClass="leadTabs"
-              activeValue={reducer.filter.mainFilter}
-              handleTab={(item) =>
-                dispatch(
-                  actions.setFilter({
-                    ...initialState.filter,
-                    mainFilter: item.value,
-                  })
-                )
-              }
+            <Dropdown
+             value = {reducer.filter.mainFilter}
+             options = {mainTabArr}
+             onchange={(item) =>
+              dispatch(
+                actions.setFilter({
+                  ...initialState.filter,
+                  mainFilter: item.value,
+                })
+              )
+            }
             />
+            
 
             <Tabs
               tabArr={subTabArr}

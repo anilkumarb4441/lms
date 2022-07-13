@@ -9,7 +9,7 @@ export const setDefaultState = () => {
 export const openInner = (rowObj) => {
   return {
     type: actionTypes.OPEN_INNER,
-    rowObj:rowObj,
+    rowObj: rowObj,
     title: `Lead Id ${rowObj.leadId}`,
   };
 };
@@ -21,34 +21,37 @@ export const closeInner = () => {
   };
 };
 
-// action to set all filter values 
-export const setFilter = (filter)=>{
-  return {type:actionTypes.SET_FILTER,filter:{...filter}}
-}
+// action to set all filter values
+export const setFilter = (filter) => {
+  return { type: actionTypes.SET_FILTER, filter: { ...filter } };
+};
 
 //action to add Lead
 export const addLead = (formData) => {
-    return {
-      type: actionTypes.ADD_LEAD,
-      formData: formData,
-    };
+  return {
+    type: actionTypes.ADD_LEAD,
+    formData: formData,
   };
+};
 
 //action to edit Lead
 export const editLead = (rowData, formData) => {
   let newRowData = { ...rowData };
-   let keys = formData.reduce((prev,current)=>{
-       return [...prev,current.name]
-   },[]).filter(k=>(k!=='source'&&k!=='isCampaign'));
+  let keys = formData
+    .reduce((prev, current) => {
+      return [...prev, current.name];
+    }, [])
+    .filter((k) => k !== "source" && k !== "isCampaign");
   let newArr = [{ name: "leadId", value: rowData.leadId }];
   formData.forEach((obj) => {
     let newObj = { ...obj };
-    let keyFound = keys.find((key) => key===obj.name);
-    if(keyFound) {newObj.value = newRowData[keyFound];
-        newArr = [...newArr, newObj];
-    }else{
-        return
-    }   
+    let keyFound = keys.find((key) => key === obj.name);
+    if (keyFound) {
+      newObj.value = newRowData[keyFound];
+      newArr = [...newArr, newObj];
+    } else {
+      return;
+    }
   });
   return {
     type: actionTypes.EDIT_LEAD,
@@ -64,29 +67,30 @@ export const updateCallResponse = (rowData, formData) => {
   };
   let keys = Object.keys(newRowData);
   let newArr = [
-  { name: "leadId", value: rowData.leadId },
-  { name: "referenceId", value: rowData.referenceId }
-];
+    { name: "leadId", value: rowData.leadId },
+    { name: "referenceId", value: rowData.referenceId },
+  ];
   formData.forEach((obj) => {
     let newObj = { ...obj };
     let keyFound = keys.find((key) => key === obj.name);
-    if(keyFound) {newObj.value = newRowData[keyFound];
-        newArr = [...newArr, newObj];
-    }else{
-        return
-    }  
+    if (keyFound) {
+      newObj.value = newRowData[keyFound];
+      newArr = [...newArr, newObj];
+    } else {
+      return;
+    }
   });
   return {
     type: actionTypes.UPDATE_CALL_RESPONSE,
-    formData:newArr
+    formData: newArr,
   };
 };
 
 //action to assign lead
-export const assignLead = (rowObj,assignType) => {
+export const assignLead = (rowObj, assignType) => {
   return {
     type: actionTypes.ASSIGN_LEAD,
-    assignType:assignType,
+    assignType: assignType,
     rowObj: rowObj,
   };
 };
@@ -134,6 +138,30 @@ export const changeInput = (e, i, formData) => {
   let formInput = { ...newArr[i] };
   if (e.target.type === "checkbox") {
     formInput.value = e.target.checked;
+    // code to change source options if campaign generated is checked or unchecked
+    let sourceInput = newArr.find((el) => (el.name === "source"));
+    let sourceIndex = newArr.findIndex((el) => (el.name === "source"));
+    let selectArr = [...sourceInput.selectArr].filter(
+      (option) => option.value !== "email" && option.value !== "facebook"
+    );
+    
+    if (e.target.checked) {
+      //adding facebook,email if campaign generated is true
+      newArr.splice(sourceIndex, 1, {
+        ...sourceInput,
+        selectArr: [
+          ...selectArr,
+          { name: "Email", value: "email" },
+          { name: "Facebook", value: "facebook" },
+        ],
+      });
+    } else {
+      //removing facebook,email if campaign generated is false
+      newArr.splice(sourceIndex, 1, {
+        ...sourceInput,
+        selectArr: [...selectArr],
+      });
+    }
   } else {
     formInput.value = e.target.value;
   }
@@ -143,4 +171,3 @@ export const changeInput = (e, i, formData) => {
     formData: newArr,
   };
 };
-

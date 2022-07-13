@@ -16,10 +16,14 @@ import DoughnutComp from "../../components/doughnut/doughnut"
 import Table from "../../components/Table";
 import Tabs from "../../components/tabs/tabs.js";
 
+import API_SERVICES from "../../utils/API"
+import {URLS} from "../../utils/urlConstants"
+
 
 function ParticularTeamMember({user,setOpenInner}) {
   const mainref  =  useRef(null)
-
+  const [filterQuery,setFilterQuery]  = useState({pageNumber:1,pageRows:5,search:''})
+  const [totalCount,setTotalCount] = useState(0)
   // Tabs
   const mainTabArr = [
     { name: "Team", value: "team" },
@@ -64,9 +68,29 @@ function getPartData(e,key){
  
 }
 
+function getMyTeamData(){
+  const callback = (err,res)=>{
+    if(err){
+      setTableData([]);
+      setTotalCount(0);
+      return
+ }
+    
+ if(res && res.status===200){ 
+      if(res.data[0]?.directMembers) {
+        setTableData(res.data[0].directMembers)
+        setTotalCount(20)
+      }else{
+        setTableData([]);
+         setTotalCount(0);
+      }   
+    } 
+  }
+  API_SERVICES.httpPOSTWithToken(URLS.myteammembers,{...filterQuery,userId:user.userId,level:user.level},callback)
+}
 
 useEffect(()=>{
-  
+   
 },[])
 
 
@@ -167,7 +191,14 @@ const [columns, setColumns] = useState([
               subtabs==="leads"?
               <div className="totalTasksPart">
                 <h4>Leads</h4>
-                <Table search = {true} columns={columns} data={tableData} tClass="myteam" />
+                <Table search = {true} columns={columns} data={tableData}
+                currentPage={filterQuery.pageNumber}
+                pageSize={filterQuery.pageRows}
+                totalCount={totalCount} columns={columns} 
+                onPageChange={(pageNumber, pageRows) => {
+                    setFilterQuery({...filterQuery,pageNumber:pageNumber,pageRows:pageRows,search:''})
+                }}
+                tClass="myteam" />
               </div>:null
             }
             </div>
