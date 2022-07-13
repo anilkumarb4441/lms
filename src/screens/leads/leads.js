@@ -484,7 +484,9 @@ function Leads() {
         {/* MAIN LEAD PAGE */}
         {!reducer.openInner && (
           <div>
+            <div className = 'lead-main-filter-header'>
             <Dropdown
+             dropdownClass = 'lead-main-drop-down'
              value = {reducer.filter.mainFilter}
              options = {mainTabArr}
              onchange={(item) =>
@@ -496,25 +498,27 @@ function Leads() {
               )
             }
             />
-            
-
-            <Tabs
-              tabArr={subTabArr}
-              tabsClass="leadTabs"
-              activeValue={reducer.filter.subFilter}
-              handleTab={(item) =>
-                dispatch(
-                  actions.setFilter({
-                    ...reducer.filter,
-                    subFilter: item.value,
-                    searchData: "",
-                    pageNumber: 1,
-                    pageRows: 10,
-                    range: null,
-                  })
-                )
-              }
+           <Dropdown
+             dropdownClass = 'lead-main-drop-down'
+             value = {reducer.filter.subFilter}
+             options = {subTabArr}
+             onchange={(item) =>
+              dispatch(
+                actions.setFilter({
+                  ...reducer.filter,
+                  subFilter: item.value,
+                  searchData: "",
+                  pageNumber: 1,
+                  pageRows: 10,
+                  range: null,
+                })
+              )
+            }
             />
+            </div>
+          
+
+           
             <div className="lead-filter-header">
               <div>
                 <Input
