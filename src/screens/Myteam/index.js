@@ -8,17 +8,17 @@ import {URLS} from "../../utils/urlConstants"
 // Components
 import ParticularTeamMember from "./ParticularTeamMember"
 import Input from "../../components/Input";
+import {IoPersonCircleSharp} from "react-icons/io"
 
 
 function Myteam() {
 
-  // ParticularChef State
+  // Particular Team Member  State
 
-  const[particularChef,setParticularChef] = useState(false);
-  const [chefId, setChefId] = useState("")
+  const[openInner,setOpenInner] = useState(false);
+  const [user, setUser] = useState();
   const [filterQuery,setFilterQuery]  = useState({pageNumber:1,pageRows:5,search:''})
   const [totalCount,setTotalCount] = useState(0)
-  // const[openForm,setOpenForm]  = useState(false)
 
   const [originalData, setOriginalData] = useState([
     {
@@ -64,7 +64,7 @@ function Myteam() {
       Header: "userId",
       accessor: "userId",
       Cell:(props)=>{
-        return <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setParticularChef(true),setChefId(props.cell.row.original.userId))}>{props.cell.row.original.userId}</p>
+        return <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setOpenInner(true),setUser(props.cell.row.original))}>{props.cell.row.original.userId}</p>
       }
     },
     {
@@ -109,7 +109,7 @@ function Myteam() {
   return (
 <>
     {
-      particularChef?<ParticularTeamMember chefId={chefId} setParticularChef={setParticularChef} />:
+      openInner?<ParticularTeamMember user={user} setOpenInner={setOpenInner} />:
     
       <div className = 'chefOverviewScreen'>
       <div className="screenTitleContainer">
