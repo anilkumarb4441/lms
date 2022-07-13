@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef ,useEffect} from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
 import "./dropdown.css";
 
@@ -23,7 +23,24 @@ function Dropdown({
       : "";
   };
 
+  const handleBodyClick = (e)=>{
+    if(parentRef.current.contains(e.target)){
+      return
+    }else{
+      parentRef.current.classList.remove('open');
+      bodyRef.current.classList.remove('open');
+      headRef.current.classList.remove('rotate');
+      bodyRef.current.style.maxHeight=''
+    } 
+}
+ 
 
+useEffect(()=>{
+  window.addEventListener('click',handleBodyClick)
+  return ()=>{
+    window.removeEventListener('click',handleBodyClick)
+  }
+})
  
 
 

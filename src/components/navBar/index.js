@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import "./index.css";
 
 //assets
-import logo from "../../assets/navbar/codlogo.svg";
+import logo from "../../assets/navbar/logo.svg";
 import Dashboard from "../../assets/navbar/dashboard.svg";
 import Bookings from "../../assets/navbar/bookings.svg";
 import ChefView from "../../assets/navbar/chefview.svg";
@@ -62,7 +62,7 @@ function NavBar() {
             })}
         </div>
           <div className = "navButtons">
-          <button onClick = {Redirect}>Customer DashBoard</button>
+          <button onClick = {Redirect}>Customer Dashboard</button>
           <button onClick = {logOut}>Logout</button> 
           </div>
       </div>

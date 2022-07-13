@@ -10,21 +10,17 @@ function Modal({
   show,
   title,
   modalClass='',
-  handleSaveValue,
-  handleSave,
   handleDisplay,
-  cancelBtn,
   body,
   bodyClick,
   header
 }) {
   const modalRef = useRef();
   const bodyClicked = (event) => {    
-     debugger;
     if (modalRef.current && modalRef.current.contains(event.target)) {
       return;
     }
-    handleDisplay(false);
+   closeModal()
   };
   useEffect(() => {
    
@@ -36,35 +32,21 @@ function Modal({
     };
   }, []);
 
+  const closeModal =  ()=>{
+    handleDisplay(false)
+  }
+
   return (
     show && (
       <>
-        <div className={`modal ${modalClass}`} ref={modalRef}>
+        <div className={`modal ${modalClass} active`} ref={modalRef}>
           {header && <div className="modalHeader">
             {title&&<div className="modalTitle">{title}</div>}
-            <IoIosClose className="modalClose" onClick={() => handleDisplay(false)}/>
+            <IoIosClose className="modalClose" onClick={() => closeModal()}/>
           </div>}
-          <div className="modalBody"> {body}</div>
-         
-                {handleSave && (  <div className={`modalFooter`}>
-                      
-              <button
-                onClick={(e) => handleSave(e)}
-                style={{ cursor: "pointer" }}
-              >
-                {handleSaveValue}
-              </button>
-              {cancelBtn&&<button
-                onClick={()=>handleDisplay(false)}
-                style={{  cursor: "pointer" }}
-              >
-                cancel
-              </button>}
-            
-          </div>
-          )}
+          <div className="modalBody"> {body}</div>       
         </div>
-        <Backdrop close ={()=>handleDisplay(false)}/>
+        <Backdrop close ={()=>closeModal()}/>
       </>
     )
   );

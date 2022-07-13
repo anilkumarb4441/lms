@@ -18,7 +18,7 @@ export const initialState = {
   mainFilter: "pending",
   subFilter: "todayLeads",
   subMostFilter: "all",
-  title: "Leads",
+  title: "",
   formHeading: "",
   formData: [],
   rowObj: null,
@@ -42,7 +42,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         openInner: false,
-        title: "Leads",
+        title: "",
         rowObj:null,
       };
 
