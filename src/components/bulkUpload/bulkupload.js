@@ -119,7 +119,10 @@ function BulkUpload({
                     <select name="source" onChange={(e)=>setbulkData({...bulkData,[e.target.name]:e.target.value})}>
                         <option value="">Select Source</option>
                         <option value="facebook">Facebook</option>
-                        <option value="linked">Linked In</option>
+                        <option value="linkedIn">Linked In</option>
+                        <option value="email">Email</option>
+                        <option value="self">Self</option>
+                        <option value="cgfl">CGFL</option>
                     </select>
                     :null
                 }

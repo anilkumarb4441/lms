@@ -1,6 +1,9 @@
 
 //BASE URL
-const BASE_URL = "https://leadserver.verzeo.com"//"https://leadserver.verzeo.com"
+const BASE_URL ="https://leadserver.verzeo.com"
+// "http://192.168.1.29:2002"
+
+
 module.exports = {
   URLS: { 
 
@@ -39,7 +42,7 @@ module.exports = {
     getLeadPurchaseDetails:'/payment/getPurchaseDetails',
 
     // url to hit customer dashboard if lead response from call status comes as interested
-    createLeadBussiness:"https://obform.loca.lt/api/v2/leadgen/create-lead-business",
+    createLeadBussiness:"https://demoadmin.verzeo.com/api/v2/leadgen/create-lead-business",
 
     //redirect to customer dashboard
     redirectToCustomerDashBoard: BASE_URL+"/auth/redirect",

@@ -112,7 +112,9 @@ function Leads() {
       selectHeading: "Select Source",
       selectArr: [
         { name: "Facebook", value: "facebook" },
-        { name: "Linkedin", value: "linkedIn" },
+        { name: "Email", value: "email" },
+        { name: "Self", value: "self" },
+        { name: "CGFL", value: "cgfl" },
       ],
       label: "Source*",
       required: true,
@@ -338,6 +340,7 @@ function Leads() {
 
   // function to create new lead
   const createLead = (data) => {
+    console.log(data,"checking for refrence ids")
     const callback = (err, res) => {
       if (res && res.status === 201) {
         let newData = [...tableData];
@@ -369,9 +372,11 @@ function Leads() {
 
   // function to update call status
   const updateCallStatus = (data) => {
+
     const callback = (err, res) => {
       if (res && res.status === 200) {
         if (res.data?.callLogs?.status === "interested") {
+          console.log(res.data,"update call lofg")
           createLeadBussiness(res.data);
         }
         let index = tableData.findIndex(
@@ -393,9 +398,10 @@ function Leads() {
 
   // update call status in customer dashboard if lead is interseted
   const createLeadBussiness = (data) => {
-    let { name, email, phone } = { ...data };
+    
+    let  { name, email, phone } = data;
     let newData = { name, email, phone };
-    newData.leadBy = data.generatedBy;
+    newData.leadby = data.generatedBy;
     newData.referenceid = data.referenceId;
     newData.leadid = data.leadId;
     const callback = (err, res) => {
@@ -406,7 +412,7 @@ function Leads() {
         utils.toastSuccess("Lead updated in Customer DashBoard");
       }
     };
-    API_SERVICES.httpPOST(URLS.createLeadBussiness, callback);
+    API_SERVICES.httpPOST(URLS.createLeadBussiness,newData, callback);
   };
 
   //call back after assigning leads

@@ -76,7 +76,7 @@ export default class API_Services {
         headers:headers
     })
       .then((res) => {
-        console.log(res)
+        console.log(res.data)
         callback(null, res);
       })
       .catch((err) => {
