@@ -58,13 +58,17 @@ function Myteam() {
       phone: 7729088005,
     },
   ]);
+  let iim = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE50XUNVmCwLBsiboW_ezv-O6FK2KRmh38SQ&usqp=CAU"
   const [tableData, setTableData] = useState([]);
   const [columns, setColumns] = useState([
     {
       Header: "userId",
       accessor: "userId",
       Cell:(props)=>{
-        return <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setOpenInner(true),setUser(props.cell.row.original))}>{props.cell.row.original.userId}</p>
+        return <div style = {{ display:"flex", alignItems:"center", gap:"10px"}} >
+          <img src={iim} style={{width:"30px", height:"30px", borderRadius:'50%'}}/>
+          <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setOpenInner(true),setUser(props.cell.row.original))}>{props.cell.row.original.userId}</p>
+          </div>
       }
     },
     {
@@ -108,17 +112,20 @@ function Myteam() {
 
   return (
 <>
-    {
+    { 
       openInner?<ParticularTeamMember user={user} setOpenInner={setOpenInner} />:
     
       <div className = 'chefOverviewScreen'>
-      <div className="screenTitleContainer">
+      {/* <div className="screenTitleContainer">
           <p className="screenTitle">My Team</p>
           <div>
           
           </div>
-      </div>
-    <div>   <Input inputClass='leadsSearch' type = "search"  placeholder="Search By Name/Email" name ="search" change = {(e)=>setFilterQuery({...filterQuery,pageNumber:1,search:e.target.value})} value = {filterQuery.search}/>
+      </div> */}
+    <div>   
+            <div className="myTeam-search-wraper">
+              <Input inputClass='leadsSearch' type = "search"  placeholder="Search By Name/Email" name ="search" change = {(e)=>setFilterQuery({...filterQuery,pageNumber:1,search:e.target.value})} value = {filterQuery.search}/>
+            </div>
              <Table 
               pagination = {true}                 
               currentPage={filterQuery.pageNumber}
@@ -130,16 +137,6 @@ function Myteam() {
               data={tableData} tClass="myteam" 
               />
               </div>
-              <Table
-                pagination={true}
-                currentPage={filterQuery.pageNumber}
-                pageSize={filterQuery.pageRows}
-                totalCount={totalCount} columns={columns}
-                onPageChange={(pageNumber, pageRows) => {
-                  setFilterQuery({ ...filterQuery, pageNumber: pageNumber, pageRows: pageRows, search: '' })
-                }}
-                data={tableData} tClass="myteam"
-              />
             </div>
         
       }
