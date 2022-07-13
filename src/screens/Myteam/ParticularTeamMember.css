@@ -2,16 +2,25 @@
     padding: 2% 0% 0% 0%;   
 }
 
-.mainParticular .flexalign{
+/* .mainParticular .flexalign{
     display: flex;
     align-items: center;
     margin: 0% 0% 3% 0%;
-}
+} */
 
-.mainParticular>.flexalign>h1{
+/* .mainParticular>.flexalign>h1{
     font-size: 20px;
     color: white;
     display: inline-block;
+} */
+
+.partiMyTeam-backButton{
+    display: flex;
+    gap: 20px;
+
+}
+.partiMyTeam-backButton .partBackBTN svg{
+ width: 50px ;
 }
 
 .mainParticular .sPOne{
