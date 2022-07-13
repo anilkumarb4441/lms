@@ -8,17 +8,17 @@ import { URLS } from "../../utils/urlConstants"
 // Components
 import ParticularTeamMember from "./ParticularTeamMember"
 import Input from "../../components/Input";
+import {IoPersonCircleSharp} from "react-icons/io"
 
 
 function Myteam() {
 
-  // ParticularChef State
+  // Particular Team Member  State
 
-  const [particularChef, setParticularChef] = useState(false);
-  const [chefId, setChefId] = useState("")
-  const [filterQuery, setFilterQuery] = useState({ pageNumber: 1, pageRows: 5, search: '' })
-  const [totalCount, setTotalCount] = useState(0)
-  // const[openForm,setOpenForm]  = useState(false)
+  const[openInner,setOpenInner] = useState(false);
+  const [user, setUser] = useState();
+  const [filterQuery,setFilterQuery]  = useState({pageNumber:1,pageRows:5,search:''})
+  const [totalCount,setTotalCount] = useState(0)
 
   const [originalData, setOriginalData] = useState([
     {
@@ -63,8 +63,8 @@ function Myteam() {
     {
       Header: "userId",
       accessor: "userId",
-      Cell: (props) => {
-        return <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={(e) => (setParticularChef(true), setChefId(props.cell.row.original.userId))}>{props.cell.row.original.userId}</p>
+      Cell:(props)=>{
+        return <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setOpenInner(true),setUser(props.cell.row.original))}>{props.cell.row.original.userId}</p>
       }
     },
     {
@@ -107,18 +107,28 @@ function Myteam() {
 
 
   return (
-    <>
-      {
-        particularChef ? <ParticularTeamMember chefId={chefId} setParticularChef={setParticularChef} /> :
-          <div className='chefOverviewScreen'>
-            {/* <div className="screenTitleContainer">
-              <p className="screenTitle">My Team</p>
-              <div></div>
-            </div> */}
-            
-            <div>     
-              <div className="myTeam-search-wraper">
-              <Input inputClass='leadsSearch' type="search" placeholder="Search By Name/Email" name="search" change={(e) => setFilterQuery({ ...filterQuery, pageNumber: 1, search: e.target.value })} value={filterQuery.search} />
+<>
+    {
+      openInner?<ParticularTeamMember user={user} setOpenInner={setOpenInner} />:
+    
+      <div className = 'chefOverviewScreen'>
+      <div className="screenTitleContainer">
+          <p className="screenTitle">My Team</p>
+          <div>
+          
+          </div>
+      </div>
+    <div>   <Input inputClass='leadsSearch' type = "search"  placeholder="Search By Name/Email" name ="search" change = {(e)=>setFilterQuery({...filterQuery,pageNumber:1,search:e.target.value})} value = {filterQuery.search}/>
+             <Table 
+              pagination = {true}                 
+              currentPage={filterQuery.pageNumber}
+              pageSize={filterQuery.pageRows}
+              totalCount={totalCount} columns={columns} 
+              onPageChange={(pageNumber, pageRows) => {
+                  setFilterQuery({...filterQuery,pageNumber:pageNumber,pageRows:pageRows,search:''})
+              }}
+              data={tableData} tClass="myteam" 
+              />
               </div>
               <Table
                 pagination={true}
@@ -131,7 +141,7 @@ function Myteam() {
                 data={tableData} tClass="myteam"
               />
             </div>
-          </div>
+        
       }
 
     </>

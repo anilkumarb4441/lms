@@ -25,6 +25,7 @@ import AssignToModal from "../../components/assignToModal/assignToModal.js";
 import BulkUpload from "../../components/bulkUpload/bulkupload.js";
 import CalendarModal from "../../components/calendarModal/calendarModal.js";
 import LeadsInner from "../leadsInner/leadsInner.js";
+import Dropdown from "../../components/dropdown/dropdown.js";
 
 function Leads() {
   const reducer = useSelector((state) => state.leads);
@@ -483,37 +484,41 @@ function Leads() {
         {/* MAIN LEAD PAGE */}
         {!reducer.openInner && (
           <div>
-            <Tabs
-              tabArr={mainTabArr}
-              tabsClass="leadTabs"
-              activeValue={reducer.filter.mainFilter}
-              handleTab={(item) =>
-                dispatch(
-                  actions.setFilter({
-                    ...initialState.filter,
-                    mainFilter: item.value,
-                  })
-                )
-              }
+            <div className = 'lead-main-filter-header'>
+            <Dropdown
+             dropdownClass = 'lead-main-drop-down'
+             value = {reducer.filter.mainFilter}
+             options = {mainTabArr}
+             onchange={(item) =>
+              dispatch(
+                actions.setFilter({
+                  ...initialState.filter,
+                  mainFilter: item.value,
+                })
+              )
+            }
             />
+           <Dropdown
+             dropdownClass = 'lead-main-drop-down'
+             value = {reducer.filter.subFilter}
+             options = {subTabArr}
+             onchange={(item) =>
+              dispatch(
+                actions.setFilter({
+                  ...reducer.filter,
+                  subFilter: item.value,
+                  searchData: "",
+                  pageNumber: 1,
+                  pageRows: 10,
+                  range: null,
+                })
+              )
+            }
+            />
+            </div>
+          
 
-            <Tabs
-              tabArr={subTabArr}
-              tabsClass="leadTabs"
-              activeValue={reducer.filter.subFilter}
-              handleTab={(item) =>
-                dispatch(
-                  actions.setFilter({
-                    ...reducer.filter,
-                    subFilter: item.value,
-                    searchData: "",
-                    pageNumber: 1,
-                    pageRows: 10,
-                    range: null,
-                  })
-                )
-              }
-            />
+           
             <div className="lead-filter-header">
               <div>
                 <Input

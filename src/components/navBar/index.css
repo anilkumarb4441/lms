@@ -1,14 +1,12 @@
-.navBar{
-    background-color:var(--secondary);
-}
+
 
 .sideNav{
     position: fixed;
     top:0;
     left:0;
-    width:21%;
+    width:19%;
     height:100vh;
-    background-color:var(--secondary);
+    background-color:var(--primary);
 }
 
 .navLogoContainer{
@@ -34,7 +32,7 @@
 
 .navLinkContainer{
     overflow-y: scroll;
-    height: 65vh;
+    height: 50vh;
     padding: 0 0 3% 0
 } 
 .navLinkContainer a{
@@ -43,17 +41,15 @@
     font-family: 'Roboto';
     width: 80%;
     margin: 0% auto;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 300;
-    /* padding: 8px 0; */
+    
     padding: 12px 0;
-    /* border-left: 5px solid transparent; */
 }
 
 .navLinkContainer a:hover,.navLinkContainer a.active{
-    background-color:var(--primary80);  
+    background-color:var(--primaryLight);  
     border-radius: 7px;
-    /* border-left: 5px solid #E6AA55; */
 }
 
 .navLinkContainer a>img{
@@ -67,13 +63,13 @@
 
 .navLinkContainer a>p.active{
     /* color: #E6AA55; */
-    color: #e6aa55;
+    color: var(--white);
     font-weight: 600;
 }
 
 .horizontalNav{
     padding: 0vh 2%;
-    margin-left: 21%;
+    margin-left: 19%;
     height: 12vh;
     display: flex;
     align-items: center;
@@ -93,24 +89,38 @@
 }
 
 .navLinkContainer .paAnchor>p.active{
-    border-left: 5px solid #E6AA55;
+    border-left: 5px solid var(--primaryLight);
     border-radius: 10px 0px 0px 10px;
 }
 
-.horizontalNav>button{
+.navButtons{
+    display: flex;
+    flex-direction: column;
+    gap:50px;
+    align-items: center;
+}
+
+.navButtons>button{
     display: block;
-    width: fit-content;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 15px;
+    width: 68%;
+    min-width: 175px;
+    padding: 9px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.navButtons>button:nth-of-type(1){
+   color:#292929;
+   font-weight: 500;
+   background-color: #9DB1FC;
+   box-shadow: 0px 3px 10px #00000029;
+}
+
+.navButtons>button:nth-of-type(2){
+    background-color: #E10505;
     color: var(--white);
-    background-color: #a10c0c;
 }
 
-.horizontalNav>button:nth-of-type(2){
-    background-color: var(--completed);
-}
-
-.horizontalNav>button:hover{
-    background-color:  #e74c3c63
+.navButtons>button:hover{
+    opacity: 0.7
 }

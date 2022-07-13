@@ -8,13 +8,6 @@ import Dashboard from "../../assets/navbar/dashboard.svg";
 import Bookings from "../../assets/navbar/bookings.svg";
 import ChefView from "../../assets/navbar/chefview.svg";
 
-
-
-import ColorDashboard from "../../assets/navbar/ORANGE/Dashboard.svg";
-import ColorBookings from "../../assets/navbar/ORANGE/Bookings.svg";
-import ColorChefView from "../../assets/navbar/ORANGE/Chef Overview.svg";
-
-
 import { Link, useLocation } from "react-router-dom";
 import localStorageService from "../../utils/localStorageService";
 import { URLS } from "../../utils/urlConstants";
@@ -22,17 +15,9 @@ import API_SERVICES from "../../utils/API"
 
 function NavBar() {
   const [navData, setNavData] = useState([
-    { name: "Dashboard", path: "/", img: Dashboard, Colorimg: ColorDashboard },
-    { name: "Leads", path: "/leads", img: Bookings, Colorimg: ColorBookings },
-    { name: "My Team", path: "/myteam", img: ChefView, Colorimg: ColorChefView },
-    // { name: "Chef Attendance", path: "/chefAttendance", img: ChefView, Colorimg: ColorChefView },
-    // { name: "Client Overview", path: "/clientOverview", img: ClientView, Colorimg: ColorClientView },
-    // { name: "Chat System", path: "/chatSystem", img: Dashboard, Colorimg: Dashboard },
-    // { name: "Calendar", path: "/calendar", img: Calendar, Colorimg: Calendar },
-    // { name: "Services", path: "/services", img: Services, Colorimg: ColorServices },
-    // { name: "Pricing", path: "/pricing", img: Feed, Colorimg: Feed },
-    // { name: "Feed", path: "/feed", img: Feed, Colorimg: Feed },
-    // { name: "Settings", path: "/settings", img: Settings, Colorimg: ColorSettings },
+    { name: "Dashboard", path: "/", img: Dashboard },
+    { name: "Leads", path: "/leads", img: Bookings },
+    { name: "My Team", path: "/myteam", img: ChefView },
   ]);
 
   const location = useLocation();
@@ -54,15 +39,12 @@ function NavBar() {
 
   return (
     <div className = 'navBar'>
-      <div className="horizontalNav">
-      <button className = "logOut" onClick = {logOut}>Log out</button>
-      <button className = "logOut" onClick = {Redirect}>Redirect</button>
-      </div>
+    
       <div className="sideNav">
         <div className="navLogoContainer">
           <img src={logo} alt="logo" />
           <p>Lead Management System</p>
-      { <p style = {{fontSize:'14px'}}>Welcome {localStorageService.getTokenDecode()?.name}</p>}
+          { <p style = {{fontSize:'14px'}}>Hello, {localStorageService.getTokenDecode()?.name}</p>}
           <span></span>
         </div>
         <div className="navLinkContainer">
@@ -72,14 +54,17 @@ function NavBar() {
               <div key = {i} className="paAnchor">
                 <p className={location.pathname===item.path?"active":""}></p>
                 <Link to={item.path} key={item.name} className={location.pathname===item.path?"active":""}>
-                  <img alt="navIcon" src={location.pathname===item.path?item.Colorimg:item.img}/>
+                  <img alt="navIcon" src={item.img}/>
                   <p className={location.pathname===item.path?"active":""}>{item.name}</p>
                 </Link>
               </div>
               );
             })}
         </div>
-      
+          <div className = "navButtons">
+          <button onClick = {Redirect}>Customer DashBoard</button>
+          <button onClick = {logOut}>Logout</button> 
+          </div>
       </div>
     </div>
   );

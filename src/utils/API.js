@@ -38,6 +38,7 @@ export default class API_Services {
         // Forbidden. Not allowed to access the page
         if (err.response && err.response.status && (err.response.status == 403||err.response.status===401)) {
           let navURL = "/";
+          localStorageService.clearToken()
           toastError('Your Session Got Expired. Please Login again')
           return (window.location = navURL);
         }
@@ -83,6 +84,7 @@ export default class API_Services {
         // Forbidden. Not allowed to access the page
         if (err.response && err.response.status && (err.response.status == 403||err.response.status===401)) {
           let navURL = "/";
+          localStorageService.clearToken()
           toastError('Your Session Got Expired. Please Login again')
           return (window.location = navURL);
         }

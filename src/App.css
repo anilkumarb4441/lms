@@ -4,12 +4,13 @@
 
 
 :root{
-  --primary:#E6AA55;
-  --primary85:#E6AA5585;
+  --primary:#455591;
+  --primaryLight:#6577B8;
+  /* --primary85:#E6AA5585;
   --primary83:#E6AA5583;
   --primary80:#E6AA5580;
-  --secondary:#1F1E26;
-  --wrapperColor:#17161E;
+  --secondary:#1F1E26; */
+  --wrapperColor:#F9F9FB;
   --white:#fff;
   --black:#000;
   --booked:#1286EA;
@@ -32,9 +33,9 @@
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track { */
   /* background: var(--secondary); */
-}
+/* } */
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
@@ -53,11 +54,10 @@ button{
 
 .wrapperContainer{
    background-color: var(--wrapperColor);
-   margin-left: 21%;
+   margin-left: 19%;
    padding: 2% 6% 0% 4%;
-   height: 88vh;
+   height: 100vh;
    overflow-y: scroll;
-   box-shadow: inset 0px 3px 6px #100707;
 }
 
 .screenTitleContainer{

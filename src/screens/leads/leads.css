@@ -1,6 +1,14 @@
 /* LEADS MAIN PAGE */
-.leadTabs{
-    margin: 2% 0px;
+
+.lead-main-drop-down.custom-dropdown{
+    width:163px;
+}
+
+.lead-main-filter-header{
+    display:flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 15px 0;
 }
 
 .customInput.leadTable{

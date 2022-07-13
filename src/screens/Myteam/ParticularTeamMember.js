@@ -16,9 +16,14 @@ import DoughnutComp from "../../components/doughnut/doughnut"
 import Table from "../../components/Table";
 import Tabs from "../../components/tabs/tabs.js";
 
-function ParticularTeamMember({chefId,setParticularChef}) {
-  const mainref  =  useRef(null)
+import API_SERVICES from "../../utils/API"
+import {URLS} from "../../utils/urlConstants"
 
+
+function ParticularTeamMember({user,setOpenInner}) {
+  const mainref  =  useRef(null)
+  const [filterQuery,setFilterQuery]  = useState({pageNumber:1,pageRows:5,search:''})
+  const [totalCount,setTotalCount] = useState(0)
   // Tabs
   const mainTabArr = [
     { name: "Team", value: "team" },
@@ -52,71 +57,48 @@ function ParticularTeamMember({chefId,setParticularChef}) {
   
   })
 
-// const [parmemId , setparmemId] = useState(chefId)
-const[tabarray , settabarray] = useState([chefId]);
+// const [parmemId , setparmemId] = useState(userId)
+
 
 function updatePage(x){
-  settabarray(tabarray => [...tabarray, x])
-  mainref.current.scrollIntoView();
+ 
 }
 
 function getPartData(e,key){
-  settabarray(tabarray.slice(0,key+1))
+ 
 }
 
+function getMyTeamData(){
+  const callback = (err,res)=>{
+    if(err){
+      setTableData([]);
+      setTotalCount(0);
+      return
+ }
+    
+ if(res && res.status===200){ 
+      if(res.data[0]?.directMembers) {
+        setTableData(res.data[0].directMembers)
+        setTotalCount(20)
+      }else{
+        setTableData([]);
+         setTotalCount(0);
+      }   
+    } 
+  }
+  API_SERVICES.httpPOSTWithToken(URLS.myteammembers,{...filterQuery,userId:user.userId,level:user.level},callback)
+}
 
 useEffect(()=>{
-  getDataOfMem(tabarray[tabarray.length-1]);
-  // console.log(tabarray[tabarray.length-1]);
-},[tabarray])
+   
+},[])
 
 
-function getDataOfMem(x){
-
-}
 
 
 // Table
 
-const [originalData, setOriginalData] = useState([
-  {
-    memId: "NAN54163",
-    memberName: "Manu",
-    email: "manojkumarobulasetty785@gmail.com",
-    phone: 7729088005,
-  },
-  {
-    memId: "NAN",
-    memberName: "Manu",
-    email: "manojkumarobulasetty785@gmail.com",
-    phone: 7729088005,
-  },
-  {
-    memId: "NAN",
-    memberName: "Manu",
-    email: "manojkumarobulasetty785@gmail.com",
-    phone: 7729088005,
-  },
-  {
-    memId: "NAN",
-    memberName: "Manu",
-    email: "manojkumarobulasetty785@gmail.com",
-    phone: 7729088005,
-  },
-  {
-    memId: "NANjhk",
-    memberName: "Manu",
-    email: "manojkumarobulasetty785@gmail.com",
-    phone: 7729088005,
-  },
-  {
-    memId: "NAN",
-    memberName: "Manu",
-    email: "manojkumarobulasetty785@gmail.com",
-    phone: 7729088005,
-  },
-]);
-const [tableData,setTableData] = useState(originalData);
+const [tableData,setTableData] = useState([]);
 const [columns, setColumns] = useState([
   {
     Header: "Member Id",
@@ -150,17 +132,7 @@ const [columns, setColumns] = useState([
   return (
       <div className="mainParticular" ref={mainref}>
         <div className="flexalign">
-          <IoIosArrowBack className = 'goBack' onClick={(e)=>setParticularChef(false)}/>
-          <h1>Member Id:
-            {
-              tabarray.map((val,key)=>{
-                return(
-                  // &nbsp;/&nbsp;
-                  <button onClick={(e)=>getPartData(val,key)} key={key} className="meIds">&nbsp;/<span>{val}</span></button>
-                )
-              })
-            }
-          </h1>
+          <IoIosArrowBack className = 'goBack' onClick={(e)=>setOpenInner(false)}/>
         </div>
 
 
@@ -170,24 +142,22 @@ const [columns, setColumns] = useState([
                 <div className="fPDiv">
                   <img src={dummy} alt="Dummy Image" />
                   <div className="InfoChef">
-                    <h2>Ekka Singh</h2>
+                    <h2>{user?.name}</h2>
                   </div>
                 </div>
-                <p className="chefPInfo">
-                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-                </p>
+               
                 <div className="sPflexDiv">
                   <img src={mailIcon} alt="MailIcon" />
-                  <a href="mailto:Enakshi@gmail.com">Enakshi@gmail.com</a>
+                  <a href="#">{user?.email}</a>
                 </div>
                 <div className="sPflexDiv">
                   <img src={phoneIcon} alt="MailIcon" />
-                  <a href="tel:9123456789">9123456789</a>
+                  <a href="#">{user?.phone}</a>
                 </div>
               </div>
               <div className='userTicketsSection'>
                     <div className='ticketHead'>
-                      <h4>Tickets Raised</h4>
+                      <h4>Leads Stats</h4>
                     </div>
                     <div className='tickets'>
                       <div>
@@ -221,7 +191,14 @@ const [columns, setColumns] = useState([
               subtabs==="leads"?
               <div className="totalTasksPart">
                 <h4>Leads</h4>
-                <Table search = {true} columns={columns} data={tableData} tClass="myteam" />
+                <Table search = {true} columns={columns} data={tableData}
+                currentPage={filterQuery.pageNumber}
+                pageSize={filterQuery.pageRows}
+                totalCount={totalCount} columns={columns} 
+                onPageChange={(pageNumber, pageRows) => {
+                    setFilterQuery({...filterQuery,pageNumber:pageNumber,pageRows:pageRows,search:''})
+                }}
+                tClass="myteam" />
               </div>:null
             }
             </div>
