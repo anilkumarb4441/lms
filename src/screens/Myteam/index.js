@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Table from "../../components/Table";
 import "./index.css";
 import API_SERVICES from "../../utils/API"
-import {URLS} from "../../utils/urlConstants"
+import { URLS } from "../../utils/urlConstants"
 
 // Components
 import ParticularTeamMember from "./ParticularTeamMember"
@@ -14,10 +14,10 @@ function Myteam() {
 
   // ParticularChef State
 
-  const[particularChef,setParticularChef] = useState(false);
+  const [particularChef, setParticularChef] = useState(false);
   const [chefId, setChefId] = useState("")
-  const [filterQuery,setFilterQuery]  = useState({pageNumber:1,pageRows:5,search:''})
-  const [totalCount,setTotalCount] = useState(0)
+  const [filterQuery, setFilterQuery] = useState({ pageNumber: 1, pageRows: 5, search: '' })
+  const [totalCount, setTotalCount] = useState(0)
   // const[openForm,setOpenForm]  = useState(false)
 
   const [originalData, setOriginalData] = useState([
@@ -58,13 +58,13 @@ function Myteam() {
       phone: 7729088005,
     },
   ]);
-  const [tableData,setTableData] = useState([]);
+  const [tableData, setTableData] = useState([]);
   const [columns, setColumns] = useState([
     {
       Header: "userId",
       accessor: "userId",
-      Cell:(props)=>{
-        return <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setParticularChef(true),setChefId(props.cell.row.original.userId))}>{props.cell.row.original.userId}</p>
+      Cell: (props) => {
+        return <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={(e) => (setParticularChef(true), setChefId(props.cell.row.original.userId))}>{props.cell.row.original.userId}</p>
       }
     },
     {
@@ -77,65 +77,65 @@ function Myteam() {
     },
     {
       Header: "Phone Number",
-      accessor:'phone'
+      accessor: 'phone'
     },
   ]);
   useEffect(() => {
     getMyTeamData()
   }, [filterQuery]);
 
-  function getMyTeamData(){
-    const callback = (err,res)=>{
-      if(err){
+  function getMyTeamData() {
+    const callback = (err, res) => {
+      if (err) {
         setTableData([]);
         setTotalCount(0);
         return
-   }
-      
-   if(res && res.status===200){ 
-        if(res.data[0]?.directMembers) {
+      }
+
+      if (res && res.status === 200) {
+        if (res.data[0]?.directMembers) {
           setTableData(res.data[0].directMembers)
           setTotalCount(20)
-        }else{
+        } else {
           setTableData([]);
-           setTotalCount(0);
-        }   
-      } 
+          setTotalCount(0);
+        }
+      }
     }
-    API_SERVICES.httpPOSTWithToken(URLS.myteammembers,{...filterQuery,userId:''},callback)
+    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, { ...filterQuery, userId: '' }, callback)
   }
 
 
   return (
-<>
-    {
-      particularChef?<ParticularTeamMember chefId={chefId} setParticularChef={setParticularChef} />:
-    
-      <div className = 'chefOverviewScreen'>
-      <div className="screenTitleContainer">
-          <p className="screenTitle">My Team</p>
-          <div>
-          
-          </div>
-      </div>
-    <div>   <Input inputClass='leadsSearch' type = "search"  placeholder="Search By Name/Email" name ="search" change = {(e)=>setFilterQuery({...filterQuery,pageNumber:1,search:e.target.value})} value = {filterQuery.search}/>
-             <Table 
-              pagination = {true}                 
-              currentPage={filterQuery.pageNumber}
-              pageSize={filterQuery.pageRows}
-              totalCount={totalCount} columns={columns} 
-              onPageChange={(pageNumber, pageRows) => {
-                  setFilterQuery({...filterQuery,pageNumber:pageNumber,pageRows:pageRows,search:''})
-              }}
-              data={tableData} tClass="myteam" 
-              />
+    <>
+      {
+        particularChef ? <ParticularTeamMember chefId={chefId} setParticularChef={setParticularChef} /> :
+          <div className='chefOverviewScreen'>
+            {/* <div className="screenTitleContainer">
+              <p className="screenTitle">My Team</p>
+              <div></div>
+            </div> */}
+            
+            <div>     
+              <div className="myTeam-search-wraper">
+              <Input inputClass='leadsSearch' type="search" placeholder="Search By Name/Email" name="search" change={(e) => setFilterQuery({ ...filterQuery, pageNumber: 1, search: e.target.value })} value={filterQuery.search} />
               </div>
-    
-      </div>
-    }
+              <Table
+                pagination={true}
+                currentPage={filterQuery.pageNumber}
+                pageSize={filterQuery.pageRows}
+                totalCount={totalCount} columns={columns}
+                onPageChange={(pageNumber, pageRows) => {
+                  setFilterQuery({ ...filterQuery, pageNumber: pageNumber, pageRows: pageRows, search: '' })
+                }}
+                data={tableData} tClass="myteam"
+              />
+            </div>
+          </div>
+      }
 
-  </>
-);
+    </>
+  );
 }
 
 export default Myteam;
