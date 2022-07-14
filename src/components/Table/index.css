@@ -1,7 +1,4 @@
 
-
-
-
 .TableContainer::-webkit-scrollbar{
     height:2px
  }
@@ -10,11 +7,6 @@
   border-radius: 10px;
      overflow-x: scroll;
  }
-
-
-
-
-
 
  .searchBar{ 
     display: flex;

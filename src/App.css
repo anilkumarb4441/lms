@@ -55,8 +55,8 @@ button{
 
 .wrapperContainer{
    background-color: var(--wrapperColor);
-   margin-left: 19%;
-   padding: 2% 6% 0% 4%;
+   margin-left: 16%;
+   padding: 2% 6% 0% 3%;
    height: 100vh;
    overflow-y: scroll;
 }
