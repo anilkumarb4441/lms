@@ -38,9 +38,10 @@ function DoughnutComp({type,digit,subtext,donughtfor,issue,pieData}){
                 </div>
             </div>
             :
-            donughtfor==="Pie"?
+            donughtfor==="doughnut"?
             <>
-                          <Pie   data = {pieData}/>
+                          <Doughnut   data = {pieData}
+                          />
             </>:
             <div className='doughParent'>
                 <Doughnut

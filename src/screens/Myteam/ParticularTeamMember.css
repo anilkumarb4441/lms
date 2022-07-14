@@ -2,80 +2,130 @@
     padding: 2% 0% 0% 0%;   
 }
 
-/* .mainParticular .flexalign{
+.partiMyTeam-firstHL{
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    margin: 0% 0% 3% 0%;
-} */
-
-/* .mainParticular>.flexalign>h1{
-    font-size: 20px;
-    color: white;
-    display: inline-block;
-} */
+}
 
 .partiMyTeam-backButton{
     display: flex;
-    gap: 20px;
+    align-items: center;
+    gap: 10px;
 
 }
-.partiMyTeam-backButton .partBackBTN svg{
- width: 50px ;
+.partiMyTeam-backButton .partBackBTN{
+    cursor: pointer;
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.partiMyTeam-backButton .partBackBTN:hover{
+    background-color: #EFF3FC;
 }
 
 /* pertiMember-infoWraper*/
-.pertiMember-infoWraper{
-    width: 100%;
-    margin: 0 0 3% 0;
-}
-.pertiMember-info{
+
+ .infomain{
     display: flex;
     gap: 15px;
     width: fit-content;
     margin-left: auto;
+   
 }
-.pertiMember-info div .infomain{
-    width:fit-content;
-    text-align: end;
-}
-.pertiMember-info .infomain p{
+ .infomain .infoContent1{
     color: var(--black);
     font-size: 14px;
     font-weight: 400;
-}
-.pertiMember-info  .infoContent{
-    width: fit-content  ;
-    text-align: start;
-}
-.pertiMember-info .infoContent p{
+} .infomain .infoContent{
     color: #6C6C6C;
     font-size: 14px;
-    font-weight: 400;   
+    font-weight: 400;
 }
+
+
+/* style for chart and table */
 .mainParticular .sPOne{
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    margin: 4% 0 0 0;
+}
+
+.sPOne .userTicketsSection{
+    width: 30%;
+    background-color: var(--white);
+    border-radius: 5px;
+    box-shadow: 0px 3px 20px #0000001A;
+    padding: 1% 2%;
+}
+.sPOne .ticketHead h4{
+    color: var(--black);
+    font-size: 16px;
+}
+
+.sPOne .tickets .teckWrape{
+    padding: 2%;
+    width: 100%;
+    margin: auto;
+}
+
+.status-wraper{
+    margin: 5% 0 0 0;
     display: flex;
     justify-content: space-between;
 }
 
-.sPOne .userTicketsSection{
-    width: 60%;
-    background-color: #3D3C44;
-    border-radius: 5px;
-    box-shadow: 0px 3px 6px #00000029;
-    padding: 1% 3%;
+.status-cHol{
+    display: flex;
+    gap: 5px;
 }
-
-.sPOne .ParchefOverView{
+.statusimg-pending{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%; 
+    background-color: white;
+    border: 5px solid #70DFBF;
+  }
+  .statusimg-untouched{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%; 
+    background-color: white;
+    border: 5px solid #6898E5;
+  }
+  .statusimg-closed{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%; 
+    background-color: white;
+    border: 5px solid #FA7999;
+  }
+  .status-cHol p{
+    font-size: 12px;
+  }
+.status-match{
+    width: fit-content;
+}
+  .status-match .statusCount{
+    font-size: 15px;
+    font-weight: 600;
+    color: #636363; 
+    text-align: center;
+  }
+/* .sPOne .ParchefOverView{
     width: 36%;
     background-color: #3D3C44;
     border-radius: 5px;
     box-shadow: 0px 3px 6px #00000029;
     padding: 2% 3%;
-}
-
+} */
+/* 
 .sPOne .ticketHead .linkfull{
     width: 22%;
-}
+} */
 
 .ParchefOverView .fPDiv{
     display: flex;
@@ -124,19 +174,13 @@
     padding: 0% 0%;
 }
 
-.sPOne .tickets div{
-    padding: 2%;
-    width: 50%;
-    margin: auto;
-}
+
 
 .sPOne .tickets .tickectParent{
     padding: 0% 0%;
 }
 
-.sPOne .ticketHead h4{
-    color: white;
-}
+
 
 .sPOne .tickets .tickectParent{
     margin: 4% 0%;
@@ -145,20 +189,49 @@
 .sPOne .tickectParent .tickImg {
     width: 8%;
 }
+.detailedSection{
+    width: 70%;    
+}
 
 .mainParticular .totalTasksPart{
-    background-color: #3D3C44;
+    background-color: var(--white);
     border-radius: 5px;
     box-shadow: 0px 3px 6px #00000029;
-    margin: 3% 0% 3% 0%;
+    margin: 0% 0% 0% 0%;
     padding: 2%;
+   
 }
 
-.totalTasksPart>h4{
-    color: white;
-    font-weight: 500;
+.tabAndSearch-HOL{
+    display: flex;
+    justify-content: space-between;
+    margin: 0% 0 3% 0;
+}
+.tabAndSearch-HOL .leadTabs{
+    margin: auto;
 }
 
+.teamTabSearch{
+    display: flex;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #EFF3FC;
+    align-items: center;
+}
+.teamTabSearch input{
+border: none;
+padding: 3px;
+background-color: #EFF3FC;
+}
+
+.teamTabSearch input:focus{
+outline: none;
+}
+.IoMdSearchic{
+    cursor: pointer;
+    width: 20px;
+    font-size: 25px;
+}
 /* .totalTasksPart table{
     width: 100%;
     border-collapse: collapse;
@@ -200,7 +273,7 @@
 .subparent canvas{
     width: 100% !important;
     width: 100% !important;
-}
+}   
 
 .subparent h3{
     color: #E6E6E6;
@@ -210,7 +283,7 @@
 .totalTasksPart .tableParent{
     /* height: 600px;
     overflow-y: scroll; */
-    margin: 4% 0% 0% 0%;
+    margin: 1% 0% 0% 0%;
 }
 
 .chefNav{
@@ -269,6 +342,17 @@
     text-decoration: underline;
 }
 
-.mainParticular .detailedSection{
-    margin: 10% 0% 0% 0%;
+
+
+.perMyteam .Table thead>tr>th{
+    font-size: 14px;
+    padding: 13px 2px;
+    min-width: 110px;
 }
+.perMyteam .Table tbody>tr>td {
+    font-size: 13px;
+    min-width: 110px;
+}
+
+
+

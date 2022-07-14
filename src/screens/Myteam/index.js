@@ -58,22 +58,28 @@ function Myteam() {
       phone: 7729088005,
     },
   ]);
-  let iim = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE50XUNVmCwLBsiboW_ezv-O6FK2KRmh38SQ&usqp=CAU"
+  let usImg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2aSUcU-KC_ZGl1KIFES1pwRe4YOMv2gPx_g&usqp=CAU"
   const [tableData, setTableData] = useState([]);
   const [columns, setColumns] = useState([
-    {
-      Header: "userId",
-      accessor: "userId",
-      Cell:(props)=>{
-        return <div style = {{ display:"flex", alignItems:"center", gap:"10px"}} >
-          <img src={iim} style={{width:"30px", height:"30px", borderRadius:'50%'}}/>
-          <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setOpenInner(true),setUser(props.cell.row.original))}>{props.cell.row.original.userId}</p>
-          </div>
-      }
-    },
+    // {
+    //   Header: "userId",
+    //   accessor: "userId",
+    //   // Cell:(props)=>{
+    //   //   return <div style = {{ display:"flex", alignItems:"center", gap:"10px"}} >
+    //   //     <img src={usImg} style={{width:"30px", height:"30px", borderRadius:'50%'}}/>
+    //   //     <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setOpenInner(true),setUser(props.cell.row.original))}>{props.cell.row.original.userId}</p>
+    //   //     </div>
+    //   // }
+    // },
     {
       Header: "name",
       accessor: "name",
+      Cell:(props)=>{
+        return <div style = {{ display:"flex", alignItems:"center", gap:"10px"}} >
+          <img src={usImg} style={{width:"30px", height:"30px", borderRadius:'50%'}}/>
+          <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setOpenInner(true),setUser(props.cell.row.original))}>{props.cell.row.original.name}</p>
+          </div>
+      }
     },
     {
       Header: "email",
@@ -82,6 +88,10 @@ function Myteam() {
     {
       Header: "Phone Number",
       accessor: 'phone'
+    },
+    {
+      Header: "Level",
+      accessor: 'level'
     },
   ]);
   useEffect(() => {
@@ -113,7 +123,7 @@ function Myteam() {
   return (
 <>
     { 
-      openInner?<ParticularTeamMember user={user} setOpenInner={setOpenInner} />:
+      openInner?<ParticularTeamMember user={user} setParticularChef={setOpenInner} tableData={tableData}/>:
     
       <div className = 'chefOverviewScreen'>
       {/* <div className="screenTitleContainer">
