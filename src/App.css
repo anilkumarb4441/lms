@@ -92,7 +92,7 @@ button.btnPrimary:hover{
 }
 
 .goBack{
-   fill: rgb(255, 255, 255);
+   fill:var(--black);
     margin-right: 10px;
     align-self: center;
     font-size: 26px;

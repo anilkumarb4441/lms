@@ -62,7 +62,7 @@ td>p.absent,td>p.present{
     width:fit-content;
     padding: 4% 10%;
     margin:0 auto;
-    color:#fff;
+    color:var(--white);
     border-radius: 5px;
 }
 td>p.absent{

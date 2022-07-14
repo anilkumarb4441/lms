@@ -55,7 +55,7 @@
 }
 
 .modal.AssignToModal  form p{
-    color: #fff;
+    color: var(--white);
     font-weight: 400;
 }
 

@@ -68,7 +68,7 @@
 
 .createForm form button{
     font-size: 20px;
-    color: #000000;
+    color: var(--black);
     padding: 1% 4%;
     background-color: #E6AA55;
     border: 1px solid #E6AA55;

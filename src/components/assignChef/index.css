@@ -44,7 +44,7 @@
 }
 
 .addHelper svg{
-    color: #fff;
+    color: var(--white);
     align-self: center;
     padding: 3px;
     display: block;

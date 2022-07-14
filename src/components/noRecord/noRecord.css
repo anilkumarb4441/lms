@@ -1,9 +1,9 @@
 .norecordMain{
     color: var(--black);
-    border-radius: 5px;
+    border-radius: 12px;
     padding: 3% 0%;
     margin: 0% 0%;
-    border: solid 1px var(--primaryLight);
+    border: solid 2px #b6b6b7;
 }
 
 .norecordMain .noimgparent{

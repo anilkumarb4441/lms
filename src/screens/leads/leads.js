@@ -11,21 +11,18 @@ import API_SERVICES from "../../utils/API";
 import "./leads.css";
 
 //assets
-import clientProfile from "../../assets/bookings/clientProfile.png";
-import locIcon from "../../assets/bookings/location.svg";
-import calendarIcon from "../../assets/icons/calendarIcon.svg";
+
 
 //components
 import Input from "../../components/Input";
 import Table from "../../components/Table";
-import Tabs from "../../components/tabs/tabs.js";
 import Dots from "../../components/dots/dots.js";
 import AddEditLeadForm from "../../components/addEditLeadForm/addEditLeadForm.js";
 import AssignToModal from "../../components/assignToModal/assignToModal.js";
 import BulkUpload from "../../components/bulkUpload/bulkupload.js";
-import CalendarModal from "../../components/calendarModal/calendarModal.js";
 import LeadsInner from "../leadsInner/leadsInner.js";
 import Dropdown from "../../components/dropdown/dropdown.js";
+import CustomDateRange from "../../components/dateRangePicker/dateRangePicker"
 
 function Leads() {
   const reducer = useSelector((state) => state.leads);
@@ -519,6 +516,7 @@ function Leads() {
             </div>
                      
             <div className="lead-filter-header">
+           
               <div>
               <Dropdown
              value = {reducer.filter.subMostFilter}
@@ -553,28 +551,23 @@ function Leads() {
                   }}
                 />
               </div>
-              {reducer.filter.mainFilter === "untouched" && (
+             
                 <div>
-                  {reducer.filter.range && (
-                  <>
-                    <p className="dateBlock">
-                      {utils.DateObjectToString(reducer.filter.range[0])}
-                    </p>
-                    <span style={{ color: "#fff" }}>-</span>
-                    <p className="dateBlock">
-                      {utils.DateObjectToString(reducer.filter.range[1])}
-                    </p>
-                  </>
-                )}
                 {reducer.filter.subFilter === "oldLeads" && (
-                  <img
-                    className = "calendar-icon"
-                    alt  ='calendar-icon'
-                    src={calendarIcon}
-                    onClick={() => setOpenCalendar((open) => !open)}
+                  <CustomDateRange
+                  range={reducer.filter.range}
+                  onChange={(arr) => {
+                    dispatch(
+                      actions.setFilter({
+                        ...reducer.filter,
+                        range: arr?[...arr]:null,
+                        pageNumber: 1,
+                        pageRows: 10,
+                      }))
+                  }}
                   />
                 )}
-                  <button
+                 {reducer.filter.mainFilter === "untouched" &&<> <button
                     className="btnPrimary"
                     onClick={() => {
                       dispatch(actions.addLead(formData));
@@ -596,8 +589,9 @@ function Leads() {
                   >
                     Assign Leads
                   </button>
-                </div>
-              )}
+              </> } 
+              </div>
+              
             </div>
 
             <div>
@@ -657,7 +651,7 @@ function Leads() {
                 handleDisplay={() => dispatch(actions.closeAssignModal())}
               />
             )}
-             <CalendarModal
+             {/* <CalendarModal
         show={openCalendar}
         handleDisplay={(e) => setOpenCalendar(e)}
         value={reducer.filter.range}
@@ -674,7 +668,7 @@ function Leads() {
           );
           // setRange([...arr])
         }}
-      />
+      /> */}
           </div>
         )}
 

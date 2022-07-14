@@ -20,7 +20,7 @@
 }
 .section1 .userTicketsSection{
     width: 60%;
-    color: #fff;
+    color: var(--white);
 }
 .section1>.clientInfoCard>.clientInfo{
 display: flex;
@@ -40,12 +40,12 @@ padding: 10px;
     background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8cGVvcGxlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60');
 }
 .section1>.clientInfoCard>.clientInfo>h2{
-    color: #FFFFFF;
+    color: var(--white);
     font-size: 16px;
     font-weight: 400;
 }
 .section1>.clientInfoCard>.clientInfo>p{
-    color: #FFFFFF;
+    color: var(--white);
     font-size: 14px;
     font-weight: 100;
 }
@@ -55,7 +55,7 @@ width: 100%;
 }
 
 .contactItem a{
-    color: #fff;
+    color: var(--white);
     font-size: 14px;
 }
 .contactItem:last-child a{

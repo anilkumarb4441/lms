@@ -64,5 +64,5 @@
 
 .dropdown-body>p:hover {
     background-color: var(--black);
-    color: #fff;
+    color: var(--white);
 }

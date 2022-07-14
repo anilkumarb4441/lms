@@ -98,7 +98,7 @@
 }
 
 .InfoChef h2{
-    color: #FFFFFF;
+    color: var(--white);
     font-size: 14px;
     font-weight: 400;
 }
