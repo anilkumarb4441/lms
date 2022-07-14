@@ -23,6 +23,35 @@
  width: 50px ;
 }
 
+/* pertiMember-infoWraper*/
+.pertiMember-infoWraper{
+    width: 100%;
+    margin: 0 0 3% 0;
+}
+.pertiMember-info{
+    display: flex;
+    gap: 15px;
+    width: fit-content;
+    margin-left: auto;
+}
+.pertiMember-info div .infomain{
+    width:fit-content;
+    text-align: end;
+}
+.pertiMember-info .infomain p{
+    color: var(--black);
+    font-size: 14px;
+    font-weight: 400;
+}
+.pertiMember-info  .infoContent{
+    width: fit-content  ;
+    text-align: start;
+}
+.pertiMember-info .infoContent p{
+    color: #6C6C6C;
+    font-size: 14px;
+    font-weight: 400;   
+}
 .mainParticular .sPOne{
     display: flex;
     justify-content: space-between;

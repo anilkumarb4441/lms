@@ -164,8 +164,24 @@ const [columns, setColumns] = useState([
           </h1>
         </div> */}
             <div className="partiMyTeam-backButton">
-            <IoIosArrowBack className = 'partBackBTN' onClick={(e)=>setParticularChef(false)}/>
+            {/* <IoIosArrowBack className='partBackBTN' onClick={(e)=>setParticularChef(false)}/> */}
             <h4>My Team</h4>  
+            </div>
+            <div className="pertiMember-infoWraper">
+              <div className="pertiMember-info">
+                <div className="infomain">
+                  <p>Name</p>
+                  <p>Email ID</p>
+                  <p>User ID</p>
+                  <p>Phone Number</p>
+                </div>
+                <div className="infoContent">
+                  <p>Rajat Gajinkar</p>
+                  <p>Rajatgajinkar999@gmail.com</p>
+                  <p>Acss89854hhytf789421iob</p>
+                  <p>8897451236</p>
+                </div>
+              </div>
             </div>
 
           <div>
