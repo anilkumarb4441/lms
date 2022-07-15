@@ -124,6 +124,7 @@ function Myteam() {
     console.log('vallll', val.val.userId)
     const callback = (err, res)=>{
       if(err){
+        console.log('error1', err)
         setMemberTableData([]);
         return
       }
@@ -142,7 +143,7 @@ function Myteam() {
   return (
 <>
     {
-      openInner?<ParticularTeamMember user={user} setParticularChef={setOpenInner} tableData={memberTableData}/>:
+      openInner?<ParticularTeamMember perticularTMember={user} setParticularChef={setOpenInner} tableData={memberTableData}/>:
     
       <div className = 'chefOverviewScreen'>
       {/* <div className="screenTitleContainer">

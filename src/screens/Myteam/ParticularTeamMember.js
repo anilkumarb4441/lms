@@ -17,7 +17,7 @@ import DoughnutComp from "../../components/doughnut/doughnut"
 import Table from "../../components/Table";
 import Tabs from "../../components/tabs/tabs.js";
 
-function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
+function ParticularTeamMember({perticularTMember, chefId, setParticularChef, tableData}) {
   const mainref = useRef(null)
 
   // Tabs
@@ -172,10 +172,9 @@ function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
       </div>
           <div className="infomain">
             <p className="infoContent1">Name &nbsp;:</p>
-            <p className="infoContent">Rajat Gajinkar</p>
+            <p className="infoContent">{perticularTMember.name}</p>
           </div>
       </div>
-
       <div>
         <div className="sPOne">
           {/* <div className="ParchefOverView">
