@@ -40,9 +40,16 @@ function AddEditLeadForm({
                     );
                   })}
               </div>
+              <div className = "addLeadFooter">
+              <button className = "cancelBtn" onClick = {(e)=>{
+                e.preventDefault();
+                handleDisplay(false);
+              }} type ='button'>Cancel</button>
               <button className="saveBtn" type="submit">
                 Save
               </button>
+            
+              </div>   
             </form>
           </div>
         </div>

@@ -4,12 +4,14 @@
 
 
 :root{
-  --primary:#E6AA55;
-  --primary85:#E6AA5585;
+  --primary:#455591;
+  --primaryLight:#6577B8;
+  --textgrey:#0D0D0D;
+  /* --primary85:#E6AA5585;
   --primary83:#E6AA5583;
   --primary80:#E6AA5580;
-  --secondary:#1F1E26;
-  --wrapperColor:#17161E;
+  --secondary:#1F1E26; */
+  --wrapperColor:#F9F9FB;
   --white:#fff;
   --black:#000;
   --booked:#1286EA;
@@ -32,9 +34,9 @@
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+/* ::-webkit-scrollbar-track { */
   /* background: var(--secondary); */
-}
+/* } */
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
@@ -53,11 +55,10 @@ button{
 
 .wrapperContainer{
    background-color: var(--wrapperColor);
-   margin-left: 21%;
+   margin-left: 19%;
    padding: 2% 6% 0% 4%;
-   height: 88vh;
+   height: 100vh;
    overflow-y: scroll;
-   box-shadow: inset 0px 3px 6px #100707;
 }
 
 .screenTitleContainer{
@@ -69,26 +70,25 @@ button{
 
 
 .screenTitle{
-  color: var(--white);
+  color: var(--black);
   font-family: 'Roboto Condensed';
   font-size:24px;
   align-self: center;
 }
 
 button.btnPrimary {
-  background-color: #35343C;
-  color: var(--primary);
-  cursor:pointer;
-  border: solid 1px;
-  border-radius: 9px;
-  padding: 10px 21px;
+  color: #646464;
+  background: var(--white);
+  padding: 8px 20px;
   font-size: 14px;
-    padding: 10px 40px;
+  font-weight: 500;
+  border-radius: 5px;
+  box-shadow: 0px 3px 6px #00000029;
 }
 
 button.btnPrimary:hover{
-  color: #35343C;
-  background-color: var(--primary);
+  color: var(--white);
+  background: var(--primary);
 }
 
 .goBack{
@@ -106,6 +106,22 @@ button.btnPrimary:hover{
 }
 
 
+button.saveBtn{
+  padding: 12px 20px;
+  color: #fff;
+  background: #1E40AF;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 500; 
+}
 
-
+button.cancelBtn{
+  padding: 12px 20px;
+  color: #707070;
+  background: var(--white);
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 500; 
+  border: solid 1px;
+}
 

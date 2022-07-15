@@ -84,12 +84,11 @@ function BulkUpload({
     <Modal
       title={"Bulk Upload"}
       header={true}
-      modalClass="addLeadModal"
+      modalClass="bulkModal"
       show={show}
       handleDisplay={handleDisplay}
       body={
-        <div className="addLead">
-          <div className="addLeadCol1">
+       
           
             <form>
                 {/* <p></p> */}
@@ -136,8 +135,6 @@ function BulkUpload({
               }
               <button className="downBtn" onClick={(e)=>downloadCSV(e)}>Click to download sample file</button>
             </form>
-          </div>
-        </div>
       }
     />
   );

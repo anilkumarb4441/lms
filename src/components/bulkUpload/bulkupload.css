@@ -33,9 +33,7 @@
     font-weight: 600;
 }
 
-.addLead .saveBtn{
-    margin: 3% auto 2% auto !important;
-}
+
 
 .parentMainBulk .btnCrosParent{
     display: flex;
@@ -52,7 +50,7 @@
     margin: 0% 0% 0% 12px;
 }
 
-.addLeadCol1 form .downBtn{
+.bulkModal form .downBtn{
     background-color: transparent;
     border: none;
     text-decoration: underline;

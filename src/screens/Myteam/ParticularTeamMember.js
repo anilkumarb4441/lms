@@ -29,6 +29,7 @@ function ParticularTeamMember({chefId,setParticularChef}) {
   // State for Sub Tabs 
 
   const[subtabs, setsubtabs] = useState("team")
+  
   // State for Nested Tabs
   const[tabcount, settabcount] = useState(0);
 
@@ -149,20 +150,39 @@ const [columns, setColumns] = useState([
 
   return (
       <div className="mainParticular" ref={mainref}>
-        <div className="flexalign">
+        {/* <div className="flexalign">
           <IoIosArrowBack className = 'goBack' onClick={(e)=>setParticularChef(false)}/>
           <h1>Member Id:
             {
               tabarray.map((val,key)=>{
                 return(
-                  // &nbsp;/&nbsp;
+                  // &nbsp;/&nbsp;  
                   <button onClick={(e)=>getPartData(val,key)} key={key} className="meIds">&nbsp;/<span>{val}</span></button>
                 )
               })
             }
           </h1>
-        </div>
-
+        </div> */}
+            <div className="partiMyTeam-backButton">
+            {/* <IoIosArrowBack className='partBackBTN' onClick={(e)=>setParticularChef(false)}/> */}
+            <h4>My Team</h4>  
+            </div>
+            <div className="pertiMember-infoWraper">
+              <div className="pertiMember-info">
+                <div className="infomain">
+                  <p>Name</p>
+                  <p>Email ID</p>
+                  <p>User ID</p>
+                  <p>Phone Number</p>
+                </div>
+                <div className="infoContent">
+                  <p>Rajat Gajinkar</p>
+                  <p>Rajatgajinkar999@gmail.com</p>
+                  <p>Acss89854hhytf789421iob</p>
+                  <p>8897451236</p>
+                </div>
+              </div>
+            </div>
 
           <div>
             <div className="sPOne">

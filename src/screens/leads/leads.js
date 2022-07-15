@@ -25,6 +25,7 @@ import AssignToModal from "../../components/assignToModal/assignToModal.js";
 import BulkUpload from "../../components/bulkUpload/bulkupload.js";
 import CalendarModal from "../../components/calendarModal/calendarModal.js";
 import LeadsInner from "../leadsInner/leadsInner.js";
+import Dropdown from "../../components/dropdown/dropdown.js";
 
 function Leads() {
   const reducer = useSelector((state) => state.leads);
@@ -478,85 +479,64 @@ function Leads() {
 
   return (
     <>
-      <p className="screenTitle">{reducer.title}</p>
+     {reducer.title && <p className="screenTitle">{reducer.title}</p>}
       <div className="leadsScreen">
         {/* MAIN LEAD PAGE */}
         {!reducer.openInner && (
           <div>
-            <Tabs
-              tabArr={mainTabArr}
-              tabsClass="leadTabs"
-              activeValue={reducer.filter.mainFilter}
-              handleTab={(item) =>
-                dispatch(
-                  actions.setFilter({
-                    ...initialState.filter,
-                    mainFilter: item.value,
-                  })
-                )
-              }
+        
+            <div className = 'lead-main-filter-header'>
+            <Dropdown
+             dropdownClass = 'lead-main-drop-down'
+             value = {reducer.filter.mainFilter}
+             options = {mainTabArr}
+             onchange={(item) =>
+              dispatch(
+                actions.setFilter({
+                  ...initialState.filter,
+                  mainFilter: item.value,
+                })
+              )
+            }
             />
-
-            <Tabs
-              tabArr={subTabArr}
-              tabsClass="leadTabs"
-              activeValue={reducer.filter.subFilter}
-              handleTab={(item) =>
-                dispatch(
-                  actions.setFilter({
-                    ...reducer.filter,
-                    subFilter: item.value,
-                    searchData: "",
-                    pageNumber: 1,
-                    pageRows: 10,
-                    range: null,
-                  })
-                )
-              }
+           <Dropdown
+             dropdownClass = 'lead-main-drop-down'
+             value = {reducer.filter.subFilter}
+             options = {subTabArr}
+             onchange={(item) =>
+              dispatch(
+                actions.setFilter({
+                  ...reducer.filter,
+                  subFilter: item.value,
+                  searchData: "",
+                  pageNumber: 1,
+                  pageRows: 10,
+                  range: null,
+                })
+              )
+            }
             />
-            <div className="lead-filter-header">
-              <div>
-                <Input
-                  value={reducer.filter.subMostFilter}
-                  element="select"
-                  inputClass="leadTable"
-                  change={(e) => {
-                    dispatch(
-                      actions.setFilter({
-                        ...reducer.filter,
-                        subMostFilter: e.target.value,
-                        searchData: "",
-                        pageNumber: 1,
-                        pageRows: 10,
-                      })
-                    );
-                  }}
-                  selectHeading={"Status"}
-                  selectArr={subMostFilterArr}
-                />
-              </div>
-              {reducer.filter.mainFilter === "untouched" && (
-                <div>
-                  <button
-                    className="btnPrimary"
-                    onClick={() => {
-                      dispatch(actions.addLead(formData));
-                    }}
-                  >
-                    Add Lead
-                  </button>
-                  <button
-                    onClick={() => dispatch(actions.openBulkModal())}
-                    className="btnPrimary"
-                  >
-                    Bulk Upload
-                  </button>
-                </div>
-              )}
             </div>
+                     
             <div className="lead-filter-header">
               <div>
-                <Input
+              <Dropdown
+             value = {reducer.filter.subMostFilter}
+             options = {subMostFilterArr}
+             onchange={(item) =>
+              dispatch(
+                actions.setFilter({
+                  ...reducer.filter,
+                  subMostFilter: item.value,
+                  searchData: "",
+                  pageNumber: 1,
+                  pageRows: 10,
+                })
+              )
+            }
+            />
+                
+                 <Input
                   placeholder="Search By Name/Email"
                   inputClass="leadsSearch"
                   type="search"
@@ -573,9 +553,9 @@ function Leads() {
                   }}
                 />
               </div>
-
-              <div>
-                {reducer.filter.range && (
+              {reducer.filter.mainFilter === "untouched" && (
+                <div>
+                  {reducer.filter.range && (
                   <>
                     <p className="dateBlock">
                       {utils.DateObjectToString(reducer.filter.range[0])}
@@ -594,7 +574,20 @@ function Leads() {
                     onClick={() => setOpenCalendar((open) => !open)}
                   />
                 )}
-                {reducer.filter.mainFilter === "untouched" && (
+                  <button
+                    className="btnPrimary"
+                    onClick={() => {
+                      dispatch(actions.addLead(formData));
+                    }}
+                  >
+                    Add Lead
+                  </button>
+                  <button
+                    onClick={() => dispatch(actions.openBulkModal())}
+                    className="btnPrimary"
+                  >
+                    Bulk Upload
+                  </button>
                   <button
                     onClick={() => {
                       dispatch(actions.assignLead(null, "bulk"));
@@ -603,12 +596,12 @@ function Leads() {
                   >
                     Assign Leads
                   </button>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             <div>
-              <p className="count">Total Count: {totalCount}</p>
+              <p className="count">Total Count <span>{totalCount}</span></p>
               <Table
                 wrapperRef={wrapperRef}
                 search={false}

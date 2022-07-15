@@ -1,25 +1,26 @@
 .customInputHolder p{
-    color:var(--primary);
-    font-size:14px;
+    font-size: 14px;
+    color: var(--black);
     font-weight: 500;
-    margin:  0 0 12px 0;
+    margin: 0 0 12px 0;
 }
 
 .customInput{
     display: block;
     width: 100%;
-    padding: 8px 15px;
+    padding: 9px 15px;
     border-radius: 5px;
-    border: 1px solid var(--primary);
-    color: var(--primary);
+    border: 1px solid #7070706E;
+    color: var(--black);
+    box-shadow: 0px 3px 6px #0000001c;
     font-weight: 600;
     outline: none;
     font-size: 15px;
-    background-color: #544E4D;
+    background-color: var(--white);
 }
 
 .customInput::placeholder{
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(0, 0, 0, 0.39)
 }
 
 textarea.customInput{
