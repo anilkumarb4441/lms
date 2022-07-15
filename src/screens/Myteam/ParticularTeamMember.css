@@ -87,21 +87,21 @@
     height: 18px;
     border-radius: 50%; 
     background-color: white;
-    border: 5px solid #70DFBF;
+    /* border: 5px solid #70DFBF; */
   }
   .statusimg-untouched{
     width: 18px;
     height: 18px;
     border-radius: 50%; 
     background-color: white;
-    border: 5px solid #6898E5;
+    /* border: 5px solid #6898E5; */
   }
   .statusimg-closed{
     width: 18px;
     height: 18px;
     border-radius: 50%; 
     background-color: white;
-    border: 5px solid #FA7999;
+    /* border: 5px solid #FA7999; */
   }
   .status-cHol p{
     font-size: 12px;
