@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from 'react-router-dom'
+import API_SERVICES from "../../utils/API"
+import { URLS } from "../../utils/urlConstants"
 
 //css
 import "./ParticularTeamMember.css";
@@ -17,7 +19,7 @@ import DoughnutComp from "../../components/doughnut/doughnut"
 import Table from "../../components/Table";
 import Tabs from "../../components/tabs/tabs.js";
 
-function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
+function ParticularTeamMember({perticularTMember, chefId, filterQuery,totalCount,setFilterQuery, setParticularChef, tableData, memberAnalytics}){
   const mainref = useRef(null)
 
   // Tabs
@@ -33,16 +35,12 @@ function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
   // State for Nested Tabs
   const [tabcount, settabcount] = useState(0);
 
+  const  membAn=  memberAnalytics.map((val)=>val.number)
 
-  const [pieData, setpieData] = useState({
-
-    // labels: [
-    //   'Pending',
-    //   'Closed',
-    //   'Untouched'
-    // ],
+   
+    const dataToBeSent={
     datasets: [{
-      data: [300, 50, 100],
+      data:membAn, 
       backgroundColor: [
         '#70DFBF',
         '#FA7999',
@@ -51,10 +49,10 @@ function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
       hoverOffset: 4,
 
     }]
+   
+  }
+  // })
 
-  })
-
-  // const [parmemId , setparmemId] = useState(chefId)
   const [tabarray, settabarray] = useState([chefId]);
 
   function updatePage(x) {
@@ -118,20 +116,17 @@ function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
       phone: 7729088005,
     },
   ]);
-  const [intableData, setInTableData] = useState(tableData);
   const [leadTableData, setLeadTableData] = useState(originalData)
+
+
   const [columns, setColumns] = useState([
     {
-      Header: "Member Id",
-      accessor: "userId",
+      Header: "Member name",
+      accessor: "name",
       Cell: (props) => {
         // return <button style={{backgroundColor:"transparent", border:"none", color:"white", textDecoration:"underline"}} onClick={(e)=>settabarray(tabarray.push(props.cell.row.original.memId))}>{props.cell.row.original.memId}</button>
-        return <button style={{ backgroundColor: "transparent", border: "none", color: "black", textDecoration: "underline" }} onClick={(e) => updatePage(props.cell.row.original)}>{props.cell.row.original.userId}</button>
+        return <button style={{ backgroundColor: "transparent", border: "none", color: "black", textDecoration: "underline" }} onClick={(e) => updatePage(props.cell.row.original)}>{props.cell.row.original.name}</button>
       }
-    },
-    {
-      Header: "Member Name",
-      accessor: "name",
     },
     {
       Header: "Email",
@@ -141,12 +136,35 @@ function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
       Header: "Phone Number",
       accessor: 'phone'
     },
-    // {
-    //   Header: "Options",
-    //   accessor:'options',
-    // },
+    {
+      Header: "Level",
+      accessor:'level',
+    },
   ]);
 
+  const [onClkAnalyticData, setOnClkAnalyticData ] = useState([])
+
+  function onClickTeamMemberLeadAnalytics(){
+
+    const callback = (err, res)=>{
+      if(err){
+        console.log('error2', err)
+        setOnClkAnalyticData([]);
+        return
+      }
+      if (res && res.status === 200) {
+      if(res.data){
+        console.log('data2', res.data)
+        setOnClkAnalyticData(res.data)
+      
+      }else{
+        setOnClkAnalyticData([]);
+
+      }
+    }
+    }
+    API_SERVICES.httpPOSTWithToken(URLS.onClickTeamMemberLeadAnalytics, { userId:perticularTMember.userId, status:"untouched" }, callback)
+  } 
 
   const [profileScreen, setProfileScreen] = useState(false);
 
@@ -172,10 +190,9 @@ function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
       </div>
           <div className="infomain">
             <p className="infoContent1">Name &nbsp;:</p>
-            <p className="infoContent">Rajat Gajinkar</p>
+            <p className="infoContent">{perticularTMember.name}</p>
           </div>
       </div>
-
       <div>
         <div className="sPOne">
           {/* <div className="ParchefOverView">
@@ -203,29 +220,46 @@ function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
             </div>
             <div className='tickets'>
               <div className="teckWrape">
-                <DoughnutComp donughtfor="doughnut" pieData={pieData} />
+                <DoughnutComp donughtfor="doughnut" pieData={dataToBeSent} 
+                // options={
+                // { onClick: onClickTeamMemberLeadAnalytics()}}
+                />
                 <div className="status-wraper">
-                  <div className="status-match">
-                    <div className="status-cHol">
-                      <div className="statusimg-pending"></div>
-                      <p className="stuName">Pending</p>
+                  {
+                    memberAnalytics.map((val)=>{
+                     return(
+                      <div className="status-match">
+                      <div className="status-cHol">
+                        <div className="statusimg-pending" style={{border:val.status==="untouched"?"5px solid #70DFBF":val.status==="open"?'5px solid #FA7999':'5px solid #6898E5'}}></div>
+                  
+                        <p className="stuName">
+                          {val.status==="untouched"? "New":val.status==="open"?'Work in Progress':'Won'}
+                          </p>
+                      </div>
+                      <p className="statusCount">{val.number}</p> 
                     </div>
-                    <p className="statusCount">100</p> 
-                  </div>
-                  <div className="status-match">
+                     )
+                    })
+                    
+
+
+
+                  }
+
+                  {/* <div className="status-match">
                     <div className="status-cHol">
                       <div className="statusimg-untouched"></div>
-                      <p className="stuName">Untouched</p>
+                      <p className="stuName">New</p>
                     </div>
-                    <p className="statusCount">100</p> 
+                    <p className="statusCount">{membAn[1]}</p> 
                   </div>
                   <div className="status-match">
                     <div className="status-cHol">
                       <div className="statusimg-closed"></div>
-                      <p className="stuName">Closed</p>
+                      <p className="stuName">Won</p>
                     </div>
-                    <p className="statusCount">100</p> 
-                  </div>
+                    <p className="statusCount">{membAn[2]}</p> 
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -245,11 +279,20 @@ function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
                       handleTab={(e) => setsubtabs(e.value)}
                     />
                     <div className="teamTabSearch"> 
-                      <input placeholder=""/>
+                      <input type = "search"  placeholder="Search By Name/Email/phone" name ="search" change = {(e)=>setFilterQuery({...filterQuery,pageNumber:1,search:e.target.value})} value = {filterQuery.search}/>
                       <IoMdSearch className="IoMdSearchic"/>
                     </div>
                    </div>
-                    <Table columns={columns} data={intableData} tClass="myteam perMyteam" />
+                    <Table columns={columns} 
+                     pagination = {true}                 
+                     currentPage={filterQuery.pageNumber}
+                     pageSize={filterQuery.pageRows}
+                     totalCount={totalCount} 
+                     onPageChange={(pageNumber, pageRows) => {
+                         setFilterQuery({...filterQuery, pageNumber:pageNumber,pageRows:pageRows,search:''})
+                     }}
+                    data={tableData} 
+                    tClass="myteam perMyteam" />
                   </div>
                 </div> :
                 subtabs === "analytics" ?
@@ -260,7 +303,9 @@ function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
                   subtabs === "leads" ?
                     <div className="totalTasksPart">
                       <h4>Leads</h4>
-                      <Table  columns={columns} data={leadTableData} tClass="myteam perMyteam" />
+                      <Table  columns={columns}
+                      data={leadTableData}
+                       tClass="myteam perMyteam" />
                     </div> : null
             }
           </div>

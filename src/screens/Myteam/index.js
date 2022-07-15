@@ -19,6 +19,7 @@ function Myteam() {
   const [user, setUser] = useState();
   const [filterQuery,setFilterQuery]  = useState({pageNumber:1,pageRows:5,search:''})
   const [totalCount,setTotalCount] = useState(0)
+  const [memberAnalytics,setMemberAnalytics ] = useState([])
 
   const [originalData, setOriginalData] = useState([
     {
@@ -60,6 +61,7 @@ function Myteam() {
   ]);
   let usImg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2aSUcU-KC_ZGl1KIFES1pwRe4YOMv2gPx_g&usqp=CAU"
   const [tableData, setTableData] = useState([]);
+  const [memberTableData, setMemberTableData] = useState([])
   const [columns, setColumns] = useState([
     // {
     //   Header: "userId",
@@ -77,7 +79,7 @@ function Myteam() {
       Cell:(props)=>{
         return <div style = {{ display:"flex", alignItems:"center", gap:"10px"}} >
           <img src={usImg} style={{width:"30px", height:"30px", borderRadius:'50%'}}/>
-          <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setOpenInner(true),setUser(props.cell.row.original))}>{props.cell.row.original.name}</p>
+          <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>{setOpenInner(true); setUser(props.cell.row.original); getPerticularMeberTeam({val:props.cell.row.original}); getPerticularMeberAnalytics({val:props.cell.row.original})}}>{props.cell.row.original.name}</p>
           </div>
       }
     },
@@ -119,11 +121,60 @@ function Myteam() {
     API_SERVICES.httpPOSTWithToken(URLS.myteammembers, { ...filterQuery, userId: '' }, callback)
   }
 
+  function getPerticularMeberAnalytics(val){
+    console.log('vallll', val.val.userId)
+    const callback = (err, res)=>{
+      if(err){
+        setMemberAnalytics([]);
+        return
+      }
+      if (res && res.status === 200) {
+      if(res.data){
+        setMemberAnalytics(res.data)
+      }else{
+        setMemberAnalytics([]);
+      }
+    }
+    }
+    API_SERVICES.httpPOSTWithToken(URLS.perticularTeamMember, { userId:val.val.userId, status:["untouched","open", "completed"] }, callback)
+  } 
 
+  function getPerticularMeberTeam(val){
+    console.log('getPerticularMeberTeam', val.val.userId)
+    const callback = (err, res)=>{
+      if(err){
+        console.log('error2', err)
+        setMemberTableData([]);
+        return
+      }
+      if (res && res.status === 200) {
+      if(res.data[0]?.directMembers){
+        console.log('data2', res.data[0].directMembers)
+        setMemberTableData(res.data[0].directMembers)
+        setTotalCount(20)
+      }else{
+        setMemberTableData([]);
+        setTotalCount(0);
+      }
+    }
+    }
+    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, {...filterQuery, userId:val.val.userId, level:val.val.level }, callback)
+  } 
+
+  useEffect(()=>{
+    setMemberAnalytics(memberAnalytics);
+  },[])
   return (
 <>
-    { 
-      openInner?<ParticularTeamMember user={user} setParticularChef={setOpenInner} tableData={tableData}/>:
+    {
+      openInner?<ParticularTeamMember 
+      perticularTMember={user} 
+      setParticularChef={setOpenInner} 
+      tableData={memberTableData} 
+      filterQuery={filterQuery}
+      totalCount={totalCount}
+      setFilterQuery={setFilterQuery}
+      memberAnalytics={memberAnalytics}/>:
     
       <div className = 'chefOverviewScreen'>
       {/* <div className="screenTitleContainer">
@@ -134,7 +185,7 @@ function Myteam() {
       </div> */}
     <div>   
             <div className="myTeam-search-wraper">
-              <Input inputClass='leadsSearch' type = "search"  placeholder="Search By Name/Email" name ="search" change = {(e)=>setFilterQuery({...filterQuery,pageNumber:1,search:e.target.value})} value = {filterQuery.search}/>
+              <Input inputClass='leadsSearch' type = "search"  placeholder="Search By Name/Email/phone" name ="search" change = {(e)=>setFilterQuery({...filterQuery,pageNumber:1,search:e.target.value})} value = {filterQuery.search}/>
             </div>
              <Table 
               pagination = {true}                 

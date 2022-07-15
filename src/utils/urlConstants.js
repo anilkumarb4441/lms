@@ -1,5 +1,6 @@
 
 //BASE URL
+// const BASE_URL ="http://192.168.1.29:2002"
 const BASE_URL ="https://leadserver.verzeo.com"
 // "http://192.168.1.29:2002"
 
@@ -49,6 +50,13 @@ module.exports = {
 
      // Myteam
      myteammembers:'/leads/direct/members',
+
+     //perticular team member 
+     perticularTeamMember:'/analytics/onLoadTeamMemberLeadAnalytics',
+
+
+     //on Click Team Member Lead Analytics data
+     onClickTeamMemberLeadAnalytics:'/analytics/onClickTeamMemberLeadAnalytics'
 
   },
 };
