@@ -34,9 +34,9 @@ function Leads() {
   const dispatch = useDispatch();
   const wrapperRef = useRef(); //Table Wrapper Ref
   const mainTabArr = [
-    { name: "Open Leads", value: "pending" },
-    { name: "Untouched Leads", value: "untouched" },
-    { name: "Closed Leads", value: "completed" },
+    { name: "Work In Progress ", value: "pending" },
+    { name: "New ", value: "untouched" },
+    { name: "Won ", value: "completed" },
   ];
 
   const [range, setRange] = useState();
@@ -49,14 +49,15 @@ function Leads() {
     { name: "Wrong Number", value: "wrongNumber" },
   ];
   const subTabArr = [
-    { name: "Today Leads", value: "todayLeads" },
-    { name: "Old Leads", value: "oldLeads" },
+    { name: "Today", value: "todayLeads" },
+    { name: "Old", value: "oldLeads" },
   ];
 
   const subMostFilterArr = [
     { name: "All", value: "all" },
-    { name: "Cold Lead", value: "cold" },
-    { name: "Hot Lead", value: "hot" },
+    { name: "Warm", value: "warm" },
+    { name: "Hot", value: "hot" },
+    { name: "Super Hot", value: "superHot" },
   ];
 
   // lead details form Data
@@ -537,7 +538,7 @@ function Leads() {
             />
                 
                  <Input
-                  placeholder="Search By Name/Email"
+                  placeholder="Search By Name/Email/Phone"
                   inputClass="leadsSearch"
                   type="search"
                   value={reducer.filter.searchData}
@@ -553,7 +554,7 @@ function Leads() {
                   }}
                 />
               </div>
-              {reducer.filter.mainFilter === "untouched" && (
+              {/* {reducer.filter.mainFilter === "untouched" && ( */}
                 <div>
                   {reducer.filter.range && (
                   <>
@@ -573,7 +574,7 @@ function Leads() {
                     src={calendarIcon}
                     onClick={() => setOpenCalendar((open) => !open)}
                   />
-                )}
+                 )}
                   <button
                     className="btnPrimary"
                     onClick={() => {
@@ -597,7 +598,7 @@ function Leads() {
                     Assign Leads
                   </button>
                 </div>
-              )}
+              {/* )} */}
             </div>
 
             <div>

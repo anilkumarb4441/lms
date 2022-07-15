@@ -60,6 +60,7 @@ function Myteam() {
   ]);
   let usImg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2aSUcU-KC_ZGl1KIFES1pwRe4YOMv2gPx_g&usqp=CAU"
   const [tableData, setTableData] = useState([]);
+  const [memberTableData, setMemberTableData] = useState([])
   const [columns, setColumns] = useState([
     // {
     //   Header: "userId",
@@ -77,7 +78,7 @@ function Myteam() {
       Cell:(props)=>{
         return <div style = {{ display:"flex", alignItems:"center", gap:"10px"}} >
           <img src={usImg} style={{width:"30px", height:"30px", borderRadius:'50%'}}/>
-          <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>(setOpenInner(true),setUser(props.cell.row.original))}>{props.cell.row.original.name}</p>
+          <p style = {{textDecoration:'underline',cursor:'pointer'}} onClick = {(e)=>{setOpenInner(true); setUser(props.cell.row.original); getPerticularMeberTeam({val:props.cell.row.original})}}>{props.cell.row.original.name}</p>
           </div>
       }
     },
@@ -119,11 +120,29 @@ function Myteam() {
     API_SERVICES.httpPOSTWithToken(URLS.myteammembers, { ...filterQuery, userId: '' }, callback)
   }
 
+  function getPerticularMeberTeam(val){
+    console.log('vallll', val.val.userId)
+    const callback = (err, res)=>{
+      if(err){
+        setMemberTableData([]);
+        return
+      }
+      if(res.data){
+        console.log('data', res.data)
+        setMemberTableData(res.data)
+      }else{
+        setMemberTableData([]);
+      }
+    }
+    API_SERVICES.httpPOSTWithToken(URLS.perticularTeamMember, { userId:val.val.userId, status:["untouched","open", "completed"] }, callback)
+  }
+
+  // {"userId":"60aa511cdaef68175794b4a8","status":["untouched","open", "close"]}
 
   return (
 <>
-    { 
-      openInner?<ParticularTeamMember user={user} setParticularChef={setOpenInner} tableData={tableData}/>:
+    {
+      openInner?<ParticularTeamMember user={user} setParticularChef={setOpenInner} tableData={memberTableData}/>:
     
       <div className = 'chefOverviewScreen'>
       {/* <div className="screenTitleContainer">

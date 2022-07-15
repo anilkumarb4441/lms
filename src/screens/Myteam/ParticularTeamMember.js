@@ -208,21 +208,21 @@ function ParticularTeamMember({ chefId, setParticularChef, tableData}) {
                   <div className="status-match">
                     <div className="status-cHol">
                       <div className="statusimg-pending"></div>
-                      <p className="stuName">Pending</p>
+                      <p className="stuName">Work in Progress</p>
                     </div>
                     <p className="statusCount">100</p> 
                   </div>
                   <div className="status-match">
                     <div className="status-cHol">
                       <div className="statusimg-untouched"></div>
-                      <p className="stuName">Untouched</p>
+                      <p className="stuName">New</p>
                     </div>
                     <p className="statusCount">100</p> 
                   </div>
                   <div className="status-match">
                     <div className="status-cHol">
                       <div className="statusimg-closed"></div>
-                      <p className="stuName">Closed</p>
+                      <p className="stuName">Won</p>
                     </div>
                     <p className="statusCount">100</p> 
                   </div>
