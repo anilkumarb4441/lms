@@ -1,9 +1,8 @@
 import React, { useState, useEffect,useRef } from "react";
 import "./dots.css";
-
-
 // Assets
 import dots from "../../assets/icons/dots.svg"
+import {BsThreeDotsVertical} from "react-icons/bs"
 
 
 function Dots({options,onclick}){
@@ -22,8 +21,9 @@ function Dots({options,onclick}){
     },[])
 
     return(
-        <div className="dotsParent">
-            <img ref = {dotRef} src={dots} alt="Dots" onClick={()=>setDisplay(!display)}/>
+        <div className="dotsParent" ref={dotRef}>
+            <BsThreeDotsVertical  onClick={()=>setDisplay(!display)}/>
+            {/* <img  src={dots} alt="Dots"/> */}
             {display?
                 <div ref= {optionRef} className="absOptions">
                     {options && options.map((item,i)=>{

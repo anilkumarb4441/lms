@@ -10,12 +10,13 @@
 }
 
 .modalHeader{
-    padding: 15px 20px;
+    margin: 15px 20px;
     display: flex;
     justify-content: space-between;
     background-color: inherit;
     align-items: center;
-    border-radius: inherit;
+    border-bottom: solid 1px #7070704d;
+    padding-bottom: 6px;
 }
 
 
@@ -40,10 +41,19 @@
     color:var(--black)
 }
 
-.modalBody,.modalFooter{
+.modalBody{
     padding: 20px 20px 30px 20px;
 }
 
+
+
 .modalFooter{
-    margin-bottom: 3%;
-}
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    margin: 25px 0;
+ }
+ .modalFooter button{
+    display: block;
+    width: 25%;
+ }

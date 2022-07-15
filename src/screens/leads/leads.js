@@ -361,7 +361,7 @@ function Leads() {
         let newData = [...tableData];
         newData[index] = { ...res.data };
         setTableData(newData);
-        utils.toastSuccess("Lead SuccesFully Edited");
+        utils.toastSuccess("Lead got updated");
         dispatch(actions.closeForm());
       }
     };
@@ -651,24 +651,7 @@ function Leads() {
                 handleDisplay={() => dispatch(actions.closeAssignModal())}
               />
             )}
-             {/* <CalendarModal
-        show={openCalendar}
-        handleDisplay={(e) => setOpenCalendar(e)}
-        value={reducer.filter.range}
-        onChange={(arr) => {
-          setOpenCalendar(false);
-          // console.log(arr)
-          dispatch(
-            actions.setFilter({
-              ...reducer.filter,
-              range: [...arr],
-              pageNumber: 1,
-              pageSize: 10,
-            })
-          );
-          // setRange([...arr])
-        }}
-      /> */}
+        
           </div>
         )}
 

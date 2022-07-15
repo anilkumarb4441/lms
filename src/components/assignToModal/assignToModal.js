@@ -111,7 +111,11 @@ useEffect(() => {
           min = {1}
           required = {true}
          />}
-         <button className = "btnPrimary" type = "submit">Assign Lead</button>
+         
+         <div className = "modalFooter">  
+           <button className = "cancelBtn" type = "button" onClick = {()=>handleDisplay(false)}>Cancel</button>
+           <button className = "saveBtn"  type = "submit">Assign Lead</button>
+         </div>
         </form>
       }
     />

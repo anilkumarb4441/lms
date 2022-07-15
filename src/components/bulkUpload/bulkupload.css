@@ -1,59 +1,79 @@
- .parentMainBulk{
-    width: 60%;
-    margin: auto;
-    flex-direction: column;
-    align-items: center !important;
-    height: fit-content !important;
-    padding: 0% 0% 3% 0%;
-}
-
-.parentMainBulk select{
-    background: url(https://cmsbackend.verzeo.com/assets/upload/file-0-1640702224577.svg);
-    background-repeat: no-repeat;
-    background-position: 93%;
-    background-size: 13px 7px;
-    padding: 10px 43px 10px 15px;
-    appearance: none;
+ .modal.bulkModal{
+    width: 55%;
+    top: 15%;
+    left: 26%;
+    transform: none;
     border-radius: 6px;
-    background-color: aliceblue;
+ }
+ 
+ .parentMainBulk{
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+     padding: 20px;
+    padding-top: 0;
 }
 
-.parentMainBulk select:focus-visible{
-    outline:none
-}
-
-.parentMainBulk .BtnBulk{
-    display: block;
-    margin: 6% auto;
-    /* width: 25%; */
-    padding: 12px 20px;
-    border-radius: 5px;
-    background-color: var(--primary);
-    font-size: 15px;
-    font-weight: 600;
-}
-
-
-
-.parentMainBulk .btnCrosParent{
+.sample-download{
     display: flex;
     align-items: center;
+    gap: 20px;
+    cursor:pointer;
+}
+.sample-download>p{
+    font-size: 14px;
+    font-weight: 500;
+}
+.sample-download>button{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    font-size: 13px;
+    padding: 10px 13px;
 }
 
-.btnCrosParent img{
-    width: 20px;
-    height: 20px;
-    background-color: var(--primary);
-    padding: 4px;
-    border-radius: 50%;
+.fileName-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: solid 1px;
+    padding: 12px;
+    border-radius: 10px;
+    width:50%;
+}
+.fileName-wrapper>div{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.fileName-wrapper>div>p{
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.fileName-wrapper>div>img{
+    width: 25px;
+    height: 25px;
+}
+
+.fileName-wrapper>img{
+    width: 15px;
+    height: 15px;
     cursor: pointer;
-    margin: 0% 0% 0% 12px;
 }
 
-.bulkModal form .downBtn{
-    background-color: transparent;
-    border: none;
-    text-decoration: underline;
-    margin: 3% 0;
-    color: var(--primary);
+.bulkUploadLabel{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 15px auto;
+    border: dashed 2px var(--primary);
+    gap: 20px;
+    border-radius: 10px;
+    width: 100%;
 }
+

@@ -64,7 +64,7 @@ function Login({ setToken, setIsToken }) {
           change={updateCredentials}
           required={true}
         />
-        <button type="submit" className="btnPrimary">
+        <button type="submit" className="btnPrimary two">
           Sign in
         </button>
       </form>

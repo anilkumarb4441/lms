@@ -40,7 +40,7 @@ function AddEditLeadForm({
                     );
                   })}
               </div>
-              <div className = "addLeadFooter">
+              <div className = "modalFooter">
               <button className = "cancelBtn" onClick = {(e)=>{
                 e.preventDefault();
                 handleDisplay(false);
