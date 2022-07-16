@@ -63,14 +63,13 @@ export const editLead = (rowData, formData) => {
 // Update Call Response
 export const updateCallResponse = (rowData, formData) => {
   let newRowData = {
-    status: rowData.callLogs?.status,
-    response: rowData.callLogs?.response,
+    status: rowData.callLogs?.status
   };
   let keys = Object.keys(newRowData);
   let newArr = [
     { name: "leadId", value: rowData.leadId },
     { name: "referenceId", value: rowData.referenceId },
-    { name: "response", value: "" },
+    { name: "response", value: rowData.callLogs?.response },
   ];
   formData.forEach((obj) => {
     let newObj = { ...obj };

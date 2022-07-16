@@ -63,14 +63,14 @@ export const debounce = (func, delay) => {
 export const callResponseArr = [
    { value: "Attempting", name: "notAnswered" },
     { value: "Attempting", name: "switchedOff" },
-    { value: "Move to Lost L1", name: "wrongNumber" },
-    { value: "Move to Lost L1", name: "junkLead" },
+    { value: "Lost L1", name: "languageBarrier" },
+    { value: "Lost L1", name: "junkLead" },
     { value: "Call Back", name: "callBack" },
-    { value: "Move to Lost L1", name: "wrongNumber" },
+    { value: "Lost L1", name: "wrongNumber" },
     { value: "Interested", name: "interested" },
-    { value: "Move to Lost L2", name: "cannotAfford" },
-    { value: "Move to Lost L2", name: "notInterested" },
-    { value: "Move to Lost L2", name: "otherCourse" },
+    { value: "Lost L2", name: "cannotAfford" },
+    { value: "Lost L2", name: "notInterested" },
+    { value: "Lost L2", name: "otherCourse" },
 ];
 
 //Toast Messages

@@ -41,7 +41,7 @@ function AddEditLeadForm({
             >
               <div>
                 {/* Displaying Call Response Message  while Updating call status */}
-               {callResponse && <p className = "callresponse">Call Response: {callResponse}</p>}
+               {callResponse && <p className = "callresponse">Call Response: This lead will be moving to {callResponse}</p>}
               
                 {formData &&
                   formData.map((item, i) => {

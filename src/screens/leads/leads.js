@@ -27,7 +27,6 @@ import CustomDateRange from "../../components/dateRangePicker/dateRangePicker"
 function Leads() {
   const reducer = useSelector((state) => state.leads);
   const [totalCount, setTotalCount] = useState(0);
-  const [openCalendar, setOpenCalendar] = useState(false);
   const dispatch = useDispatch();
   let {userId} = localStorageService.getTokenDecode();
   const wrapperRef = useRef(); //Table Wrapper Ref
@@ -38,12 +37,12 @@ function Leads() {
     { name: "Lost Leads", value: "lost" },
   ];
 
-  const [range, setRange] = useState();
+
 
   const callStatusArr = [
     { name: "Not Answered", value: "notAnswered" },
     { name: "Switched Off", value: "switchedOff" },
-    { name: "Wrong Number", value: "wrongNumber" },
+    { name: "Language Barrier", value: "languageBarrier" },
     { name: "Junk Lead", value: "junkLead" },
     { name: "Call Back", value: "callBack" },
     { name: "Wrong Number", value: "wrongNumber" },

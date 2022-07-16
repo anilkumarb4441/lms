@@ -1,4 +1,3 @@
-import { actions } from "react-table";
 import localStorageService from "../../utils/localStorageService";
 import * as actionTypes from "./actionTypes";
 

@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from 'react-router-dom'
 import API_SERVICES from "../../utils/API"
 import { URLS } from "../../utils/urlConstants"
-
+import {useDispatch,useSelector} from "react-redux"
+import * as actions from "./actions"
 //css
 import "./ParticularTeamMember.css";
 
@@ -19,9 +20,10 @@ import DoughnutComp from "../../components/doughnut/doughnut"
 import Table from "../../components/Table";
 import Tabs from "../../components/tabs/tabs.js";
 
-function ParticularTeamMember({ perticularTMember, chefId, filterQuery, totalCount, setFilterQuery, setParticularChef, tableData, memberAnalytics, setTotalCount }) {
+function ParticularTeamMember({ perticularTMember, filterQuery, totalCount, setFilterQuery, setParticularChef, tableData, memberAnalytics, setTotalCount }) {
   const mainref = useRef(null)
-
+const dispatch = useDispatch();
+const  myTeamReducer = useSelector(state=>state.myTeam)
   // Tabs
   const mainTabArr = [
     { name: "Team", value: "team" },
@@ -53,7 +55,7 @@ function ParticularTeamMember({ perticularTMember, chefId, filterQuery, totalCou
   }
 
   const [tabarray, settabarray] = useState([perticularTMember.name]);
-
+  
   function updatePage(x) {
     settabarray(tabarray => [...tabarray, x])
     mainref.current.scrollIntoView();
@@ -64,10 +66,9 @@ function ParticularTeamMember({ perticularTMember, chefId, filterQuery, totalCou
   }
 
 
-  useEffect(() => {
-    getDataOfMem(tabarray[tabarray.length - 1]);
-  }, [tabarray])
+ 
 
+  // 
   function getDataOfMem(x) {
 
   }
@@ -79,7 +80,7 @@ function ParticularTeamMember({ perticularTMember, chefId, filterQuery, totalCou
       accessor: "name",
       Cell: (props) => {
         // return <button style={{backgroundColor:"transparent", border:"none", color:"white", textDecoration:"underline"}} onClick={(e)=>settabarray(tabarray.push(props.cell.row.original.memId))}>{props.cell.row.original.memId}</button>
-        return <button style={{ backgroundColor: "transparent", border: "none", color: "black", textDecoration: "underline" }} onClick={(e) => updatePage(props.cell.row.original.name)}>{props.cell.row.original.name}</button>
+        return <button style={{ backgroundColor: "transparent", border: "none", color: "black", textDecoration: "underline" }} onClick={(e) => {updatePage(props.cell.row.original.name); dispatch(actions.getTeamMember(props.cell.row.original));}}>{props.cell.row.original.name}</button>
       }
     },
     {
@@ -140,18 +141,22 @@ function ParticularTeamMember({ perticularTMember, chefId, filterQuery, totalCou
     API_SERVICES.httpPOSTWithToken(URLS.onClickTeamMemberLeadAnalytics, { userId: perticularTMember.userId, status: statusValue }, callback)
   }
 
+  useEffect(()=>{
+    getDataOfMem(myTeamReducer.arr[myTeamReducer.arr.length - 1]);
+  
+  },[myTeamReducer.arr])
 
   return (
     <div className="mainParticular" ref={mainref}>
 
       <div className="partiMyTeam-firstHL">
         <div className="partiMyTeam-backButton">
-          <IoIosArrowBack className='partBackBTN' onClick={(e) => setParticularChef(false)} />
+          <IoIosArrowBack className='partBackBTN' onClick={(e) => {setParticularChef(false);dispatch(actions.setDefault())}} />
           <h4>My Team</h4> {
-              tabarray.map((val,key)=>{
+             myTeamReducer.arr && myTeamReducer.arr.length>0 && myTeamReducer.arr.map((val,key)=>{
                 return(
                   // &nbsp;/&nbsp;  
-                  <p onClick={(e)=>getPartData(val,key)} key={key} className="meIds">&nbsp;/&nbsp;<span className="bedScumText">{val}</span></p>
+                  <p onClick={(e)=>dispatch((actions.getTeamMember(val)))} key={key} className="meIds">&nbsp;/&nbsp;<span className="bedScumText">{val.name}</span></p>
                 )
               })
             }

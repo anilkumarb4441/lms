@@ -4,7 +4,8 @@ import Table from "../../components/Table";
 import "./index.css";
 import API_SERVICES from "../../utils/API"
 import { URLS } from "../../utils/urlConstants"
-
+import {useSelector,useDispatch} from "react-redux"
+import * as actions from "./actions.js"
 // Components
 import ParticularTeamMember from "./ParticularTeamMember"
 import Input from "../../components/Input";
@@ -20,7 +21,7 @@ function Myteam() {
   const [filterQuery, setFilterQuery] = useState({ pageNumber: 1, pageRows: 5, search: '' })
   const [totalCount, setTotalCount] = useState(0)
   const [memberAnalytics, setMemberAnalytics] = useState([])
-
+  const dispatch = useDispatch()
   const [originalData, setOriginalData] = useState([
     {
       memId: "NAN",
@@ -69,7 +70,7 @@ function Myteam() {
       Cell: (props) => {
         return <div style={{ display: "flex", alignItems: "center", gap: "10px" }} >
           <img src={usImg} style={{ width: "30px", height: "30px", borderRadius: '50%' }} />
-          <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={(e) => { setOpenInner(true); setUser(props.cell.row.original); getPerticularMeberTeam({ val: props.cell.row.original }); getPerticularMeberAnalytics({ val: props.cell.row.original }) }}>{props.cell.row.original.name}</p>
+          <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={(e) => { setOpenInner(true); dispatch(actions.getTeamMember(props.cell.row.original)); setUser(props.cell.row.original); getPerticularMeberTeam({ val: props.cell.row.original }); getPerticularMeberAnalytics({ val: props.cell.row.original }) }}>{props.cell.row.original.name}</p>
         </div>
       }
     },
@@ -157,7 +158,7 @@ function Myteam() {
     <>
       {
         openInner ? <ParticularTeamMember
-          perticularTMember={user}
+          perticularTMember={{...user}}
           setParticularChef={setOpenInner}
           tableData={memberTableData}
           filterQuery={filterQuery}
