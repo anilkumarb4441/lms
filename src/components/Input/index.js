@@ -86,6 +86,7 @@ function Input({
           pattern={pattern}
           placeholder={placeholder}
           name={name}
+          disabled = {disabled}
           required={required}
         >
           {selectHeading !== undefined && (

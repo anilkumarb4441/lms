@@ -7,6 +7,7 @@
     background-color: var(--white);
     font-size: 1rem;
     width: 50%;
+    transition: all 0.3s;
 }
 
 .modalHeader{
@@ -57,3 +58,23 @@
     display: block;
     width: 25%;
  }
+
+ @keyframes reveal-top-modal{
+    0%{
+        top: -20%
+    }
+
+    100%{
+        top:15%
+    }
+}
+
+@keyframes reveal-right-modal{
+    0%{
+        right: -42%
+    }
+
+    100%{
+      right:0
+    }
+}

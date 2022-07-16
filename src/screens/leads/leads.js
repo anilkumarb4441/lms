@@ -29,21 +29,28 @@ function Leads() {
   const [totalCount, setTotalCount] = useState(0);
   const [openCalendar, setOpenCalendar] = useState(false);
   const dispatch = useDispatch();
+  let {userId} = localStorageService.getTokenDecode();
   const wrapperRef = useRef(); //Table Wrapper Ref
   const mainTabArr = [
     { name: "Work In Progress ", value: "pending" },
-    { name: "New ", value: "untouched" },
-    { name: "Won ", value: "completed" },
+    { name: "New", value: "untouched" },
+    { name: "Paid Leads", value: "completed" },
+    { name: "Lost Leads", value: "lost" },
   ];
 
   const [range, setRange] = useState();
 
   const callStatusArr = [
-    { name: "Interested", value: "interested" },
-    { name: "Not Interested", value: "notInterested" },
     { name: "Not Answered", value: "notAnswered" },
     { name: "Switched Off", value: "switchedOff" },
     { name: "Wrong Number", value: "wrongNumber" },
+    { name: "Junk Lead", value: "junkLead" },
+    { name: "Call Back", value: "callBack" },
+    { name: "Wrong Number", value: "wrongNumber" },
+    { name: "Interested", value: "interested" },
+    { name: "Cannot Afford", value: "cannotAfford" },
+    { name: "Not Interested", value: "notInterested" },
+    { name: "Taken Up Some Other Course", value: "otherCourse" },
   ];
   const subTabArr = [
     { name: "Today", value: "todayLeads" },
@@ -79,8 +86,8 @@ function Leads() {
       name: "email",
       value: "",
       type: "email",
-      label: "Email",
-      required: false,
+      label: "Email*",
+      required: true,
     },
 
     {
@@ -104,39 +111,10 @@ function Leads() {
       label: "Year Of Pass Out",
       required: false,
     },
-    {
-      name: "source",
-      value: "",
-      element: "select",
-      selectHeading: "Select Source",
-      selectArr: [
-        { name: "Facebook", value: "facebook" },
-        { name: "Email", value: "email" },
-        { name: "Self", value: "self" },
-        { name: "CGFL", value: "cgfl" },
-      ],
-      label: "Source*",
-      required: true,
-    },
-    {
-      name: "isCampaign",
-      value: true,
-      type: "checkbox",
-      label: "Campaign Generated",
-      required: false,
-    },
   ]);
 
   // call form Data
   const [callFormData, setCallFormData] = useState([
-    {
-      name: "response",
-      value: "",
-      required: true,
-      label: "Call Response",
-      type: "text",
-    },
-
     {
       name: "status",
       value: "",
@@ -213,7 +191,7 @@ function Leads() {
       accessor: "yearOfPassOut",
     },
     {
-      Header: "Call Response",
+      Header: "Call Task",
       accessor: (row) => row.callLogs?.response,
     },
 
@@ -226,25 +204,13 @@ function Leads() {
       Header: "Call Count",
       accessor: "callCount",
     },
-
-    {
-      Header: "Lead Gen",
-      accessor: "leadGen",
-      Cell: (props) => {
-        return (
-          <p className={props.cell.row.original.leadGen}>
-            {utils.camelToSentence(props.cell.row.original.leadGen)}
-          </p>
-        );
-      },
-    },
+    
     {
       Header: "Actions",
       accessor: "actions",
       Cell: (props) => {
         return (
           <Dots
-            // options={reducer.filter.mainFilter==="untouchedLeads"?actionOptions:openactionOptions}
             options={actionOptions}
             onclick={(name) => handleAction(name, props.cell.row.original)}
           />
@@ -261,10 +227,7 @@ function Leads() {
     switch (name) {
        case "Edit Lead":
          dispatch(actions.editLead(rowData, formData));
-        // let tokenObj = localStorageService.getTokenDecode();
-        //   if(rowData.generatedBy===tokenObj.userId){
-        //
-        //   }
+        
         return;
    
         case "Assign To":
@@ -324,7 +287,7 @@ function Leads() {
     }, {});
     switch (reducer.formHeading) {
       case "Add Lead":
-        createLead(leadObject);
+        createLead({...leadObject,source:'self',isCampaign:false});
         return;
 
       case "Edit Lead":
@@ -568,7 +531,8 @@ function Leads() {
                   }}
                   />
                 )}
-                 {reducer.filter.mainFilter === "untouched" &&<> <button
+                 {userId && (userId!=="62d256b227ac21251354126a"&& userId!=="62d2567927ac212513541269")?
+                 <button
                     className="btnPrimary"
                     onClick={() => {
                       dispatch(actions.addLead(formData));
@@ -576,12 +540,13 @@ function Leads() {
                   >
                     Add Lead
                   </button>
-                  <button
+                  :<button
                     onClick={() => dispatch(actions.openBulkModal())}
                     className="btnPrimary"
                   >
                     Bulk Upload
                   </button>
+}
                   <button
                     onClick={() => {
                       dispatch(actions.assignLead(null, "bulk"));
@@ -590,7 +555,7 @@ function Leads() {
                   >
                     Assign Leads
                   </button>
-              </> } 
+             
               </div>
               
             </div>
@@ -664,3 +629,5 @@ function Leads() {
 }
 
 export default Leads;
+
+

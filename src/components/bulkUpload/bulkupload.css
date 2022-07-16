@@ -1,10 +1,17 @@
  .modal.bulkModal{
     width: 55%;
-    top: 15%;
+    top: -15%;
     left: 26%;
     transform: none;
     border-radius: 6px;
+    opacity: 0;
  }
+
+ .modal.bulkModal.active{
+    top:15%;
+    animation: reveal-top-modal 0.3s linear; 
+    opacity: 1;
+}
  
  .parentMainBulk{
     height: fit-content;

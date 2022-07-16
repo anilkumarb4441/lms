@@ -1,9 +1,17 @@
 .modal.AssignToModal{
    width:40%;
     border-radius: 5px;
-    top:40%;
+    top: -35%;
+    transform: none;
+    left: 30%;
+    opacity:0;
 }
 
+.modal.AssignToModal.active{
+    top:15%;
+    animation: reveal-top-modal 0.3s linear; 
+    opacity: 1;
+}
 
 
 .autoComplete-container>input{
@@ -62,3 +70,5 @@
 .modal.AssignToModal .modalFooter button {
     width: 33%;
 }
+
+
