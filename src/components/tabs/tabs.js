@@ -1,19 +1,16 @@
 import React from "react";
 import "./tabs.css";
 
-function Tabs({ tabArr, handleTab, activeValue='',  tabsClass = "" }) {
+function Tabs({ tabArr, handleTab, activeValue='',  tabsClass = "" ,subtabs}) {
  
- 
-  
-  
-  
+
   return (
     <div className={"tabsSection " + tabsClass}>
       {tabArr &&
         tabArr.map((item, i) => {
           return (
             <button
-              className={item.value === activeValue ? "active" : ""}
+              className={item.value === subtabs ? "active" : "" }
               key={i}
               onClick={() =>handleTab(item)}
             >
