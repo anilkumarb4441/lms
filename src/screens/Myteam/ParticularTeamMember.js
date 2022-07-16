@@ -19,7 +19,7 @@ import DoughnutComp from "../../components/doughnut/doughnut"
 import Table from "../../components/Table";
 import Tabs from "../../components/tabs/tabs.js";
 
-function ParticularTeamMember({perticularTMember, chefId, filterQuery,totalCount,setFilterQuery, setParticularChef, tableData, memberAnalytics}){
+function ParticularTeamMember({ perticularTMember, chefId, filterQuery, totalCount, setFilterQuery, setParticularChef, tableData, memberAnalytics, setTotalCount }) {
   const mainref = useRef(null)
 
   // Tabs
@@ -32,28 +32,27 @@ function ParticularTeamMember({perticularTMember, chefId, filterQuery,totalCount
 
   const [subtabs, setsubtabs] = useState("team")
 
+
   // State for Nested Tabs
   const [tabcount, settabcount] = useState(0);
 
-  const  membAn=  memberAnalytics.map((val)=>val.number)
+  const membAn = memberAnalytics.map((val) => val.number)
 
-   
-    const dataToBeSent={
+
+  const dataToBeSent = {
     datasets: [{
-      data:membAn, 
+      data: membAn,
       backgroundColor: [
         '#70DFBF',
         '#FA7999',
         '#6898E5'
       ],
-      hoverOffset: 4,
+      hoverOffset: 2,
 
     }]
-   
   }
-  // })
 
-  const [tabarray, settabarray] = useState([chefId]);
+  const [tabarray, settabarray] = useState([perticularTMember.name]);
 
   function updatePage(x) {
     settabarray(tabarray => [...tabarray, x])
@@ -67,59 +66,37 @@ function ParticularTeamMember({perticularTMember, chefId, filterQuery,totalCount
 
   useEffect(() => {
     getDataOfMem(tabarray[tabarray.length - 1]);
-    // console.log(tabarray[tabarray.length-1]);
   }, [tabarray])
-
 
   function getDataOfMem(x) {
 
   }
-
-
   // Table
 
-  const [originalData, setOriginalData] = useState([
+  const [columns, setColumns] = useState([
     {
-      userId: "NAN54163",
-      name: "Manu",
-      email: "manojkumarobulasetty785@gmail.com",
-      phone: 7729088005,
+      Header: "Member name",
+      accessor: "name",
+      Cell: (props) => {
+        // return <button style={{backgroundColor:"transparent", border:"none", color:"white", textDecoration:"underline"}} onClick={(e)=>settabarray(tabarray.push(props.cell.row.original.memId))}>{props.cell.row.original.memId}</button>
+        return <button style={{ backgroundColor: "transparent", border: "none", color: "black", textDecoration: "underline" }} onClick={(e) => updatePage(props.cell.row.original.name)}>{props.cell.row.original.name}</button>
+      }
     },
     {
-      userId: "NAN",
-      name: "Manu",
-      email: "manojkumarobulasetty785@gmail.com",
-      phone: 7729088005,
+      Header: "Email",
+      accessor: "email",
     },
     {
-      userId: "NAN",
-      name: "Manu",
-      email: "manojkumarobulasetty785@gmail.com",
-      phone: 7729088005,
+      Header: "Phone Number",
+      accessor: 'phone'
     },
     {
-      userId: "NAN",
-      name: "Manu",
-      email: "manojkumarobulasetty785@gmail.com",
-      phone: 7729088005,
-    },
-    {
-      userId: "NANjhk",
-      name: "Manu",
-      email: "manojkumarobulasetty785@gmail.com",
-      phone: 7729088005,
-    },
-    {
-      userId: "NAN",
-      name: "Manu",
-      email: "manojkumarobulasetty785@gmail.com",
-      phone: 7729088005,
+      Header: "Level",
+      accessor: 'level',
     },
   ]);
-  const [leadTableData, setLeadTableData] = useState(originalData)
 
-
-  const [columns, setColumns] = useState([
+  const [leadcolumns, setLeadColumns] = useState([
     {
       Header: "Member name",
       accessor: "name",
@@ -137,177 +114,136 @@ function ParticularTeamMember({perticularTMember, chefId, filterQuery,totalCount
       accessor: 'phone'
     },
     {
-      Header: "Level",
-      accessor:'level',
+      Header: "Status",
+      accessor: 'status',
     },
   ]);
 
-  const [onClkAnalyticData, setOnClkAnalyticData ] = useState([])
-
-  function onClickTeamMemberLeadAnalytics(){
-
-    const callback = (err, res)=>{
-      if(err){
-        console.log('error2', err)
+  const [onClkAnalyticData, setOnClkAnalyticData] = useState([])
+  function onClickTeamMemberLeadAnalytics(val) {
+    let statusValue = val.status === "untouched" ? 'untouched' : val.status === "open" ? "pending" : 'completed'
+    const callback = (err, res) => {
+      if (err) {
         setOnClkAnalyticData([]);
         return
       }
       if (res && res.status === 200) {
-      if(res.data){
-        console.log('data2', res.data)
-        setOnClkAnalyticData(res.data)
-      
-      }else{
-        setOnClkAnalyticData([]);
-
+        if (res.data) {
+          setOnClkAnalyticData(res.data.data)
+          setTotalCount(res.data.data.length)
+        } else {
+          setOnClkAnalyticData([]);
+          setTotalCount(0)
+        }
       }
     }
-    }
-    API_SERVICES.httpPOSTWithToken(URLS.onClickTeamMemberLeadAnalytics, { userId:perticularTMember.userId, status:"untouched" }, callback)
-  } 
+    API_SERVICES.httpPOSTWithToken(URLS.onClickTeamMemberLeadAnalytics, { userId: perticularTMember.userId, status: statusValue }, callback)
+  }
 
-  const [profileScreen, setProfileScreen] = useState(false);
 
   return (
     <div className="mainParticular" ref={mainref}>
-      {/* <div className="flexalign">
-          <IoIosArrowBack className = 'goBack' onClick={(e)=>setParticularChef(false)}/>
-          <h1>Member Id:
-            {
+
+      <div className="partiMyTeam-firstHL">
+        <div className="partiMyTeam-backButton">
+          <IoIosArrowBack className='partBackBTN' onClick={(e) => setParticularChef(false)} />
+          <h4>My Team</h4> {
               tabarray.map((val,key)=>{
                 return(
                   // &nbsp;/&nbsp;  
-                  <button onClick={(e)=>getPartData(val,key)} key={key} className="meIds">&nbsp;/<span>{val}</span></button>
+                  <p onClick={(e)=>getPartData(val,key)} key={key} className="meIds">&nbsp;/&nbsp;<span className="bedScumText">{val}</span></p>
                 )
               })
             }
-          </h1>
-        </div> */}  
-        <div className="partiMyTeam-firstHL">
-      <div className="partiMyTeam-backButton">
-        <IoIosArrowBack className='partBackBTN' onClick={(e) => setParticularChef(false)} />
-        <h4>My Team</h4>
-      </div>
-          <div className="infomain">
-            <p className="infoContent1">Name &nbsp;:</p>
-            <p className="infoContent">{perticularTMember.name}</p>
-          </div>
+        </div>
+        <div className="infomain">
+          <p className="infoContent1">Name &nbsp;:</p>
+          <p className="infoContent" >{perticularTMember.name}</p>
+        </div>
       </div>
       <div>
         <div className="sPOne">
-          {/* <div className="ParchefOverView">
-                <div className="fPDiv">
-                  <img src={dummy} alt="Dummy Image" />
-                  <div className="InfoChef">
-                    <h2>Ekka Singh</h2>
-                  </div>
-                </div>
-                <p className="chefPInfo">
-                  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et
-                </p>
-                <div className="sPflexDiv">
-                  <img src={mailIcon} alt="MailIcon" />
-                  <a href="mailto:Enakshi@gmail.com">Enakshi@gmail.com</a>
-                </div>
-                <div className="sPflexDiv">
-                  <img src={phoneIcon} alt="MailIcon" />
-                  <a href="tel:9123456789">9123456789</a>
-                </div>
-              </div> */}
           <div className='userTicketsSection'>
             <div className='ticketHead'>
               <h4>Tickets Raised</h4>
             </div>
             <div className='tickets'>
               <div className="teckWrape">
-                <DoughnutComp donughtfor="doughnut" pieData={dataToBeSent} 
-                // options={
-                // { onClick: onClickTeamMemberLeadAnalytics()}}
+                <DoughnutComp donughtfor="doughnut" pieData={dataToBeSent}
                 />
                 <div className="status-wraper">
                   {
-                    memberAnalytics.map((val)=>{
-                     return(
-                      <div className="status-match">
-                      <div className="status-cHol">
-                        <div className="statusimg-pending" style={{border:val.status==="untouched"?"5px solid #70DFBF":val.status==="open"?'5px solid #FA7999':'5px solid #6898E5'}}></div>
-                  
-                        <p className="stuName">
-                          {val.status==="untouched"? "New":val.status==="open"?'Work in Progress':'Won'}
-                          </p>
-                      </div>
-                      <p className="statusCount">{val.number}</p> 
-                    </div>
-                     )
+                    memberAnalytics.map((val) => {
+                      console.log(val, 'maerm')
+                      return (
+                        <div className="status-match">
+                          <div className="status-cHol">
+                            <div className="statusimg-pending" style={{ border: val.status === "untouched" ? "5px solid #70DFBF" : val.status === "pending" ? '5px solid #FA7999' : '5px solid #6898E5' }}></div>
+
+                            <p id="stu" className="stuName" onClick={(e) => onClickTeamMemberLeadAnalytics(val)}>
+                              {val.status === "untouched" ? "New" : val.status === "pending" ? 'Work in Progress' : 'Won'}
+                            </p>
+                          </div>
+                          <p className="statusCount">{val.number}</p>
+                        </div>
+                      )
                     })
-                    
-
-
-
                   }
-
-                  {/* <div className="status-match">
-                    <div className="status-cHol">
-                      <div className="statusimg-untouched"></div>
-                      <p className="stuName">New</p>
-                    </div>
-                    <p className="statusCount">{membAn[1]}</p> 
-                  </div>
-                  <div className="status-match">
-                    <div className="status-cHol">
-                      <div className="statusimg-closed"></div>
-                      <p className="stuName">Won</p>
-                    </div>
-                    <p className="statusCount">{membAn[2]}</p> 
-                  </div> */}
                 </div>
               </div>
             </div>
           </div>
           <div className="detailedSection">
             {/* Total Tasks */}
+            <div className="totalTasksPart">
+              <div className="tableParent">
 
-            {
-              subtabs === "team" ?
-                <div className="totalTasksPart">
-                  <div className="tableParent">
-                    {/* <Table /> */}
-                   <div className="tabAndSearch-HOL">
-                   <Tabs
-                      tabArr={mainTabArr}
-                      tabsClass="leadTabs"
-                      handleTab={(e) => setsubtabs(e.value)}
-                    />
-                    <div className="teamTabSearch"> 
-                      <input type = "search"  placeholder="Search By Name/Email/phone" name ="search" change = {(e)=>setFilterQuery({...filterQuery,pageNumber:1,search:e.target.value})} value = {filterQuery.search}/>
-                      <IoMdSearch className="IoMdSearchic"/>
-                    </div>
-                   </div>
-                    <Table columns={columns} 
-                     pagination = {true}                 
-                     currentPage={filterQuery.pageNumber}
-                     pageSize={filterQuery.pageRows}
-                     totalCount={totalCount} 
-                     onPageChange={(pageNumber, pageRows) => {
-                         setFilterQuery({...filterQuery, pageNumber:pageNumber,pageRows:pageRows,search:''})
-                     }}
-                    data={tableData} 
-                    tClass="myteam perMyteam" />
+                <div className="tabAndSearch-HOL">
+                  <Tabs
+                    tabArr={mainTabArr}
+                    subtabs={subtabs}
+                    tabsClass="leadTabs"
+                    handleTab={(e) => setsubtabs(e.value)}
+                  />
+                  <div className="teamTabSearch">
+                    <input type="search" placeholder="Search By Name/Email/phone" name="search" onChange={(e) => setFilterQuery({ ...filterQuery, pageNumber: 1, search: e.target.value })} value={filterQuery.search} />
+                    <IoMdSearch className="IoMdSearchic" />
                   </div>
-                </div> :
-                subtabs === "analytics" ?
-                  <div className="totalTasksPart">
-                    <h4>Analytics</h4>
+                </div>
 
-                  </div> :
-                  subtabs === "leads" ?
-                    <div className="totalTasksPart">
-                      <h4>Leads</h4>
-                      <Table  columns={columns}
-                      data={leadTableData}
-                       tClass="myteam perMyteam" />
-                    </div> : null
-            }
+                {/* <Table /> */}
+
+                {subtabs === "team" &&
+                  <>
+                    <Table columns={columns}
+                      pagination={true}
+                      currentPage={filterQuery.pageNumber}
+                      pageSize={filterQuery.pageRows}
+                      totalCount={totalCount}
+                      onPageChange={(pageNumber, pageRows) => {
+                        setFilterQuery({ ...filterQuery, pageNumber: pageNumber, pageRows: pageRows, search: '' })
+                      }}
+                      data={tableData}
+                      tClass="myteam perMyteam" />
+                  </>
+                }
+                {
+                  subtabs === "leads" &&
+                  <>
+                    <Table columns={leadcolumns}
+                      pagination={true}
+                      currentPage={filterQuery.pageNumber}
+                      pageSize={filterQuery.pageRows}
+                      totalCount={totalCount}
+                      onPageChange={(pageNumber, pageRows) => {
+                        setFilterQuery({ ...filterQuery, pageNumber: pageNumber, pageRows: pageRows, search: '' })
+                      }}
+                      data={onClkAnalyticData}
+                      tClass="myteam perMyteam" />
+                  </>
+                }
+              </div>
+            </div>
           </div>
         </div>
 
