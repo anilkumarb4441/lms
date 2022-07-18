@@ -13,13 +13,10 @@ import downloadIcon from "../../assets/icons/download.svg";
 import cloudUpload from "../../assets/icons/cloud-upload.svg";
 import fileIcon from "../../assets/icons/file-icon.svg";
 import Input from "../Input";
-import localStorageService from "../../utils/localStorageService";
 
-function BulkUpload({ show, handleDisplay, callback }) {
+function BulkUpload({show,handleDisplay,callback,userId}) {
   const formref = useRef();
   let sheetData = useRef(0);
-
-  
   const [bulkData, setbulkData] = useState({isCampaign:false});
   const [filename, setfilename] = useState("");
   const [disabled, setDisabled] = useState(true);
@@ -32,8 +29,6 @@ function BulkUpload({ show, handleDisplay, callback }) {
     { name: "Website", value: "website" },
     { name: "Google", value: "google" },
   ];
-
-  const sourceArr2 = [{name:'CGFL',value:'cgfl'}]
 
   function downloadCSV(e) {
     e.preventDefault();
@@ -116,15 +111,13 @@ function BulkUpload({ show, handleDisplay, callback }) {
     setDisabled(false);
   }, [bulkData]);
 
-  React.useEffect(()=>{
-    const {userId} = localStorageService.getTokenDecode()
-    if(!userId)  window.location = "/"    
+  React.useEffect(()=>{ 
     if(userId==="62d2567927ac212513541269"){
       // FOR CHANUKYA
     setSourceArr(sourceArr1)
     setbulkData({...bulkData,isCampaign:true})
     }else{
-      // FOR SHUBAM
+       // FOR SHUBAM
        setSourceArr([])
        setbulkData({...bulkData,isCampaign:false,source:'cgfl'})
     }

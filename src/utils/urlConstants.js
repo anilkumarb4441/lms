@@ -56,7 +56,10 @@ module.exports = {
 
 
      //on Click Team Member Lead Analytics data
-     onClickTeamMemberLeadAnalytics:'/analytics/onClickTeamMemberLeadAnalytics'
+     onClickTeamMemberLeadAnalytics:'/analytics/onClickTeamMemberLeadAnalytics',
+
+     // get bulk uploaded leads 
+     getBulkUploadedLeads:'/leads/permissionBasedFiltering'
 
   },
 };

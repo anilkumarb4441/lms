@@ -52,7 +52,7 @@ useEffect(()=>{
         className="dropdown-header"
         onClick={() => toggleDropDown()}
       >
-        <p>{options.find(opt=>opt.value===value).name?options.find(opt=>opt.value===value).name:defaultName}</p>
+        <p>{options.find(opt=>opt.value===value)?.name?options.find(opt=>opt.value===value)?.name:defaultName}</p>
         <IoMdArrowDropdown />
       </div>
       <div ref={bodyRef} className="dropdown-body">

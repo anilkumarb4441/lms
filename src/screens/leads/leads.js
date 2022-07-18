@@ -40,16 +40,16 @@ function Leads() {
 
 
   const callStatusArr = [
-    { name: "Not Answered", value: "notAnswered" },
-    { name: "Switched Off", value: "switchedOff" },
-    { name: "Language Barrier", value: "languageBarrier" },
-    { name: "Junk Lead", value: "junkLead" },
-    { name: "Call Back", value: "callBack" },
-    { name: "Wrong Number", value: "wrongNumber" },
-    { name: "Interested", value: "interested" },
-    { name: "Cannot Afford", value: "cannotAfford" },
-    { name: "Not Interested", value: "notInterested" },
-    { name: "Taken Up Some Other Course", value: "otherCourse" },
+    { name: "Not Answered", value: "Not Answered" },
+    { name: "Switched Off", value: "Switched Off" },
+    { name: "Language Barrier", value: "Language Barrier" },
+    { name: "Junk Lead", value: "Junk Lead" },
+    { name: "Call Back", value: "Call Back" },
+    { name: "Wrong Number", value: "Wrong Number" },
+    { name: "Interested", value: "Interested" },
+    { name: "Cant Afford", value: "Cant Afford" },
+    { name: "Not Interested Right Now", value: "Not Interested Right Now" },
+    { name: "Taken Up Some Other Course", value: "Taken Up Some Other Course" },
   ];
   const subTabArr = [
     { name: "Today", value: "todayLeads" },
@@ -530,7 +530,7 @@ function Leads() {
                   }}
                   />
                 )}
-                 {userId && (userId!=="62d256b227ac21251354126a"&& userId!=="62d2567927ac212513541269")?
+                
                  <button
                     className="btnPrimary"
                     onClick={() => {
@@ -539,13 +539,6 @@ function Leads() {
                   >
                     Add Lead
                   </button>
-                  :<button
-                    onClick={() => dispatch(actions.openBulkModal())}
-                    className="btnPrimary"
-                  >
-                    Bulk Upload
-                  </button>
-}
                   <button
                     onClick={() => {
                       dispatch(actions.assignLead(null, "bulk"));
@@ -598,15 +591,7 @@ function Leads() {
                 submitForm={submitForm}
               />
             )}
-            {reducer.openBulkModal && (
-              <BulkUpload
-                show={reducer.openBulkModal}
-                handleDisplay={() => dispatch(actions.closeBulkModal())}
-                callback={() => {
-                  getLeadsByFilters(reducer.filter);
-                }}
-              />
-            )}
+        
             {reducer.openAssignModal && (
               <AssignToModal
                 rowObj={{ ...reducer.rowObj }}

@@ -61,16 +61,16 @@ export const debounce = (func, delay) => {
 
 // Leads call response Messages Array
 export const callResponseArr = [
-   { value: "Attempting", name: "notAnswered" },
-    { value: "Attempting", name: "switchedOff" },
-    { value: "Lost L1", name: "languageBarrier" },
-    { value: "Lost L1", name: "junkLead" },
-    { value: "Call Back", name: "callBack" },
-    { value: "Lost L1", name: "wrongNumber" },
-    { value: "Interested", name: "interested" },
-    { value: "Lost L2", name: "cannotAfford" },
-    { value: "Lost L2", name: "notInterested" },
-    { value: "Lost L2", name: "otherCourse" },
+    { value: "WIP", name: "Not Answered" },
+    { value: "WIP", name: "Switched Off" },
+    { value: "Lost L1", name: "Language Barrier" },
+    { value: "Lost L1", name: "Junk Lead" },
+    { value: "WIP", name: "Call Back" },
+    { value: "Lost L1", name: "Wrong Number" },
+    { value: "WIP", name: "Interested" },
+    { value: "Lost L2", name: "Cant Afford" },
+    { value: "Lost L2", name: "Not Interested Right Now" },
+    { value: "Lost L2", name: "Taken Up Some Other Course" },
 ];
 
 //Toast Messages

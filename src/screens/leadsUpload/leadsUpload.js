@@ -1,0 +1,229 @@
+import React, { useState, useEffect, useRef } from "react";
+import { URLS } from "../../utils/urlConstants";
+import localStorageService from "../../utils/localStorageService";
+import API_SERVICES from "../../utils/API";
+
+//css
+import "../leads/leads.css";
+import "./leadsUpload.css";
+
+//components
+import Input from "../../components/Input";
+import Table from "../../components/Table";
+import BulkUpload from "../../components/bulkUpload/bulkupload.js";
+import Dropdown from "../../components/dropdown/dropdown.js";
+import CustomDateRange from "../../components/dateRangePicker/dateRangePicker";
+
+function LeadsUpload() {
+  const { userId } = localStorageService.getTokenDecode();
+  const [totalCount, setTotalCount] = useState(0);
+  const [openBulk, setOpenBulk] = useState(false);
+  const wrapperRef = useRef(); //Table Wrapper Ref
+  const [filterObj, setFilterObj] = useState({
+    filter: "todayLeads",
+    source: "",
+    searchData: "",
+    pageRows: 10,
+    pageNumber: 1,
+    range: null,
+  });
+
+  const mainFilterArr = [
+    { name: "Today", value: "todayLeads" },
+    { name: "Old", value: "oldLeads" },
+  ];
+
+  const [sourceArr,setSourceArr] = useState([
+    { name: "Facebook", value: "facebook" },
+    { name: "Email", value: "email" },
+    { name: "RCB", value: "rcb" },
+    { name: "Website", value: "website" },
+    { name: "Google", value: "google" },
+    { name: "All", value: "all" },
+  ]);
+
+  const [originalColumns, setOriginalColumns] = useState([
+    {
+      Header: "Lead Id",
+      accessor: "leadId",
+    },
+    { Header: "Name", accessor: "name" },
+    {
+      Header: "Phone",
+      accessor: "phone",
+    },
+    {
+      Header: "Email",
+      accessor: "email",
+    },
+    {
+      Header: "College",
+      accessor: "college",
+    },
+    {
+      Header: "Branch",
+      accessor: "branch",
+    },
+    {
+      Header: "Year of Pass Out",
+      accessor: "yearOfPassOut",
+    },
+  ]);
+
+  const [columns, setColumns] = useState(originalColumns);
+  const [tableData, setTableData] = useState([]);
+
+  //get leads data based on filter
+  const getLeadsByFilters = (data) => {
+    let postObj = data;
+
+    if (data.range) {
+      console.log(data.range[0], data.range[1]);
+    }
+    let callback = (err, res) => {
+      if (err) {
+        setTableData([]);
+        setTotalCount(0);
+      }
+      if (res && res.status === 200) {
+        setTableData(res.data.data);
+        setTotalCount(res.data.total);
+      }
+    };
+    API_SERVICES.httpPOSTWithToken(
+      URLS.getBulkUploadedLeads,
+      postObj,
+      callback
+    );
+  };
+
+ useEffect(()=>{
+     if(!filterObj.source) return
+   getLeadsByFilters(filterObj) 
+ },[filterObj])
+
+  useEffect(() => {
+    let source = userId === "62d2567927ac212513541269" ? "all" : "cgfl";
+    if (source === "cgfl") setSourceArr([]);
+    setFilterObj({ ...filterObj, source: source });
+  }, []);
+
+  return (
+    <>
+      <div className="leadsScreen">
+        <div>
+          <div className="lead-main-filter-header">
+            <Dropdown
+              dropdownClass="lead-main-drop-down"
+              value={filterObj.filter}
+              options={mainFilterArr}
+              onchange={(item) =>
+                setFilterObj({
+                  ...filterObj,
+                  filter: item.value,
+                  searchData: "",
+                  pageNumber: 1,
+                  pageRows: 10,
+                  range: null,
+                })
+              }
+            />
+          </div>
+
+          <div className="lead-filter-header">
+            <div>
+              {sourceArr && sourceArr.length > 0 && (
+                <Dropdown
+                  value={filterObj.source}
+                  options={sourceArr}
+                  onchange={(item) => {
+                    setFilterObj({
+                      ...filterObj,
+                      source: item.value,
+                      searchData: "",
+                      pageNumber: 1,
+                      pageRows: 10,
+                    });
+                  }}
+                />
+              )}
+              <Input
+                placeholder="Search By Name/Email/Phone"
+                inputClass="leadsSearch"
+                type="search"
+                value={filterObj.searchData}
+                change={(e) => {
+                  setFilterObj({
+                    ...filterObj,
+                    searchData: e.target.value,
+                    pageNumber: 1,
+                    pageSize: 10,
+                  });
+                }}
+              />
+            </div>
+
+            <div>
+              {filterObj.filter === "oldLeads" && (
+                <CustomDateRange
+                  range={filterObj.range}
+                  onChange={(arr) => {
+                    setFilterObj({
+                      ...filterObj,
+                      range: arr ? [...arr] : null,
+                      pageNumber: 1,
+                      pageRows: 10,
+                    });
+                  }}
+                />
+              )}
+              <button onClick={() => {setOpenBulk(true)}} className="btnPrimary">
+                Bulk Upload
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <p className="count">
+              Total Count <span>{totalCount}</span>
+            </p>
+            <Table
+              wrapperRef={wrapperRef}
+              search={false}
+              pagination={true}
+              currentPage={filterObj.pageNumber}
+              pageSize={filterObj.pageRows}
+              totalCount={totalCount}
+              onPageChange={(pageNumber, pageRows) => {
+                setFilterObj({
+                  ...filterObj,
+                  pageNumber: pageNumber,
+                  pageRows: pageRows,
+                });
+              }}
+              pageSizeOptions={[5, 10, 15, 20, 50, 100]}
+              page
+              showColumns={false}
+              columns={[...columns]}
+              data={tableData}
+              tClass="leadTable actionsTable"
+            />
+          </div>
+
+          {openBulk && (
+            <BulkUpload
+              show={openBulk}
+              handleDisplay={() => {
+                setOpenBulk(false);
+              }}
+              callback={() => {}}
+              userId={userId}
+            />
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default LeadsUpload;
