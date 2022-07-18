@@ -56,17 +56,15 @@ const  myTeamReducer = useSelector(state=>state.myTeam)
 
   const [tabarray, settabarray] = useState([perticularTMember.name]);
   
-  function updatePage(x) {
-    settabarray(tabarray => [...tabarray, x])
-    mainref.current.scrollIntoView();
-  }
+  // function updatePage(x) {
+  //   settabarray(tabarray => [...tabarray, x])
+  //   mainref.current.scrollIntoView();
+  // }
 
-  function getPartData(e, key) {
-    settabarray(tabarray.slice(0, key + 1))
-  }
+  // function getPartData(e, key) {
+  //   settabarray(tabarray.slice(0, key + 1))
+  // }
 
-
- 
 
   // 
   function getDataOfMem(x) {
@@ -80,7 +78,7 @@ const  myTeamReducer = useSelector(state=>state.myTeam)
       accessor: "name",
       Cell: (props) => {
         // return <button style={{backgroundColor:"transparent", border:"none", color:"white", textDecoration:"underline"}} onClick={(e)=>settabarray(tabarray.push(props.cell.row.original.memId))}>{props.cell.row.original.memId}</button>
-        return <button style={{ backgroundColor: "transparent", border: "none", color: "black", textDecoration: "underline" }} onClick={(e) => {updatePage(props.cell.row.original.name); dispatch(actions.getTeamMember(props.cell.row.original));}}>{props.cell.row.original.name}</button>
+        return <button style={{ backgroundColor: "transparent", border: "none", color: "black", textDecoration: "underline" }} onClick={(e) => { dispatch(actions.getTeamMember(props.cell.row.original));}}>{props.cell.row.original.name}</button>
       }
     },
     {
@@ -103,7 +101,7 @@ const  myTeamReducer = useSelector(state=>state.myTeam)
       accessor: "name",
       Cell: (props) => {
         // return <button style={{backgroundColor:"transparent", border:"none", color:"white", textDecoration:"underline"}} onClick={(e)=>settabarray(tabarray.push(props.cell.row.original.memId))}>{props.cell.row.original.memId}</button>
-        return <button style={{ backgroundColor: "transparent", border: "none", color: "black", textDecoration: "underline" }} onClick={(e) => updatePage(props.cell.row.original)}>{props.cell.row.original.name}</button>
+        return <button style={{ backgroundColor: "transparent", border: "none", color: "black", textDecoration: "underline" }} onClick={(e) => {dispatch(actions.getTeamMember(props.cell.row.original))}}>{props.cell.row.original.name}</button>
       }
     },
     {
@@ -141,6 +139,53 @@ const  myTeamReducer = useSelector(state=>state.myTeam)
     API_SERVICES.httpPOSTWithToken(URLS.onClickTeamMemberLeadAnalytics, { userId: perticularTMember.userId, status: statusValue }, callback)
   }
 
+  function getPerticularMeberAnalytics() {
+    const callback = (err, res) => {
+      if (err) {
+        // setMemberAnalytics([]);
+        return
+      }
+      if (res && res.status === 200) {
+        if (res.data) {
+          // setMemberAnalytics(res.data)
+        } else {
+          // setMemberAnalytics([]);
+        }
+      }
+    }
+    API_SERVICES.httpPOSTWithToken(URLS.perticularTeamMember, { userId: myTeamReducer.arr.userId, status: ["untouched", "pending", "completed"] }, callback)
+  }
+
+  useEffect(()=>{
+    getPerticularMeberAnalytics()
+  },[])
+
+  const [tableda, setTableda]=useState([])
+
+  function getPerticularMeberTeam() {
+    const callback = (err, res) => {
+      if (err) {
+        // setMemberTableData([]);
+        return
+      }
+      if (res && res.status === 200) {
+        if (res.data[0]?.directMembers) {
+          dispatch(actions.getAsignTeamMember());
+          setTableda(res.data[0].directMembers)
+          // setTotalCount(res.data[0].directMembers.length)
+        } else {
+          // setMemberTableData([]);
+          // setTotalCount(0);
+        }
+      }
+    }
+    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, {  userId: myTeamReducer.arr.userId, level: myTeamReducer.arr.level }, callback)
+  }
+
+  useEffect(()=>{
+    getPerticularMeberTeam()
+  },[])
+
   useEffect(()=>{
     getDataOfMem(myTeamReducer.arr[myTeamReducer.arr.length - 1]);
   
@@ -155,7 +200,6 @@ const  myTeamReducer = useSelector(state=>state.myTeam)
           <h4>My Team</h4> {
              myTeamReducer.arr && myTeamReducer.arr.length>0 && myTeamReducer.arr.map((val,key)=>{
                 return(
-                  // &nbsp;/&nbsp;  
                   <p onClick={(e)=>dispatch((actions.getTeamMember(val)))} key={key} className="meIds">&nbsp;/&nbsp;<span className="bedScumText">{val.name}</span></p>
                 )
               })
@@ -179,7 +223,6 @@ const  myTeamReducer = useSelector(state=>state.myTeam)
                 <div className="status-wraper">
                   {
                     memberAnalytics.map((val) => {
-                      console.log(val, 'maerm')
                       return (
                         <div className="status-match">
                           <div className="status-cHol">
@@ -228,7 +271,7 @@ const  myTeamReducer = useSelector(state=>state.myTeam)
                       onPageChange={(pageNumber, pageRows) => {
                         setFilterQuery({ ...filterQuery, pageNumber: pageNumber, pageRows: pageRows, search: '' })
                       }}
-                      data={tableData}
+                      data={tableda}
                       tClass="myteam perMyteam" />
                   </>
                 }

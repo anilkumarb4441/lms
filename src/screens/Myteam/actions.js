@@ -14,3 +14,11 @@ export const setDefault = ()=>{
         type:actionTypes.SET_DEFAULT,
     }
 }
+
+export const getAsignTeamMember =(obj)=>{
+    let{userId} =obj 
+    return{
+        type:actionTypes.GET_PERTICULAR_TEAM_MEMBER,
+        payload:{userId}
+    }
+}

@@ -1,14 +1,15 @@
 import * as actionTypes from "./actionTypes"
 const initialState = {
     arr:[],
-    openInner:false
+    openInner:false,
+    teamArr:[]
+
 }
 
-const reducer = (state=initialState,action)=>{
+const reducer = (state=initialState,action)=>{        
         switch(action.type){
         case actionTypes.GET_TEAM_MEMBER:
-           
-            let newState = {}
+            let newState = {}                                                                   
             let oldObjIndex =state.arr.findIndex(obj=>obj?.userId===action.payload?.userId)
              if(oldObjIndex>=0){
                let newArr = [...state.arr].slice(0,oldObjIndex+1)
@@ -19,7 +20,10 @@ const reducer = (state=initialState,action)=>{
              }
             return newState
          case actionTypes.SET_DEFAULT:
-             return {...initialState}   
+             return {...initialState}  
+        case actionTypes.GET_PERTICULAR_TEAM_MEMBER:
+          return {...state, teamArr:action.payload}
+             
         default: 
         return initialState
         }
