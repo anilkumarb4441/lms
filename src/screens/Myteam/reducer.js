@@ -2,8 +2,6 @@ import * as actionTypes from "./actionTypes"
 const initialState = {
     arr:[],
     openInner:false,
-    teamArr:[]
-
 }
 
 const reducer = (state=initialState,action)=>{        
@@ -21,8 +19,7 @@ const reducer = (state=initialState,action)=>{
             return newState
          case actionTypes.SET_DEFAULT:
              return {...initialState}  
-        case actionTypes.GET_PERTICULAR_TEAM_MEMBER:
-          return {...state, teamArr:action.payload}
+       
              
         default: 
         return initialState
