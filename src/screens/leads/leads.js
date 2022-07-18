@@ -58,9 +58,9 @@ function Leads() {
 
   const subMostFilterArr = [
     { name: "All", value: "all" },
-    { name: "Warm", value: "warm" },
-    { name: "Hot", value: "hot" },
-    { name: "Super Hot", value: "superHot" },
+    { name: "Attempting", value: "Attempting" },
+    { name: "Interested", value: "Interested" },
+    { name: "Call Back", value: "Call Back" },
   ];
 
   // lead details form Data
@@ -477,11 +477,31 @@ function Leads() {
             }
             />
             </div>
+
+        { reducer.filter.mainFilter === "completed" &&   <div className = 'lead-main-filter-header'>
+            <Dropdown
+             dropdownClass = 'lead-main-drop-down'
+             value = {"preRegistration"}
+             options = {[{name:'Pre Registration',value:'preRegistration'},{name:'Full Payment',value:'fullPayment'}]}
+             onchange={(item) =>{}
+            }
+            />
+            </div>}
+
+           {reducer.filter.mainFilter === "lost" && <div className = 'lead-main-filter-header'>
+            <Dropdown
+             dropdownClass = 'lead-main-drop-down'
+             value = {"lostL1"}
+             options = {[{name:'Lost L2',value:'lostL1'},{name:'Lost L1',value:'lostL2'}]}
+             onchange={(item) =>{}
+            }
+            />
+            </div>}
                      
             <div className="lead-filter-header">
            
               <div>
-              <Dropdown
+            {reducer.filter.mainFilter === "pending" &&  <Dropdown
              value = {reducer.filter.subMostFilter}
              options = {subMostFilterArr}
              onchange={(item) =>
@@ -495,7 +515,10 @@ function Leads() {
                 })
               )
             }
-            />
+            />}
+            {
+
+            }
                 
                  <Input
                   placeholder="Search By Name/Email/Phone"

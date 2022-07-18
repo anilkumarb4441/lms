@@ -53,11 +53,11 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
         callback();
       }
     };
-    // API_SERVICES.httpPOSTWithToken(
-    //   URLS.leadBulkUpload,
-    //   bulkData,
-    //   sendBulkDataCallBack
-    // );
+    API_SERVICES.httpPOSTWithToken(
+      URLS.leadBulkUpload,
+      bulkData,
+      sendBulkDataCallBack
+    );
   }
 
   // checking for empty values in file
@@ -205,7 +205,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
             <button
               disabled={disabled}
               className="saveBtn"
-              type="button"
+              type="submit"
               onClick={(e) => sendBulkData(e)}
             >
               Upload

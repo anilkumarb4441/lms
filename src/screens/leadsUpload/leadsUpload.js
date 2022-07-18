@@ -86,6 +86,12 @@ function LeadsUpload() {
         setTotalCount(0);
       }
       if (res && res.status === 200) {
+       
+          if(res.data?.length===0){
+            setTableData([]);
+            setTotalCount(0);
+            return
+          }
         setTableData(res.data.data);
         setTotalCount(res.data.total);
       }
@@ -216,7 +222,7 @@ function LeadsUpload() {
               handleDisplay={() => {
                 setOpenBulk(false);
               }}
-              callback={() => {}}
+              callback={() => {getLeadsByFilters(filterObj)}}
               userId={userId}
             />
           )}
