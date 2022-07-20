@@ -52,12 +52,13 @@ export const StringtoDateObject = (dateString) => {
 
 //DEBOUNCE FUNCTION
 export const debounce = (func, delay) => {
-  let timerId;
-  return function () {
-    clearTimeout(timerId);
-    timerId = setTimeout(() => func.apply(this, arguments), delay);
-  };
-};
+  let debounceTimer
+  return (...args)=>{
+      const context = this
+          clearTimeout(debounceTimer)
+              debounceTimer=setTimeout(() => func(...args), delay)
+  }
+} 
 
 // Leads call response Messages Array
 export const callResponseArr = [

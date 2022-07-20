@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { URLS } from "../../utils/urlConstants";
 import localStorageService from "../../utils/localStorageService";
 import API_SERVICES from "../../utils/API";
+import * as utils from "../../utils/constants";
 
 //css
 import "../leads/leads.css";
@@ -13,11 +14,15 @@ import Table from "../../components/Table";
 import BulkUpload from "../../components/bulkUpload/bulkupload.js";
 import Dropdown from "../../components/dropdown/dropdown.js";
 import CustomDateRange from "../../components/dateRangePicker/dateRangePicker";
+import AssignToModal from "../../components/assignToModal/assignToModal";
 
 function LeadsUpload() {
   const { userId } = localStorageService.getTokenDecode();
   const [totalCount, setTotalCount] = useState(0);
   const [openBulk, setOpenBulk] = useState(false);
+  const [tableLoading, setTableLoading] = useState(true);
+  const [openAssign, setOpenAssign] = useState(false);
+  const [search, setSearch] = useState("");
   const wrapperRef = useRef(); //Table Wrapper Ref
   const [filterObj, setFilterObj] = useState({
     filter: "todayLeads",
@@ -33,7 +38,7 @@ function LeadsUpload() {
     { name: "Old", value: "oldLeads" },
   ];
 
-  const [sourceArr,setSourceArr] = useState([
+  const [sourceArr, setSourceArr] = useState([
     { name: "Facebook", value: "facebook" },
     { name: "Email", value: "email" },
     { name: "RCB", value: "rcb" },
@@ -75,25 +80,21 @@ function LeadsUpload() {
 
   //get leads data based on filter
   const getLeadsByFilters = (data) => {
+    setTableLoading(true);
     let postObj = data;
 
     if (data.range) {
       console.log(data.range[0], data.range[1]);
     }
     let callback = (err, res) => {
+      setTableLoading(false);
       if (err) {
         setTableData([]);
         setTotalCount(0);
       }
       if (res && res.status === 200) {
-       
-          if(res.data?.length===0){
-            setTableData([]);
-            setTotalCount(0);
-            return
-          }
         setTableData(res.data.data);
-        setTotalCount(res.data.total);
+        setTotalCount(res.data.totalCount);
       }
     };
     API_SERVICES.httpPOSTWithToken(
@@ -103,10 +104,11 @@ function LeadsUpload() {
     );
   };
 
- useEffect(()=>{
-     if(!filterObj.source) return
-   getLeadsByFilters(filterObj) 
- },[filterObj])
+  useEffect(() => {
+    if (!filterObj.source) return;
+
+    getLeadsByFilters(filterObj);
+  }, [filterObj]);
 
   useEffect(() => {
     let source = userId === "62d2567927ac212513541269" ? "all" : "cgfl";
@@ -158,14 +160,14 @@ function LeadsUpload() {
                 inputClass="leadsSearch"
                 type="search"
                 value={filterObj.searchData}
-                change={(e) => {
+                change={(e) =>
                   setFilterObj({
                     ...filterObj,
                     searchData: e.target.value,
                     pageNumber: 1,
                     pageSize: 10,
-                  });
-                }}
+                  })
+                }
               />
             </div>
 
@@ -183,8 +185,21 @@ function LeadsUpload() {
                   }}
                 />
               )}
-              <button onClick={() => {setOpenBulk(true)}} className="btnPrimary">
+              <button
+                onClick={() => {
+                  setOpenBulk(true);
+                }}
+                className="btnPrimary"
+              >
                 Bulk Upload
+              </button>
+              <button
+                onClick={() => {
+                  setOpenAssign(true);
+                }}
+                className="btnPrimary"
+              >
+                Assign Leads
               </button>
             </div>
           </div>
@@ -196,6 +211,7 @@ function LeadsUpload() {
             <Table
               wrapperRef={wrapperRef}
               search={false}
+              tableLoading={tableLoading}
               pagination={true}
               currentPage={filterObj.pageNumber}
               pageSize={filterObj.pageRows}
@@ -212,7 +228,7 @@ function LeadsUpload() {
               showColumns={false}
               columns={[...columns]}
               data={tableData}
-              tClass="leadTable actionsTable"
+              tClass="bulkTable"
             />
           </div>
 
@@ -222,8 +238,22 @@ function LeadsUpload() {
               handleDisplay={() => {
                 setOpenBulk(false);
               }}
-              callback={() => {getLeadsByFilters(filterObj)}}
+              callback={() => {
+                getLeadsByFilters({ ...filterObj });
+              }}
               userId={userId}
+            />
+          )}
+
+          {openAssign && (
+            <AssignToModal
+              rowObj={null}
+              assignType={"bulk"}
+              assignLeadCallBack={()=>setOpenAssign(false)}
+              show={openAssign}
+              handleDisplay={() => {
+                setOpenAssign(false);
+              }}
             />
           )}
         </div>

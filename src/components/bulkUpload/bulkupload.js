@@ -71,12 +71,6 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
             return !checker
           }
       }
-
-      // for (let key in row) {
-      //   if ((row[key] == "" && arr.includes(key)) && !(typeof row[key] == "boolean")) {
-      //     return !checker;
-      //   }
-      // }
     }
     return checker;
   };

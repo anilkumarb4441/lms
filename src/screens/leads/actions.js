@@ -24,7 +24,9 @@ export const closeInner = () => {
 
 // action to set all filter values
 export const setFilter = (filter) => {
-  return { type: actionTypes.SET_FILTER, filter: { ...filter } };
+   
+
+  return { type: actionTypes.SET_FILTER, filter: { ...filter} };
 };
 
 //action to add Lead

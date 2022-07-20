@@ -1,0 +1,22 @@
+.loadcontainer{
+    height: 60vh;
+    background-color: transparent;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.loadcontainer .loadimg{
+   width:40px;
+   height:40px;
+    animation: imgRotate 2s infinite linear;
+}
+
+@keyframes imgRotate{
+    from {
+        transform: rotate(0);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+}

@@ -48,7 +48,7 @@ function Login({ setToken, setIsToken }) {
           label="Email"
           name="email"
           type="email"
-          placeholder="xyz@gamil.com"
+          placeholder="xyz@gmail.com"
           value={credentials.email}
           change={updateCredentials}
           required={true}
