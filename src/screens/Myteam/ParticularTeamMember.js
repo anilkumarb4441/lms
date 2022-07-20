@@ -21,18 +21,16 @@ import Table from "../../components/Table";
 import Tabs from "../../components/tabs/tabs.js";
 
 function ParticularTeamMember({
-  perticularTMember,
   filterQuery,
   totalCount,
   setFilterQuery,
   setParticularChef,
-  tableData,
-  memberAnalytics,
-  setTotalCount,
 }) {
   const mainref = useRef(null);
+  
   const dispatch = useDispatch();
   const myTeamReducer = useSelector((state) => state.myTeam);
+
   // Tabs
   const mainTabArr = [
     { name: "Team", value: "team" },
@@ -40,11 +38,17 @@ function ParticularTeamMember({
   ];
 
   // State for Sub Tabs
-
   const [subtabs, setsubtabs] = useState("team");
 
-  // State for Nested Tabs
-  const [tabcount, settabcount] = useState(0);
+  //filter and pagination
+const [tableFilter, setTableFilter] = useState({ pageNumber: 1, pageRows: 5, search: ''})
+const [totalRowCount, setTotalRowCount] = useState(0)
+  
+  // states for table
+  const [teamTabledata, setTeamTabledata] = useState([]);
+  const [memberAnalytics, setMemberAnalytics] = useState([])
+  const [onClkAnalyticData, setOnClkAnalyticData] = useState([]);
+
 
   const membAn = memberAnalytics.map((val) => val.number);
 
@@ -58,18 +62,12 @@ function ParticularTeamMember({
     ],
   };
 
-  const [tabarray, settabarray] = useState([perticularTMember.name]);
-
-  
-  function getDataOfMem(x) {}
   // Table
-
   const [columns, setColumns] = useState([
     {
       Header: "Member name",
       accessor: "name",
       Cell: (props) => {
-        // return <button style={{backgroundColor:"transparent", border:"none", color:"white", textDecoration:"underline"}} onClick={(e)=>settabarray(tabarray.push(props.cell.row.original.memId))}>{props.cell.row.original.memId}</button>
         return (
           <button
             style={{
@@ -106,19 +104,8 @@ function ParticularTeamMember({
       Header: "Member name",
       accessor: "name",
       Cell: (props) => {
-        // return <button style={{backgroundColor:"transparent", border:"none", color:"white", textDecoration:"underline"}} onClick={(e)=>settabarray(tabarray.push(props.cell.row.original.memId))}>{props.cell.row.original.memId}</button>
         return (
-          <button
-            style={{
-              backgroundColor: "transparent",
-              border: "none",
-              color: "black",
-              textDecoration: "underline",
-            }}
-            onClick={(e) => {
-              dispatch(actions.getTeamMember(props.cell.row.original));
-            }}
-          >
+          <button style={{ backgroundColor: "transparent",border: "none",color: "black",textDecoration: "underline",}} onClick={(e) => {dispatch(actions.getTeamMember(props.cell.row.original));}}>
             {props.cell.row.original.name}
           </button>
         );
@@ -138,14 +125,10 @@ function ParticularTeamMember({
     },
   ]);
 
-  const [onClkAnalyticData, setOnClkAnalyticData] = useState([]);
-  function onClickTeamMemberLeadAnalytics(val) {
-    let statusValue =
-      val.status === "untouched"
-        ? "untouched"
-        : val.status === "open"
-        ? "pending"
-        : "completed";
+ 
+
+  function onClickTeamMemberLeadAnalytics(obj) {
+    let statusValue = obj.status === "untouched"? "untouched": obj.status === "open"? "pending": "completed";
     const callback = (err, res) => {
       if (err) {
         setOnClkAnalyticData([]);
@@ -154,79 +137,67 @@ function ParticularTeamMember({
       if (res && res.status === 200) {
         if (res.data) {
           setOnClkAnalyticData(res.data.data);
-          setTotalCount(res.data.data.length);
+          setTotalRowCount(10);
         } else {
           setOnClkAnalyticData([]);
-          setTotalCount(0);
+          setTotalRowCount(0);
         }
       }
     };
     API_SERVICES.httpPOSTWithToken(
       URLS.onClickTeamMemberLeadAnalytics,
-      { userId: perticularTMember.userId, status: statusValue },
+      { userId: obj.userId, status: statusValue },
       callback
     );
   }
 
-  function getPerticularMemberAnalytics() {
+
+  function getPerticularMemberAnalytics(obj) {
     const callback = (err, res) => {
       if (err) {
-        // setMemberAnalytics([]);
+        setMemberAnalytics([]);
         return;
       }
       if (res && res.status === 200) {
         if (res.data) {
-          // setMemberAnalytics(res.data)
+          setMemberAnalytics(res.data)
         } else {
-          // setMemberAnalytics([]);
+          setMemberAnalytics([]);
+
         }
       }
     };
-    API_SERVICES.httpPOSTWithToken(
-      URLS.perticularTeamMember,
-      {
-        userId: myTeamReducer.arr.userId,
-        status: ["untouched", "pending", "completed"],
-      },
-      callback
-    );
+    API_SERVICES.httpPOSTWithToken(URLS.perticularTeamMember,{ userId:obj.userId,status: ["untouched", "pending", "completed"],},callback);
   }
 
-
-  const [tableda, setTableda] = useState([]);
 
   function getPerticularMember(obj) {
     const callback = (err, res) => {
       if (err) {
-        // setMemberTableData([]);
+        setTeamTabledata([]);
         return;
       }
       if (res && res.status === 200) {
         if (res.data[0]?.directMembers) {
-          setTableda(res.data[0].directMembers);
-          // setTotalCount(res.data[0].directMembers.length)
+          setTeamTabledata(res.data[0].directMembers);
+          setTotalRowCount(20)
         } else {
-          setTableda([]);
-         // setTotalCount(0);
+          setTeamTabledata([]);
+          setTotalRowCount(0)
         }
       }
     };
-    API_SERVICES.httpPOSTWithToken(
-      URLS.myteammembers,
-      { userId: obj.userId, level:obj.level },
-      callback
-    );
+    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, { userId: obj.userId, level: obj.level }, callback);
   }
-
- 
-  
 
   useEffect(() => {
     let lastObject = myTeamReducer.arr[myTeamReducer.arr.length - 1] // last object in the array
-    if(!lastObject) return
+    if (!lastObject) return
+
     getPerticularMember(lastObject);
-   // getPerticularMemberAnalytics(lastObject);
-  }, [myTeamReducer.arr]);
+    getPerticularMemberAnalytics(lastObject);
+    onClickTeamMemberLeadAnalytics(lastObject);
+  }, [myTeamReducer.arr, tableFilter]);
 
   return (
     <div className="mainParticular" ref={mainref}>
@@ -256,7 +227,7 @@ function ParticularTeamMember({
         </div>
         <div className="infomain">
           <p className="infoContent1">Name &nbsp;:</p>
-          <p className="infoContent">{perticularTMember.name}</p>
+          <p className="infoContent">{myTeamReducer.arr[myTeamReducer.arr.length - 1].name}</p>
         </div>
       </div>
       <div>
@@ -276,26 +247,8 @@ function ParticularTeamMember({
                           <div
                             className="statusimg-pending"
                             style={{
-                              border:
-                                val.status === "untouched"
-                                  ? "5px solid #70DFBF"
-                                  : val.status === "pending"
-                                  ? "5px solid #FA7999"
-                                  : "5px solid #6898E5",
-                            }}
-                          ></div>
-
-                          <p
-                            id="stu"
-                            className="stuName"
-                            onClick={(e) => onClickTeamMemberLeadAnalytics(val)}
-                          >
-                            {val.status === "untouched"
-                              ? "New"
-                              : val.status === "pending"
-                              ? "Work in Progress"
-                              : "Won"}
-                          </p>
+                              border:val.status === "untouched"? "5px solid #70DFBF": val.status === "pending"? "5px solid #FA7999": "5px solid #6898E5",}}></div>
+                          <p id="stu" className="stuName" onClick={(e) => onClickTeamMemberLeadAnalytics(val)}>{val.status === "untouched" ? "New": val.status === "pending"? "Work in Progress": "Won"}</p>
                         </div>
                         <p className="statusCount">{val.number}</p>
                       </div>
@@ -316,19 +269,21 @@ function ParticularTeamMember({
                     tabsClass="leadTabs"
                     handleTab={(e) => setsubtabs(e.value)}
                   />
+                  {tableFilter.search}
                   <div className="teamTabSearch">
+
                     <input
                       type="search"
                       placeholder="Search By Name/Email/phone"
                       name="search"
                       onChange={(e) =>
-                        setFilterQuery({
-                          ...filterQuery,
+                        setTableFilter({
+                          ...tableFilter,
                           pageNumber: 1,
                           search: e.target.value,
                         })
                       }
-                      value={filterQuery.search}
+                      value={tableFilter.search}
                     />
                     <IoMdSearch className="IoMdSearchic" />
                   </div>
@@ -341,19 +296,19 @@ function ParticularTeamMember({
                     <Table
                       columns={columns}
                       pagination={true}
-                      currentPage={filterQuery.pageNumber}
-                      pageSize={filterQuery.pageRows}
-                      totalCount={totalCount}
+                      currentPage={tableFilter.pageNumber}
+                      pageSize={tableFilter.pageRows}
+                      totalCount={totalRowCount}
                       onPageChange={(pageNumber, pageRows) => {
-                        setFilterQuery({
-                          ...filterQuery,
+                        setTableFilter({
+                          ...tableFilter,
                           pageNumber: pageNumber,
                           pageRows: pageRows,
                           search: "",
                         });
                       }}
-                      data={tableda}
-                      tClass="myteam perMyteam"
+                      data={teamTabledata}
+                      tClass="myteam perMyteam" 
                     />
                   </>
                 )}

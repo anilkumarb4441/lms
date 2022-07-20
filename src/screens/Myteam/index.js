@@ -17,19 +17,16 @@ function Myteam() {
   // Particular Team Member  State
 
   const [openInner, setOpenInner] = useState(false);
-  const [user, setUser] = useState();
   const [filterQuery, setFilterQuery] = useState({ pageNumber: 1, pageRows: 5, search: '' })
   const [totalCount, setTotalCount] = useState(0)
-  const [memberAnalytics, setMemberAnalytics] = useState([])
+
 
 
   const dispatch = useDispatch()
-  const teamreducers = useSelector(state=>state.myTeam)
 
   let usImg = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2aSUcU-KC_ZGl1KIFES1pwRe4YOMv2gPx_g&usqp=CAU"
 
   const [tableData, setTableData] = useState([]);
-  const [memberTableData, setMemberTableData] = useState([])
   const [columns, setColumns] = useState([
     {
       Header: "name", 
@@ -37,7 +34,7 @@ function Myteam() {
       Cell: (props) => {
         return <div style={{ display: "flex", alignItems: "center", gap: "10px" }} >
           <img src={usImg} style={{ width: "30px", height: "30px", borderRadius: '50%' }} />
-          <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={(e) => { setOpenInner(true); dispatch(actions.getTeamMember(props.cell.row.original)); setUser(props.cell.row.original); }}>{props.cell.row.original.name}</p>
+          <p style={{ textDecoration: 'underline', cursor: 'pointer' }} onClick={(e) => { setOpenInner(true); dispatch(actions.getTeamMember(props.cell.row.original)); }}>{props.cell.row.original.name}</p>
         </div>
       }
     },
@@ -58,7 +55,6 @@ function Myteam() {
   useEffect(() => {
     getMyTeamData()
   }, [filterQuery]);
-
 
   function getMyTeamData() {
     const callback = (err, res) => {
@@ -81,24 +77,15 @@ function Myteam() {
     API_SERVICES.httpPOSTWithToken(URLS.myteammembers, { ...filterQuery, userId: '' }, callback)
   }
 
-
-
-
-  useEffect(() => {
-    setMemberAnalytics(memberAnalytics);
-  }, [])
   return (
     <>
       {
         openInner ? <ParticularTeamMember
-          perticularTMember={{...user}}
           setParticularChef={setOpenInner}
-          tableData={memberTableData}
           filterQuery={filterQuery}
           totalCount={totalCount}
           setFilterQuery={setFilterQuery}
-          setTotalCount={setTotalCount}
-          memberAnalytics={memberAnalytics} /> :
+          setTotalCount={setTotalCount} /> :
 
           <div className='chefOverviewScreen'>
             <div>
@@ -109,7 +96,8 @@ function Myteam() {
                 pagination={true}
                 currentPage={filterQuery.pageNumber}
                 pageSize={filterQuery.pageRows}
-                totalCount={totalCount} columns={columns}
+                totalCount={totalCount} 
+                columns={columns}
                 onPageChange={(pageNumber, pageRows) => {
                   setFilterQuery({ ...filterQuery, pageNumber: pageNumber, pageRows: pageRows, search: '' })
                 }}
