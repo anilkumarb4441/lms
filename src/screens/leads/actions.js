@@ -159,7 +159,7 @@ export const changeInput = (e, i, formData) => {
     newArr.splice(responseIndex, 1, {name:'response',value:callResponseMessage});
   }
 
-  // for checkboxes
+  // iput change for checkboxes
   if (e.target.type === "checkbox") {
     formInput.value = e.target.checked;
    
