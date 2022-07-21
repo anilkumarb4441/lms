@@ -22,6 +22,7 @@ import CustomDateRange from "../../components/dateRangePicker/dateRangePicker";
 function Leads() {
   const reducer = useSelector((state) => state.leads);
   const [tableLoading, setTableLoading] = useState(true);
+  const [formLoading,setFormLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const dispatch = useDispatch();
   const wrapperRef = useRef(); //Table Wrapper Ref
@@ -46,12 +47,10 @@ function Leads() {
   ];
 
   const lostFilterArr = [
-  { name: "All", value: "all" },
   { name: "L1", value: "L1" },
   { name: "L2", value: "L2" },]
 
   const paidFilterArr = [
-    { name: "All", value: "all" },
     { name: "Pre Registration", value: "preRegistration" },
     { name: "Full Payment", value: "fullPayment" },
   ]
@@ -291,6 +290,7 @@ function Leads() {
   // submit add edit lead form/ call update form
   const submitForm = (e) => {
     e.preventDefault();
+    setFormLoading(true)
     let leadObject = reducer.formData.reduce((prev, current) => {
       return { ...prev, [current.name]: current.value };
     }, {});
@@ -311,8 +311,10 @@ function Leads() {
 
   // function to create new lead
   const createLead = (data) => {
+    
     console.log(data, "checking for refrence ids");
     const callback = (err, res) => {
+       setFormLoading(false)
       if (res && res.status === 201) {
         getLeadsByFilters(reducer.filter)
         dispatch(actions.closeForm());
@@ -324,7 +326,9 @@ function Leads() {
 
   //function to edit lead
   const editLead = (data) => {
+   
     const callback = (err, res) => {
+      setFormLoading(false)
       if (res && res.status === 200) {
         let index = tableData.findIndex(
           (obj) => obj.leadId === res.data.leadId
@@ -341,21 +345,24 @@ function Leads() {
 
   // function to update call status
   const updateCallStatus = (data) => {
+  
     const callback = (err, res) => {
+      setFormLoading(false)
       if (res && res.status === 200) {
         if (res.data?.callLogs?.status === "Interested") {
           createLeadBussiness(res.data);
         }
-        let index = tableData.findIndex(
-          (obj) => obj.leadId === res.data.leadId
-        );
-        let newData = [...tableData];
-        if (reducer.filter.mainFilter === "workInProgress") {
-          newData[index] = { ...res.data };
-        } else {
-          newData.splice(index, 1);
-        }
-        setTableData(newData);
+        // let index = tableData.findIndex(
+        //   (obj) => obj.leadId === res.data.leadId
+        // );
+        // let newData = [...tableData];
+        // if (reducer.filter.mainFilter === "workInProgress") {
+        //   newData[index] = { ...res.data };
+        // } else {
+        //   newData.splice(index, 1);
+        // }
+        // setTableData(newData);
+        getLeadsByFilters(reducer.filter)
         utils.toastSuccess("Call Status Updated in Lead DashBoard");
         dispatch(actions.closeForm());
       }
@@ -372,7 +379,7 @@ function Leads() {
     newData.leadid = data.leadId;
     const callback = (err, res) => {
       if (err) {
-        utils.toastError("Could not update lead in Customer DashBoard");
+        utils.toastError(err?.msg);
       }
       if (res && res.status === 200) {
         utils.toastSuccess("Lead updated in Customer DashBoard");
@@ -388,23 +395,14 @@ function Leads() {
   };
 
   // function to change columns after switching b/w main Tabs
-  useEffect(() => {
-    
+  useEffect(() => {  
     switch (reducer.filter.mainFilter) {
       case "paid":
         let newCol1 = originalColumns.filter(
           (obj) => obj.accessor !== "actions"
         );
         setColumns(newCol1);
-
         return;
-      
-      case "lost":
-          let newCol4 = originalColumns.filter(
-            (obj) => obj.accessor !== "actions"
-          );
-          setColumns(newCol4);
-          return;  
 
       case "workInProgress":
         let newCol2 = originalColumns.filter(
@@ -436,6 +434,21 @@ function Leads() {
     }
   }, [reducer.filter.mainFilter]);
 
+// function to change columns after switching b/w sub Tabs
+  useEffect(()=>{
+    let subFilter = reducer.filter.subFilter
+    if(subFilter!=="L2" && subFilter!=="L1") return
+    if(subFilter==="L1"){
+          let newCol4 = originalColumns.filter(
+            (obj) => obj.accessor !== "actions"
+          );
+          setColumns(newCol4);
+         
+        }else if(subFilter==="L2"){
+          setColumns(originalColumns);
+        }
+  },[reducer.filter.subFilter])
+
   // status change function
   useEffect(() => {
     getLeadsByFilters(reducer.filter);
@@ -463,9 +476,13 @@ function Leads() {
                 options={mainFilterArr}
                 onchange={(item) =>
                   dispatch(
-                    actions.setFilter({
+                    actions.setMainFilter({
                       ...initialState.filter,
                       mainFilter: item.value,
+                      searchData: "",
+                      pageNumber: 1,
+                      pageRows: 10,
+                      range: null,
                     })
                   )
                 }
@@ -641,6 +658,7 @@ function Leads() {
             {reducer.openForm && (
               <AddEditLeadForm
                 show={reducer.openForm}
+                loading = {formLoading}
                 handleInputChange={(e, i) =>
                   dispatch(actions.changeInput(e, i, [...reducer.formData]))
                 }
