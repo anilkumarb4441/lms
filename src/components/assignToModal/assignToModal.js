@@ -5,6 +5,7 @@ import { URLS } from "../../utils/urlConstants";
 import API_SERVICES from "../../utils/API";
 import Input from "../Input";
 import { toastSuccess ,toastWarning} from "../../utils/constants";
+import Loader from "../loader/loader";
 
 function AssignToModal({
   show,
@@ -18,12 +19,13 @@ function AssignToModal({
   const [userId, setUserId] = useState("");
   const [level, setLevel] = useState();
   const [untouchedCount, setUntouchedCount] = useState();
-
+  const [loading,setLoading] = useState(false)
   const handleCount = (num) => {
     setLeadCount(num);
   };
 
   const getTeamMembers = () => {
+    setLoading(true);
     const callback = (err, res) => {
       if (res && res.status === 200) {
         let teamData = res?.data[0]?.directMembers
@@ -42,6 +44,7 @@ function AssignToModal({
         } else {
           setSelectArr([...arr]);
         }
+        setLoading(false);
       }
     };
     API_SERVICES.httpPOSTWithToken(
@@ -62,6 +65,7 @@ function AssignToModal({
 
   const assignLeads = (e) => {
     e.preventDefault();
+    setLoading(true);
     let data;
     if (assignType === "bulk") {
       data = {
@@ -84,6 +88,7 @@ function AssignToModal({
     }
 
     const callback = (err, res) => {
+      setLoading(false);
       if (res && res.status == 200) {
         assignLeadCallBack();
         toastSuccess("Assigned Successfully"); 
@@ -104,7 +109,7 @@ function AssignToModal({
       modalClass="AssignToModal"
       title="Assign To"
       handleDisplay={handleDisplay}
-      body={
+      body={loading?<Loader/>:
         <form onSubmit={(e) => assignLeads(e)}>
           <p>
             Total Unassigned leads : <span>{untouchedCount}</span>

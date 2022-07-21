@@ -4,19 +4,23 @@ import API_Services from "../../utils/API";
 import Input from "../Input";
 import { URLS } from "../../utils/urlConstants";
 import {toastSuccess,toastWarning} from "../../utils/constants"
+import Loader from "../loader/loader";
 function Login({ setToken, setIsToken }) {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
-  const [showPassword,setShowPassword] = useState(false)
+  const [showPassword,setShowPassword] = useState(false);
+  const [loading,setLoading] = useState(false)
   const updateCredentials = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
   const submitForm = (e) => {
     e.preventDefault();
+    setLoading(true)
     API_Services.httpPOST(URLS.userLogin, credentials, callback);
   };
 
   const callback = (err,res) => {
+    setLoading(false)
     if (res) {
       if (res.status === 200 && res.data.success) {
         setToken(res.data);
@@ -41,9 +45,9 @@ function Login({ setToken, setIsToken }) {
 
   return (
     <div className="login-wrappper">
-      <form onSubmit={(e) => submitForm(e)} className="login-form">
+    <form onSubmit={(e) => submitForm(e)} className="login-form">
         <h2>Login</h2>
-        <Input
+     {loading?<Loader/>:<><Input
           label="Email"
           name="email"
           type="email"
@@ -70,12 +74,13 @@ function Login({ setToken, setIsToken }) {
          change = {(e)=>setShowPassword(e.target.checked)}
          required ={false}
         />
+        </>}
        
         <button type="submit" className="btnPrimary two">
           Sign in
         </button>
       </form>
-    </div>
+   </div>
   );
 }
 
