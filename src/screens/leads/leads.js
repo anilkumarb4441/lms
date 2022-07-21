@@ -277,6 +277,7 @@ function Leads() {
         setTotalCount(0);
       }
       if (res && res.status === 200) {
+        debugger;
         setTableData(res.data.data);
         setTotalCount(res.data.total);
       }
@@ -343,8 +344,7 @@ function Leads() {
   const updateCallStatus = (data) => {
     const callback = (err, res) => {
       if (res && res.status === 200) {
-        if (res.data?.callLogs?.status === "interested") {
-          console.log(res.data, "update call lofg");
+        if (res.data?.callLogs?.status === "Interested") {
           createLeadBussiness(res.data);
         }
         let index = tableData.findIndex(
