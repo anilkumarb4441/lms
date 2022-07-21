@@ -314,9 +314,7 @@ function Leads() {
     console.log(data, "checking for refrence ids");
     const callback = (err, res) => {
       if (res && res.status === 201) {
-        let newData = [...tableData];
-        newData[0] = { ...res.data };
-        setTableData(newData);
+        getLeadsByFilters(reducer.filter)
         dispatch(actions.closeForm());
         utils.toastSuccess("Lead SuccesFully Created");
       }

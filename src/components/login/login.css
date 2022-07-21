@@ -8,20 +8,19 @@
 }
 
 .login-wrappper>form{
-    width:500px;
-    margin:0 auto;
+    width: 500px;
+    margin: 0 auto;
     background: var(--wrapperColor);
     padding: 20px;
-    border-radius: 20px;
-}
-
-.login-wrappper>form{
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     gap: 45px;
-    height: 420px;
     justify-content: center;
+    
 }
+
+
 
 .login-wrappper>form>h2{
     text-align: center;

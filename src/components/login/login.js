@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./login.css";
 import API_Services from "../../utils/API";
 import Input from "../Input";
-import {toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { URLS } from "../../utils/urlConstants";
 import {toastSuccess,toastWarning} from "../../utils/constants"
 function Login({ setToken, setIsToken }) {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [showPassword,setShowPassword] = useState(false)
   const updateCredentials = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
@@ -54,16 +53,24 @@ function Login({ setToken, setIsToken }) {
           required={true}
         />
         <Input
-          label="Password"
+          label={"Password"}
           name="password"
           placeholder="******"
           autoComplete="current-password"
           id="current-password"
-          type="password"
+          type={showPassword?"text":"password"}
           value={credentials.password}
           change={updateCredentials}
           required={true}
         />
+        <Input
+         label = "Show Password"
+         type = "checkbox"
+         value = {showPassword}
+         change = {(e)=>setShowPassword(e.target.checked)}
+         required ={false}
+        />
+       
         <button type="submit" className="btnPrimary two">
           Sign in
         </button>
