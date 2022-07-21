@@ -6,8 +6,8 @@ export const initialState = {
   openForm: false,
   openAssignModal: false,
   filter: {
-    mainFilter: "workInProgress",
-    dateFilter: "todayLeads",
+    mainFilter: "new",
+    dateFilter: "oldLeads",
     subFilter: "all",
     pageRows: 10,
     pageNumber: 1,
@@ -25,6 +25,9 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_FILTER:
       return { ...state, filter: action.filter };
+
+    case actionTypes.SET_MAIN_FILTER:
+        return { ...state, filter: action.filter };  
 
     case actionTypes.OPEN_INNER:
       return {

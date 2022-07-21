@@ -22,10 +22,27 @@ export const closeInner = () => {
   };
 };
 
+// action to set main filter 
+export const setMainFilter = (filter)=>{
+  filter.dateFilter="oldLeads"
+   if(filter.mainFilter==="lost"){
+     filter.subFilter="L2"
+   }else if(filter.mainFilter==="paid"){
+    filter.subFilter="preRegistration"
+   }else if(filter.mainFilter==="workInProgress"){
+    filter.subFilter="all"
+   }else if(filter.mainFilter==="new"){
+    filter.subFilter=""
+   }
+  return {
+    type:actionTypes.SET_MAIN_FILTER,
+    filter:{...filter}
+  }
+}
+
 // action to set all filter values
 export const setFilter = (filter) => {
-   
-
+  
   return { type: actionTypes.SET_FILTER, filter: { ...filter} };
 };
 

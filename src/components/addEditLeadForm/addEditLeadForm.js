@@ -2,6 +2,7 @@ import React,{useState,useEffect} from "react";
 import "./addEditLeadForm.css";
 import Modal from "../modal/modal";
 import Input from "../Input";
+import Loader from "../loader/loader";
 
 function AddEditLeadForm({
   show,
@@ -9,7 +10,8 @@ function AddEditLeadForm({
   submitForm,
   handleInputChange,
   formData,
-  heading
+  heading,
+  loading
 }) 
    
 {
@@ -30,7 +32,7 @@ function AddEditLeadForm({
       modalClass="addLeadModal"
       show={show}
       handleDisplay={handleDisplay}
-      body={
+      body={loading?<Loader/>:
         <div className="addLead">
           <div className="addLeadCol1">
           

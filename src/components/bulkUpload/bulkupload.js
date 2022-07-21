@@ -13,6 +13,7 @@ import downloadIcon from "../../assets/icons/download.svg";
 import cloudUpload from "../../assets/icons/cloud-upload.svg";
 import fileIcon from "../../assets/icons/file-icon.svg";
 import Input from "../Input";
+import Loader from "../loader/loader";
 
 function BulkUpload({show,handleDisplay,callback,userId}) {
   const formref = useRef();
@@ -21,6 +22,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
   const [filename, setfilename] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [sourceArr,setSourceArr] = useState()
+  const [loading,setLoading] = useState(false);
   //email,facebook,rcb,website,google
   const sourceArr1 = [
     { name: "Facebook", value: "facebook" },
@@ -43,7 +45,9 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
 
   function sendBulkData(e) {
     e.preventDefault();
+    setLoading(true);
     const sendBulkDataCallBack = (err, res) => {
+      setLoading(false);
       if (res && res.status === 201) {
         toastSuccess("Data Succesfully uploaded");
         setfilename("");
@@ -125,7 +129,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
       modalClass="bulkModal"
       show={show}
       handleDisplay={handleDisplay}
-      body={
+      body={loading?<Loader/>:
         <form>
           <div className="parentMainBulk">
             <div className="sample-download">
