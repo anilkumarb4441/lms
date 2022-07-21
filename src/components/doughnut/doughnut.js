@@ -13,11 +13,11 @@ Chart.register(ArcElement);
 
 
 function DoughnutComp({type,digit,subtext,donughtfor,issue,pieData}){
-    // console.log(type,digit,subtext,"555555555");
+
     return(
             donughtfor==="clientprogress"?
             <div className='doughParentnew'>
-                <Doughnut
+                <Doughnut  
                     data={{
 
                         datasets:[
@@ -27,6 +27,7 @@ function DoughnutComp({type,digit,subtext,donughtfor,issue,pieData}){
                                 circumference:360,
                                 cutout:50,
                                 borderColor:"transparent",
+                                
                             }
                             ],
                         }}
@@ -38,14 +39,17 @@ function DoughnutComp({type,digit,subtext,donughtfor,issue,pieData}){
                 </div>
             </div>
             :
-            donughtfor==="Pie"?
+            donughtfor==="doughnut"?
             <>
-                          <Pie   data = {pieData}/>
+                <Doughnut id="myChart"  data = {pieData} 
+                />
             </>:
             <div className='doughParent'>
+              
                 <Doughnut
-                    data={{
 
+                    data={{
+                       
                         datasets:[
                             {
                                 data:(type==="Ratings"?[75,25]:[digit,100-digit]),

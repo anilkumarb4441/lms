@@ -14,7 +14,7 @@ export default class API_Services {
       })
       .catch((err) => {
         console.log(err)
-        toastError("Something went wrong. Please try later")
+        toastError(err?.message)
         callback(err, null);
       });
   }
@@ -43,7 +43,7 @@ export default class API_Services {
           return (window.location = navURL);
         }
         console.log(err)
-        toastError("Something went wrong. Please try later")
+        toastError(err?.message)
         callback(err, null);
       });
   }
@@ -58,7 +58,7 @@ export default class API_Services {
       })
       .catch((err) => {
         console.log(err)
-        toastError("Something went wrong. Please try later")
+        toastError(err?.message)
         callback(err, null);
       });
   }
@@ -77,7 +77,7 @@ export default class API_Services {
         headers:headers
     })
       .then((res) => {
-        console.log(res.data)
+         console.log(res.data)
         callback(null, res);
       })
       .catch((err) => {
@@ -90,7 +90,7 @@ export default class API_Services {
         }
         callback(err, null);
         console.log(err)
-        toastError("Something went wrong. Please try later")
+        toastError(err?.message)
       });
   }
 }

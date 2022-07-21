@@ -48,7 +48,7 @@ function Login({ setToken, setIsToken }) {
           label="Email"
           name="email"
           type="email"
-          placeholder="xyz@gamil.com"
+          placeholder="xyz@gmail.com"
           value={credentials.email}
           change={updateCredentials}
           required={true}
@@ -64,7 +64,7 @@ function Login({ setToken, setIsToken }) {
           change={updateCredentials}
           required={true}
         />
-        <button type="submit" className="btnPrimary">
+        <button type="submit" className="btnPrimary two">
           Sign in
         </button>
       </form>

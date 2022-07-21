@@ -1,23 +1,19 @@
-import { actions } from "react-table";
+import localStorageService from "../../utils/localStorageService";
 import * as actionTypes from "./actionTypes";
 
 export const initialState = {
   openInner: false,
   openForm: false,
   openAssignModal: false,
-  openBulkModal: false,
   filter: {
-    mainFilter: "pending",
-    subFilter: "todayLeads",
-    subMostFilter: "all",
+    mainFilter: "workInProgress",
+    dateFilter: "todayLeads",
+    subFilter: "all",
     pageRows: 10,
     pageNumber: 1,
     searchData: "",
     range:null
   },
-  mainFilter: "pending",
-  subFilter: "todayLeads",
-  subMostFilter: "all",
   title: "",
   formHeading: "",
   formData: [],
@@ -70,17 +66,7 @@ const reducer = (state = initialState, action) => {
         openForm: true,
       };
 
-    case actionTypes.OPEN_BULK_MODAL:
-      return {
-        ...state,
-        openBulkModal: true,
-      };
-
-    case actionTypes.CLOSE_BULK_MODAL:
-      return {
-        ...state,
-        openBulkModal: false,
-      };
+ 
 
     case actionTypes.ASSIGN_LEAD:
       return {

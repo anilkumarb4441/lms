@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import "./addEditLeadForm.css";
 import Modal from "../modal/modal";
 import Input from "../Input";
@@ -10,7 +10,19 @@ function AddEditLeadForm({
   handleInputChange,
   formData,
   heading
-}) {
+}) 
+   
+{
+ 
+  // this will come only for update call response form
+  const [callResponse,setCallResponse] = useState()
+ 
+  useEffect(()=>{
+    // function to display call response message while updating call status
+    let response = formData?.find(obj=>obj.name==="response")?.value
+    setCallResponse(response)
+  },[formData])
+ 
   return (
     <Modal
       title={heading}
@@ -28,6 +40,9 @@ function AddEditLeadForm({
               }}
             >
               <div>
+                {/* Displaying Call Response Message  while Updating call status */}
+               {callResponse && <p className = "callresponse">Call Response: This lead will be moving to {callResponse}</p>}
+              
                 {formData &&
                   formData.map((item, i) => {
                     return (
@@ -40,7 +55,7 @@ function AddEditLeadForm({
                     );
                   })}
               </div>
-              <div className = "addLeadFooter">
+              <div className = "modalFooter">
               <button className = "cancelBtn" onClick = {(e)=>{
                 e.preventDefault();
                 handleDisplay(false);

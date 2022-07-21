@@ -1,84 +1,122 @@
-import React, {useState, useRef} from "react";
+import React, { useState, useRef } from "react";
 import "./bulkupload.css";
 import Modal from "../modal/modal";
-import xlsxParser from 'xlsx-parse-json';
-import exportFromJSON from 'export-from-json';
-import API_SERVICES from "../../utils/API"
-import {URLS} from "../../utils/urlConstants"
-import {toastSuccess,toastWarning,toastError} from "../../utils/constants"
+import xlsxParser from "xlsx-parse-json";
+import exportFromJSON from "export-from-json";
+import API_SERVICES from "../../utils/API";
+import { URLS } from "../../utils/urlConstants";
+import { toastSuccess, toastWarning, toastError } from "../../utils/constants";
 
 // Assets
-import close from "../../assets/Bulkupload/close.svg"
+import close from "../../assets/Bulkupload/close.svg";
+import downloadIcon from "../../assets/icons/download.svg";
+import cloudUpload from "../../assets/icons/cloud-upload.svg";
+import fileIcon from "../../assets/icons/file-icon.svg";
+import Input from "../Input";
 
-function BulkUpload({
-  show,
-  handleDisplay,
-  callback
-}) {
+function BulkUpload({show,handleDisplay,callback,userId}) {
+  const formref = useRef();
+  let sheetData = useRef(0);
+  const [bulkData, setbulkData] = useState({isCampaign:false});
+  const [filename, setfilename] = useState("");
+  const [disabled, setDisabled] = useState(true);
+  const [sourceArr,setSourceArr] = useState()
+  //email,facebook,rcb,website,google
+  const sourceArr1 = [
+    { name: "Facebook", value: "facebook" },
+    { name: "Email", value: "email" },
+    { name: "RCB", value: "rcb" },
+    { name: "Website", value: "website" },
+    { name: "Google", value: "google" },
+  ];
 
-    const formref = useRef();
-    let sheetData = useRef(0);
-    
-   
-    const[bulkData, setbulkData] = useState({source:""})
-    const [filename, setfilename] = useState("");
-    const[errorfile, seterrorfile] = useState(false)
+  function downloadCSV(e) {
+    e.preventDefault();
+    var csv = "name,phone,email\n";
+    var data = [
+      { name: "User 1", phone: "9999999999", email: "user1@gmail.com",college:'XYZ College',branch:'Computer Science',yearOfPassOut:'2020' },
+    ];
+    const fileName = "sheet1";
+    const exportType = "csv";
+    exportFromJSON({ data, fileName, exportType });
+  }
 
-    function downloadCSV(e){
-      e.preventDefault();
-      var csv = 'name,phone,email\n';
-      var data = [
-          {name:"Tanisha",phone:"7894561230",email:"tanisha.g@verzeo.com"},
-      ];
-      const fileName = 'sheet1'
-      const exportType = 'csv'
-      exportFromJSON({ data,fileName,exportType });
-   }
-
-    function sendBulkData(e){
-      e.preventDefault()
-      const sendBulkDataCallBack = (err,res)=>{
-              
-              if(res && res.status===201){ 
-                  toastSuccess("Data Succesfully uploaded")   
-                  setfilename("");
-                  formref.current.value="";
-                  setbulkData({...bulkData,["leads"]:""})
-                  handleDisplay();
-                  callback();
-              }
+  function sendBulkData(e) {
+    e.preventDefault();
+    const sendBulkDataCallBack = (err, res) => {
+      if (res && res.status === 201) {
+        toastSuccess("Data Succesfully uploaded");
+        setfilename("");
+        formref.current.value = "";
+        setbulkData({isCampaign:false});
+        handleDisplay();
+        callback();
       }
-  API_SERVICES.httpPOSTWithToken(URLS.leadBulkUpload,bulkData,sendBulkDataCallBack)
+    };
+    API_SERVICES.httpPOSTWithToken(
+      URLS.leadBulkUpload,
+      bulkData,
+      sendBulkDataCallBack
+    );
+  }
+
+  // checking for empty values in file
+  const checkForEmptyValues = (data) => {
+    let arr = ["name","phone","email"]
+   
+    let checker = true;
+    for (let row of data) {
+      for(let key of arr){
+          if(!row[key]){
+            return !checker
+          }
+      }
+    }
+    return checker;
+  };
+
+  // file on change 
+  const handleFile = (e) => {
+  
+    if (!e.target.files[0]) return
+      xlsxParser.onFileSelection(e.target.files[0]).then((data) => {
+        sheetData = data["Sheet1"];
+        if (!checkForEmptyValues(sheetData)) {
+          toastWarning("File contains invalid data");
+          setbulkData({ ...bulkData, leads: null });
+          setfilename("");
+          formref.current.reset();
+          return;
+        }
+        setbulkData({ ...bulkData, ["leads"]: sheetData });
+        setfilename(e.target.files[0].name);
+      }).catch((err)=>{
+        console.log(err)
+        setbulkData({ ...bulkData, leads: null });
+        setfilename("");
+        formref.current.reset();
+        toastError("Error");
+      });
+  };
+
+  // file validation for uploading data
+  React.useEffect(() => {
+    if (!bulkData?.leads || !bulkData?.source) return;
+    setDisabled(false);
+  }, [bulkData]);
+
+  React.useEffect(()=>{ 
+    if(userId==="62d2567927ac212513541269"){
+      // FOR CHANUKYA
+    setSourceArr(sourceArr1)
+    setbulkData({...bulkData,isCampaign:true})
+    }else{
+       // FOR SHUBAM
+       setSourceArr([])
+       setbulkData({...bulkData,isCampaign:false,source:'cgfl'})
     }
 
-    const checkForEmptyValues = (data) => {
-        let checker = true;
-        for (let row of data) {
-            for (let key in row) {  
-                if (row[key] == '' && !(typeof row[key] =="boolean")) {
-
-                    return !checker;
-                }
-            }
-        }
-        return checker;
-    };
-
-    const handleFile = (e) => {
-        setfilename(e.target.files[0].name)
-        if (e.target.files[0])
-            xlsxParser.onFileSelection(e.target.files[0]).then((data) => {
-                sheetData = data['Sheet1'];
-                setbulkData({...bulkData,["leads"]:sheetData})
-                if (!checkForEmptyValues(sheetData)) {
-                    toastWarning("File contains invalid data");            
-                    formref.current.reset();
-                    seterrorfile(true);
-                    return;
-                }
-            });
-    };
-
+  },[])
 
   return (
     <Modal
@@ -88,53 +126,86 @@ function BulkUpload({
       show={show}
       handleDisplay={handleDisplay}
       body={
-       
+        <form>
+          <div className="parentMainBulk">
+            <div className="sample-download">
+              <p>Don't have Same File? Click Here</p>
+              <button className="saveBtn" onClick={(e) => downloadCSV(e)}>
+                <p>Download</p>
+                <img alt="icon" src={downloadIcon} />
+              </button>
+            </div>
+
+            <input
+              type="file"
+              className="form-control-file"
+              id={"bulkInput"}
+              ref={formref}
+              onChange={handleFile}
+              style={{ display: "none" }}
+              accept=".xlsx,.csv,.xls"
+            />
+            {!filename ? (
           
-            <form>
-                {/* <p></p> */}
-              <div className="parentMainBulk">
-              <input
-                            type="file"
-                            className="form-control-file"
-                            id={'File1'}
-                            ref={formref}
-                            onChange={handleFile}
-                            style={{ display: 'none' }}
-                            accept=".xlsx,.csv,.xls"
-                        />
-                        <div className="btnCrosParent">
-                          <button type="button" onClick={(e)=>formref.current.click()} className="BtnBulk">
-                          {filename===""?"Upload File":filename}
-                          </button>
-                          {
-                            filename!=""?<img src={close} alt="Close SVG" onClick={(e)=>{
-                            setfilename("");
-                            formref.current.value="";
-                            setbulkData({...bulkData,["leads"]:""})
-                          }} />:null}
-                        </div>
-                {
-                    filename!=""?
-                    <select name="source" onChange={(e)=>setbulkData({...bulkData,[e.target.name]:e.target.value})}>
-                        <option value="">Select Source</option>
-                        <option value="facebook">Facebook</option>
-                        <option value="linkedIn">Linked In</option>
-                        <option value="email">Email</option>
-                        <option value="self">Self</option>
-                        <option value="cgfl">CGFL</option>
-                    </select>
-                    :null
-                }
-              </div>
-              {
-                errorfile===false && bulkData.source!="" && bulkData.leads!="" ?
-                    <button className="saveBtn" type="button" onClick={(e)=>sendBulkData(e)}>
-                        Upload
-                    </button>
-                    :null
-              }
-              <button className="downBtn" onClick={(e)=>downloadCSV(e)}>Click to download sample file</button>
-            </form>
+           <label className="bulkUploadLabel" htmlFor="bulkInput">
+                <img src={cloudUpload} />
+                <p>Drag File or Browse For File</p>
+              </label>
+           
+           ) : (
+              <>
+                <div className="fileName-wrapper">
+                  <div>
+                    <img src={fileIcon} alt="file-icon" />
+                    <p>{filename}</p>
+                  </div>
+                  <img
+                    src={close}
+                    onClick={(e) => {
+                      setfilename("");
+                      formref.current.value = "";
+                      setbulkData({ ...bulkData,leads:null});
+                    }}
+                    alt="close"
+                  />
+                </div>
+
+               {sourceArr && sourceArr.length>0 && <Input
+                  element="select"
+                  name="source"
+                  label="Source"
+                  value={bulkData?.source}
+                  selectHeading="Select Source"
+                  selectArr={sourceArr}
+                  change={(e) =>
+                    setbulkData({
+                      ...bulkData,
+                      [e.target.name]: e.target.value,
+                    })
+                  }
+                />}
+              </>
+            )}
+          </div>
+
+          <div className="modalFooter">
+            <button
+              className="cancelBtn"
+              type="button"
+              onClick={() => handleDisplay(false)}
+            >
+              Cancel
+            </button>
+            <button
+              disabled={disabled}
+              className="saveBtn"
+              type="submit"
+              onClick={(e) => sendBulkData(e)}
+            >
+              Upload
+            </button>
+          </div>
+        </form>
       }
     />
   );

@@ -12,6 +12,7 @@ import searchIcon from "../../assets/icons/searchIcon.svg"
 //components
 import Pagination from "../pagination/pagination"
 import NoRecord from '../noRecord/noRecord';
+import Loader from '../loader/loader';
 
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
@@ -130,6 +131,9 @@ function Table(options) {
         setCellWidth(100/options.columns.length)
       },[options.columns])
 
+     if(options.tableLoading){
+       return <Loader/>
+     }
 
     return (
         <>

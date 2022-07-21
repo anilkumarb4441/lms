@@ -1,5 +1,5 @@
 .login-wrappper{
-    background:var(--wrapperColor);
+    background:var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -10,7 +10,7 @@
 .login-wrappper>form{
     width:500px;
     margin:0 auto;
-    background: var(--secondary);
+    background: var(--wrapperColor);
     padding: 20px;
     border-radius: 20px;
 }

@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes";
+import * as utils from "../../utils/constants"
 
 // action to set Default State
 export const setDefaultState = () => {
@@ -23,7 +24,9 @@ export const closeInner = () => {
 
 // action to set all filter values
 export const setFilter = (filter) => {
-  return { type: actionTypes.SET_FILTER, filter: { ...filter } };
+   
+
+  return { type: actionTypes.SET_FILTER, filter: { ...filter} };
 };
 
 //action to add Lead
@@ -62,13 +65,13 @@ export const editLead = (rowData, formData) => {
 // Update Call Response
 export const updateCallResponse = (rowData, formData) => {
   let newRowData = {
-    status: rowData.callLogs?.status,
-    response: rowData.callLogs?.response,
+    status: rowData.callLogs?.status
   };
   let keys = Object.keys(newRowData);
   let newArr = [
     { name: "leadId", value: rowData.leadId },
     { name: "referenceId", value: rowData.referenceId },
+    { name: "response", value: rowData.callLogs?.response },
   ];
   formData.forEach((obj) => {
     let newObj = { ...obj };
@@ -86,6 +89,7 @@ export const updateCallResponse = (rowData, formData) => {
   };
 };
 
+
 //action to assign lead
 export const assignLead = (rowObj, assignType) => {
   return {
@@ -102,19 +106,7 @@ export const closeAssignModal = () => {
   };
 };
 
-//action to open bulk Modal
-export const openBulkModal = () => {
-  return {
-    type: actionTypes.OPEN_BULK_MODAL,
-  };
-};
 
-//action to close bulk Modal
-export const closeBulkModal = () => {
-  return {
-    type: actionTypes.CLOSE_BULK_MODAL,
-  };
-};
 
 //action to open Form
 export const openForm = () => {
@@ -132,42 +124,38 @@ export const closeForm = () => {
   };
 };
 
-//handle Input Change
+// handle  Input Change for update call response,add,edit forms
 export const changeInput = (e, i, formData) => {
   let newArr = [...formData];
   let formInput = { ...newArr[i] };
+   
+  // attaching call response for change in call status
+  if(e.target.name==="status"){
+   
+    // finding index of call Response Object
+    let responseIndex = newArr.findIndex(obj=>obj.name==="response")
+   
+    // getting call response message based on call statu
+    let callResponseMessage = utils.callResponseArr.find(val=>val.name===e.target.value)?.value 
+   
+    // updating call response message
+    newArr.splice(responseIndex, 1, {name:'response',value:callResponseMessage});
+  }
+
+  // for checkboxes
   if (e.target.type === "checkbox") {
     formInput.value = e.target.checked;
-    // code to change source options if campaign generated is checked or unchecked
-    let sourceInput = newArr.find((el) => (el.name === "source"));
-    let sourceIndex = newArr.findIndex((el) => (el.name === "source"));
-    let selectArr = [...sourceInput.selectArr].filter(
-      (option) => option.value !== "email" && option.value !== "facebook"
-    );
-    
-    if (e.target.checked) {
-      //adding facebook,email if campaign generated is true
-      newArr.splice(sourceIndex, 1, {
-        ...sourceInput,
-        selectArr: [
-          ...selectArr,
-          { name: "Email", value: "email" },
-          { name: "Facebook", value: "facebook" },
-        ],
-      });
-    } else {
-      //removing facebook,email if campaign generated is false
-      newArr.splice(sourceIndex, 1, {
-        ...sourceInput,
-        selectArr: [...selectArr],
-      });
-    }
-  } else {
+   
+  } else  {
     formInput.value = e.target.value;
   }
+
+  // replacing old input value with new input value
   newArr.splice(i, 1, formInput);
+ 
   return {
     type: actionTypes.CHANGE_INPUT,
     formData: newArr,
   };
 };
+
