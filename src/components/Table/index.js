@@ -188,7 +188,8 @@ function Table(options) {
           </div>
         </div>
         <div ref = {options.wrapperRef} className={"TableContainer " + options.tClass}>
-        {options.data && options.data.length>0? <table className={"Table " + options.tClass} {...getTableProps()}>
+        {options.data && options.data.length>0? 
+        <table className={"Table " + options.tClass} {...getTableProps()}>
             <thead>
               {
                 // Loop over the header rows
@@ -242,7 +243,8 @@ function Table(options) {
               }
             </tbody>
 }
-          </table>:<NoRecord/>
+          </table>
+          :<NoRecord/>
        } </div>
         {
                 options.pagination &&

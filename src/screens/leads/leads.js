@@ -240,7 +240,7 @@ function Leads() {
         return;
 
       case "Update Call Response":
-        if (rowData.callLogs?.status === "interested") {
+        if (rowData.callLogs?.status === "Interested") {
           utils.toastWarning(
             "Interseted leads call response cannot be updated"
           );
@@ -277,7 +277,6 @@ function Leads() {
         setTotalCount(0);
       }
       if (res && res.status === 200) {
-        debugger;
         setTableData(res.data.data);
         setTotalCount(res.data.total);
       }
@@ -390,14 +389,22 @@ function Leads() {
 
   // function to change columns after switching b/w main Tabs
   useEffect(() => {
+    
     switch (reducer.filter.mainFilter) {
-      case "paid"||"lost":
+      case "paid":
         let newCol1 = originalColumns.filter(
           (obj) => obj.accessor !== "actions"
         );
         setColumns(newCol1);
 
         return;
+      
+      case "lost":
+          let newCol4 = originalColumns.filter(
+            (obj) => obj.accessor !== "actions"
+          );
+          setColumns(newCol4);
+          return;  
 
       case "workInProgress":
         let newCol2 = originalColumns.filter(
