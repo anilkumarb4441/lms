@@ -5,11 +5,12 @@
 
 .tabsSection>button{
     padding: 10px 20px;
-    /* border: solid 1px var(--white); */
     background-color: #EFF3FC;
-    color: var(--secondary);
+    color: var(--primary);
     font-weight: 600;
-    transition:  background-color 0.5s
+    transition:  background-color 0.5s;
+    border: solid 1px #0000001f;
+
 }
 
 .tabsSection>button.active{
@@ -18,8 +19,8 @@
 }
 
 .tabsSection>button:hover{
-    color: var(--white);
-    background-color: var(--primaryLight);
+    color: var(--primary);
+    background-color: var(--secondary);
 }
 
 .tabsSection>button:nth-of-type(1){

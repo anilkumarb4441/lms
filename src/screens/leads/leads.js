@@ -18,6 +18,7 @@ import AssignToModal from "../../components/assignToModal/assignToModal.js";
 import LeadsInner from "../leadsInner/leadsInner.js";
 import Dropdown from "../../components/dropdown/dropdown.js";
 import CustomDateRange from "../../components/dateRangePicker/dateRangePicker";
+import Tabs from "../../components/tabs/tabs.js";
 
 function Leads() {
   const reducer = useSelector((state) => state.leads);
@@ -128,6 +129,13 @@ function Leads() {
       selectHeading: " Select Call Status",
       selectArr: callStatusArr,
     },
+    {
+      name: "response",
+      value: "",
+      required: true,
+      label: "Call Response",
+      type: "text",
+      },
   ]);
 
   // action options for untouched leads
@@ -470,25 +478,26 @@ function Leads() {
         {!reducer.openInner && (
           <div>
             <div className="lead-main-filter-header">
-              <Dropdown
-                dropdownClass="lead-main-drop-down"
-                value={reducer.filter.mainFilter}
-                options={mainFilterArr}
-                onchange={(item) =>
-                  dispatch(
-                    actions.setMainFilter({
-                      ...initialState.filter,
-                      mainFilter: item.value,
-                      searchData: "",
-                      pageNumber: 1,
-                      pageRows: 10,
-                      range: null,
-                    })
-                  )
-                }
+              <Tabs
+              tabsClass = "leads-main-tab"
+              activeValue = {reducer.filter.mainFilter}
+              tabArr = {mainFilterArr}
+              handleTab = {(item) =>
+                dispatch(
+                  actions.setMainFilter({
+                    ...initialState.filter,
+                    mainFilter: item.value,
+                    searchData: "",
+                    pageNumber: 1,
+                    pageRows: 10,
+                    range: null,
+                  })
+                )
+              }
               />
+            
               <Dropdown
-                dropdownClass="lead-main-drop-down"
+                dropdownClass="lead-main-drop-down side-drop-down"
                 value={reducer.filter.dateFilter}
                 options={dateFilterArr}
                 onchange={(item) =>
@@ -508,69 +517,72 @@ function Leads() {
 
             {reducer.filter.mainFilter === "paid" && (
               <div className="lead-main-filter-header">
-                <Dropdown
-                  dropdownClass="lead-main-drop-down"
-                  value={reducer.filter.subFilter}
-                  options = {paidFilterArr}
-                  onchange={(item) => {
-                    dispatch(
-                      actions.setFilter({
-                        ...reducer.filter,
-                        subFilter: item.value,
-                        searchData: "",
-                        pageNumber: 1,
-                        pageRows: 10,
-                        range: null,
-                      })
-                    );
-                  }}
+                <Tabs
+                tabArr = {paidFilterArr}
+                activeValue = {reducer.filter.subFilter}
+                handleTab = {(item) => {
+                  dispatch(
+                    actions.setFilter({
+                      ...reducer.filter,
+                      subFilter: item.value,
+                      searchData: "",
+                      pageNumber: 1,
+                      pageRows: 10,
+                      range: null,
+                    })
+                  );
+                }}
                 />
+               
               </div>
             )}
 
             {reducer.filter.mainFilter === "lost" && (
               <div className="lead-main-filter-header">
-                <Dropdown
-                  dropdownClass="lead-main-drop-down"
-                  value={reducer.filter.subFilter}
-                  options = {lostFilterArr}
-                  onchange={(item) => {
-                    dispatch(
-                      actions.setFilter({
-                        ...reducer.filter,
-                        subFilter: item.value,
-                        searchData: "",
-                        pageNumber: 1,
-                        pageRows: 10,
-                        range: null,
-                      })
-                    );
-                  }}
+                <Tabs
+                tabArr ={lostFilterArr}
+                activeValue = {reducer.filter.subFilter}
+                handleTab = {(item) => {
+                  dispatch(
+                    actions.setFilter({
+                      ...reducer.filter,
+                      subFilter: item.value,
+                      searchData: "",
+                      pageNumber: 1,
+                      pageRows: 10,
+                      range: null,
+                    })
+                  );
+                }}
                 />
+              
+              </div>
+            )}
+
+             {reducer.filter.mainFilter === "workInProgress" && (
+              <div className="lead-main-filter-header">
+                <Tabs
+                tabArr ={callFilterArr}
+                activeValue = {reducer.filter.subFilter}
+                handleTab = {(item) => {
+                  dispatch(
+                    actions.setFilter({
+                      ...reducer.filter,
+                      subFilter: item.value,
+                      searchData: "",
+                      pageNumber: 1,
+                      pageRows: 10,
+                      range: null,
+                    })
+                  );
+                }}
+                />
+              
               </div>
             )}
 
             <div className="lead-filter-header">
               <div>
-                {reducer.filter.mainFilter === "workInProgress" && (
-                  <Dropdown
-                    value={reducer.filter.subFilter}
-                    options={callFilterArr}
-                    onchange={(item) =>
-                      dispatch(
-                        actions.setFilter({
-                          ...reducer.filter,
-                          subFilter: item.value,
-                          searchData: "",
-                          pageNumber: 1,
-                          pageRows: 10,
-                        })
-                      )
-                    }
-                  />
-                )}
-                {}
-
                 <Input
                   placeholder="Search By Name/Email/Phone"
                   inputClass="leadsSearch"

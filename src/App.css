@@ -4,13 +4,10 @@
 
 
 :root{
-  --primary:#455591;
-  --primaryLight:#6577B8;
+  --primary:#0D1C46;
+  --secondary:#FDD403;
+  --primaryLight:#374364;
   --textgrey:#0D0D0D;
-  /* --primary85:#E6AA5585;
-  --primary83:#E6AA5583;
-  --primary80:#E6AA5580;
-  --secondary:#1F1E26; */
   --wrapperColor:#F9F9FB;
   --white:#fff;
   --black:#000;

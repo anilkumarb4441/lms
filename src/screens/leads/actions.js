@@ -82,13 +82,13 @@ export const editLead = (rowData, formData) => {
 // Update Call Response
 export const updateCallResponse = (rowData, formData) => {
   let newRowData = {
-    status: rowData.callLogs?.status
+    status: rowData.callLogs?.status,
+    response:rowData.callLogs?.response
   };
   let keys = Object.keys(newRowData);
   let newArr = [
     { name: "leadId", value: rowData.leadId },
     { name: "referenceId", value: rowData.referenceId },
-    { name: "response", value: rowData.callLogs?.response },
   ];
   formData.forEach((obj) => {
     let newObj = { ...obj };
@@ -146,18 +146,18 @@ export const changeInput = (e, i, formData) => {
   let newArr = [...formData];
   let formInput = { ...newArr[i] };
    
-  // attaching call response for change in call status
-  if(e.target.name==="status"){
+  // // attaching call response for change in call status
+  // if(e.target.name==="status"){
    
-    // finding index of call Response Object
-    let responseIndex = newArr.findIndex(obj=>obj.name==="response")
+  //   // finding index of call Response Object
+  //   let responseIndex = newArr.findIndex(obj=>obj.name==="response")
    
-    // getting call response message based on call statu
-    let callResponseMessage = utils.callResponseArr.find(val=>val.name===e.target.value)?.value 
+  //   // getting call response message based on call status
+  //   let callResponseMessage = utils.callResponseArr.find(val=>val.name===e.target.value)?.value 
    
-    // updating call response message
-    newArr.splice(responseIndex, 1, {name:'response',value:callResponseMessage});
-  }
+  //   // updating call response message
+  //   newArr.splice(responseIndex, 1, {name:'response',value:callResponseMessage});
+  // }
 
   // iput change for checkboxes
   if (e.target.type === "checkbox") {
