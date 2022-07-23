@@ -114,10 +114,13 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
       // FOR CHANUKYA
     setSourceArr(sourceArr1)
     setbulkData({...bulkData,isCampaign:true})
-    }else{
+    }else if(userId===""){
        // FOR SHUBAM
        setSourceArr([])
        setbulkData({...bulkData,isCampaign:false,source:'cgfl'})
+    }else{
+      setSourceArr([])
+      setbulkData({...bulkData,isCampaign:false,source:'self'})
     }
 
   },[])

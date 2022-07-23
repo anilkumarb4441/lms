@@ -5,6 +5,7 @@ export const initialState = {
   openInner: false,
   openForm: false,
   openAssignModal: false,
+  showBulkModal:false,
   filter: {
     mainFilter: "new",
     dateFilter: "oldLeads",
@@ -69,8 +70,6 @@ const reducer = (state = initialState, action) => {
         openForm: true,
       };
 
- 
-
     case actionTypes.ASSIGN_LEAD:
       return {
         ...state,
@@ -81,18 +80,17 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.CLOSE_ASSIGN_MODAL:
       return {
-        ...state,
-        openAssignModal: false,
-        assignType: "",
-        rowObj: null,
+        ...state,...action.payload
       };
 
+    case actionTypes.TOGGLE_BULK_MODAL:
+      return {
+        ...state,showBulkModal:!state.showBulkModal
+      }
+    
     case actionTypes.CLOSE_FORM:
       return {
-        ...state,
-        formHeading: "",
-        openForm: false,
-        formData: [],
+        ...state,...action.payload
       };
 
     case actionTypes.CHANGE_INPUT:

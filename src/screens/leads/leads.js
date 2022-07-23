@@ -19,8 +19,11 @@ import LeadsInner from "../leadsInner/leadsInner.js";
 import Dropdown from "../../components/dropdown/dropdown.js";
 import CustomDateRange from "../../components/dateRangePicker/dateRangePicker";
 import Tabs from "../../components/tabs/tabs.js";
+import BulkUpload from "../../components/bulkUpload/bulkupload.js";
+import localStorageService from "../../utils/localStorageService.js";
 
 function Leads() {
+  const { userId } = localStorageService.getTokenDecode()
   const reducer = useSelector((state) => state.leads);
   const [tableLoading, setTableLoading] = useState(true);
   const [formLoading,setFormLoading] = useState(false);
@@ -402,6 +405,12 @@ function Leads() {
     dispatch(actions.closeAssignModal());
   };
 
+  // call back after bulk uploading of leads
+ const bulkUploadCallBack = ()=>{
+    getLeadsByFilters(reducer.filter);
+    dispatch(actions.toggleBulkModal());
+  }
+
   // function to change columns after switching b/w main Tabs
   useEffect(() => {  
     switch (reducer.filter.mainFilter) {
@@ -627,6 +636,14 @@ function Leads() {
                   Add Lead
                 </button>
                 <button
+                  className="btnPrimary"
+                  onClick={() => {
+                    dispatch(actions.toggleBulkModal());
+                  }}
+                >
+                  Bulk Upload
+                </button>
+                <button
                   onClick={() => {
                     dispatch(actions.assignLead(null, "bulk"));
                   }}
@@ -700,6 +717,13 @@ function Leads() {
             goBack={() => dispatch(actions.closeInner())}
           />
         )}
+        {reducer.showBulkModal &&<BulkUpload
+          show = {reducer.showBulkModal}
+          
+          handleDisplay={() =>  dispatch(actions.toggleBulkModal())}
+          callback = {bulkUploadCallBack}
+          userId = {userId}
+        />}
       </div>
     </>
   );
