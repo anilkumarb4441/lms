@@ -51,14 +51,13 @@ export const StringtoDateObject = (dateString) => {
 };
 
 //DEBOUNCE FUNCTION
-export const debounce = (func, delay) => {
-  let debounceTimer
-  return (...args)=>{
-      const context = this
-          clearTimeout(debounceTimer)
-              debounceTimer=setTimeout(() => func(...args), delay)
-  }
-} 
+export const debounce=(func, timeout = 300)=>{
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+  };
+}
 
 // Leads call response Messages Array
 export const callResponseArr = [

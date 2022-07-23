@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./actions.js";
 import * as utils from "../../utils/constants";
 import { URLS } from "../../utils/urlConstants";
 import { initialState } from "./reducer";
 import API_SERVICES from "../../utils/API";
-
+import localStorageService from "../../utils/localStorageService.js";
 //css
 import "./leads.css";
 
@@ -20,7 +20,7 @@ import Dropdown from "../../components/dropdown/dropdown.js";
 import CustomDateRange from "../../components/dateRangePicker/dateRangePicker";
 import Tabs from "../../components/tabs/tabs.js";
 import BulkUpload from "../../components/bulkUpload/bulkupload.js";
-import localStorageService from "../../utils/localStorageService.js";
+
 
 function Leads() {
   const { userId } = localStorageService.getTokenDecode()
@@ -252,7 +252,7 @@ function Leads() {
       case "Update Call Response":
         if (rowData.callLogs?.status === "Interested") {
           utils.toastWarning(
-            "Interseted leads call response cannot be updated"
+            "Interested leads call response cannot be updated"
           );
           return;
         }
@@ -329,7 +329,7 @@ function Leads() {
       if (res && res.status === 201) {
         getLeadsByFilters(reducer.filter)
         dispatch(actions.closeForm());
-        utils.toastSuccess("Lead SuccesFully Created");
+        utils.toastSuccess("Lead Succesfully Created");
       }
     };
     API_SERVICES.httpPOSTWithToken(URLS.createLead, data, callback);
@@ -466,10 +466,22 @@ function Leads() {
         }
   },[reducer.filter.subFilter])
 
+  // debounce function when we are searching for data in the table using search bar
+  const debounceGetLeads = useCallback(utils.debounce((filter)=>{
+    getLeadsByFilters(filter);
+  },1000),[])
+  
+  
+
   // status change function
   useEffect(() => {
-    getLeadsByFilters(reducer.filter);
     wrapperRef?.current?.scrollTo(0, 0);
+    if(reducer.filter.searchData){
+      debounceGetLeads(reducer.filter);
+      return
+    }
+    getLeadsByFilters(reducer.filter);
+   
   }, [reducer.filter]);
 
   // setting reducer state to default after component gets unmounted
@@ -718,8 +730,7 @@ function Leads() {
           />
         )}
         {reducer.showBulkModal &&<BulkUpload
-          show = {reducer.showBulkModal}
-          
+          show = {reducer.showBulkModal}  
           handleDisplay={() =>  dispatch(actions.toggleBulkModal())}
           callback = {bulkUploadCallBack}
           userId = {userId}
