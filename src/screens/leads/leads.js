@@ -32,10 +32,10 @@ function Leads() {
   const wrapperRef = useRef(); //Table Wrapper Ref
   
   const mainFilterArr = [
-    { name: "Work In Progress ", value: "workInProgress" },
     { name: "New", value: "new" },
-    { name: "Paid Leads", value: "paid" },
+    { name: "Work In Progress ", value: "workInProgress" },
     { name: "Lost Leads", value: "lost" },
+    { name: "Paid Leads", value: "paid" },
   ];
   
   const dateFilterArr = [
