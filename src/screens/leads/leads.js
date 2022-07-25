@@ -385,7 +385,7 @@ function Leads() {
   const createLeadBussiness = (data) => {
     let { name, email, phone } = data;
     let newData = { name, email, phone };
-    newData.leadby = data.generatedBy;
+    newData.leadby = data.currentOwner;
     newData.referenceid = data.referenceId;
     newData.leadid = data.leadId;
     const callback = (err, res) => {
