@@ -12,5 +12,6 @@ export const ASSIGN_LEAD = "ASSIGN_LEAD"
 export const OPEN_FORM ="OPEN_FORM"
 export const CLOSE_FORM = "CLOSE_FORM"
 export const CHANGE_INPUT= "CHANGE_INPUT"
+export const TOGGLE_BULK_MODAL = "TOGGLE_BULK_MODAL"
 
 

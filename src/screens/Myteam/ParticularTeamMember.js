@@ -167,7 +167,7 @@ const [totalRowCount, setTotalRowCount] = useState(0)
         }
       }
     };
-    API_SERVICES.httpPOSTWithToken(URLS.perticularTeamMember,{ userId:obj.userId,status: ["untouched", "pending", "completed"],},callback);
+  //  API_SERVICES.httpPOSTWithToken(URLS.perticularTeamMember,{ userId:obj.userId,status: ["untouched", "pending", "completed"],},callback);
   }
 
 
@@ -265,7 +265,7 @@ const [totalRowCount, setTotalRowCount] = useState(0)
                 <div className="tabAndSearch-HOL">
                   <Tabs
                     tabArr={mainTabArr}
-                    subtabs={subtabs}
+                    activeValue={subtabs}
                     tabsClass="leadTabs"
                     handleTab={(e) => setsubtabs(e.value)}
                   />

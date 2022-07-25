@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef,useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./actions.js";
 import * as utils from "../../utils/constants";
 import { URLS } from "../../utils/urlConstants";
 import { initialState } from "./reducer";
 import API_SERVICES from "../../utils/API";
-
+import localStorageService from "../../utils/localStorageService.js";
 //css
 import "./leads.css";
 
@@ -18,8 +18,12 @@ import AssignToModal from "../../components/assignToModal/assignToModal.js";
 import LeadsInner from "../leadsInner/leadsInner.js";
 import Dropdown from "../../components/dropdown/dropdown.js";
 import CustomDateRange from "../../components/dateRangePicker/dateRangePicker";
+import Tabs from "../../components/tabs/tabs.js";
+import BulkUpload from "../../components/bulkUpload/bulkupload.js";
+
 
 function Leads() {
+  const { userId } = localStorageService.getTokenDecode()
   const reducer = useSelector((state) => state.leads);
   const [tableLoading, setTableLoading] = useState(true);
   const [formLoading,setFormLoading] = useState(false);
@@ -28,10 +32,10 @@ function Leads() {
   const wrapperRef = useRef(); //Table Wrapper Ref
   
   const mainFilterArr = [
-    { name: "Work In Progress ", value: "workInProgress" },
     { name: "New", value: "new" },
-    { name: "Paid Leads", value: "paid" },
+    { name: "Work In Progress ", value: "workInProgress" },
     { name: "Lost Leads", value: "lost" },
+    { name: "Paid Leads", value: "paid" },
   ];
   
   const dateFilterArr = [
@@ -128,6 +132,13 @@ function Leads() {
       selectHeading: " Select Call Status",
       selectArr: callStatusArr,
     },
+    {
+      name: "response",
+      value: "",
+      required: true,
+      label: "Call Response",
+      type: "text",
+      },
   ]);
 
   // action options for untouched leads
@@ -241,7 +252,7 @@ function Leads() {
       case "Update Call Response":
         if (rowData.callLogs?.status === "Interested") {
           utils.toastWarning(
-            "Interseted leads call response cannot be updated"
+            "Interested leads call response cannot be updated"
           );
           return;
         }
@@ -318,7 +329,7 @@ function Leads() {
       if (res && res.status === 201) {
         getLeadsByFilters(reducer.filter)
         dispatch(actions.closeForm());
-        utils.toastSuccess("Lead SuccesFully Created");
+        utils.toastSuccess("Lead Succesfully Created");
       }
     };
     API_SERVICES.httpPOSTWithToken(URLS.createLead, data, callback);
@@ -394,6 +405,12 @@ function Leads() {
     dispatch(actions.closeAssignModal());
   };
 
+  // call back after bulk uploading of leads
+ const bulkUploadCallBack = ()=>{
+    getLeadsByFilters(reducer.filter);
+    dispatch(actions.toggleBulkModal());
+  }
+
   // function to change columns after switching b/w main Tabs
   useEffect(() => {  
     switch (reducer.filter.mainFilter) {
@@ -449,10 +466,22 @@ function Leads() {
         }
   },[reducer.filter.subFilter])
 
+  // debounce function when we are searching for data in the table using search bar
+  const debounceGetLeads = useCallback(utils.debounce((filter)=>{
+    getLeadsByFilters(filter);
+  },1000),[])
+  
+  
+
   // status change function
   useEffect(() => {
-    getLeadsByFilters(reducer.filter);
     wrapperRef?.current?.scrollTo(0, 0);
+    if(reducer.filter.searchData){
+      debounceGetLeads(reducer.filter);
+      return
+    }
+    getLeadsByFilters(reducer.filter);
+   
   }, [reducer.filter]);
 
   // setting reducer state to default after component gets unmounted
@@ -470,25 +499,26 @@ function Leads() {
         {!reducer.openInner && (
           <div>
             <div className="lead-main-filter-header">
-              <Dropdown
-                dropdownClass="lead-main-drop-down"
-                value={reducer.filter.mainFilter}
-                options={mainFilterArr}
-                onchange={(item) =>
-                  dispatch(
-                    actions.setMainFilter({
-                      ...initialState.filter,
-                      mainFilter: item.value,
-                      searchData: "",
-                      pageNumber: 1,
-                      pageRows: 10,
-                      range: null,
-                    })
-                  )
-                }
+              <Tabs
+              tabsClass = "leads-main-tab"
+              activeValue = {reducer.filter.mainFilter}
+              tabArr = {mainFilterArr}
+              handleTab = {(item) =>
+                dispatch(
+                  actions.setMainFilter({
+                    ...initialState.filter,
+                    mainFilter: item.value,
+                    searchData: "",
+                    pageNumber: 1,
+                    pageRows: 10,
+                    range: null,
+                  })
+                )
+              }
               />
+            
               <Dropdown
-                dropdownClass="lead-main-drop-down"
+                dropdownClass="lead-main-drop-down side-drop-down"
                 value={reducer.filter.dateFilter}
                 options={dateFilterArr}
                 onchange={(item) =>
@@ -508,69 +538,72 @@ function Leads() {
 
             {reducer.filter.mainFilter === "paid" && (
               <div className="lead-main-filter-header">
-                <Dropdown
-                  dropdownClass="lead-main-drop-down"
-                  value={reducer.filter.subFilter}
-                  options = {paidFilterArr}
-                  onchange={(item) => {
-                    dispatch(
-                      actions.setFilter({
-                        ...reducer.filter,
-                        subFilter: item.value,
-                        searchData: "",
-                        pageNumber: 1,
-                        pageRows: 10,
-                        range: null,
-                      })
-                    );
-                  }}
+                <Tabs
+                tabArr = {paidFilterArr}
+                activeValue = {reducer.filter.subFilter}
+                handleTab = {(item) => {
+                  dispatch(
+                    actions.setFilter({
+                      ...reducer.filter,
+                      subFilter: item.value,
+                      searchData: "",
+                      pageNumber: 1,
+                      pageRows: 10,
+                      range: null,
+                    })
+                  );
+                }}
                 />
+               
               </div>
             )}
 
             {reducer.filter.mainFilter === "lost" && (
               <div className="lead-main-filter-header">
-                <Dropdown
-                  dropdownClass="lead-main-drop-down"
-                  value={reducer.filter.subFilter}
-                  options = {lostFilterArr}
-                  onchange={(item) => {
-                    dispatch(
-                      actions.setFilter({
-                        ...reducer.filter,
-                        subFilter: item.value,
-                        searchData: "",
-                        pageNumber: 1,
-                        pageRows: 10,
-                        range: null,
-                      })
-                    );
-                  }}
+                <Tabs
+                tabArr ={lostFilterArr}
+                activeValue = {reducer.filter.subFilter}
+                handleTab = {(item) => {
+                  dispatch(
+                    actions.setFilter({
+                      ...reducer.filter,
+                      subFilter: item.value,
+                      searchData: "",
+                      pageNumber: 1,
+                      pageRows: 10,
+                      range: null,
+                    })
+                  );
+                }}
                 />
+              
+              </div>
+            )}
+
+             {reducer.filter.mainFilter === "workInProgress" && (
+              <div className="lead-main-filter-header">
+                <Tabs
+                tabArr ={callFilterArr}
+                activeValue = {reducer.filter.subFilter}
+                handleTab = {(item) => {
+                  dispatch(
+                    actions.setFilter({
+                      ...reducer.filter,
+                      subFilter: item.value,
+                      searchData: "",
+                      pageNumber: 1,
+                      pageRows: 10,
+                      range: null,
+                    })
+                  );
+                }}
+                />
+              
               </div>
             )}
 
             <div className="lead-filter-header">
               <div>
-                {reducer.filter.mainFilter === "workInProgress" && (
-                  <Dropdown
-                    value={reducer.filter.subFilter}
-                    options={callFilterArr}
-                    onchange={(item) =>
-                      dispatch(
-                        actions.setFilter({
-                          ...reducer.filter,
-                          subFilter: item.value,
-                          searchData: "",
-                          pageNumber: 1,
-                          pageRows: 10,
-                        })
-                      )
-                    }
-                  />
-                )}
-                {}
-
                 <Input
                   placeholder="Search By Name/Email/Phone"
                   inputClass="leadsSearch"
@@ -613,6 +646,14 @@ function Leads() {
                   }}
                 >
                   Add Lead
+                </button>
+                <button
+                  className="btnPrimary"
+                  onClick={() => {
+                    dispatch(actions.toggleBulkModal());
+                  }}
+                >
+                  Bulk Upload
                 </button>
                 <button
                   onClick={() => {
@@ -688,6 +729,12 @@ function Leads() {
             goBack={() => dispatch(actions.closeInner())}
           />
         )}
+        {reducer.showBulkModal &&<BulkUpload
+          show = {reducer.showBulkModal}  
+          handleDisplay={() =>  dispatch(actions.toggleBulkModal())}
+          callback = {bulkUploadCallBack}
+          userId = {userId}
+        />}
       </div>
     </>
   );

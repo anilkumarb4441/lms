@@ -1,7 +1,7 @@
 import React from "react";
 import "./tabs.css";
 
-function Tabs({ tabArr, handleTab, activeValue='',  tabsClass = "" ,subtabs}) {
+function Tabs({ tabArr, handleTab, activeValue='', tabsClass = "" }) {
  
 
   return (
@@ -10,7 +10,7 @@ function Tabs({ tabArr, handleTab, activeValue='',  tabsClass = "" ,subtabs}) {
         tabArr.map((item, i) => {
           return (
             <button
-              className={item.value === subtabs ? "active" : "" }
+              className={item.value === activeValue ? "active" : "" }
               key={i}
               onClick={() =>handleTab(item)}
             >

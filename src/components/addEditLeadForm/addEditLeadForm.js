@@ -3,6 +3,7 @@ import "./addEditLeadForm.css";
 import Modal from "../modal/modal";
 import Input from "../Input";
 import Loader from "../loader/loader";
+import * as utils from "../../utils/constants"
 
 function AddEditLeadForm({
   show,
@@ -16,13 +17,14 @@ function AddEditLeadForm({
    
 {
  
-  // this will come only for update call response form
+  //this will come only for update call response form
   const [callResponse,setCallResponse] = useState()
  
   useEffect(()=>{
     // function to display call response message while updating call status
-    let response = formData?.find(obj=>obj.name==="response")?.value
-    setCallResponse(response)
+    let callStatus = formData?.find(obj=>obj.name==="status")?.value
+    let callResponseMessage = utils.callResponseArr.find(val=>val.name===callStatus)?.value 
+    setCallResponse(callResponseMessage)
   },[formData])
  
   return (
@@ -43,7 +45,7 @@ function AddEditLeadForm({
             >
               <div>
                 {/* Displaying Call Response Message  while Updating call status */}
-               {callResponse && <p className = "callresponse">Call Response: This lead will be moving to {callResponse}</p>}
+               {callResponse && <p className = "callresponse">Info: This lead will be moving to {callResponse}</p>}
               
                 {formData &&
                   formData.map((item, i) => {
