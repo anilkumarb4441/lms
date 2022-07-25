@@ -72,10 +72,8 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.ASSIGN_LEAD:
       return {
-        ...state,
-        openAssignModal: true,
-        assignType: action.assignType,
-        rowObj: action.rowObj,
+        ...state,...action.payload,
+       
       };
 
     case actionTypes.CLOSE_ASSIGN_MODAL:
