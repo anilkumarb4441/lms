@@ -1,7 +1,7 @@
 
 //BASE URL
 // const BASE_URL ="http://192.168.1.29:2002" ,http://192.168.1.69:2002
-const BASE_URL ="http://192.168.1.69:2002"
+const BASE_URL ="http://192.168.74.52:2002"
 //"https://leadserver.verzeo.com"
 
 
