@@ -26,7 +26,6 @@ module.exports = {
     //update/create call logs
     updateCallLog:"/logs/updateCallLog",
 
-
     //autoComplete search of emplyess
     getAutoSearchData:'/leads/search/employee',
 
