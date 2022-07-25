@@ -1,17 +1,18 @@
 .modal.AssignToModal{
-    width:30%;
+   width:40%;
     border-radius: 5px;
-    background-color: #363638;
-    top:40%;
-    text-align: center;
+    top: -35%;
+    transform: none;
+    left: 30%;
+    opacity:0;
 }
 
-.modal.AssignToModal .modalHeader .modalTitle{
-    font-size: 16px;
-    display: flex;
-    font-weight: 500;
-    color: #fff7f7;
+.modal.AssignToModal.active{
+    top:15%;
+    animation: reveal-top-modal 0.3s linear; 
+    opacity: 1;
 }
+
 
 .autoComplete-container>input{
     display: block;
@@ -45,21 +46,29 @@
     overflow-y: scroll;
 }
 
-.modal.AssignToModal .btnPrimary{
-   margin: 15px 0;
-}
+
 
 .modal.AssignToModal  .customInput{
-    margin:15px auto;
     width:fit-content
 }
-
+.modal.AssignToModal  form{
+    display:flex;
+    gap:25px;
+    flex-direction: column;
+    padding: 20px;
+}
 .modal.AssignToModal  form p{
-    color: #fff;
-    font-weight: 400;
+    color: var(--black);
+    font-weight: 600;
 }
 
 .modal.AssignToModal  form p>span{
-    color:var(--primary);
-    font-weight: 600;
+    color:#FF1313;
+   
 }
+
+.modal.AssignToModal .modalFooter button {
+    width: 33%;
+}
+
+

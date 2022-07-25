@@ -33,13 +33,18 @@ function Modal({
   }, []);
 
   const closeModal =  ()=>{
-    handleDisplay(false)
+    setTimeout(()=>{
+      handleDisplay(false)
+    },300)
+    modalRef?.current.classList.remove("active");
   }
+
+ 
 
   return (
     show && (
       <>
-        <div className={`modal ${modalClass} active`} ref={modalRef}>
+        <div className={`modal  ${modalClass} active` } ref={modalRef}>
           {header && <div className="modalHeader">
             {title&&<div className="modalTitle">{title}</div>}
             <IoIosClose className="modalClose" onClick={() => closeModal()}/>

@@ -4,7 +4,7 @@
     position: fixed;
     top:0;
     left:0;
-    width:19%;
+    width:16%;
     height:100vh;
     background-color:var(--primary);
 }
@@ -12,12 +12,12 @@
 .navLogoContainer{
     text-align:center;
     color: var(--white);
-    padding: 5% 0;
+    padding:7% 0 5% 0;
 }
 
 .navLogoContainer p{
     font-size: 12px;
-    margin: 20px 0 10px;
+    margin: 15px 0 10px;
 }
 
 .navLogoContainer span{
@@ -32,7 +32,7 @@
 
 .navLinkContainer{
     overflow-y: scroll;
-    height: 50vh;
+    height: 60vh;
     padding: 0 0 3% 0
 } 
 .navLinkContainer a{
@@ -41,10 +41,10 @@
     font-family: 'Roboto';
     width: 80%;
     margin: 0% auto;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 300;
     
-    padding: 12px 0;
+    padding: 6px 0;
 }
 
 .navLinkContainer a:hover,.navLinkContainer a.active{
@@ -80,7 +80,7 @@
 
 .navLinkContainer .paAnchor{
     display: flex;
-    margin: 8% auto;
+    margin: 6% auto;
 }
 
 .navLinkContainer .paAnchor>p{
@@ -89,14 +89,14 @@
 }
 
 .navLinkContainer .paAnchor>p.active{
-    border-left: 5px solid var(--primaryLight);
-    border-radius: 10px 0px 0px 10px;
+    border-left: 5px solid var(--secondary);
+    border-radius: 6px 0px 0px 6px;
 }
 
 .navButtons{
     display: flex;
     flex-direction: column;
-    gap:50px;
+    gap:30px;
     align-items: center;
 }
 
@@ -110,9 +110,9 @@
 }
 
 .navButtons>button:nth-of-type(1){
-   color:#292929;
+   color:var(--primary);
    font-weight: 500;
-   background-color: #9DB1FC;
+   background-color:var(--secondary);
    box-shadow: 0px 3px 10px #00000029;
 }
 

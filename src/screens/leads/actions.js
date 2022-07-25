@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes";
+import * as utils from "../../utils/constants";
 
 // action to set Default State
 export const setDefaultState = () => {
@@ -18,6 +19,24 @@ export const openInner = (rowObj) => {
 export const closeInner = () => {
   return {
     type: actionTypes.CLOSE_INNER,
+  };
+};
+
+// action to set main filter
+export const setMainFilter = (filter) => {
+   filter.dateFilter = "oldLeads";
+  if (filter.mainFilter === "lost") {
+    filter.subFilter = "L2";
+  } else if (filter.mainFilter === "paid") {
+    filter.subFilter = "preRegistration";
+  } else if (filter.mainFilter === "workInProgress") {
+    filter.subFilter = "all";
+  } else if (filter.mainFilter === "new") {
+    filter.subFilter = "";
+  }
+  return {
+    type: actionTypes.SET_MAIN_FILTER,
+    filter: { ...filter },
   };
 };
 
@@ -90,8 +109,11 @@ export const updateCallResponse = (rowData, formData) => {
 export const assignLead = (rowObj, assignType) => {
   return {
     type: actionTypes.ASSIGN_LEAD,
-    assignType: assignType,
-    rowObj: rowObj,
+    payload: {
+      openAssignModal: true,
+      assignType: assignType,
+      rowObj: rowObj,
+    },
   };
 };
 
@@ -99,73 +121,57 @@ export const assignLead = (rowObj, assignType) => {
 export const closeAssignModal = () => {
   return {
     type: actionTypes.CLOSE_ASSIGN_MODAL,
+    payload: { openAssignModal: false, assignType: "", rowObj: null },
   };
 };
 
-//action to open bulk Modal
-export const openBulkModal = () => {
-  return {
-    type: actionTypes.OPEN_BULK_MODAL,
-  };
-};
-
-//action to close bulk Modal
-export const closeBulkModal = () => {
-  return {
-    type: actionTypes.CLOSE_BULK_MODAL,
-  };
-};
-
-//action to open Form
-export const openForm = () => {
-  return {
-    type: actionTypes.OPEN_FORM,
-    openForm: true,
-  };
-};
-
-//action to close Form
+// action to close Form
 export const closeForm = () => {
   return {
     type: actionTypes.CLOSE_FORM,
-    openForm: false,
+    payload: {
+      formHeading: "",
+      openForm: false,
+      formData: [],
+    },
   };
 };
 
-//handle Input Change
+// action to toggle bulk modal
+export const toggleBulkModal = () => {
+  return {
+    type: actionTypes.TOGGLE_BULK_MODAL,
+  };
+};
+
+// handle  Input Change for update call response,add,edit forms
 export const changeInput = (e, i, formData) => {
   let newArr = [...formData];
   let formInput = { ...newArr[i] };
+
+  // // attaching call response for change in call status
+  // if(e.target.name==="status"){
+
+  //   // finding index of call Response Object
+  //   let responseIndex = newArr.findIndex(obj=>obj.name==="response")
+
+  //   // getting call response message based on call status
+  //   let callResponseMessage = utils.callResponseArr.find(val=>val.name===e.target.value)?.value
+
+  //   // updating call response message
+  //   newArr.splice(responseIndex, 1, {name:'response',value:callResponseMessage});
+  // }
+
+  // iput change for checkboxes
   if (e.target.type === "checkbox") {
     formInput.value = e.target.checked;
-    // code to change source options if campaign generated is checked or unchecked
-    let sourceInput = newArr.find((el) => (el.name === "source"));
-    let sourceIndex = newArr.findIndex((el) => (el.name === "source"));
-    let selectArr = [...sourceInput.selectArr].filter(
-      (option) => option.value !== "email" && option.value !== "facebook"
-    );
-    
-    if (e.target.checked) {
-      //adding facebook,email if campaign generated is true
-      newArr.splice(sourceIndex, 1, {
-        ...sourceInput,
-        selectArr: [
-          ...selectArr,
-          { name: "Email", value: "email" },
-          { name: "Facebook", value: "facebook" },
-        ],
-      });
-    } else {
-      //removing facebook,email if campaign generated is false
-      newArr.splice(sourceIndex, 1, {
-        ...sourceInput,
-        selectArr: [...selectArr],
-      });
-    }
   } else {
     formInput.value = e.target.value;
   }
+
+  // replacing old input value with new input value
   newArr.splice(i, 1, formInput);
+
   return {
     type: actionTypes.CHANGE_INPUT,
     formData: newArr,

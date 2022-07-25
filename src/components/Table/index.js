@@ -12,6 +12,7 @@ import searchIcon from "../../assets/icons/searchIcon.svg"
 //components
 import Pagination from "../pagination/pagination"
 import NoRecord from '../noRecord/noRecord';
+import Loader from '../loader/loader';
 
 const IndeterminateCheckbox = React.forwardRef(
     ({ indeterminate, ...rest }, ref) => {
@@ -130,6 +131,9 @@ function Table(options) {
         setCellWidth(100/options.columns.length)
       },[options.columns])
 
+     if(options.tableLoading){
+       return <Loader/>
+     }
 
     return (
         <>
@@ -184,7 +188,8 @@ function Table(options) {
           </div>
         </div>
         <div ref = {options.wrapperRef} className={"TableContainer " + options.tClass}>
-        {options.data && options.data.length>0? <table className={"Table " + options.tClass} {...getTableProps()}>
+        {options.data && options.data.length>0? 
+        <table className={"Table " + options.tClass} {...getTableProps()}>
             <thead>
               {
                 // Loop over the header rows
@@ -238,7 +243,8 @@ function Table(options) {
               }
             </tbody>
 }
-          </table>:<NoRecord/>
+          </table>
+          :<NoRecord/>
        } </div>
         {
                 options.pagination &&

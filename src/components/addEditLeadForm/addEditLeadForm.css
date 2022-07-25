@@ -7,13 +7,11 @@
     height: 100vh;
     transform: none;
     padding: 18px;
-    transition: all 0.3s;
-  /*   animation: reveal-right-close 0.5s linear; */
  }
 
  .modal.addLeadModal.active{
        right:0;
-       animation: reveal-right-open 0.3s linear; 
+       animation: reveal-right-modal 0.3s linear; 
  }
  
  .modal.addLeadModal .modalBody{
@@ -52,16 +50,7 @@
      padding: 3% 0;
  }
  
- .addLeadFooter{
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 8% 0 0 0;
- }
- .addLeadFooter button{
-    display: block;
-    width: 25%;
- }
+ 
 
  .customInputHolder.checkbox.addLeadInput{
     justify-content: flex-end;
@@ -73,23 +62,13 @@
     height: 20px;
  }
 
-
- @keyframes reveal-right-open{
-        0%{
-            right: -42%
-        }
-
-        100%{
-          right:0
-        }
- }
-
- @keyframes reveal-right-close{
-    0%{
-        right: 0%;
-    }
-
-    100%{
-      right:-42%;
-    }
+.callresponse{
+   color: black;
+    align-self: center;
+    width: 100%;
+    text-align: justify;
+    font-weight: 600;
 }
+ 
+
+ 

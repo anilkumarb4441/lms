@@ -4,13 +4,10 @@
 
 
 :root{
-  --primary:#455591;
-  --primaryLight:#6577B8;
+  --primary:#0D1C46;
+  --secondary:#FDD403;
+  --primaryLight:#374364;
   --textgrey:#0D0D0D;
-  /* --primary85:#E6AA5585;
-  --primary83:#E6AA5583;
-  --primary80:#E6AA5580;
-  --secondary:#1F1E26; */
   --wrapperColor:#F9F9FB;
   --white:#fff;
   --black:#000;
@@ -53,10 +50,15 @@ button{
   border:none;
 }
 
+button[disabled]{
+  cursor:not-allowed;
+  background-color:#707070 !important;
+}
+
 .wrapperContainer{
    background-color: var(--wrapperColor);
-   margin-left: 19%;
-   padding: 2% 6% 0% 4%;
+   margin-left: 16%;
+   padding: 2% 6% 0% 3%;
    height: 100vh;
    overflow-y: scroll;
 }
@@ -86,13 +88,23 @@ button.btnPrimary {
   box-shadow: 0px 3px 6px #00000029;
 }
 
+button.btnPrimary.two{
+  color: var(--white);
+  background: var(--primary);
+}
+
+button.btnPrimary.two:hover{
+  background: var(--primaryLight);
+
+}
+
 button.btnPrimary:hover{
   color: var(--white);
   background: var(--primary);
 }
 
 .goBack{
-   fill: rgb(255, 255, 255);
+   fill:var(--black);
     margin-right: 10px;
     align-self: center;
     font-size: 26px;

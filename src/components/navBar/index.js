@@ -4,21 +4,15 @@ import "./index.css";
 
 //assets
 import logo from "../../assets/navbar/logo.svg";
-import Dashboard from "../../assets/navbar/dashboard.svg";
-import Bookings from "../../assets/navbar/bookings.svg";
-import ChefView from "../../assets/navbar/chefview.svg";
+
 
 import { Link, useLocation } from "react-router-dom";
 import localStorageService from "../../utils/localStorageService";
 import { URLS } from "../../utils/urlConstants";
 import API_SERVICES from "../../utils/API"
 
-function NavBar() {
-  const [navData, setNavData] = useState([
-    { name: "Dashboard", path: "/", img: Dashboard },
-    { name: "Leads", path: "/leads", img: Bookings },
-    { name: "My Team", path: "/myteam", img: ChefView },
-  ]);
+function NavBar({routeData}) {
+  const [navData, setNavData] = useState([routeData]);
 
   const location = useLocation();
 
@@ -44,12 +38,12 @@ function NavBar() {
         <div className="navLogoContainer">
           <img src={logo} alt="logo" />
           <p>Lead Management System</p>
-          { <p style = {{fontSize:'14px'}}>Hello, {localStorageService.getTokenDecode()?.name}</p>}
+          { <p style = {{fontSize:'13px'}}>Hello, {localStorageService.getTokenDecode()?.name}</p>}
           <span></span>
         </div>
         <div className="navLinkContainer">
-          {navData &&
-            navData.map((item, i) => {
+          {routeData &&
+            routeData.map((item, i) => {
               return (
               <div key = {i} className="paAnchor">
                 <p className={location.pathname===item.path?"active":""}></p>

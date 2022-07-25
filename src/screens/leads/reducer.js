@@ -1,23 +1,20 @@
-import { actions } from "react-table";
+import localStorageService from "../../utils/localStorageService";
 import * as actionTypes from "./actionTypes";
 
 export const initialState = {
   openInner: false,
   openForm: false,
   openAssignModal: false,
-  openBulkModal: false,
+  showBulkModal:false,
   filter: {
-    mainFilter: "pending",
-    subFilter: "todayLeads",
-    subMostFilter: "all",
+    mainFilter: "new",
+    dateFilter: "oldLeads",
+    subFilter: "all",
     pageRows: 10,
     pageNumber: 1,
     searchData: "",
     range:null
   },
-  mainFilter: "pending",
-  subFilter: "todayLeads",
-  subMostFilter: "all",
   title: "",
   formHeading: "",
   formData: [],
@@ -29,6 +26,9 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.SET_FILTER:
       return { ...state, filter: action.filter };
+
+    case actionTypes.SET_MAIN_FILTER:
+        return { ...state, filter: action.filter };  
 
     case actionTypes.OPEN_INNER:
       return {
@@ -70,18 +70,6 @@ const reducer = (state = initialState, action) => {
         openForm: true,
       };
 
-    case actionTypes.OPEN_BULK_MODAL:
-      return {
-        ...state,
-        openBulkModal: true,
-      };
-
-    case actionTypes.CLOSE_BULK_MODAL:
-      return {
-        ...state,
-        openBulkModal: false,
-      };
-
     case actionTypes.ASSIGN_LEAD:
       return {
         ...state,
@@ -92,18 +80,17 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.CLOSE_ASSIGN_MODAL:
       return {
-        ...state,
-        openAssignModal: false,
-        assignType: "",
-        rowObj: null,
+        ...state,...action.payload
       };
 
+    case actionTypes.TOGGLE_BULK_MODAL:
+      return {
+        ...state,showBulkModal:!state.showBulkModal
+      }
+    
     case actionTypes.CLOSE_FORM:
       return {
-        ...state,
-        formHeading: "",
-        openForm: false,
-        formData: [],
+        ...state,...action.payload
       };
 
     case actionTypes.CHANGE_INPUT:
