@@ -83,6 +83,7 @@ export const updateCallResponse = (rowData, formData) => {
   let newRowData = {
     status: rowData.callLogs?.status,
     response: rowData.callLogs?.response,
+    isCampusAmbassador:rowData.isCampusAmbassador
   };
   let keys = Object.keys(newRowData);
   let newArr = [

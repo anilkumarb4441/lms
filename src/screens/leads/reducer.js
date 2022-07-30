@@ -9,7 +9,7 @@ export const initialState = {
   filter: {
     mainFilter: "new",
     dateFilter: "oldLeads",
-    subFilter: "all",
+    subFilter: "",
     pageRows: 10,
     pageNumber: 1,
     searchData: "",

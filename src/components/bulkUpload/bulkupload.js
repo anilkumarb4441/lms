@@ -16,6 +16,7 @@ import Input from "../Input";
 import Loader from "../loader/loader";
 
 function BulkUpload({show,handleDisplay,callback,userId}) {
+  const inputref = useRef();
   const formref = useRef();
   let sheetData = useRef(0);
   const [bulkData, setbulkData] = useState({isCampaign:false});
@@ -36,7 +37,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
     e.preventDefault();
     var csv = "name,phone,email\n";
     var data = [
-      { name: "User 1", phone: "9999999999", email: "user1@gmail.com",college:'XYZ College',branch:'Computer Science',yearOfPassOut:'2020' },
+      { name: "User 1", phone: "9999999999",whatsAppNo:"9999999999", email: "user1@gmail.com",college:'XYZ College',branch:'Computer Science',yearOfPassOut:'2020' },
     ];
     const fileName = "sheet1";
     const exportType = "csv";
@@ -45,13 +46,14 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
 
   function sendBulkData(e) {
     e.preventDefault();
+    console.log(bulkData);
     setLoading(true);
     const sendBulkDataCallBack = (err, res) => {
       setLoading(false);
       if (res && res.status === 201) {
         toastSuccess("Data Succesfully uploaded");
         setfilename("");
-        formref.current.value = "";
+        inputref.current.value = "";
         setbulkData({isCampaign:false});
         handleDisplay();
         callback();
@@ -66,7 +68,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
 
   // checking for empty values in file
   const checkForEmptyValues = (data) => {
-    let arr = ["name","phone","email"]
+    let arr = ["phone"]
    
     let checker = true;
     for (let row of data) {
@@ -82,7 +84,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
   // file on change 
   const handleFile = (e) => {
   
-    if (!e.target.files[0]) return
+    if (!e.target.files[0]){ return}
       xlsxParser.onFileSelection(e.target.files[0]).then((data) => {
         sheetData = data["Sheet1"];
         if (!checkForEmptyValues(sheetData)) {
@@ -105,7 +107,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
 
   // file validation for uploading data
   React.useEffect(() => {
-    if (!bulkData?.leads || !bulkData?.source) return;
+    if (!bulkData?.leads || !bulkData?.source) {return;}
     setDisabled(false);
   }, [bulkData]);
 
@@ -133,7 +135,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
       show={show}
       handleDisplay={handleDisplay}
       body={loading?<Loader/>:
-        <form>
+        <form ref = {formref}>
           <div className="parentMainBulk">
             <div className="sample-download">
               <p>Don't have Same File? Click Here</p>
@@ -147,7 +149,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
               type="file"
               className="form-control-file"
               id={"bulkInput"}
-              ref={formref}
+              ref={inputref}
               onChange={handleFile}
               style={{ display: "none" }}
               accept=".xlsx,.csv,.xls"
@@ -170,7 +172,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
                     src={close}
                     onClick={(e) => {
                       setfilename("");
-                      formref.current.value = "";
+                      inputref.current.value = "";
                       setbulkData({ ...bulkData,leads:null});
                     }}
                     alt="close"

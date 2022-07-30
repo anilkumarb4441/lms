@@ -20,9 +20,7 @@ const Pagination = (props) => {
     siblingCount,
     pageSize,
   });
-  if (currentPage === 0 || paginationRange?.length < 2) {
-    return null;
-  }
+  
 
   const onNext = () => {
     if (currentPage !== lastPage) {
@@ -35,11 +33,12 @@ const Pagination = (props) => {
       onPageChange(currentPage - 1, pageSize);
     }
   };
+  
 
   let lastPage = paginationRange[paginationRange?.length - 1];
   return (
     <div className ="pagination-bar">
-      {pageSizeOptions && pageSizeOptions.length > 0 && (
+      {pageSizeOptions?.length > 0 && (
         <select className = "customInput" name = "pageSize" value={pageSize} onChange={(e)=>onPageChange(1, parseInt(e.target.value))}>
           {pageSizeOptions.map((number, i) => {
             return (
@@ -50,7 +49,7 @@ const Pagination = (props) => {
           })}
         </select>
       )}
-      <ul
+     {currentPage === 0 || paginationRange?.length < 2?<></>:<ul
         className={classnames("pagination-container", {
           [className]: className,
         })}
@@ -63,7 +62,7 @@ const Pagination = (props) => {
         >
           <AiOutlineLeft className="arrowLeft" />
         </li>
-        {paginationRange.map((pageNumber, index) => {
+        {paginationRange?.map((pageNumber, index) => {
           if (pageNumber === DOTS) {
             return (
               <li key={`pagination${index}`} className="pagination-item dots">
@@ -92,7 +91,7 @@ const Pagination = (props) => {
           <AiOutlineRight className="arrowRight" />
         </li>
       </ul>
-    </div>
+    }</div>
   );
 };
 
