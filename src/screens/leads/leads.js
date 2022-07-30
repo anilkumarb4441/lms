@@ -41,7 +41,7 @@ function Leads() {
     { name: "Work In Progress ", value: "workInProgress" },
     { name: "Lost Leads", value: "lost" },
     { name: "Paid Leads", value: "paid" },
-    { name: "CA Leads", value: "campusAmbassador" },
+    // { name: "CA Leads", value: "campusAmbassador" },
   ];
 
   const dateFilterArr = [
@@ -169,14 +169,14 @@ function Leads() {
       label: "Call Response",
       type: "text",
     },
-    {
-      _index:2,
-      name: "isCampusAmbassador",
-      value: false,
-      required: false,
-      label: "Campus Ambassador",
-      type: "checkbox",
-    },
+    // {
+    //   _index:2,
+    //   name: "isCampusAmbassador",
+    //   value: false,
+    //   required: false,
+    //   label: "Campus Ambassador",
+    //   type: "checkbox",
+    // },
   ]);
 
   // action options for untouched leads
