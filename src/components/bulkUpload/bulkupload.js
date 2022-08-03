@@ -52,8 +52,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
       setLoading(false);
       if (res && res.status === 201) {
         toastSuccess("Data Succesfully uploaded");
-        setfilename("");
-        inputref.current.value = "";
+        setfilename("");  
         setbulkData({isCampaign:false});
         handleDisplay();
         callback();
