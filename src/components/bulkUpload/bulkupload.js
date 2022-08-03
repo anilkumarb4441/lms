@@ -112,11 +112,11 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
   }, [bulkData]);
 
   React.useEffect(()=>{ 
-    if(userId==="62d2567927ac212513541269"){
+    if(userId==="62e8ff859bdb428db493cf69"){
       // FOR CHANUKYA
     setSourceArr(sourceArr1)
     setbulkData({...bulkData,isCampaign:true})
-    }else if(userId==="62d256b227ac21251354126a"){
+    }else if(userId==="62e8ffb79bdb428db493cf6a"){
        // FOR SHIVAM
        setSourceArr([])
        setbulkData({...bulkData,isCampaign:false,source:'cgfl'})

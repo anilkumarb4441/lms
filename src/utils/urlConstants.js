@@ -1,8 +1,7 @@
 
 //BASE URL
-// const BASE_URL ="http://192.168.1.29:2002" ,http://192.168.1.69:2002
+// const BASE_URL ="http://192.168.1.95:2002" ,http://192.168.1.69:2002
 const BASE_URL ="https://leadserver.verzeo.com"
-// "http://192.168.1.29:2002"
 //"https://leadserver.verzeo.com"
 
 
@@ -42,7 +41,7 @@ module.exports = {
     getLeadPurchaseDetails:'/payment/getPurchaseDetails',
 
     // url to hit customer dashboard if lead response from call status comes as interested
-    createLeadBussiness:"https://demoadmin.verzeo.com/api/v2/leadgen/create-lead-business",
+    createLeadBussiness:"https://customer.verzeo.com/api/v2/leadgen/create-lead-business",
 
     //redirect to customer dashboard
     redirectToCustomerDashBoard: BASE_URL+"/auth/redirect",

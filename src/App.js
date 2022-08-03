@@ -26,8 +26,8 @@ function App() {
     }
 
     if (
-      userId === "62d2567927ac212513541269" ||
-      userId === "62d256b227ac21251354126a"
+      userId === "62e8ff859bdb428db493cf69" ||
+      userId === "62e8ffb79bdb428db493cf6a"
     ) {
       //For Chanukya and Shivam
       newRoutes = routes.filter((val) =>val.name==="Upload Leads");
