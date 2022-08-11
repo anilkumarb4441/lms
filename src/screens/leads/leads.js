@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef,useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as actions from "./actions.js";
 import * as utils from "../../utils/constants";
@@ -21,23 +27,23 @@ import CustomDateRange from "../../components/dateRangePicker/dateRangePicker";
 import Tabs from "../../components/tabs/tabs.js";
 import BulkUpload from "../../components/bulkUpload/bulkupload.js";
 
-
 function Leads() {
-  const { userId } = localStorageService.getTokenDecode()
+  const { userId } = localStorageService.getTokenDecode();
   const reducer = useSelector((state) => state.leads);
   const [tableLoading, setTableLoading] = useState(true);
-  const [formLoading,setFormLoading] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
   const dispatch = useDispatch();
   const wrapperRef = useRef(); //Table Wrapper Ref
-  
+
   const mainFilterArr = [
     { name: "New", value: "new" },
     { name: "Work In Progress ", value: "workInProgress" },
     { name: "Lost Leads", value: "lost" },
     { name: "Paid Leads", value: "paid" },
+    // { name: "CA Leads", value: "campusAmbassador" },
   ];
-  
+
   const dateFilterArr = [
     { name: "Today", value: "todayLeads" },
     { name: "Old", value: "oldLeads" },
@@ -51,26 +57,32 @@ function Leads() {
   ];
 
   const lostFilterArr = [
-  { name: "L1", value: "L1" },
-  { name: "L2", value: "L2" },]
+    { name: "L1", value: "L1" },
+    { name: "L2", value: "L2" },
+  ];
 
   const paidFilterArr = [
     { name: "Pre Registration", value: "preRegistration" },
     { name: "Full Payment", value: "fullPayment" },
-  ]
+  ];
 
-  const callStatusArr = [
+  const preRegCallStatusArr = [
+    { name: "Call Back", value: "Call Back" },
+    { name: "Cant Afford", value: "Cant Afford" },
     { name: "Not Answered", value: "Not Answered" },
     { name: "Switched Off", value: "Switched Off" },
+    { name: "Not Interested Right Now", value: "Not Interested Right Now" },
+  ];
+
+  const originalCallStatusArr = [
+    ...preRegCallStatusArr,
     { name: "Language Barrier", value: "Language Barrier" },
     { name: "Junk Lead", value: "Junk Lead" },
-    { name: "Call Back", value: "Call Back" },
     { name: "Wrong Number", value: "Wrong Number" },
     { name: "Interested", value: "Interested" },
-    { name: "Cant Afford", value: "Cant Afford" },
-    { name: "Not Interested Right Now", value: "Not Interested Right Now" },
     { name: "Taken Up Some Other Course", value: "Taken Up Some Other Course" },
   ];
+
 
   // lead details form Data
   const [formData, setFormData] = useState([
@@ -78,24 +90,32 @@ function Leads() {
       name: "name",
       value: "",
       type: "text",
-      label: "Lead Name*",
-      required: true,
+      label: "Lead Name",
+      required: false,
     },
     {
       name: "phone",
       value: "",
       type: "phone",
       label: "Mobile No*",
-      pattern: "[6-9]{1}[0-9]{9}",
+      pattern: "([0]|+91)?[789]d{9}",
       required: true,
+    },
+
+    {
+      name: "whatsAppNo",
+      value: "",
+      type: "phone",
+      label: "WhatsApp No",
+      required: false,
     },
 
     {
       name: "email",
       value: "",
       type: "email",
-      label: "Email*",
-      required: true,
+      label: "Email",
+      required: false,
     },
 
     {
@@ -119,26 +139,44 @@ function Leads() {
       label: "Year Of Pass Out",
       required: false,
     },
+    {
+      name: "year",
+      value: "",
+      placeholder: "2nd year",
+      type: "text",
+      label: "Current Year",
+      required: false,
+    },
   ]);
 
   // call form Data
   const [callFormData, setCallFormData] = useState([
     {
+      _index:0,
       name: "status",
       value: "",
       required: true,
       label: "Call Status",
       element: "select",
       selectHeading: " Select Call Status",
-      selectArr: callStatusArr,
+      selectArr: originalCallStatusArr,
     },
     {
+      _index:1,
       name: "response",
       value: "",
       required: true,
       label: "Call Response",
       type: "text",
-      },
+    },
+    // {
+    //   _index:2,
+    //   name: "isCampusAmbassador",
+    //   value: false,
+    //   required: false,
+    //   label: "Campus Ambassador",
+    //   type: "checkbox",
+    // },
   ]);
 
   // action options for untouched leads
@@ -206,6 +244,10 @@ function Leads() {
       accessor: "yearOfPassOut",
     },
     {
+      Header: "Current Year",
+      accessor: "year",
+    },
+    {
       Header: "Call Task",
       accessor: (row) => row.callLogs?.response,
     },
@@ -256,7 +298,20 @@ function Leads() {
           );
           return;
         }
-        dispatch(actions.updateCallResponse(rowData, callFormData));
+   
+    let callStatusInput = callFormData.find((el) => el.name === "status");
+    let newCallFormData = callFormData.filter((el) => el.name !== "status");
+      
+      if(rowData.category==="preRegistration"){  
+          newCallFormData = [...newCallFormData,{...callStatusInput,selectArr: [...preRegCallStatusArr,{ name: "Others", value: "Others" }]}]
+        }
+        else{
+          newCallFormData = [...newCallFormData,{...callStatusInput,selectArr:originalCallStatusArr}]
+        }
+        
+        newCallFormData.sort((a,b)=>a._index-b._index);
+       
+        dispatch(actions.updateCallResponse(rowData, newCallFormData));
         return;
     }
   };
@@ -264,13 +319,6 @@ function Leads() {
   const openInner = (rowObj) => {
     dispatch(actions.openInner(rowObj));
   };
-
-  const menuArr = [
-    "product ID # jkahd1t645",
-    "product ID # kjg4uyy265v",
-    "product ID # skjjhdu3vg",
-    "product ID # zgdg6geku8",
-  ];
 
   //get leads data based on filter
   const getLeadsByFilters = (data) => {
@@ -301,7 +349,7 @@ function Leads() {
   // submit add edit lead form/ call update form
   const submitForm = (e) => {
     e.preventDefault();
-    setFormLoading(true)
+    setFormLoading(true);
     let leadObject = reducer.formData.reduce((prev, current) => {
       return { ...prev, [current.name]: current.value };
     }, {});
@@ -322,12 +370,11 @@ function Leads() {
 
   // function to create new lead
   const createLead = (data) => {
-    
     console.log(data, "checking for refrence ids");
     const callback = (err, res) => {
-       setFormLoading(false)
+      setFormLoading(false);
       if (res && res.status === 201) {
-        getLeadsByFilters(reducer.filter)
+        getLeadsByFilters(reducer.filter);
         dispatch(actions.closeForm());
         utils.toastSuccess("Lead Succesfully Created");
       }
@@ -337,9 +384,8 @@ function Leads() {
 
   //function to edit lead
   const editLead = (data) => {
-   
     const callback = (err, res) => {
-      setFormLoading(false)
+      setFormLoading(false);
       if (res && res.status === 200) {
         let index = tableData.findIndex(
           (obj) => obj.leadId === res.data.leadId
@@ -356,24 +402,17 @@ function Leads() {
 
   // function to update call status
   const updateCallStatus = (data) => {
-  
+    data =
+      reducer.filter.subFilter === "preRegistration"
+        ? { ...data, isPreg: true }
+        : data;
     const callback = (err, res) => {
-      setFormLoading(false)
+      setFormLoading(false);
       if (res && res.status === 200) {
         if (res.data?.callLogs?.status === "Interested") {
           createLeadBussiness(res.data);
         }
-        // let index = tableData.findIndex(
-        //   (obj) => obj.leadId === res.data.leadId
-        // );
-        // let newData = [...tableData];
-        // if (reducer.filter.mainFilter === "workInProgress") {
-        //   newData[index] = { ...res.data };
-        // } else {
-        //   newData.splice(index, 1);
-        // }
-        // setTableData(newData);
-        getLeadsByFilters(reducer.filter)
+        getLeadsByFilters(reducer.filter);
         utils.toastSuccess("Call Status Updated in Lead DashBoard");
         dispatch(actions.closeForm());
       }
@@ -400,28 +439,21 @@ function Leads() {
     API_SERVICES.httpPOST(URLS.createLeadBussiness, newData, callback);
   };
 
- // call back after assigning leads
+  // call back after assigning leads
   const assignLeadCallBack = (err, res) => {
     getLeadsByFilters(reducer.filter);
     dispatch(actions.closeAssignModal());
   };
 
   // call back after bulk uploading of leads
- const bulkUploadCallBack = ()=>{
+  const bulkUploadCallBack = () => {
     getLeadsByFilters(reducer.filter);
     dispatch(actions.toggleBulkModal());
-  }
+  };
 
   // function to change columns after switching b/w main Tabs
-  useEffect(() => {  
+  useEffect(() => {
     switch (reducer.filter.mainFilter) {
-      case "paid":
-        let newCol1 = originalColumns.filter(
-          (obj) => obj.accessor !== "actions"
-        );
-        setColumns(newCol1);
-        return;
-
       case "workInProgress":
         let newCol2 = originalColumns.filter(
           (obj) => obj.accessor !== "actions"
@@ -442,48 +474,59 @@ function Leads() {
         setColumns(newCol2);
         return;
 
-      case "new":
-        setColumns(originalColumns);
+      case "lost":
+        return;
+
+      case "paid":
         return;
 
       default:
-        setColumns([]);
+        setColumns(originalColumns);
         return;
     }
   }, [reducer.filter.mainFilter]);
 
-// function to change columns after switching b/w sub Tabs
-  useEffect(()=>{
-    let subFilter = reducer.filter.subFilter
-    if(subFilter!=="L2" && subFilter!=="L1") return
-    if(subFilter==="L1"){
-          let newCol4 = originalColumns.filter(
-            (obj) => obj.accessor !== "actions"
-          );
-          setColumns(newCol4);
-         
-        }else if(subFilter==="L2"){
-          setColumns(originalColumns);
-        }
-  },[reducer.filter.subFilter])
+  // function to change columns and call Status DropDown when main filter is paid/lost  after switching b/w sub Tabs
+  useEffect(() => {
+    let subFilter = reducer.filter.subFilter;
+    let nonActionCol = originalColumns.filter(
+      (obj) => obj.accessor !== "actions"
+    );
+
+    if (subFilter === "L1" || subFilter === "fullPayment") {
+      setColumns(nonActionCol);
+    }
+
+    if (subFilter === "L2" || subFilter === "preRegistration") {
+      setColumns(originalColumns);
+    }
+  }, [reducer.filter.subFilter]);
 
   // debounce function when we are searching for data in the table using search bar
-  const debounceGetLeads = useCallback(utils.debounce((filter)=>{
-    getLeadsByFilters(filter);
-  },1000),[])
-  
-  
+  const debounceGetLeads = useCallback(
+    utils.debounce((filter) => {
+      getLeadsByFilters(filter);
+    }, 1000),
+    []
+  );
 
-  // status change function
-  useEffect(() => {
+  // calling Leads Filter API when any filter value is changing
+  useMemo(() => {
     wrapperRef?.current?.scrollTo(0, 0);
-    if(reducer.filter.searchData){
+    if (reducer.filter.searchData) {
       debounceGetLeads(reducer.filter);
-      return
+      return;
     }
     getLeadsByFilters(reducer.filter);
-   
-  }, [reducer.filter]);
+  }, [
+    reducer.filter.mainFilter,
+    reducer.filter.subFilter,
+    reducer.filter.pageRows,
+    reducer.filter.pageNumber,
+    reducer.filter.range,
+    reducer.filter.searchData,
+    reducer.filter.dateFilter,
+  ]);
 
   // setting reducer state to default after component gets unmounted
   useEffect(() => {
@@ -501,23 +544,23 @@ function Leads() {
           <div>
             <div className="lead-main-filter-header">
               <Tabs
-              tabsClass = "leads-main-tab"
-              activeValue = {reducer.filter.mainFilter}
-              tabArr = {mainFilterArr}
-              handleTab = {(item) =>
-                dispatch(
-                  actions.setMainFilter({
-                    ...initialState.filter,
-                    mainFilter: item.value,
-                    searchData: "",
-                    pageNumber: 1,
-                    pageRows: 10,
-                    range: null,
-                  })
-                )
-              }
+                tabsClass="leads-main-tab"
+                activeValue={reducer.filter.mainFilter}
+                tabArr={mainFilterArr}
+                handleTab={(item) =>
+                  dispatch(
+                    actions.setMainFilter({
+                      ...initialState.filter,
+                      mainFilter: item.value,
+                      searchData: "",
+                      pageNumber: 1,
+                      pageRows: 10,
+                      range: null,
+                    })
+                  )
+                }
               />
-            
+
               <Dropdown
                 dropdownClass="lead-main-drop-down side-drop-down"
                 value={reducer.filter.dateFilter}
@@ -540,66 +583,63 @@ function Leads() {
             {reducer.filter.mainFilter === "paid" && (
               <div className="lead-main-filter-header">
                 <Tabs
-                tabArr = {paidFilterArr}
-                activeValue = {reducer.filter.subFilter}
-                handleTab = {(item) => {
-                  dispatch(
-                    actions.setFilter({
-                      ...reducer.filter,
-                      subFilter: item.value,
-                      searchData: "",
-                      pageNumber: 1,
-                      pageRows: 10,
-                      range: null,
-                    })
-                  );
-                }}
+                  tabArr={paidFilterArr}
+                  activeValue={reducer.filter.subFilter}
+                  handleTab={(item) => {
+                    dispatch(
+                      actions.setFilter({
+                        ...reducer.filter,
+                        subFilter: item.value,
+                        searchData: "",
+                        pageNumber: 1,
+                        pageRows: 10,
+                        range: null,
+                      })
+                    );
+                  }}
                 />
-               
               </div>
             )}
 
             {reducer.filter.mainFilter === "lost" && (
               <div className="lead-main-filter-header">
                 <Tabs
-                tabArr ={lostFilterArr}
-                activeValue = {reducer.filter.subFilter}
-                handleTab = {(item) => {
-                  dispatch(
-                    actions.setFilter({
-                      ...reducer.filter,
-                      subFilter: item.value,
-                      searchData: "",
-                      pageNumber: 1,
-                      pageRows: 10,
-                      range: null,
-                    })
-                  );
-                }}
+                  tabArr={lostFilterArr}
+                  activeValue={reducer.filter.subFilter}
+                  handleTab={(item) => {
+                    dispatch(
+                      actions.setFilter({
+                        ...reducer.filter,
+                        subFilter: item.value,
+                        searchData: "",
+                        pageNumber: 1,
+                        pageRows: 10,
+                        range: null,
+                      })
+                    );
+                  }}
                 />
-              
               </div>
             )}
 
-             {reducer.filter.mainFilter === "workInProgress" && (
+            {reducer.filter.mainFilter === "workInProgress" && (
               <div className="lead-main-filter-header">
                 <Tabs
-                tabArr ={callFilterArr}
-                activeValue = {reducer.filter.subFilter}
-                handleTab = {(item) => {
-                  dispatch(
-                    actions.setFilter({
-                      ...reducer.filter,
-                      subFilter: item.value,
-                      searchData: "",
-                      pageNumber: 1,
-                      pageRows: 10,
-                      range: null,
-                    })
-                  );
-                }}
+                  tabArr={callFilterArr}
+                  activeValue={reducer.filter.subFilter}
+                  handleTab={(item) => {
+                    dispatch(
+                      actions.setFilter({
+                        ...reducer.filter,
+                        subFilter: item.value,
+                        searchData: "",
+                        pageNumber: 1,
+                        pageRows: 10,
+                        range: null,
+                      })
+                    );
+                  }}
                 />
-              
               </div>
             )}
 
@@ -700,7 +740,7 @@ function Leads() {
             {reducer.openForm && (
               <AddEditLeadForm
                 show={reducer.openForm}
-                loading = {formLoading}
+                loading={formLoading}
                 handleInputChange={(e, i) =>
                   dispatch(actions.changeInput(e, i, [...reducer.formData]))
                 }
@@ -713,7 +753,7 @@ function Leads() {
 
             {reducer.openAssignModal && (
               <AssignToModal
-              assignLeadCallBack = {assignLeadCallBack}
+                assignLeadCallBack={assignLeadCallBack}
                 rowObj={{ ...reducer.rowObj }}
                 assignType={reducer.assignType}
                 show={reducer.openAssignModal}
@@ -730,12 +770,14 @@ function Leads() {
             goBack={() => dispatch(actions.closeInner())}
           />
         )}
-        {reducer.showBulkModal &&<BulkUpload
-          show = {reducer.showBulkModal}  
-          handleDisplay={() =>  dispatch(actions.toggleBulkModal())}
-          callback = {bulkUploadCallBack}
-          userId = {userId}
-        />}
+        {reducer.showBulkModal && (
+          <BulkUpload
+            show={reducer.showBulkModal}
+            handleDisplay={() => dispatch(actions.toggleBulkModal())}
+            callback={bulkUploadCallBack}
+            userId={userId}
+          />
+        )}
       </div>
     </>
   );

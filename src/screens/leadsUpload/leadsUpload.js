@@ -105,14 +105,16 @@ function LeadsUpload() {
   };
 
   useEffect(() => {
-    if (!filterObj.source) return;
+    if (!filterObj.source) {return;}
 
     getLeadsByFilters(filterObj);
   }, [filterObj]);
 
   useEffect(() => {
-    let source = userId === "62d2567927ac212513541269" ? "all" : "cgfl";
-    if (source === "cgfl") setSourceArr([]);
+    // FOR CHANUKYA 62e8ff859bdb428db493cf69
+    // FOR SHUBAM   62e8ffb79bdb428db493cf6a
+    let source = userId === "62e8ff859bdb428db493cf69" ? "all" : "cgfl";
+    if (source === "cgfl"){ setSourceArr([]);}
     setFilterObj({ ...filterObj, source: source });
   }, []);
 

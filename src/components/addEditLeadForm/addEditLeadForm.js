@@ -4,6 +4,7 @@ import Modal from "../modal/modal";
 import Input from "../Input";
 import Loader from "../loader/loader";
 import * as utils from "../../utils/constants"
+import { useSelector } from "react-redux";
 
 function AddEditLeadForm({
   show,
@@ -19,7 +20,7 @@ function AddEditLeadForm({
  
   //this will come only for update call response form
   const [callResponse,setCallResponse] = useState()
- 
+ const subFilter = useSelector(state => state.leads.filter.subFilter)
   useEffect(()=>{
     // function to display call response message while updating call status
     let callStatus = formData?.find(obj=>obj.name==="status")?.value
@@ -45,7 +46,7 @@ function AddEditLeadForm({
             >
               <div>
                 {/* Displaying Call Response Message  while Updating call status */}
-               {callResponse && <p className = "callresponse">Info: This lead will be moving to {callResponse}</p>}
+               {subFilter!=="preRegistration" &&callResponse && <p className = "callresponse">Info: This lead will be moving to {callResponse}</p>}
               
                 {formData &&
                   formData.map((item, i) => {
