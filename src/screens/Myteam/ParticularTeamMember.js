@@ -269,7 +269,6 @@ const [totalRowCount, setTotalRowCount] = useState(0)
                     tabsClass="leadTabs"
                     handleTab={(e) => setsubtabs(e.value)}
                   />
-                  {tableFilter.search}
                   <div className="teamTabSearch">
 
                     <input
