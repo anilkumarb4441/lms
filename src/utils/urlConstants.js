@@ -48,6 +48,7 @@ module.exports = {
 
      // Myteam
      myteammembers:'/leads/direct/members',
+    //  myteammembers:'/analytics',
 
      //perticular team member 
      perticularTeamMember:'/analytics/onLoadTeamMemberLeadAnalytics',

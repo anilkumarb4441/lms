@@ -49,14 +49,13 @@ const [totalRowCount, setTotalRowCount] = useState(0)
   const [memberAnalytics, setMemberAnalytics] = useState([])
   const [onClkAnalyticData, setOnClkAnalyticData] = useState([]);
 
-
-  const membAn = memberAnalytics.map((val) => val.number);
-
-  const dataToBeSent = {
+let onLoadPIData = [memberAnalytics.length>0 ?memberAnalytics[0].new.length:0, memberAnalytics.length>0 ?memberAnalytics[0].workInProgress.length:0, memberAnalytics.length>0 ?memberAnalytics[0].lost.length:0, memberAnalytics.length>0 ?memberAnalytics[0].paid.length:0];
+console.log(onLoadPIData)
+const dataToBeSent = {
     datasets: [
       {
-        data: membAn,
-        backgroundColor: ["#70DFBF", "#FA7999", "#6898E5"],
+        data: onLoadPIData,
+        backgroundColor: ["#70DFBF", "#FA7999", "#6898E5", 'red'],
         hoverOffset: 2,
       },
     ],
@@ -100,20 +99,20 @@ const [totalRowCount, setTotalRowCount] = useState(0)
   ]);
 
   const [leadcolumns, setLeadColumns] = useState([
+    // {
+    //   Header: "Member name",
+    //   accessor: "name",
+    //   Cell: (props) => {
+    //     return (
+    //       <button style={{ backgroundColor: "transparent",border: "none",color: "black",textDecoration: "underline",}} onClick={(e) => {dispatch(actions.getTeamMember(props.cell.row.original));}}>
+    //         {props.cell.row.original.name}
+    //       </button>
+    //     );
+    //   },
+    // },
     {
       Header: "Member name",
       accessor: "name",
-      Cell: (props) => {
-        return (
-          <button style={{ backgroundColor: "transparent",border: "none",color: "black",textDecoration: "underline",}} onClick={(e) => {dispatch(actions.getTeamMember(props.cell.row.original));}}>
-            {props.cell.row.original.name}
-          </button>
-        );
-      },
-    },
-    {
-      Header: "Email",
-      accessor: "email",
     },
     {
       Header: "Phone Number",
@@ -128,7 +127,8 @@ const [totalRowCount, setTotalRowCount] = useState(0)
  
 
   function onClickTeamMemberLeadAnalytics(obj) {
-    let statusValue = obj.status === "untouched"? "untouched": obj.status === "open"? "pending": "completed";
+    let usID = myTeamReducer.arr[myTeamReducer.arr.length - 1].userId
+    // let statusValue = obj.status === "untouched"? "untouched": obj.status === "open"? "pending": "completed";
     const callback = (err, res) => {
       if (err) {
         setOnClkAnalyticData([]);
@@ -146,29 +146,31 @@ const [totalRowCount, setTotalRowCount] = useState(0)
     };
     API_SERVICES.httpPOSTWithToken(
       URLS.onClickTeamMemberLeadAnalytics,
-      { userId: obj.userId, status: statusValue },
+      { userId: usID, status: obj },
       callback
     );
   }
 
-
   function getPerticularMemberAnalytics(obj) {
+    console.log(obj)
     const callback = (err, res) => {
       if (err) {
         setMemberAnalytics([]);
         return;
-      }
+      } 
       if (res && res.status === 200) {
         if (res.data) {
-          setMemberAnalytics(res.data)
+          setMemberAnalytics([res.data])
+
         } else {
           setMemberAnalytics([]);
 
         }
       }
     };
-  //  API_SERVICES.httpPOSTWithToken(URLS.perticularTeamMember,{ userId:obj.userId,status: ["untouched", "pending", "completed"],},callback);
+   API_SERVICES.httpPOSTWithToken(URLS.perticularTeamMember,{ userId:obj.userId,status: ["new", "workInProgress", "lost", "paid"]},callback);
   }
+
 
 
   function getPerticularMember(obj) {
@@ -193,7 +195,7 @@ const [totalRowCount, setTotalRowCount] = useState(0)
   useEffect(() => {
     let lastObject = myTeamReducer.arr[myTeamReducer.arr.length - 1] // last object in the array
     if (!lastObject) return
-
+console.log(lastObject)
     getPerticularMember(lastObject);
     getPerticularMemberAnalytics(lastObject);
     onClickTeamMemberLeadAnalytics(lastObject);
@@ -239,18 +241,33 @@ const [totalRowCount, setTotalRowCount] = useState(0)
             <div className="tickets">
               <div className="teckWrape">
                 <DoughnutComp donughtfor="doughnut" pieData={dataToBeSent} />
+                 {/* <div className="status-wraper">
+                 <div className="status-match">
+                        <div className="status-cHol">
+                          <div
+                            className="statusimg-pending" style={{boredr:'5px solid red'}}
+                            ></div>
+                          <p id="stu" className="stuName" onClick={(e) => onClickTeamMemberLeadAnalytics('new')}>New</p>
+                        </div>
+                        <p className="statusCount">{memberAnalytics.length!== 0 ?memberAnalytics.new.length:0}</p>
+                      </div>
+                  </div> */}
+
                 <div className="status-wraper">
-                  {memberAnalytics.map((val) => {
+                  {console.log(memberAnalytics)}
+                  {memberAnalytics.length>0 && Object.entries(...memberAnalytics).map(([key, val]) => {
+                    console.log(val, 'val', key,memberAnalytics[0][key])
+                    // Object.entries(information).map(([key, value])
                     return (
                       <div className="status-match">
                         <div className="status-cHol">
                           <div
                             className="statusimg-pending"
                             style={{
-                              border:val.status === "untouched"? "5px solid #70DFBF": val.status === "pending"? "5px solid #FA7999": "5px solid #6898E5",}}></div>
-                          <p id="stu" className="stuName" onClick={(e) => onClickTeamMemberLeadAnalytics(val)}>{val.status === "untouched" ? "New": val.status === "pending"? "Work in Progress": "Won"}</p>
+                              border:key === "new"? "5px solid #70DFBF": key === "workInProgress"? "5px solid #FA7999": "5px solid #6898E5",}}></div>
+                          <p id="stu" className="stuName" onClick={(e) => onClickTeamMemberLeadAnalytics(key)}>{key === "new" ? "New": key === "workInProgress"? "Work in Progress": key === "lost"? "Lost": "paid"}</p>
                         </div>
-                        <p className="statusCount">{val.number}</p>
+                        <p className="statusCount">{memberAnalytics[0][key].length}</p>
                       </div>
                     );
                   })}
@@ -275,6 +292,7 @@ const [totalRowCount, setTotalRowCount] = useState(0)
                       type="search"
                       placeholder="Search By Name/Email/phone"
                       name="search"
+                      value={tableFilter.search}
                       onChange={(e) =>
                         setTableFilter({
                           ...tableFilter,
@@ -282,7 +300,7 @@ const [totalRowCount, setTotalRowCount] = useState(0)
                           search: e.target.value,
                         })
                       }
-                      value={tableFilter.search}
+                    
                     />
                     <IoMdSearch className="IoMdSearchic" />
                   </div>

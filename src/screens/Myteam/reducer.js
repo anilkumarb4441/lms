@@ -9,6 +9,7 @@ const reducer = (state=initialState,action)=>{
         case actionTypes.GET_TEAM_MEMBER:
             let newState = {}                                                                   
             let oldObjIndex =state.arr.findIndex(obj=>obj?.userId===action.payload?.userId)
+
              if(oldObjIndex>=0){
                let newArr = [...state.arr].slice(0,oldObjIndex+1)
                 newState = {...state,arr:[...newArr]}
@@ -20,7 +21,6 @@ const reducer = (state=initialState,action)=>{
          case actionTypes.SET_DEFAULT:
              return {...initialState}  
        
-             
         default: 
         return initialState
         }
