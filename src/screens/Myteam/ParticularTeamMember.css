@@ -1,20 +1,21 @@
-.mainParticular{
-    padding: 2% 0% 0% 0%;   
+.mainParticular {
+    padding: 2% 0% 0% 0%;
 }
 
-.partiMyTeam-firstHL{
+.partiMyTeam-firstHL {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.partiMyTeam-backButton{
+.partiMyTeam-backButton {
     display: flex;
     align-items: center;
     gap: 10px;
 
 }
-.partiMyTeam-backButton .partBackBTN{
+
+.partiMyTeam-backButton .partBackBTN {
     cursor: pointer;
     padding: 5px;
     width: 30px;
@@ -22,32 +23,38 @@
     border-radius: 50%;
 }
 
-.partiMyTeam-backButton .partBackBTN:hover{
+.partiMyTeam-backButton .partBackBTN:hover {
     background-color: #EFF3FC;
-} 
-.partiMyTeam-backButton h4{
+}
+
+.partiMyTeam-backButton h4 {
     font-size: 20px;
 }
-.partiMyTeam-backButton .meIds .bedScumText{
-font-size: 16px;
-color: rgb(110, 110, 110);
-text-decoration: underline;
-cursor: pointer;
+
+.partiMyTeam-backButton .meIds .bedScumText {
+    font-size: 16px;
+    color: rgb(110, 110, 110);
+    text-decoration: underline;
+    cursor: pointer;
 }
+
 /* pertiMember-infoWraper*/
 
- .infomain{
+.infomain {
     display: flex;
     gap: 15px;
     width: fit-content;
     margin-left: auto;
-   
+
 }
- .infomain .infoContent1{
+
+.infomain .infoContent1 {
     color: var(--black);
     font-size: 14px;
     font-weight: 400;
-} .infomain .infoContent{
+}
+
+.infomain .infoContent {
     color: #6C6C6C;
     font-size: 14px;
     font-weight: 400;
@@ -55,194 +62,198 @@ cursor: pointer;
 
 
 /* style for chart and table */
-.mainParticular .sPOne{
+.mainParticular .sPOne {
     display: flex;
     gap: 20px;
     justify-content: space-between;
     margin: 4% 0 0 0;
 }
 
-.sPOne .userTicketsSection{
+.sPOne .userTicketsSection {
     width: 30%;
     background-color: var(--white);
     border-radius: 5px;
     box-shadow: 0px 3px 20px #0000001A;
     padding: 1% 2%;
 }
-.sPOne .ticketHead h4{
+
+.sPOne .ticketHead h4 {
     color: var(--black);
     font-size: 16px;
 }
 
-.sPOne .tickets .teckWrape{
+.sPOne .tickets .teckWrape {
     padding: 2%;
     width: 100%;
     margin: auto;
 }
 
-.status-wraper{
+.status-wraper {
     margin: 5% 0 0 0;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
-.status-cHol{
+.status-cHol {
     display: flex;
     gap: 5px;
 }
-.statusimg-pending{
+
+.statusimg-pending {
     width: 18px;
     height: 18px;
-    border-radius: 50%; 
+    border-radius: 50%;
     background-color: white;
     /* border: 5px solid #70DFBF; */
-  }
-  .statusimg-untouched{
+}
+
+.statusimg-untouched {
     width: 18px;
     height: 18px;
-    border-radius: 50%; 
+    border-radius: 50%;
     background-color: white;
     /* border: 5px solid #6898E5; */
-  }
-  .statusimg-closed{
+}
+
+.statusimg-closed {
     width: 18px;
     height: 18px;
-    border-radius: 50%; 
+    border-radius: 50%;
     background-color: white;
     /* border: 5px solid #FA7999; */
-  }
-  .status-cHol p{
+}
+
+.status-cHol p {
     font-size: 12px;
     cursor: pointer;
     text-decoration: underline;
-  }
-.status-match{
-    width: fit-content;
 }
-  .status-match .statusCount{
+
+.status-match {
+    width: fit-content;
+    margin-bottom: 20px;
+}
+
+.status-match .statusCount {
     font-size: 15px;
     font-weight: 600;
-    color: #636363; 
+    color: #636363;
     text-align: center;
-  }
-/* .sPOne .ParchefOverView{
-    width: 36%;
-    background-color: #3D3C44;
-    border-radius: 5px;
-    box-shadow: 0px 3px 6px #00000029;
-    padding: 2% 3%;
-} */
-/* 
-.sPOne .ticketHead .linkfull{
-    width: 22%;
-} */
+}
 
-.ParchefOverView .fPDiv{
+.ParchefOverView .fPDiv {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.ParchefOverView .chefPInfo{
+.ParchefOverView .chefPInfo {
     font-size: 11px;
     color: white;
     margin: 8% 0% 0% 0%;
 }
 
-.ParchefOverView img{
+.ParchefOverView img {
     width: 18%;
 }
 
-.ParchefOverView .InfoChef{
+.ParchefOverView .InfoChef {
     width: 75%;
 }
 
-.InfoChef h2{
+.InfoChef h2 {
     color: var(--white);
     font-size: 14px;
     font-weight: 400;
 }
 
-.mainParticular .sPflexDiv{
+.mainParticular .sPflexDiv {
     display: flex;
     align-items: center;
     margin: 8% 0% 0% 0%;
 }
 
-.sPflexDiv img{
+.sPflexDiv img {
     width: 13%;
     margin: 0% 5% 0% 0%;
 }
 
-.sPflexDiv a{
+.sPflexDiv a {
     color: white;
     text-decoration: none;
     font-size: 12px;
 }
 
-.sPOne .tickets{
+.sPOne .tickets {
     padding: 0% 0%;
 }
 
 
 
-.sPOne .tickets .tickectParent{
+.sPOne .tickets .tickectParent {
     padding: 0% 0%;
 }
 
 
 
-.sPOne .tickets .tickectParent{
+.sPOne .tickets .tickectParent {
     margin: 4% 0%;
 }
 
 .sPOne .tickectParent .tickImg {
     width: 8%;
 }
-.detailedSection{
-    width: 70%;    
+
+.detailedSection {
+    width: 70%;
 }
 
-.mainParticular .totalTasksPart{
+.mainParticular .totalTasksPart {
     background-color: var(--white);
     border-radius: 5px;
     box-shadow: 0px 3px 6px #00000029;
     margin: 0% 0% 0% 0%;
     padding: 2%;
-   
+
 }
 
-.tabAndSearch-HOL{
+.tabAndSearch-HOL {
     display: flex;
     justify-content: space-between;
     margin: 0% 0 3% 0;
 }
-.tabAndSearch-HOL .leadTabs{
+
+.tabAndSearch-HOL .leadTabs {
     margin: auto;
 }
 
-.teamTabSearch{
+.teamTabSearch {
     display: flex;
-    padding: 5px;
+    /* padding: 5px; */
     border-radius: 5px;
-    background-color: #EFF3FC;
-    align-items: center;
-}
-.teamTabSearch input{
-    width: 200px;
-border: none;
-padding: 3px;
-background-color: #EFF3FC;
+    /* background-color: #EFF3FC; */
+    /* align-items: center; */
 }
 
-.teamTabSearch input:focus{
-outline: none;
+.teamTabSearch input {
+    width: 200px;
+    border: 1px solid rgb(216, 215, 215);
+    padding: 10px;
+
+    /* background-color: #EFF3FC; */
 }
-.IoMdSearchic{
+
+.teamTabSearch input:focus {
+    outline: none;
+}
+
+.IoMdSearchic {
     cursor: pointer;
     width: 20px;
     font-size: 25px;
 }
+
 /* .totalTasksPart table{
     width: 100%;
     border-collapse: collapse;
@@ -265,7 +276,7 @@ outline: none;
     background-color: #63626A;
 } */
 
-.mainParticular .ChefReview{
+.mainParticular .ChefReview {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -273,7 +284,7 @@ outline: none;
     margin: 3% 0% 0% 0%;
 }
 
-.ChefReview .subparent{
+.ChefReview .subparent {
     background-color: #3D3C44;
     border-radius: 5px;
     width: 45%;
@@ -281,27 +292,27 @@ outline: none;
     margin: 3% 0%;
 }
 
-.subparent canvas{
+.subparent canvas {
     width: 100% !important;
     width: 100% !important;
-}   
+}
 
-.subparent h3{
+.subparent h3 {
     color: #E6E6E6;
     font-size: 12px;
 }
 
-.totalTasksPart .tableParent{
+.totalTasksPart .tableParent {
     /* height: 600px;
     overflow-y: scroll; */
     margin: 1% 0% 0% 0%;
 }
 
-.chefNav{
+.chefNav {
     margin: 0% 0% 2% 0%;
 }
 
-.chefNav button{
+.chefNav button {
     background-color: transparent;
     border: none;
     color: white;
@@ -309,14 +320,14 @@ outline: none;
     padding: 1% 1%;
 }
 
-.chefNav button.active{
+.chefNav button.active {
     border-bottom: 1px solid white;
 }
 
 
 /* Profile Screen */
 
-.mainParticular .profileParent{
+.mainParticular .profileParent {
     background-color: #3D3C44;
     padding: 4% 2% 3% 2%;
     border-radius: 5px;
@@ -327,14 +338,14 @@ outline: none;
     margin: 0% 5% 0% 0%;
 }
 
-.profileParent .customInputHolder.checkbox{
+.profileParent .customInputHolder.checkbox {
     /* width: 60%; */
     width: 30%;
     justify-content: flex-end;
     padding: 0% 0% 0% 5%;
 }
 
-.profileParent button{
+.profileParent button {
     background-color: #E5A954;
     border-radius: 5px;
     color: white;
@@ -344,15 +355,32 @@ outline: none;
 
 
 
-.perMyteam .Table thead>tr>th{
+.perMyteam .Table thead>tr>th {
     font-size: 14px;
     padding: 13px 2px;
     min-width: 110px;
 }
+
 .perMyteam .Table tbody>tr>td {
     font-size: 13px;
     min-width: 110px;
 }
 
 
+/* dynamic css color/ style*/
 
+[data-status~=new] {
+    border: 5px solid #70DFBF;
+}
+
+[data-status~=workInProgress] {
+    border: 5px solid #FA7999;
+}
+
+[data-status~=lost] {
+    border: 5px solid #6898E5;
+}
+
+[data-status~=paid] {
+    border: 5px solid var(--primaryLight);
+}

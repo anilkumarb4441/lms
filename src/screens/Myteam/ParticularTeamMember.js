@@ -4,14 +4,11 @@ import API_SERVICES from "../../utils/API";
 import { URLS } from "../../utils/urlConstants";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "./actions";
+import Input from "../../components/Input";
 //css
 import "./ParticularTeamMember.css";
 
 //assets
-import dummy from "../../assets/chefview/dummy.png";
-import mailIcon from "../../assets/chefview/mailIcon.svg";
-import phoneIcon from "../../assets/chefview/phoneIcon.svg";
-import tempPhoto from "../../assets/dashboard/tempPhoto.png";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoMdSearch } from "react-icons/io";
 
@@ -48,9 +45,9 @@ const [totalRowCount, setTotalRowCount] = useState(0)
   const [teamTabledata, setTeamTabledata] = useState([]);
   const [memberAnalytics, setMemberAnalytics] = useState([])
   const [onClkAnalyticData, setOnClkAnalyticData] = useState([]);
+  const [tableLoading, setTableLoading] = useState(true);
 
 let onLoadPIData = [memberAnalytics.length>0 ?memberAnalytics[0].new.length:0, memberAnalytics.length>0 ?memberAnalytics[0].workInProgress.length:0, memberAnalytics.length>0 ?memberAnalytics[0].lost.length:0, memberAnalytics.length>0 ?memberAnalytics[0].paid.length:0];
-console.log(onLoadPIData)
 const dataToBeSent = {
     datasets: [
       {
@@ -127,9 +124,10 @@ const dataToBeSent = {
  
 
   function onClickTeamMemberLeadAnalytics(obj) {
+    setTableLoading(true);
     let usID = myTeamReducer.arr[myTeamReducer.arr.length - 1].userId
-    // let statusValue = obj.status === "untouched"? "untouched": obj.status === "open"? "pending": "completed";
     const callback = (err, res) => {
+      setTableLoading(false);
       if (err) {
         setOnClkAnalyticData([]);
         return;
@@ -137,7 +135,9 @@ const dataToBeSent = {
       if (res && res.status === 200) {
         if (res.data) {
           setOnClkAnalyticData(res.data.data);
-          setTotalRowCount(10);
+          // setTotalRowCount(10);
+          setsubtabs('leads')
+
         } else {
           setOnClkAnalyticData([]);
           setTotalRowCount(0);
@@ -146,13 +146,12 @@ const dataToBeSent = {
     };
     API_SERVICES.httpPOSTWithToken(
       URLS.onClickTeamMemberLeadAnalytics,
-      { userId: usID, status: obj },
+      {...tableFilter, userId: usID, status: obj,  },
       callback
     );
   }
 
   function getPerticularMemberAnalytics(obj) {
-    console.log(obj)
     const callback = (err, res) => {
       if (err) {
         setMemberAnalytics([]);
@@ -174,7 +173,9 @@ const dataToBeSent = {
 
 
   function getPerticularMember(obj) {
+    setTableLoading(true);
     const callback = (err, res) => {
+      setTableLoading(false);
       if (err) {
         setTeamTabledata([]);
         return;
@@ -182,20 +183,19 @@ const dataToBeSent = {
       if (res && res.status === 200) {
         if (res.data[0]?.directMembers) {
           setTeamTabledata(res.data[0].directMembers);
-          setTotalRowCount(20)
+          // setTotalRowCount(20)
         } else {
           setTeamTabledata([]);
           setTotalRowCount(0)
         }
       }
     };
-    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, { userId: obj.userId, level: obj.level }, callback);
+    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, {...tableFilter, userId: obj.userId, level: obj.level }, callback);
   }
 
   useEffect(() => {
     let lastObject = myTeamReducer.arr[myTeamReducer.arr.length - 1] // last object in the array
     if (!lastObject) return
-console.log(lastObject)
     getPerticularMember(lastObject);
     getPerticularMemberAnalytics(lastObject);
     onClickTeamMemberLeadAnalytics(lastObject);
@@ -241,30 +241,15 @@ console.log(lastObject)
             <div className="tickets">
               <div className="teckWrape">
                 <DoughnutComp donughtfor="doughnut" pieData={dataToBeSent} />
-                 {/* <div className="status-wraper">
-                 <div className="status-match">
-                        <div className="status-cHol">
-                          <div
-                            className="statusimg-pending" style={{boredr:'5px solid red'}}
-                            ></div>
-                          <p id="stu" className="stuName" onClick={(e) => onClickTeamMemberLeadAnalytics('new')}>New</p>
-                        </div>
-                        <p className="statusCount">{memberAnalytics.length!== 0 ?memberAnalytics.new.length:0}</p>
-                      </div>
-                  </div> */}
-
                 <div className="status-wraper">
-                  {console.log(memberAnalytics)}
                   {memberAnalytics.length>0 && Object.entries(...memberAnalytics).map(([key, val]) => {
-                    console.log(val, 'val', key,memberAnalytics[0][key])
-                    // Object.entries(information).map(([key, value])
                     return (
                       <div className="status-match">
                         <div className="status-cHol">
                           <div
                             className="statusimg-pending"
-                            style={{
-                              border:key === "new"? "5px solid #70DFBF": key === "workInProgress"? "5px solid #FA7999": "5px solid #6898E5",}}></div>
+                            data-status={key}
+                           ></div>
                           <p id="stu" className="stuName" onClick={(e) => onClickTeamMemberLeadAnalytics(key)}>{key === "new" ? "New": key === "workInProgress"? "Work in Progress": key === "lost"? "Lost": "paid"}</p>
                         </div>
                         <p className="statusCount">{memberAnalytics[0][key].length}</p>
@@ -288,12 +273,13 @@ console.log(lastObject)
                   />
                   <div className="teamTabSearch">
 
-                    <input
+                    <Input
+                    inputClass="myTeamSearch"
                       type="search"
                       placeholder="Search By Name/Email/phone"
                       name="search"
                       value={tableFilter.search}
-                      onChange={(e) =>
+                      change={(e) =>
                         setTableFilter({
                           ...tableFilter,
                           pageNumber: 1,
@@ -302,7 +288,7 @@ console.log(lastObject)
                       }
                     
                     />
-                    <IoMdSearch className="IoMdSearchic" />
+                    {/* <IoMdSearch className="IoMdSearchic" /> */}
                   </div>
                 </div>
 
@@ -316,6 +302,7 @@ console.log(lastObject)
                       currentPage={tableFilter.pageNumber}
                       pageSize={tableFilter.pageRows}
                       totalCount={totalRowCount}
+                      tableLoading={tableLoading}
                       onPageChange={(pageNumber, pageRows) => {
                         setTableFilter({
                           ...tableFilter,
@@ -334,15 +321,16 @@ console.log(lastObject)
                     <Table
                       columns={leadcolumns}
                       pagination={true}
-                      currentPage={filterQuery.pageNumber}
-                      pageSize={filterQuery.pageRows}
+                      currentPage={tableFilter.pageNumber}
+                      pageSize={tableFilter.pageRows}
                       totalCount={totalCount}
+                      tableLoading={tableLoading}
                       onPageChange={(pageNumber, pageRows) => {
                         setFilterQuery({
-                          ...filterQuery,
+                          ...tableFilter,
                           pageNumber: pageNumber,
                           pageRows: pageRows,
-                          search: "",
+                          search: '',
                         });
                       }}
                       data={onClkAnalyticData}

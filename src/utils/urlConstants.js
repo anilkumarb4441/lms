@@ -1,9 +1,8 @@
 
 //BASE URL
 // const BASE_URL ="http://192.168.1.95:2002" ,http://192.168.1.69:2002
-const BASE_URL ="https://leadserver.verzeo.com"
+const BASE_URL ="http://192.168.1.39:2002"
 //"https://leadserver.verzeo.com"
-
 
 module.exports = {
   URLS: { 
@@ -59,7 +58,6 @@ module.exports = {
 
      // get bulk uploaded leads 
      getBulkUploadedLeads:'/leads/permissionBasedFiltering'
-
   },
 };
 

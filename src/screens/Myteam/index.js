@@ -19,6 +19,7 @@ function Myteam() {
   const [openInner, setOpenInner] = useState(false);
   const [filterQuery, setFilterQuery] = useState({ pageNumber: 1, pageRows: 5, search: '' })
   const [totalCount, setTotalCount] = useState(0)
+  const [tableLoading, setTableLoading] = useState(true);
 
 
 
@@ -57,7 +58,9 @@ function Myteam() {
   }, [filterQuery]);
 
   function getMyTeamData() {
+    setTableLoading(true);
     const callback = (err, res) => {
+      setTableLoading(false);
       if (err) {
         setTableData([]);
         setTotalCount(0);
@@ -67,7 +70,7 @@ function Myteam() {
       if (res && res.status === 200) {
         if (res.data[0]?.directMembers) {
           setTableData(res.data[0].directMembers)
-          setTotalCount(20)
+          // setTotalCount(20)
         } else {
           setTableData([]);
           setTotalCount(0);
@@ -90,7 +93,7 @@ function Myteam() {
           <div className='chefOverviewScreen'>
             <div>
               <div className="myTeam-search-wraper">
-                <Input inputClass='leadsSearch' type="search" placeholder="Search By Name/Email/phone" name="search" change={(e) => setFilterQuery({ ...filterQuery, pageNumber: 1, search: e.target.value })} value={filterQuery.search} />
+                <Input inputClass='myTeamSearch' type="search" placeholder="Search By Name/Email/phone" name="search" change={(e) => setFilterQuery({ ...filterQuery, pageNumber: 1, search: e.target.value })} value={filterQuery.search} />
               </div>
               <Table
                 pagination={true}
@@ -98,6 +101,7 @@ function Myteam() {
                 pageSize={filterQuery.pageRows}
                 totalCount={totalCount} 
                 columns={columns}
+                tableLoading={tableLoading}
                 onPageChange={(pageNumber, pageRows) => {
                   setFilterQuery({ ...filterQuery, pageNumber: pageNumber, pageRows: pageRows, search: '' })
                 }}
