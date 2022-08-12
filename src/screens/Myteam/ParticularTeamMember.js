@@ -38,14 +38,18 @@ function ParticularTeamMember({
   const [subtabs, setsubtabs] = useState("team");
 
   //filter and pagination
-const [tableFilter, setTableFilter] = useState({ pageNumber: 1, pageRows: 5, search: ''})
+const [tableFilter, setTableFilter] = useState({ pageNumber: 1, pageRows: 5, search:''})
+const [leadFilter, setLeadFilter] = useState({ pageNumber: 1, pageRows: 5, })
 const [totalRowCount, setTotalRowCount] = useState(0)
   
   // states for table
   const [teamTabledata, setTeamTabledata] = useState([]);
   const [memberAnalytics, setMemberAnalytics] = useState([])
   const [onClkAnalyticData, setOnClkAnalyticData] = useState([]);
+  const onanalyticData = [...onClkAnalyticData]
+  console.log(onanalyticData)
   const [tableLoading, setTableLoading] = useState(true);
+  const [leadSearch, setLeadsearch] = useState('')
 
 let onLoadPIData = [memberAnalytics.length>0 ?memberAnalytics[0].new.length:0, memberAnalytics.length>0 ?memberAnalytics[0].workInProgress.length:0, memberAnalytics.length>0 ?memberAnalytics[0].lost.length:0, memberAnalytics.length>0 ?memberAnalytics[0].paid.length:0];
 const dataToBeSent = {
@@ -96,6 +100,7 @@ const dataToBeSent = {
   ]);
 
   const [leadcolumns, setLeadColumns] = useState([
+
     // {
     //   Header: "Member name",
     //   accessor: "name",
@@ -150,6 +155,9 @@ const dataToBeSent = {
       callback
     );
   }
+  useEffect(()=>{
+    onClickTeamMemberLeadAnalytics()
+  },[])
 
   function getPerticularMemberAnalytics(obj) {
     const callback = (err, res) => {
@@ -163,14 +171,11 @@ const dataToBeSent = {
 
         } else {
           setMemberAnalytics([]);
-
         }
       }
     };
    API_SERVICES.httpPOSTWithToken(URLS.perticularTeamMember,{ userId:obj.userId,status: ["new", "workInProgress", "lost", "paid"]},callback);
   }
-
-
 
   function getPerticularMember(obj) {
     setTableLoading(true);
@@ -198,7 +203,6 @@ const dataToBeSent = {
     if (!lastObject) return
     getPerticularMember(lastObject);
     getPerticularMemberAnalytics(lastObject);
-    onClickTeamMemberLeadAnalytics(lastObject);
   }, [myTeamReducer.arr, tableFilter]);
 
   return (
@@ -273,21 +277,37 @@ const dataToBeSent = {
                   />
                   <div className="teamTabSearch">
 
-                    <Input
-                    inputClass="myTeamSearch"
-                      type="search"
-                      placeholder="Search By Name/Email/phone"
-                      name="search"
-                      value={tableFilter.search}
-                      change={(e) =>
-                        setTableFilter({
-                          ...tableFilter,
-                          pageNumber: 1,
-                          search: e.target.value,
-                        })
-                      }
-                    
-                    />
+                   {subtabs==='team'?
+                     <Input
+                     inputClass="myTeamSearch"
+                       type="search"
+                       placeholder="Search By Name/Email/phone"
+                       name="search"
+                       value={tableFilter.search}
+                       change={(e) =>
+                         setTableFilter({
+                           ...tableFilter,
+                           pageNumber: 1,
+                           search: e.target.value,
+                         })
+                       }
+                     
+                     />: <Input
+                     inputClass="myTeamSearch"
+                       type="search"
+                       placeholder="Search By Name/Email/phone"
+                       name="search"
+                       value={leadSearch}
+                       change={(e) =>
+                         setTableFilter({
+                           ...tableFilter,
+                           pageNumber: 1,
+                           search: e.target.value,
+                         })
+                       }
+                     
+                     />
+                   }
                     {/* <IoMdSearch className="IoMdSearchic" /> */}
                   </div>
                 </div>
@@ -321,8 +341,8 @@ const dataToBeSent = {
                     <Table
                       columns={leadcolumns}
                       pagination={true}
-                      currentPage={tableFilter.pageNumber}
-                      pageSize={tableFilter.pageRows}
+                      currentPage={leadFilter.pageNumber}
+                      pageSize={leadFilter.pageRows}
                       totalCount={totalCount}
                       tableLoading={tableLoading}
                       onPageChange={(pageNumber, pageRows) => {
@@ -330,7 +350,6 @@ const dataToBeSent = {
                           ...tableFilter,
                           pageNumber: pageNumber,
                           pageRows: pageRows,
-                          search: '',
                         });
                       }}
                       data={onClkAnalyticData}

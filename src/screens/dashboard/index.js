@@ -1,6 +1,9 @@
 import React,{useState,useEffect, useRef} from 'react'
 import "./index.css"
 import {Link} from 'react-router-dom'
+import API_SERVICES from "../../utils/API"
+import { URLS } from "../../utils/urlConstants"
+import localStorageService from "../../utils/localStorageService.js";
 
 
 //assets
@@ -28,9 +31,16 @@ Chart.register(ArcElement);
 
 function DashBoard() {
   const mainref  =  useRef(null)
+  const { userId } = localStorageService.getTokenDecode();
+  console.log(userId)
+
+  //dashboard states
+  const [analyticData, setAnalyticData] = useState([])
+  const [analyticToggle, setAnalyticToggle] = useState('team') 
 
   useEffect(()=>{
     mainref.current.scrollIntoView();
+    getAnalyticsData();
   },[])
 
     // Array for Tickects
@@ -162,7 +172,6 @@ function DashBoard() {
         borderWidth: 3,
        
       },
-      
     ],
   });
 
@@ -213,8 +222,26 @@ function DashBoard() {
     ticketDisplay==="Client"?setticketDisplay("Chef"):setticketDisplay("Client");
     ticketDisplay==="Client"?setticketsData(tempTicketsArray[1].data):setticketsData(tempTicketsArray[0].data)
   }
-  
 
+
+  function getAnalyticsData() {
+    const callback = (err, res) => {
+      if (err) {
+        setAnalyticData([]);
+        return
+      }
+
+      if (res && res.status === 200) {
+        if (res.data) {
+          setAnalyticData(res.data)
+        } else {
+          setAnalyticData([]);
+        }
+      }
+    }
+    API_SERVICES.httpGETWithToken(URLS.dashboardAnalyticData+`/${userId}`, callback)
+  }
+  
 
     return (
         <div className = 'dashBoardScreen' ref={mainref}>
@@ -223,36 +250,98 @@ function DashBoard() {
                 Dashboard
             </p>
             </div>
-            <div className = 'dashboardCardContainer'>
+            <div className='analyticToggle-Wraper'>
+            <div className='analyticTab'  onClick={()=>setAnalyticToggle('team')} style={{backgroundColor:analyticToggle==='team'?'var(--primary)':'white', color:analyticToggle==='team'?'white':'var(--primary)'}}>Team</div>
+            <div className='analyticTab' onClick={()=>setAnalyticToggle('self')} style={{backgroundColor:analyticToggle==='self'?'var(--primary)':'white', color:analyticToggle==='self'?'white':'var(--primary)'}}>Self</div>
+            </div>
+            {analyticToggle === 'team'&& <div className = 'dashboardCardContainer'>
                <div className = 'dashboardCard'>
-                 <img src = {card1} alt = 'cardImg'/>
+                 {/* <img src = {card1} alt = 'cardImg'/> */}
                  <div>
-                     <p>89</p>
+                     <p>{analyticData.count}</p>
                      <p>Total Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
-                 <img src = {card2} alt = 'cardImg'/>
+                 {/* <img src = {card2} alt = 'cardImg'/> */}
                  <div>
-                     <p>206</p>
-                     <p>Total Hot Leads</p>
+                     <p>{analyticData.untouched}</p>
+                     <p>Total untouched Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
-                 <img src = {card3} alt = 'cardImg'/>
+                 {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>206</p>
-                     <p>Total Untouched Leads</p>
+                     <p>{analyticData.pending}</p>
+                     <p>Total pending Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
-                 <img src = {card3} alt = 'cardImg'/>
+                 {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>26</p>
-                     <p>Closed</p>
+                     <p>{analyticData.closed}</p>
+                     <p>Total Closed Leads</p>
                  </div>
                </div>
-            </div>
+               <div className = 'dashboardCard'>
+                 {/* <img src = {card3} alt = 'cardImg'/> */}
+                 <div>
+                     <p>{analyticData.lost}</p>
+                     <p>Total Lost Leads</p>
+                 </div>
+               </div>
+               <div className = 'dashboardCard'>
+                 {/* <img src = {card3} alt = 'cardImg'/> */}
+                 <div>
+                     <p>{analyticData.others}</p>
+                     <p>others</p>
+                 </div>
+               </div>
+            </div>}
+            {analyticToggle === 'self'&& <div className = 'dashboardCardContainer'>
+               <div className = 'dashboardCard'>
+                 {/* <img src = {card1} alt = 'cardImg'/> */}
+                 <div>
+                     <p>{analyticData.count}</p>
+                     <p>Total Leads fff</p>
+                 </div>
+               </div>
+               <div className = 'dashboardCard'>
+                 {/* <img src = {card2} alt = 'cardImg'/> */}
+                 <div>
+                     <p>{analyticData.untouched}</p>
+                     <p>Total untouched Leads</p>
+                 </div>
+               </div>
+               <div className = 'dashboardCard'>
+                 {/* <img src = {card3} alt = 'cardImg'/> */}
+                 <div>
+                     <p>{analyticData.pending}</p>
+                     <p>Total pending Leads</p>
+                 </div>
+               </div>
+               <div className = 'dashboardCard'>
+                 {/* <img src = {card3} alt = 'cardImg'/> */}
+                 <div>
+                     <p>{analyticData.closed}</p>
+                     <p>Total Closed Leads</p>
+                 </div>
+               </div>
+               <div className = 'dashboardCard'>
+                 {/* <img src = {card3} alt = 'cardImg'/> */}
+                 <div>
+                     <p>{analyticData.lost}</p>
+                     <p>Total Lost Leads</p>
+                 </div>
+               </div>
+               <div className = 'dashboardCard'>
+                 {/* <img src = {card3} alt = 'cardImg'/> */}
+                 <div>
+                     <p>{analyticData.others}</p>
+                     <p>others</p>
+                 </div>
+               </div>
+            </div>}
             <div className='flexedgrapghParent'>
               <div className = 'dboardGraphContainer'>
                 <DgraphHeader name = {'Total Revenue'} handleSelect = {(e)=>handleSelect(e)}/>
