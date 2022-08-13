@@ -384,3 +384,25 @@
 [data-status~=paid] {
     border: 5px solid var(--primaryLight);
 }
+
+.emptyChart-parent{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1px solid rgb(204, 204, 204);
+    margin: 40px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+ 
+}
+.emptyChart-child{
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    border: 1px solid rgb(226, 226, 226);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}

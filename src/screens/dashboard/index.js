@@ -19,6 +19,8 @@ import tempPhoto from "../../assets/dashboard/tempPhoto.png"
 import {MONTHS} from "../../utils/constants.js"
 import {WEEKDAYS} from "../../utils/constants.js"
 
+import Tabs from "../../components/tabs/tabs.js";
+
 //components
 import { Chart, registerables, ArcElement } from "chart.js";
 import { Bar } from "react-chartjs-2";
@@ -29,19 +31,32 @@ Chart.register(ArcElement);
 
 
 
+
 function DashBoard() {
   const mainref  =  useRef(null)
   const { userId } = localStorageService.getTokenDecode();
-  console.log(userId)
 
   //dashboard states
   const [analyticData, setAnalyticData] = useState([])
+  const [teamAnalyticData, setTeamAnalyticData] = useState([])
   const [analyticToggle, setAnalyticToggle] = useState('team') 
+  const [totalCustomerData, setTotalCustomerData] = useState([])
+  const [analyticChart, setAnalyticChart] = useState([])
+
+  let week1 = analyticChart.map(val=>val.day)
+  console.log(week1)
 
   useEffect(()=>{
     mainref.current.scrollIntoView();
-    getAnalyticsData();
+    getAnalyticsSelfData();
+    getAnalyticsTeamData();
+    getTotalCustomerhrapghData();
   },[])
+
+  const mainTabArr = [
+    { name: "Team", value: "team" },
+    { name: "Self", value: "self" },
+  ];
 
     // Array for Tickects
 
@@ -148,10 +163,8 @@ function DashBoard() {
     datasets: [
       {
         label: "Customers",
-        maxBarThickness: "44",
-        data: [
-          40, 60, 20,40,50,80,25
-        ],
+        maxBarThickness: "40",
+        data:totalCustomerData,
         backgroundColor: "#E6AA55",
         hoverBackgroundColor: "#E6AA5580",
         borderWidth: 1,
@@ -218,13 +231,31 @@ function DashBoard() {
   // CheckBox onchange Function
 
   function ticketsDisplay(e){
-    // console.log(ticketDisplay,"Before");
     ticketDisplay==="Client"?setticketDisplay("Chef"):setticketDisplay("Client");
     ticketDisplay==="Client"?setticketsData(tempTicketsArray[1].data):setticketsData(tempTicketsArray[0].data)
   }
 
 
-  function getAnalyticsData() {
+  function getAnalyticsTeamData() {
+    const callback = (err, res) => {
+      if (err) {
+        setTeamAnalyticData([]);
+        return
+      }
+
+      if (res && res.status === 200) {
+        if (res.data && res.data.status === "SUCCESS") {
+          setTeamAnalyticData(res.data.data)
+        } else {
+          setTeamAnalyticData([]);
+        }
+      }
+    }
+    API_SERVICES.httpGETWithToken(URLS.dashboardAnalyticTeamData, callback)
+  }
+  
+
+  function getAnalyticsSelfData() {
     const callback = (err, res) => {
       if (err) {
         setAnalyticData([]);
@@ -232,8 +263,9 @@ function DashBoard() {
       }
 
       if (res && res.status === 200) {
-        if (res.data) {
-          setAnalyticData(res.data)
+        if (res.data && res.data.status === "SUCCESS") {
+          setAnalyticData(res.data.data)
+ 
         } else {
           setAnalyticData([]);
         }
@@ -241,7 +273,30 @@ function DashBoard() {
     }
     API_SERVICES.httpGETWithToken(URLS.dashboardAnalyticData+`/${userId}`, callback)
   }
-  
+
+  function getTotalCustomerhrapghData() {
+    const callback = (err, res) => {
+      if (err) {
+        setTotalCustomerData([]);
+        return
+      }
+
+      if (res && res.status === 200) {
+       
+        if (res.data && res.data.status === "SUCCESS") {
+          setAnalyticChart(res.data.data.week)
+          setTotalCustomerData(res.data.data.week.map(val=>val.count))
+          let datasetObj ={...[...barData.datasets][0],data:res.data.data.week.map(val=>val.count)}
+          setBarData({...barData,datasets:[datasetObj]}
+          )
+          
+        } else {
+          setTotalCustomerData([]);
+        }
+      }
+    }
+    API_SERVICES.httpGETWithToken(URLS.analyticsBarChart, callback)
+  }
 
     return (
         <div className = 'dashBoardScreen' ref={mainref}>
@@ -250,50 +305,52 @@ function DashBoard() {
                 Dashboard
             </p>
             </div>
-            <div className='analyticToggle-Wraper'>
-            <div className='analyticTab'  onClick={()=>setAnalyticToggle('team')} style={{backgroundColor:analyticToggle==='team'?'var(--primary)':'white', color:analyticToggle==='team'?'white':'var(--primary)'}}>Team</div>
-            <div className='analyticTab' onClick={()=>setAnalyticToggle('self')} style={{backgroundColor:analyticToggle==='self'?'var(--primary)':'white', color:analyticToggle==='self'?'white':'var(--primary)'}}>Self</div>
-            </div>
+            <Tabs
+                    tabArr={mainTabArr}
+                    activeValue={analyticToggle}
+                    tabsClass="leadTabs"
+                    handleTab={(e) => setAnalyticToggle(e.value)}
+                  />
             {analyticToggle === 'team'&& <div className = 'dashboardCardContainer'>
                <div className = 'dashboardCard'>
                  {/* <img src = {card1} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.count}</p>
+                     <p>{teamAnalyticData.count>=0?teamAnalyticData.count:'---'}</p>
                      <p>Total Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card2} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.untouched}</p>
+                     <p>{teamAnalyticData.untouched>=0?teamAnalyticData.untouched:'---'}</p>
                      <p>Total untouched Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.pending}</p>
+                     <p>{teamAnalyticData.pending>=0?teamAnalyticData.pending:'---'}</p>
                      <p>Total pending Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.closed}</p>
+                     <p>{teamAnalyticData.close>=0?teamAnalyticData.closed:'---'}</p>
                      <p>Total Closed Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.lost}</p>
+                     <p>{teamAnalyticData.lost>=0?teamAnalyticData.lost:'---'}</p>
                      <p>Total Lost Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.others}</p>
+                     <p>{teamAnalyticData.others>=0?teamAnalyticData.others:'---'}</p>
                      <p>others</p>
                  </div>
                </div>
@@ -302,42 +359,42 @@ function DashBoard() {
                <div className = 'dashboardCard'>
                  {/* <img src = {card1} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.count}</p>
-                     <p>Total Leads fff</p>
+                     <p>{analyticData.count>=0?analyticData.count:'---'}</p>
+                     <p>Total Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card2} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.untouched}</p>
+                     <p>{analyticData.untouched>=0?analyticData.untouched:'---'}</p>
                      <p>Total untouched Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.pending}</p>
+                     <p>{analyticData.pending>=0?analyticData.pending:'---'}</p>
                      <p>Total pending Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.closed}</p>
+                     <p>{analyticData.closed>=0?analyticData.closed:'---'}</p>
                      <p>Total Closed Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.lost}</p>
+                     <p>{analyticData.lost>=0?analyticData.lost:'---'}</p>
                      <p>Total Lost Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.others}</p>
+                     <p>{analyticData.others>=0?analyticData.others:'---'}</p>
                      <p>others</p>
                  </div>
                </div>
@@ -349,7 +406,7 @@ function DashBoard() {
               </div>
               <div className = 'dboardGraphContainer'>
                 <DgraphHeader name = {'Total Customers'} handleSelect = {(e)=>handleSelect(e)}/>
-                <Bar data={barData} options={barOptions}/>
+             <Bar data={barData} options={barOptions}/>
               </div>
             </div>
             <div className='ticketsGrapghParent'>

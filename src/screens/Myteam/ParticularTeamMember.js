@@ -40,16 +40,22 @@ function ParticularTeamMember({
   //filter and pagination
 const [tableFilter, setTableFilter] = useState({ pageNumber: 1, pageRows: 5, search:''})
 const [leadFilter, setLeadFilter] = useState({ pageNumber: 1, pageRows: 5, })
-const [totalRowCount, setTotalRowCount] = useState(0)
+const [totalRowCount, setTotalRowCount] = useState(0);
+const [analRowCount, setanalRowCount] = useState(0)
   
   // states for table
   const [teamTabledata, setTeamTabledata] = useState([]);
   const [memberAnalytics, setMemberAnalytics] = useState([])
   const [onClkAnalyticData, setOnClkAnalyticData] = useState([]);
-  const onanalyticData = [...onClkAnalyticData]
-  console.log(onanalyticData)
   const [tableLoading, setTableLoading] = useState(true);
   const [leadSearch, setLeadsearch] = useState('')
+
+
+// console.log(memberAnalytics[0])
+  // let {new:list, workInProgress, lost, paid } = memberAnalytics[0]
+  // let onanalyticData = [...list, ...workInProgress, ...lost, ...paid]
+  // console.log([...list, ...workInProgress, ...lost, ...paid])
+  
 
 let onLoadPIData = [memberAnalytics.length>0 ?memberAnalytics[0].new.length:0, memberAnalytics.length>0 ?memberAnalytics[0].workInProgress.length:0, memberAnalytics.length>0 ?memberAnalytics[0].lost.length:0, memberAnalytics.length>0 ?memberAnalytics[0].paid.length:0];
 const dataToBeSent = {
@@ -57,7 +63,7 @@ const dataToBeSent = {
       {
         data: onLoadPIData,
         backgroundColor: ["#70DFBF", "#FA7999", "#6898E5", 'red'],
-        hoverOffset: 2,
+        hoverOffset: 2, 
       },
     ],
   };
@@ -140,7 +146,7 @@ const dataToBeSent = {
       if (res && res.status === 200) {
         if (res.data) {
           setOnClkAnalyticData(res.data.data);
-          // setTotalRowCount(10);
+          setanalRowCount(res.data.length);
           setsubtabs('leads')
 
         } else {
@@ -155,9 +161,9 @@ const dataToBeSent = {
       callback
     );
   }
-  useEffect(()=>{
-    onClickTeamMemberLeadAnalytics()
-  },[])
+  // useEffect(()=>{
+  //   onClickTeamMemberLeadAnalytics()
+  // },[])
 
   function getPerticularMemberAnalytics(obj) {
     const callback = (err, res) => {
@@ -188,7 +194,7 @@ const dataToBeSent = {
       if (res && res.status === 200) {
         if (res.data[0]?.directMembers) {
           setTeamTabledata(res.data[0].directMembers);
-          // setTotalRowCount(20)
+          setTotalRowCount(res.data[1].count)
         } else {
           setTeamTabledata([]);
           setTotalRowCount(0)
@@ -204,6 +210,9 @@ const dataToBeSent = {
     getPerticularMember(lastObject);
     getPerticularMemberAnalytics(lastObject);
   }, [myTeamReducer.arr, tableFilter]);
+
+  const isBelowThreshold = (currentValue) => currentValue < 1;
+  const chartShow = onLoadPIData.every(isBelowThreshold);
 
   return (
     <div className="mainParticular" ref={mainref}>
@@ -244,7 +253,11 @@ const dataToBeSent = {
             </div>
             <div className="tickets">
               <div className="teckWrape">
-                <DoughnutComp donughtfor="doughnut" pieData={dataToBeSent} />
+               {chartShow===true?
+               <div className="emptyChart-parent"><div className="emptyChart-child">leads not Found</div></div>:
+               <DoughnutComp donughtfor="doughnut" pieData={dataToBeSent} />
+               }
+                 
                 <div className="status-wraper">
                   {memberAnalytics.length>0 && Object.entries(...memberAnalytics).map(([key, val]) => {
                     return (
@@ -343,7 +356,7 @@ const dataToBeSent = {
                       pagination={true}
                       currentPage={leadFilter.pageNumber}
                       pageSize={leadFilter.pageRows}
-                      totalCount={totalCount}
+                      totalCount={analRowCount}
                       tableLoading={tableLoading}
                       onPageChange={(pageNumber, pageRows) => {
                         setFilterQuery({

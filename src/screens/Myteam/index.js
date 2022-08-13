@@ -70,7 +70,7 @@ function Myteam() {
       if (res && res.status === 200) {
         if (res.data[0]?.directMembers) {
           setTableData(res.data[0].directMembers)
-          // setTotalCount(20)
+          setTotalCount(res.data[1].count)
         } else {
           setTableData([]);
           setTotalCount(0);
