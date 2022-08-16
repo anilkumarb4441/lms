@@ -6,6 +6,7 @@ import { URLS } from "../../utils/urlConstants"
 import localStorageService from "../../utils/localStorageService.js";
 
 
+
 //assets
 import card1 from '../../assets/dashboard/card1.svg'
 import card2 from '../../assets/dashboard/card2.svg'
@@ -18,7 +19,7 @@ import tempPhoto from "../../assets/dashboard/tempPhoto.png"
 
 import {MONTHS} from "../../utils/constants.js"
 import {WEEKDAYS} from "../../utils/constants.js"
-
+import Dropdown from "../../components/dropdown/dropdown.js";
 import Tabs from "../../components/tabs/tabs.js";
 
 //components
@@ -42,20 +43,37 @@ function DashBoard() {
   const [analyticToggle, setAnalyticToggle] = useState('team') 
   const [totalCustomerData, setTotalCustomerData] = useState([])
   const [analyticChart, setAnalyticChart] = useState([])
+  const [charBartFilter, setChartBarFilter] = useState('week')
+  
 
-  let week1 = analyticChart.map(val=>val.day)
-  console.log(week1)
+  // let week1 = analyticChart.map(val=>val.day)
+  // console.log(week1)
+
+  const YEARS = [
+    '2022',
+    
+  ]
 
   useEffect(()=>{
     mainref.current.scrollIntoView();
     getAnalyticsSelfData();
     getAnalyticsTeamData();
-    getTotalCustomerhrapghData();
+
   },[])
+
+  useEffect(()=>{
+    getTotalCustomerhrapghData();
+  },[charBartFilter])
 
   const mainTabArr = [
     { name: "Team", value: "team" },
     { name: "Self", value: "self" },
+  ];
+
+  const barChartSelect = [
+    { name: "Weekly", value: "week" },
+    { name: "Monthly", value: "month" },
+    { name: "Yearly", value: "year" },
   ];
 
     // Array for Tickects
@@ -147,19 +165,26 @@ function DashBoard() {
   const [ticketDisplay, setticketDisplay] = useState("Client");
   const [ticketsData, setticketsData] = useState(tempTicketsArray[0].data)
 
-  const DgraphHeader = ({name,handleSelect})=>{
+  const DgraphHeader = ({name, charBartFilter, setChartBarFilter})=>{
     
     return(<div className = 'dgraphHeader'>
     <p>{name}</p>
-    <select onChange ={(e)=>handleSelect(e)}>
-      <option>Monthly</option>
-      <option>Yearly</option>
-    </select></div>)
+    <select value={charBartFilter} onChange ={(e)=>{handleSelect(e)}}>
+    <option value='week'>Weekly</option>
+      <option value='month'>Monthly</option>
+      <option value='year'>Yearly</option>
+    </select>
+    </div>)
   }
+
+  
+  const barlabel = charBartFilter==='week'?WEEKDAYS:charBartFilter==='month'?MONTHS:YEARS
+
     
+
   const [barData, setBarData] = useState({
    
-    labels: WEEKDAYS,
+    labels: barlabel,
     datasets: [
       {
         label: "Customers",
@@ -171,6 +196,7 @@ function DashBoard() {
       },
     ],
   });
+
   const [lineData, setLineData] = useState({
     labels: MONTHS,
     datasets: [
@@ -222,10 +248,10 @@ function DashBoard() {
     },
   });
 
-  const  handleSelect = ()=>{
 
+  const  handleSelect = (e)=>{
+   
   }
-
 
 
   // CheckBox onchange Function
@@ -284,18 +310,17 @@ function DashBoard() {
       if (res && res.status === 200) {
        
         if (res.data && res.data.status === "SUCCESS") {
-          setAnalyticChart(res.data.data.week)
-          setTotalCustomerData(res.data.data.week.map(val=>val.count))
-          let datasetObj ={...[...barData.datasets][0],data:res.data.data.week.map(val=>val.count)}
-          setBarData({...barData,datasets:[datasetObj]}
-          )
+          setTotalCustomerData(Object.values(res.data.data[charBartFilter]))
+          let datasetObj ={...barData.datasets[0],  data:Object.values(res.data.data[charBartFilter])}
+          let labelObj =  {...barData.labels, labels:barlabel}
+          setBarData({...barData,...labelObj, datasets:[datasetObj]})
           
         } else {
           setTotalCustomerData([]);
         }
       }
     }
-    API_SERVICES.httpGETWithToken(URLS.analyticsBarChart, callback)
+    API_SERVICES.httpGETWithToken(URLS.analyticsBarChart +`?type=${charBartFilter}`, callback)
   }
 
     return (
@@ -315,42 +340,42 @@ function DashBoard() {
                <div className = 'dashboardCard'>
                  {/* <img src = {card1} alt = 'cardImg'/> */}
                  <div>
-                     <p>{teamAnalyticData.count>=0?teamAnalyticData.count:'---'}</p>
+                     <p>{teamAnalyticData.count>=0?teamAnalyticData.count:'0'}</p>
                      <p>Total Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card2} alt = 'cardImg'/> */}
                  <div>
-                     <p>{teamAnalyticData.untouched>=0?teamAnalyticData.untouched:'---'}</p>
+                     <p>{teamAnalyticData.untouched>=0?teamAnalyticData.untouched:'0'}</p>
                      <p>Total untouched Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{teamAnalyticData.pending>=0?teamAnalyticData.pending:'---'}</p>
+                     <p>{teamAnalyticData.pending>=0?teamAnalyticData.pending:'0'}</p>
                      <p>Total pending Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{teamAnalyticData.close>=0?teamAnalyticData.closed:'---'}</p>
+                     <p>{teamAnalyticData.close>=0?teamAnalyticData.closed:'0'}</p>
                      <p>Total Closed Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{teamAnalyticData.lost>=0?teamAnalyticData.lost:'---'}</p>
+                     <p>{teamAnalyticData.lost>=0?teamAnalyticData.lost:'0'}</p>
                      <p>Total Lost Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{teamAnalyticData.others>=0?teamAnalyticData.others:'---'}</p>
+                     <p>{teamAnalyticData.others>=0?teamAnalyticData.others:'0'}</p>
                      <p>others</p>
                  </div>
                </div>
@@ -359,53 +384,71 @@ function DashBoard() {
                <div className = 'dashboardCard'>
                  {/* <img src = {card1} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.count>=0?analyticData.count:'---'}</p>
+                     <p>{analyticData.count>=0?analyticData.count:'0'}</p>
                      <p>Total Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card2} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.untouched>=0?analyticData.untouched:'---'}</p>
+                     <p>{analyticData.untouched>=0?analyticData.untouched:'0'}</p>
                      <p>Total untouched Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.pending>=0?analyticData.pending:'---'}</p>
+                     <p>{analyticData.pending>=0?analyticData.pending:'0'}</p>
                      <p>Total pending Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.closed>=0?analyticData.closed:'---'}</p>
+                     <p>{analyticData.closed>=0?analyticData.closed:'0'}</p>
                      <p>Total Closed Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.lost>=0?analyticData.lost:'---'}</p>
+                     <p>{analyticData.lost>=0?analyticData.lost:'0'}</p>
                      <p>Total Lost Leads</p>
                  </div>
                </div>
                <div className = 'dashboardCard'>
                  {/* <img src = {card3} alt = 'cardImg'/> */}
                  <div>
-                     <p>{analyticData.others>=0?analyticData.others:'---'}</p>
+                     <p>{analyticData.others>=0?analyticData.others:'0'}</p>
                      <p>others</p>
                  </div>
                </div>
             </div>}
             <div className='flexedgrapghParent'>
               <div className = 'dboardGraphContainer'>
-                <DgraphHeader name = {'Total Revenue'} handleSelect = {(e)=>handleSelect(e)}/>
+                {/* <DgraphHeader name = {'Total Revenue'} handleSelect = {(e)=>handleSelect(e)}/> */}
+                <div className='chartBar-dropdown'>
+                 <Dropdown  
+                //  name = {'Total Revenue'}
+                dropdownClass="barchart-dropdown"
+                value={''}
+                options={barChartSelect}
+                onchange={(item) =>setChartBarFilter(item.value) }
+              />
+                 </div>
                 <Line  data={lineData} options={lineOptions}/>
               </div>
               <div className = 'dboardGraphContainer'>
-                <DgraphHeader name = {'Total Customers'} handleSelect = {(e)=>handleSelect(e)}/>
+                {/* <DgraphHeader name = {'Total Customers'} setChartBarFilter={setChartBarFilter}/>
+                 */}
+                 <div className='chartBar-dropdown'>
+                 <Dropdown  
+                dropdownClass="barchart-dropdown"
+                value={charBartFilter}
+                options={barChartSelect}
+                onchange={(item) =>setChartBarFilter(item.value) }
+              />
+                 </div>
              <Bar data={barData} options={barOptions}/>
               </div>
             </div>

@@ -15,13 +15,14 @@ export const MONTHS = [
   "December",
 ];
 export const WEEKDAYS = [
+  "Sunday",
   "Monday",
   "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",
   "Saturday",
-  "Sunday",
+ 
 ];
 
 //CAMEL CASE TO SENTENCE

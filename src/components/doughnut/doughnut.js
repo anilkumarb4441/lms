@@ -61,7 +61,6 @@ function DoughnutComp({type,digit,subtext,donughtfor,issue,pieData}){
                             ],
                         }}
                 >
-                        
                 </Doughnut>
                 <p className='absD1'>{digit}{type==="Attendance"?"%":null}</p>
                 <p className='absD2'>{subtext}</p>
