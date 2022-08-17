@@ -39,35 +39,29 @@ function DashBoard() {
 
   //dashboard states
   const [analyticData, setAnalyticData] = useState([])
-  const [teamAnalyticData, setTeamAnalyticData] = useState([])
-  const [analyticToggle, setAnalyticToggle] = useState('team') 
+  const [analyticToggle, setAnalyticToggle] = useState('self') 
   const [totalCustomerData, setTotalCustomerData] = useState([])
-  const [analyticChart, setAnalyticChart] = useState([])
   const [charBartFilter, setChartBarFilter] = useState('week')
   
 
-  // let week1 = analyticChart.map(val=>val.day)
-  // console.log(week1)
-
   const YEARS = [
     '2022',
+    '2023'
     
   ]
 
   useEffect(()=>{
     mainref.current.scrollIntoView();
-    getAnalyticsSelfData();
-    getAnalyticsTeamData();
-
   },[])
 
   useEffect(()=>{
-    getTotalCustomerhrapghData();
-  },[charBartFilter])
+    getAnalyticsSelfData();
+  },[charBartFilter, analyticToggle])
 
   const mainTabArr = [
+    { name: "Self", value: "self" },  
     { name: "Team", value: "team" },
-    { name: "Self", value: "self" },
+    
   ];
 
   const barChartSelect = [
@@ -218,12 +212,12 @@ function DashBoard() {
     scales: {
       x: {
         grid: {
-          display: false,
+          display: true,
         },
       },
       y: {
         grid: {
-          display: false,
+          display: true,
         },
       },
     },
@@ -237,12 +231,12 @@ function DashBoard() {
     scales: {
       x: {
         grid: {
-          display: false,
+          display: true,
         },
       },
       y: {
         grid: {
-          display: false,
+          display: true,
         },
       },
     },
@@ -262,66 +256,32 @@ function DashBoard() {
   }
 
 
-  function getAnalyticsTeamData() {
-    const callback = (err, res) => {
-      if (err) {
-        setTeamAnalyticData([]);
-        return
-      }
-
-      if (res && res.status === 200) {
-        if (res.data && res.data.status === "SUCCESS") {
-          setTeamAnalyticData(res.data.data)
-        } else {
-          setTeamAnalyticData([]);
-        }
-      }
-    }
-    API_SERVICES.httpGETWithToken(URLS.dashboardAnalyticTeamData, callback)
-  }
-  
-
   function getAnalyticsSelfData() {
     const callback = (err, res) => {
       if (err) {
         setAnalyticData([]);
-        return
-      }
-
-      if (res && res.status === 200) {
-        if (res.data && res.data.status === "SUCCESS") {
-          setAnalyticData(res.data.data)
- 
-        } else {
-          setAnalyticData([]);
-        }
-      }
-    }
-    API_SERVICES.httpGETWithToken(URLS.dashboardAnalyticData+`/${userId}`, callback)
-  }
-
-  function getTotalCustomerhrapghData() {
-    const callback = (err, res) => {
-      if (err) {
         setTotalCustomerData([]);
         return
       }
 
       if (res && res.status === 200) {
-       
         if (res.data && res.data.status === "SUCCESS") {
-          setTotalCustomerData(Object.values(res.data.data[charBartFilter]))
-          let datasetObj ={...barData.datasets[0],  data:Object.values(res.data.data[charBartFilter])}
+          setAnalyticData(res.data.data.stats)
+          let barData1 =res.data.data.barchatstats ?res.data.data.barchatstats[charBartFilter]:[]
+          let datasetObj ={...barData.datasets[0],  data:Object.values(barData1)}
           let labelObj =  {...barData.labels, labels:barlabel}
           setBarData({...barData,...labelObj, datasets:[datasetObj]})
-          
+          setTotalCustomerData(Object.values(barData1))
         } else {
+          setAnalyticData([]);
           setTotalCustomerData([]);
         }
       }
     }
-    API_SERVICES.httpGETWithToken(URLS.analyticsBarChart +`?type=${charBartFilter}`, callback)
+    API_SERVICES.httpGETWithToken(URLS.dashboardAnalyticData+`?q=${analyticToggle}&type=${charBartFilter}`, callback)
   }
+
+  
 
     return (
         <div className = 'dashBoardScreen' ref={mainref}>
@@ -330,57 +290,24 @@ function DashBoard() {
                 Dashboard
             </p>
             </div>
-            <Tabs
+           <div className='dashbord-FilersWraper'>
+           <Tabs
                     tabArr={mainTabArr}
                     activeValue={analyticToggle}
                     tabsClass="leadTabs"
                     handleTab={(e) => setAnalyticToggle(e.value)}
                   />
-            {analyticToggle === 'team'&& <div className = 'dashboardCardContainer'>
-               <div className = 'dashboardCard'>
-                 {/* <img src = {card1} alt = 'cardImg'/> */}
-                 <div>
-                     <p>{teamAnalyticData.count>=0?teamAnalyticData.count:'0'}</p>
-                     <p>Total Leads</p>
-                 </div>
-               </div>
-               <div className = 'dashboardCard'>
-                 {/* <img src = {card2} alt = 'cardImg'/> */}
-                 <div>
-                     <p>{teamAnalyticData.untouched>=0?teamAnalyticData.untouched:'0'}</p>
-                     <p>Total untouched Leads</p>
-                 </div>
-               </div>
-               <div className = 'dashboardCard'>
-                 {/* <img src = {card3} alt = 'cardImg'/> */}
-                 <div>
-                     <p>{teamAnalyticData.pending>=0?teamAnalyticData.pending:'0'}</p>
-                     <p>Total pending Leads</p>
-                 </div>
-               </div>
-               <div className = 'dashboardCard'>
-                 {/* <img src = {card3} alt = 'cardImg'/> */}
-                 <div>
-                     <p>{teamAnalyticData.close>=0?teamAnalyticData.closed:'0'}</p>
-                     <p>Total Closed Leads</p>
-                 </div>
-               </div>
-               <div className = 'dashboardCard'>
-                 {/* <img src = {card3} alt = 'cardImg'/> */}
-                 <div>
-                     <p>{teamAnalyticData.lost>=0?teamAnalyticData.lost:'0'}</p>
-                     <p>Total Lost Leads</p>
-                 </div>
-               </div>
-               <div className = 'dashboardCard'>
-                 {/* <img src = {card3} alt = 'cardImg'/> */}
-                 <div>
-                     <p>{teamAnalyticData.others>=0?teamAnalyticData.others:'0'}</p>
-                     <p>others</p>
-                 </div>
-               </div>
-            </div>}
-            {analyticToggle === 'self'&& <div className = 'dashboardCardContainer'>
+                  <div>
+                  <Dropdown  
+                dropdownClass="dashbordDropdown-filter"
+                value={charBartFilter}
+                options={barChartSelect}
+                onchange={(item) =>setChartBarFilter(item.value) }
+              />
+                  </div>
+           </div>
+            
+            <div className = 'dashboardCardContainer'>
                <div className = 'dashboardCard'>
                  {/* <img src = {card1} alt = 'cardImg'/> */}
                  <div>
@@ -423,32 +350,17 @@ function DashBoard() {
                      <p>others</p>
                  </div>
                </div>
-            </div>}
+            </div>
             <div className='flexedgrapghParent'>
               <div className = 'dboardGraphContainer'>
                 {/* <DgraphHeader name = {'Total Revenue'} handleSelect = {(e)=>handleSelect(e)}/> */}
-                <div className='chartBar-dropdown'>
-                 <Dropdown  
-                //  name = {'Total Revenue'}
-                dropdownClass="barchart-dropdown"
-                value={''}
-                options={barChartSelect}
-                onchange={(item) =>setChartBarFilter(item.value) }
-              />
-                 </div>
+               
                 <Line  data={lineData} options={lineOptions}/>
               </div>
               <div className = 'dboardGraphContainer'>
                 {/* <DgraphHeader name = {'Total Customers'} setChartBarFilter={setChartBarFilter}/>
                  */}
-                 <div className='chartBar-dropdown'>
-                 <Dropdown  
-                dropdownClass="barchart-dropdown"
-                value={charBartFilter}
-                options={barChartSelect}
-                onchange={(item) =>setChartBarFilter(item.value) }
-              />
-                 </div>
+              
              <Bar data={barData} options={barOptions}/>
               </div>
             </div>
@@ -513,10 +425,10 @@ function DashBoard() {
                         <input checked={ticketDisplay==="Client"?false:true} type="checkbox" className='visbilityNone' onChange={(e)=>ticketsDisplay(e)} />
                       </label>
                     </div>
-                    <Link to="#" className='linkfull'>
+                    {/* <Link to="#" className='linkfull'>
                       <img src={fullScreen} alt="FullIcon" />
                       <p>Full Screen</p>
-                    </Link>
+                    </Link> */}
                   </div>
                 </div>
                 <div className='tickets'>
