@@ -91,7 +91,8 @@
 .status-wraper {
     margin: 5% 0 0 0;
     display: flex;
-    justify-content: space-between;
+    gap:10px 20px;
+    /* justify-content: space-between; */
     flex-wrap: wrap;
 }
 
@@ -383,6 +384,9 @@
 
 [data-status~=paid] {
     border: 5px solid var(--primaryLight);
+}
+[data-status~=all] {
+    border: 5px solid green;
 }
 
 .emptyChart-parent{

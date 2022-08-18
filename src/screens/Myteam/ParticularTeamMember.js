@@ -24,7 +24,7 @@ function ParticularTeamMember({
   setParticularChef,
 }) {
   const mainref = useRef(null);
-  
+
   const dispatch = useDispatch();
   const myTeamReducer = useSelector((state) => state.myTeam);
 
@@ -38,11 +38,11 @@ function ParticularTeamMember({
   const [subtabs, setsubtabs] = useState("team");
 
   //filter and pagination
-const [tableFilter, setTableFilter] = useState({ pageNumber: 1, pageRows: 5, search:''})
-const [leadFilter, setLeadFilter] = useState({ pageNumber: 1, pageRows: 5, })
-const [totalRowCount, setTotalRowCount] = useState(0);
-const [analRowCount, setanalRowCount] = useState(0)
-  
+  const [tableFilter, setTableFilter] = useState({ pageNumber: 1, pageRows: 5, search: '' })
+  const [leadFilter, setLeadFilter] = useState({ pageNumber: 1, pageRows: 5, })
+  const [totalRowCount, setTotalRowCount] = useState(0);
+  const [analRowCount, setanalRowCount] = useState(0)
+
   // states for table
   const [teamTabledata, setTeamTabledata] = useState([]);
   const [memberAnalytics, setMemberAnalytics] = useState([])
@@ -51,15 +51,15 @@ const [analRowCount, setanalRowCount] = useState(0)
   const [leadSearch, setLeadsearch] = useState('')
   const [allLeads, setAllLeads] = useState([])
   const [leadShow, setLeadShow] = useState('All')
-  
 
-let onLoadPIData = [memberAnalytics.length>0 ?memberAnalytics[0].new.length:0, memberAnalytics.length>0 ?memberAnalytics[0].workInProgress.length:0, memberAnalytics.length>0 ?memberAnalytics[0].lost.length:0, memberAnalytics.length>0 ?memberAnalytics[0].paid.length:0];
-const dataToBeSent = {
+
+  let onLoadPIData = [memberAnalytics.length > 0 ? memberAnalytics[0].new.length : 0, memberAnalytics.length > 0 ? memberAnalytics[0].workInProgress.length : 0, memberAnalytics.length > 0 ? memberAnalytics[0].lost.length : 0, memberAnalytics.length > 0 ? memberAnalytics[0].paid.length : 0];
+  const dataToBeSent = {
     datasets: [
       {
         data: onLoadPIData,
         backgroundColor: ["#70DFBF", "#FA7999", "#6898E5", 'red'],
-        hoverOffset: 2, 
+        hoverOffset: 2,
       },
     ],
   };
@@ -123,12 +123,12 @@ const dataToBeSent = {
       accessor: "phone",
     },
     {
-      Header: "Status",
-      accessor: "status",
+      Header: "Email",
+      accessor: "email",
     },
   ]);
 
- 
+
 
   function onClickTeamMemberLeadAnalytics(obj) {
     setTableLoading(true);
@@ -154,22 +154,22 @@ const dataToBeSent = {
     };
     API_SERVICES.httpPOSTWithToken(
       URLS.onClickTeamMemberLeadAnalytics,
-      {...tableFilter, userId: usID, status: obj,  },
+      { ...tableFilter, userId: usID, status: obj, },
       callback
     );
   }
-  
+
 
   function getPerticularMemberAnalytics(obj) {
     const callback = (err, res) => {
       if (err) {
         setMemberAnalytics([]);
         return;
-      } 
+      }
       if (res && res.status === 200) {
         if (res.data) {
           setMemberAnalytics([res.data])
-          let  {new:list, workInProgress, paid, lost} = res.data
+          let { new: list, workInProgress, paid, lost } = res.data
           let allLeadArr = [...list, ...workInProgress, ...paid, ...lost]
           setAllLeads(allLeadArr)
 
@@ -178,7 +178,7 @@ const dataToBeSent = {
         }
       }
     };
-   API_SERVICES.httpPOSTWithToken(URLS.perticularTeamMember,{ userId:obj.userId,status: ["new", "workInProgress", "lost", "paid"]},callback);
+    API_SERVICES.httpPOSTWithToken(URLS.perticularTeamMember, { userId: obj.userId, status: ["new", "workInProgress", "lost", "paid"] }, callback);
   }
 
   function getPerticularMember(obj) {
@@ -199,7 +199,7 @@ const dataToBeSent = {
         }
       }
     };
-    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, {...tableFilter, userId: obj.userId, level: obj.level }, callback);
+    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, { ...tableFilter, userId: obj.userId, level: obj.level }, callback);
   }
 
   useEffect(() => {
@@ -251,26 +251,34 @@ const dataToBeSent = {
             </div>
             <div className="tickets">
               <div className="teckWrape">
-               {chartShow===true?
-               <div className="emptyChart-parent"><div className="emptyChart-child">leads not Found</div></div>:
-               <DoughnutComp donughtfor="doughnut" pieData={dataToBeSent} />
-               }
-                 
+                {chartShow === true ?
+                  <div className="emptyChart-parent"><div className="emptyChart-child">leads not Found</div></div> :
+                  <DoughnutComp donughtfor="doughnut" pieData={dataToBeSent} />
+                }
+
                 <div className="status-wraper">
-                  {memberAnalytics.length>0 && Object.entries(...memberAnalytics).map(([key, val]) => {
+                  {memberAnalytics.length > 0 && Object.entries(...memberAnalytics).map(([key, val]) => {
                     return (
                       <div className="status-match">
                         <div className="status-cHol">
                           <div
                             className="statusimg-pending"
                             data-status={key}
-                           ></div>
-                          <p id="stu" className="stuName" onClick={(e) => onClickTeamMemberLeadAnalytics(key)}>{key === "new" ? "New": key === "workInProgress"? "Work in Progress": key === "lost"? "Lost": "paid"}</p>
+                          ></div>
+                          <p id="stu" className="stuName" onClick={(e) => onClickTeamMemberLeadAnalytics(key)}>{key === "new" ? "New" : key === "workInProgress" ? "Work in Progress" : key === "lost" ? "Lost" : "paid"}</p>
                         </div>
                         <p className="statusCount">{memberAnalytics[0][key].length}</p>
                       </div>
+
                     );
                   })}
+                  {memberAnalytics.length > 0 &&<div className="status-match">
+                    <div className="status-cHol">
+                      <div className="statusimg-pending" data-status='all'></div>
+                      <p id="stu" className="stuName" onClick={(e) => setLeadShow('All')}>Total</p>
+                    </div>
+                    <p className="statusCount">{allLeads.length}</p>
+                  </div>}
                 </div>
               </div>
             </div>
@@ -288,37 +296,37 @@ const dataToBeSent = {
                   />
                   <div className="teamTabSearch">
 
-                   {subtabs==='team'?
-                     <Input
-                     inputClass="myTeamSearch"
-                       type="search"
-                       placeholder="Search By Name/Email/phone"
-                       name="search"
-                       value={tableFilter.search}
-                       change={(e) =>
-                         setTableFilter({
-                           ...tableFilter,
-                           pageNumber: 1,
-                           search: e.target.value,
-                         })
-                       }
-                     
-                     />: <Input
-                     inputClass="myTeamSearch"
-                       type="search"
-                       placeholder="Search By Name/Email/phone"
-                       name="search"
-                       value={leadSearch}
-                       change={(e) =>
-                         setTableFilter({
-                           ...tableFilter,
-                           pageNumber: 1,
-                           search: e.target.value,
-                         })
-                       }
-                     
-                     />
-                   }
+                    {subtabs === 'team' ?
+                      <Input
+                        inputClass="myTeamSearch"
+                        type="search"
+                        placeholder="Search By Name/Email/phone"
+                        name="search"
+                        value={tableFilter.search}
+                        change={(e) =>
+                          setTableFilter({
+                            ...tableFilter,
+                            pageNumber: 1,
+                            search: e.target.value,
+                          })
+                        }
+
+                      /> : <Input
+                        inputClass="myTeamSearch"
+                        type="search"
+                        placeholder="Search By Name/Email/phone"
+                        name="search"
+                        value={leadSearch}
+                        change={(e) =>
+                          setTableFilter({
+                            ...tableFilter,
+                            pageNumber: 1,
+                            search: e.target.value,
+                          })
+                        }
+
+                      />
+                    }
                     {/* <IoMdSearch className="IoMdSearchic" /> */}
                   </div>
                 </div>
@@ -343,7 +351,7 @@ const dataToBeSent = {
                         });
                       }}
                       data={teamTabledata}
-                      tClass="myteam perMyteam" 
+                      tClass="myteam perMyteam"
                     />
                   </>
                 )}
@@ -363,7 +371,7 @@ const dataToBeSent = {
                           pageRows: pageRows,
                         });
                       }}
-                      data={leadShow === 'All'?allLeads:onClkAnalyticData}
+                      data={leadShow === 'All' ? allLeads : onClkAnalyticData}
                       tClass="myteam perMyteam"
                     />
                   </>
