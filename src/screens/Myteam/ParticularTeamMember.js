@@ -49,12 +49,8 @@ const [analRowCount, setanalRowCount] = useState(0)
   const [onClkAnalyticData, setOnClkAnalyticData] = useState([]);
   const [tableLoading, setTableLoading] = useState(true);
   const [leadSearch, setLeadsearch] = useState('')
-
-
-// console.log(memberAnalytics[0])
-  // let {new:list, workInProgress, lost, paid } = memberAnalytics[0]
-  // let onanalyticData = [...list, ...workInProgress, ...lost, ...paid]
-  // console.log([...list, ...workInProgress, ...lost, ...paid])
+  const [allLeads, setAllLeads] = useState([])
+  const [leadShow, setLeadShow] = useState('All')
   
 
 let onLoadPIData = [memberAnalytics.length>0 ?memberAnalytics[0].new.length:0, memberAnalytics.length>0 ?memberAnalytics[0].workInProgress.length:0, memberAnalytics.length>0 ?memberAnalytics[0].lost.length:0, memberAnalytics.length>0 ?memberAnalytics[0].paid.length:0];
@@ -147,7 +143,8 @@ const dataToBeSent = {
         if (res.data) {
           setOnClkAnalyticData(res.data.data);
           setanalRowCount(res.data.length);
-          setsubtabs('leads')
+          setsubtabs('leads');
+          setLeadShow('sepLeads')
 
         } else {
           setOnClkAnalyticData([]);
@@ -161,9 +158,7 @@ const dataToBeSent = {
       callback
     );
   }
-  // useEffect(()=>{
-  //   onClickTeamMemberLeadAnalytics()
-  // },[])
+  
 
   function getPerticularMemberAnalytics(obj) {
     const callback = (err, res) => {
@@ -174,6 +169,9 @@ const dataToBeSent = {
       if (res && res.status === 200) {
         if (res.data) {
           setMemberAnalytics([res.data])
+          let  {new:list, workInProgress, paid, lost} = res.data
+          let allLeadArr = [...list, ...workInProgress, ...paid, ...lost]
+          setAllLeads(allLeadArr)
 
         } else {
           setMemberAnalytics([]);
@@ -365,7 +363,7 @@ const dataToBeSent = {
                           pageRows: pageRows,
                         });
                       }}
-                      data={onClkAnalyticData}
+                      data={leadShow === 'All'?allLeads:onClkAnalyticData}
                       tClass="myteam perMyteam"
                     />
                   </>

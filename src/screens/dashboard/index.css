@@ -137,16 +137,17 @@
 /* Toggle Btn */
 
 .checkParentBox .checkBox{
-    width: 38%;
+    width: 120px;
     position: relative;
 }
 
 .checkBox .flexedtoggle{
     display: flex;
     justify-content: space-between;
-    background-color: #40352E;
+    background-color: white;
     border-radius: 20px;
-    padding: 2% 0%;
+    border: 0.5px solid rgb(211, 211, 211);
+    /* padding: 2% 0%; */
 }
 
 .checkBox label{
@@ -159,16 +160,16 @@
 }
 
 .flexedtoggle p{
-    color: white;
+    color: var(--primary);
     border-radius: 10px;
     font-size: 13px;
     /* padding: 2%; */
-    padding: 3% 10%;
+    padding: 5% 12%;
 }
 
 .flexedtoggle p.active{
-    background-color: #E6AA55;
-    color: black;
+    background-color: var(--primary);
+    color: white;
 }
 
 
@@ -233,7 +234,7 @@
 .recentConatiner th{
     color: white;
     font-size: 13px;
-    padding: 1.5% 0%;
+    padding: 1.5% 0%; 
 }
 
 .pieParent .abstexd{

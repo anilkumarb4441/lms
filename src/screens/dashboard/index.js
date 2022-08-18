@@ -192,7 +192,7 @@ function DashBoard() {
   });
 
   const [lineData, setLineData] = useState({
-    labels: MONTHS,
+    labels: barlabel,
     datasets: [
       {
         label: "Revenue",
@@ -271,7 +271,11 @@ function DashBoard() {
           let datasetObj ={...barData.datasets[0],  data:Object.values(barData1)}
           let labelObj =  {...barData.labels, labels:barlabel}
           setBarData({...barData,...labelObj, datasets:[datasetObj]})
+
+          let lineLabel = {...lineData.labels, labels:barlabel}
+          setLineData({...lineData,...lineLabel})
           setTotalCustomerData(Object.values(barData1))
+
         } else {
           setAnalyticData([]);
           setTotalCustomerData([]);
