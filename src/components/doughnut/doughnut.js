@@ -46,7 +46,7 @@ function DoughnutComp({type,digit,subtext,donughtfor,issue,pieData}){
             </>:
             <div className='doughParent'>
               
-                <Doughnut
+                <Doughnut 
 
                     data={{
                        

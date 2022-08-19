@@ -42,7 +42,8 @@ function DashBoard() {
   const [analyticToggle, setAnalyticToggle] = useState('self') 
   const [totalCustomerData, setTotalCustomerData] = useState([])
   const [charBartFilter, setChartBarFilter] = useState('week')
-  
+  const [selfrating, setSelfRating] = useState([]);
+  const [teamRating, setteamRating] = useState([])
 
   const YEARS = [
     '2022',
@@ -174,8 +175,6 @@ function DashBoard() {
   
   const barlabel = charBartFilter==='week'?WEEKDAYS:charBartFilter==='month'?MONTHS:YEARS
 
-    
-
   const [barData, setBarData] = useState({
    
     labels: barlabel,
@@ -242,6 +241,7 @@ function DashBoard() {
     },
   });
 
+  // const [selfRating]
 
   const  handleSelect = (e)=>{
    
@@ -267,14 +267,21 @@ function DashBoard() {
       if (res && res.status === 200) {
         if (res.data && res.data.status === "SUCCESS") {
           setAnalyticData(res.data.data.stats)
+
+          // line graph
           let barData1 =res.data.data.barchatstats ?res.data.data.barchatstats[charBartFilter]:[]
           let datasetObj ={...barData.datasets[0],  data:Object.values(barData1)}
           let labelObj =  {...barData.labels, labels:barlabel}
           setBarData({...barData,...labelObj, datasets:[datasetObj]})
-
           let lineLabel = {...lineData.labels, labels:barlabel}
           setLineData({...lineData,...lineLabel})
           setTotalCustomerData(Object.values(barData1))
+
+          // rating graoph
+          let selfRatingData = res.data.data.self ?res.data.data.self:[];
+          setSelfRating(selfRatingData);
+          let teamRatingData = res.data.data.team ?res.data.data.team:[];
+          setteamRating(teamRatingData);
 
         } else {
           setAnalyticData([]);
@@ -285,7 +292,13 @@ function DashBoard() {
     API_SERVICES.httpGETWithToken(URLS.dashboardAnalyticData+`?q=${analyticToggle}&type=${charBartFilter}`, callback)
   }
 
-  
+  const selfRatingInPercent = selfrating.conversionCount>=0?(selfrating.conversionCount/selfrating.count)*100:'loading';
+ 
+  const TeamRatingInPercent =teamRating.conversionCount>=0?(teamRating.conversionCount/teamRating.count)*100:'loading';
+
+  const selfDeg = (selfRatingInPercent/100)*360;
+  const teamDeg = (TeamRatingInPercent/100)*360;
+
 
     return (
         <div className = 'dashBoardScreen' ref={mainref}>
@@ -371,7 +384,7 @@ function DashBoard() {
             <div className='ticketsGrapghParent'>
               <div className='chartPieConatiner'>
                 <div className='ticketHead'>
-                  <h4>Order Ratings Graph</h4>
+                  <h4>Conversion Ratings</h4>
                 </div>
                 <div className='pieParent'>
                   <div>
@@ -380,19 +393,20 @@ function DashBoard() {
                         labels:["Self"],
                         datasets:[
                           {
-                            data:[75],
+                            data:[selfrating.conversionCount],
                             backgroundColor:"red",
-                            circumference:300,
+                            circumference:selfDeg,
                             cutout:60,
                             borderColor:"transparent",
+                          
                           }
                         ],
                       }}
                     >
                       
                     </Doughnut>
-                    <h2 className='abstexd'>83%</h2>
-                    <h2 className='pieName'>Self Converted Leads</h2>
+                    <h2 className='abstexd'>{selfRatingInPercent}%</h2>
+                    <h2 className='pieName'>{selfrating.count}/{selfrating.conversionCount}</h2>
                   </div>
                   <div>
                     <Doughnut
@@ -400,9 +414,9 @@ function DashBoard() {
                         labels:["Team"],
                         datasets:[
                           {
-                            data:[75],
+                            data:teamRating?[teamRating.conversionCount]:[0],
                             backgroundColor:"skyblue",
-                            circumference:330,
+                            circumference:teamDeg,
                             cutout:60,
                             borderColor:"transparent",
                           }
@@ -411,8 +425,8 @@ function DashBoard() {
                     >
                       
                     </Doughnut>
-                    <h2 className='abstexd'>91%</h2>
-                    <h2 className='pieName'>Team Converted Leads</h2>
+                    <h2 className='abstexd'>{TeamRatingInPercent}%</h2>
+                    <h2 className='pieName'>{teamRating.count}/{teamRating.conversionCount}</h2>
                   </div>
                 </div>
               </div>

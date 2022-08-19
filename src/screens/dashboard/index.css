@@ -74,10 +74,10 @@
 }
 
 .pieParent .pieName{
-    font-size: 12px;
+    font-size: 16px;
     text-align: center;
     color: var(--primary);
-    font-weight: 400;
+    font-weight: 600;
     margin: 15% 0% 0% 0%;
 }
 
@@ -239,11 +239,11 @@
 
 .pieParent .abstexd{
     position: absolute;
-    top: 37%;
+    top: 40%;
     color: var(--primary);
-    font-size: 40px;
+    font-size: 26px;
     left: 35%;
-    font-weight: 300;
+    font-weight: 400;
 }
 
 .recentConatiner td{
