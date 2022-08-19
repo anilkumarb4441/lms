@@ -1,7 +1,7 @@
 
 //BASE URL
 // const BASE_URL ="http://192.168.1.95:2002" ,http://192.168.1.69:2002
-const BASE_URL ="http://192.168.1.39:2002"
+const BASE_URL ="https://leadserver.verzeo.com"
 //"https://leadserver.verzeo.com"
 
 module.exports = {
@@ -10,7 +10,7 @@ module.exports = {
     baseURL:BASE_URL,
 
    //Login
-   userLogin:BASE_URL+"/auth/login",
+   userLogin:BASE_URL+"/auth/login", 
 
     //Assign Lead
     assignLead: "/leads/assign",
