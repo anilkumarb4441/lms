@@ -513,7 +513,7 @@ function Leads() {
   // calling Leads Filter API when any filter value is changing
   useMemo(() => {
     wrapperRef?.current?.scrollTo(0, 0);
-    if (reducer.filter.searchData) {
+    if (reducer.filter.searchData) { 
       debounceGetLeads(reducer.filter);
       return;
     }
