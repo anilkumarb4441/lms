@@ -52,7 +52,7 @@ function ParticularTeamMember({
   const [allLeads, setAllLeads] = useState([])
   const [leadShow, setLeadShow] = useState('All')
   const [filterleadsData, setFilterLeadsData] = useState([])
-console.log('filterleadsData', filterleadsData)
+
 
 
   let onLoadPIData = [memberAnalytics.length > 0 ? memberAnalytics[0].new.length : 0, memberAnalytics.length > 0 ? memberAnalytics[0].workInProgress.length : 0, memberAnalytics.length > 0 ? memberAnalytics[0].lost.length : 0, memberAnalytics.length > 0 ? memberAnalytics[0].paid.length : 0];
@@ -135,7 +135,7 @@ console.log('filterleadsData', filterleadsData)
   function onClickTeamMemberLeadAnalytics(obj) {
     setTableLoading(true);
     let usID = myTeamReducer.arr[myTeamReducer.arr.length - 1].userId
-    console.log( usID, 'ddd') 
+  
     const callback = (err, res) => {
       setTableLoading(false);
       if (err) {

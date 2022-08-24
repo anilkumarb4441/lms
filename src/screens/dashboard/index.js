@@ -300,8 +300,8 @@ function DashBoard() {
     return calcu;
   }
 
-  const selfRatingInPercent = selfrating.conversionCount >= 0 && selfrating.count >= 0  ? pecentageCalc(selfrating.count, selfrating.conversionCount) : 'loading';
-  const TeamRatingInPercent = teamRating.conversionCount >= 0 && teamRating.count >= 0 ? pecentageCalc(teamRating.count, teamRating.conversionCount) : 'loading';
+  const selfRatingInPercent = selfrating.conversionCount >= 0 && selfrating.count >= 0  ? pecentageCalc(selfrating.count, selfrating.conversionCount) : 'loading...';
+  const TeamRatingInPercent = teamRating.conversionCount >= 0 && teamRating.count >= 0 ? pecentageCalc(teamRating.count, teamRating.conversionCount) : 'loading...';
 
 
   function perceConvertDeg(valu) {

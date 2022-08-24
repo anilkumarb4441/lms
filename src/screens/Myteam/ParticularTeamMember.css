@@ -413,11 +413,17 @@
 
 .myTableLeads{
     height: 340px !important;
+    max-height: 350px !important;
+    min-height: 50px;
 }
 .myTableLeads table thead{
     position: sticky;
     top: 0; 
 }
+.myTableLeads table tbody{
+    overflow-y: scroll;
+}
+
 
 .leadInput{
     border-radius: 5px;
