@@ -43,7 +43,10 @@ function DashBoard() {
   const [totalCustomerData, setTotalCustomerData] = useState([])
   const [charBartFilter, setChartBarFilter] = useState('week')
   const [selfrating, setSelfRating] = useState([]);
-  const [teamRating, setteamRating] = useState([])
+  const [teamRating, setteamRating] = useState([]);
+  const [revenueProjeceted, setRevenueProjected] = useState([]);
+  const [revenueToggle, setRevenueToggle] = useState('projected')
+
 
   const YEARS = [
     '2022',
@@ -57,11 +60,21 @@ function DashBoard() {
 
   useEffect(() => {
     getAnalyticsSelfData();
-  }, [charBartFilter, analyticToggle])
+    // getRevenueProjected();
+  }, [charBartFilter, analyticToggle ])
+
+  useEffect(() => {
+    getRevenueProjected();
+  }, [charBartFilter, analyticToggle, revenueToggle])
 
   const mainTabArr = [
     { name: "Self", value: "self" },
     { name: "Team", value: "team" },
+
+  ];
+  const revenueTab = [
+    { name: "projected", value: "projected" },
+    { name: "Generated", value: "generated" },
 
   ];
 
@@ -195,9 +208,8 @@ function DashBoard() {
     datasets: [
       {
         label: "Revenue",
-        data: [
-          2000, 3000, 4000, 5000, 1300, 3000, 6000, 2000, 3000, 4000, 1000, 500,
-        ],
+        data:revenueProjeceted,
+        // data:revenueToggle==='projected'?revenueProjeceted:revenueGenerated,
         backgroundColor: "#302C30",
         hoverBackgroundColor: "rgba(188, 0, 203, 0.21)",
         fill: true,
@@ -295,6 +307,36 @@ function DashBoard() {
     API_SERVICES.httpGETWithToken(URLS.dashboardAnalyticData + `?q=${analyticToggle}&type=${charBartFilter}`, callback)
   }
 
+  function getRevenueProjected() {
+   
+    const callback = (err, res) => {
+      if (err) {
+        setRevenueProjected([]);
+        return;
+      }
+      // lineData, setLineData
+      if (res && res.status === 200) {
+        if (res.data && res.data.status === "SUCCESS") {  
+          let revProjBarData = res.data.data &&res.data.data[0] ? res.data.data[0] : []
+          let datasetObj = { ...lineData.datasets[0], data: Object.values(revProjBarData)}
+          let labelObj = { ...barData.labels, labels: barlabel }
+          setLineData({...lineData, ...labelObj, datasets: [datasetObj]});
+          setRevenueProjected(Object.values(revProjBarData));
+   
+
+
+        } else {
+       
+          setRevenueProjected([]);
+        }
+      }
+    }
+   
+    API_SERVICES.httpGETWithToken(revenueToggle ==='projected'?URLS.analyticsRevenueProjected+`?q=${analyticToggle}&type=${charBartFilter}`:URLS.analyticsRevenueGenerated+ `?q=${analyticToggle}&type=${charBartFilter}`, callback)
+  }
+
+
+
   function pecentageCalc(count, conversion) {
     var calcu = (conversion / count) * 100;
     return calcu;
@@ -381,10 +423,19 @@ function DashBoard() {
           </div>
         </div>
       </div>
+      <div className='revenueTabs'>
+          <Tabs
+          tabArr={revenueTab}
+          activeValue={revenueToggle}
+          tabsClass="leadTabs"
+          handleTab={(e) => setRevenueToggle(e.value)}
+        />
+          </div>
       <div className='flexedgrapghParent'>
+     
         <div className='dboardGraphContainer'>
           {/* <DgraphHeader name = {'Total Revenue'} handleSelect = {(e)=>handleSelect(e)}/> */}
-
+          
           <Line data={lineData} options={lineOptions} />
         </div>
         <div className='dboardGraphContainer'>

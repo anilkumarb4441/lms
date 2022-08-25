@@ -52,6 +52,7 @@ function ParticularTeamMember({
   const [allLeads, setAllLeads] = useState([])
   const [leadShow, setLeadShow] = useState('All')
   const [filterleadsData, setFilterLeadsData] = useState([])
+  const [leadStatFilter, setLeadStatFilter] = useState('')
 
 
 
@@ -135,7 +136,7 @@ function ParticularTeamMember({
   function onClickTeamMemberLeadAnalytics(obj) {
     setTableLoading(true);
     let usID = myTeamReducer.arr[myTeamReducer.arr.length - 1].userId
-  
+
     const callback = (err, res) => {
       setTableLoading(false);
       if (err) {
@@ -161,9 +162,9 @@ function ParticularTeamMember({
       callback
     );
   }
-    useEffect(()=>{
-      onClickTeamMemberLeadAnalytics();
-    },[leadFilter])
+  useEffect(() => {
+    onClickTeamMemberLeadAnalytics();
+  }, [leadFilter])
 
   function getPerticularMemberAnalytics(obj) {
 
@@ -219,21 +220,23 @@ function ParticularTeamMember({
 
   const isBelowThreshold = (currentValue) => currentValue < 1;
   const chartShow = onLoadPIData.every(isBelowThreshold);
+  console.log(leadShow)
 
-
-  const onLeadSearch = (e)=>{
-   let text = e.target.value.toLowerCase();
+  const onLeadSearch = (e) => {
+    let text = e.target.value.toLowerCase();
+    setLeadStatFilter(e.target.value);
     setLeadsearch(e.target.value);
-    let filteredList = allLeads?
-    allLeads.filter((item)=>{
-      let serch = item.name?.toLowerCase().includes(text) || item.email?.toLowerCase().includes(text) || item.phone?.toLowerCase().includes(text);
-      return serch
-    }):[]
+    let leads = leadShow === 'All' ? allLeads : onClkAnalyticData
+    let filteredList = leads ?
+      leads.filter((item) => {
+        let serch = item.name?.toLowerCase().includes(text) || item.email?.toLowerCase().includes(text) || item.phone?.toLowerCase().includes(text);
+        return serch
+      }) : []
 
     setFilterLeadsData([...filteredList]);
   };
 
-  
+
 
   return (
     <div className="mainParticular" ref={mainref}>
@@ -295,13 +298,13 @@ function ParticularTeamMember({
 
                     );
                   })}
-                  {memberAnalytics.length > 0 &&<div className="status-match">
+                  {memberAnalytics.length > 0 && <div className="status-match">
                     <div className="status-cHol">
                       <div className="statusimg-pending" data-status='all'></div>
                       <p id="stu" className="stuName" onClick={(e) => setLeadShow('All')}>Total</p>
                     </div>
                     <p className="statusCount">{allLeads.length}</p>
-                  </div>} 
+                  </div>}
                 </div>
               </div>
             </div>
@@ -334,22 +337,22 @@ function ParticularTeamMember({
                           })
                         }
 
-                      /> : 
-                        // <input 
+                      /> :
+                      // <input 
 
-                        // type="search"
-                        // placeholder="Search By Name/Email/phone"
-                        // name="leadSearch"
-                        // value={leadSearch}
-                        // onChange={(e)=>onLeadSearch(e)}
-                        // />
+                      // type="search"
+                      // placeholder="Search By Name/Email/phone"
+                      // name="leadSearch"
+                      // value={leadSearch}
+                      // onChange={(e)=>onLeadSearch(e)}
+                      // />
                       <input
-                        className={leadShow === 'All'?'leadInput':'leadInputHide'}
+                        className={leadShow === 'All' ? 'leadInput' : 'leadInputHide'}
                         type="search"
                         placeholder="Search By Name/Email/phone"
                         name="search"
-                        value={leadSearch}
-                        onChange={(e) =>onLeadSearch(e)
+                        value={leadShow === 'All' ? leadSearch : leadStatFilter}
+                        onChange={(e) => onLeadSearch(e)
                         }
                       />
                     }
@@ -385,21 +388,22 @@ function ParticularTeamMember({
                   <>
                     <Table
                       columns={leadcolumns}
-                      pagination={true}
-                      currentPage={leadFilter.pageNumber}
-                      pageSize={leadFilter.pageRows}
-                      totalCount={analRowCount}
+                      // pagination={true}
+                      // currentPage={leadFilter.pageNumber}
+                      // pageSize={leadFilter.pageRows}
+                      // totalCount={analRowCount}
                       tableLoading={tableLoading}
-                      onPageChange={(pageNumber, pageRows) => {
-                        setLeadFilter({
-                          ...leadFilter,
-                          pageNumber: pageNumber,
-                          pageRows: pageRows,
-                        });
-                      }}
-                      data={leadShow === 'All' ? filterleadsData : onClkAnalyticData}
-                      tClass={leadShow === 'All'?'myteam perMyteam myTableLeads':'myteam perMyteam '}
-                      
+                      // onPageChange={(pageNumber, pageRows) => {
+                      //   setLeadFilter({
+                      //     ...leadFilter,
+                      //     pageNumber: pageNumber,
+                      //     pageRows: pageRows,
+                      //   });
+                      // }}
+                      data={filterleadsData}
+                      tClass={'myteam perMyteam myTableLeads'}
+                      // tClass={leadShow === 'All' ? 'myteam perMyteam myTableLeads' : 'myteam perMyteam '}
+
                     />
                   </>
                 )}
