@@ -53,6 +53,7 @@ function ParticularTeamMember({
   const [leadShow, setLeadShow] = useState('All')
   const [filterleadsData, setFilterLeadsData] = useState([])
   const [leadStatFilter, setLeadStatFilter] = useState('')
+  const [statsSaerch, setStatsSaerch] = useState([])
 
 
 
@@ -146,9 +147,11 @@ function ParticularTeamMember({
       if (res && res.status === 200) {
         if (res.data) {
           setOnClkAnalyticData(res.data.data);
+          setStatsSaerch(res.data.data)
           setanalRowCount(res.data.length);
           setsubtabs('leads');
-          setLeadShow('sepLeads')
+          setLeadShow('sepLeads');
+          setLeadStatFilter('');
 
         } else {
           setOnClkAnalyticData([]);
@@ -220,15 +223,14 @@ function ParticularTeamMember({
 
   const isBelowThreshold = (currentValue) => currentValue < 1;
   const chartShow = onLoadPIData.every(isBelowThreshold);
-  console.log(leadShow)
+  // console.log(leadShow)
 
   const onLeadSearch = (e) => {
     let text = e.target.value.toLowerCase();
-    setLeadStatFilter(e.target.value);
-    setLeadsearch(e.target.value);
-    let leads = leadShow === 'All' ? allLeads : onClkAnalyticData
-    let filteredList = leads ?
-      leads.filter((item) => {
+    setLeadsearch(e.target.value)
+  
+    let filteredList = allLeads ?
+      allLeads.filter((item) => {
         let serch = item.name?.toLowerCase().includes(text) || item.email?.toLowerCase().includes(text) || item.phone?.toLowerCase().includes(text);
         return serch
       }) : []
@@ -236,7 +238,18 @@ function ParticularTeamMember({
     setFilterLeadsData([...filteredList]);
   };
 
+  const onIndLeadSearch = (e) => {
+    let text = e.target.value.toLowerCase();
+    setLeadStatFilter(e.target.value)
+  
+    let filteredList = onClkAnalyticData ?
+    onClkAnalyticData.filter((item) => {
+        let serch = item.name?.toLowerCase().includes(text) || item.email?.toLowerCase().includes(text) || item.phone?.toLowerCase().includes(text);
+        return serch
+      }) : []
 
+      setStatsSaerch([...filteredList]);
+  };
 
   return (
     <div className="mainParticular" ref={mainref}>
@@ -352,7 +365,7 @@ function ParticularTeamMember({
                         placeholder="Search By Name/Email/phone"
                         name="search"
                         value={leadShow === 'All' ? leadSearch : leadStatFilter}
-                        onChange={(e) => onLeadSearch(e)
+                        onChange={(e) => {leadShow === 'All'?onLeadSearch(e): onIndLeadSearch(e)}
                         }
                       />
                     }
@@ -400,9 +413,9 @@ function ParticularTeamMember({
                       //     pageRows: pageRows,
                       //   });
                       // }}
-                      data={filterleadsData}
-                      tClass={'myteam perMyteam myTableLeads'}
-                      // tClass={leadShow === 'All' ? 'myteam perMyteam myTableLeads' : 'myteam perMyteam '}
+                      data={leadShow === 'All'?filterleadsData:statsSaerch}
+                      // tClass={'myteam perMyteam myTableLeads'}
+                      tClass={leadShow === 'All' ? 'myteam perMyteam myTableLeads' : 'myteam perMyteam '}
 
                     />
                   </>

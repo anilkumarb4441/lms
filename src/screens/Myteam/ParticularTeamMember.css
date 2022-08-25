@@ -412,9 +412,10 @@
 }
 
 .myTableLeads{
-    height: 340px !important;
+    /* height: 340px !important; */
     max-height: 350px !important;
     min-height: 50px;
+    overflow-y: scroll;
 }
 .myTableLeads table thead{
     position: sticky;
