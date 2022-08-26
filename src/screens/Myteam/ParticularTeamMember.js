@@ -165,9 +165,9 @@ function ParticularTeamMember({
       callback
     );
   }
-  useEffect(() => {
-    onClickTeamMemberLeadAnalytics();
-  }, [leadFilter])
+  // useEffect(() => {
+  //   onClickTeamMemberLeadAnalytics();
+  // }, [leadFilter])
 
   function getPerticularMemberAnalytics(obj) {
 
