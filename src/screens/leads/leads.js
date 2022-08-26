@@ -370,7 +370,7 @@ function Leads() {
 
   // function to create new lead
   const createLead = (data) => {
-    console.log(data, "checking for refrence ids");
+    // console.log(data, "checking for refrence ids");
     const callback = (err, res) => {
       setFormLoading(false);
       if (res && res.status === 201) {
@@ -407,6 +407,7 @@ function Leads() {
         ? { ...data, isPreg: true }
         : data;
     const callback = (err, res) => {
+
       setFormLoading(false);
       if (res && res.status === 200) {
         if (res.data?.callLogs?.status === "Interested") {
@@ -415,6 +416,7 @@ function Leads() {
         getLeadsByFilters(reducer.filter);
         utils.toastSuccess("Call Status Updated in Lead DashBoard");
         dispatch(actions.closeForm());
+
       }
     };
     API_SERVICES.httpPOSTWithToken(URLS.updateCallLog, data, callback);
@@ -429,8 +431,9 @@ function Leads() {
     newData.referenceid = data.referenceId;
     newData.leadid = data.leadId;
     const callback = (err, res) => {
+   
       if (err) {
-        utils.toastError(err?.msg);
+        utils.toastError(err?.response.data.msg);
       }
       if (res && res.status === 200) {
         utils.toastSuccess("Lead updated in Customer DashBoard");
