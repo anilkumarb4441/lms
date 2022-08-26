@@ -13,10 +13,11 @@ function LeadsInner({goBack,leadObj}) {
   const [purchaseDetails,setPurchaseDetails] = useState([])
  const [purchaseObject,setPurchaseObject] = useState(null);
  const [openCourseModal,setOpenCourseModal] = useState(false);
+
     const getLeadPaymentHistory = ()=>{
         let {leadId,generatedBy,referenceId} = {...leadObj}
         let postObj = {leadId,generatedBy,referenceId}
-        console.log(postObj)
+
         const callback = (err,res)=>{
             if(res && res.status===200){
                let user_details =  res.data.shift()
