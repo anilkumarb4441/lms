@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import "react-toastify/dist/ReactToastify.css";
-import { BrowserRouter as Router, useRoutes } from "react-router-dom";
+import { useRoutes,useLocation } from "react-router-dom";
 import routes from "./routes.js";
 import localStorageService from "./utils/localStorageService";
 
 //components
 import NavBar from "./components/navBar/index";
 import Login from "./components/login/login";
+import SetPassword from "./components/setPassword/setPassword";
 
 function App() {
+  const location = useLocation()
+ 
   const { setToken, getAccessToken, getTokenDecode } = localStorageService;
   const [isToken, setIsToken] = useState(false);
   const [routeData, setRouteData] = useState([]);
@@ -39,19 +42,25 @@ function App() {
     }
     setRouteData(newRoutes);
   }, [isToken]);
+  
+  if(location.pathname.includes('/setPassword')){
+    return <SetPassword/>
+  }
 
   if (!getAccessToken()) {
-    return <Login setToken={setToken} setIsToken={setIsToken} />;
+    return <>
+      <Login setToken={setToken} setIsToken={setIsToken} />
+    </>;
   } else {
     return (
       <>
         {(isToken || getAccessToken() !== null) && (
-          <Router>
+          <>
             <NavBar routeData = {[...routeData]} />
             <div className="wrapperContainer">
               <Wrapper />
             </div>
-          </Router>
+          </>
         )}
       </>
     );

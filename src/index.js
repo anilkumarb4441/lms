@@ -3,9 +3,11 @@ import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {ToastContainer} from 'react-toastify';
+import { BrowserRouter as Router } from 'react-router-dom';
 import {Provider} from 'react-redux'
 import reportWebVitals from './reportWebVitals';
 import configureAppStore from "./store.js"
+
 
 const store = configureAppStore()
 const container = document.getElementById('root');
@@ -13,7 +15,10 @@ const root = createRoot(container);
 root.render(<>
   <Provider store = {store}>
   <ToastContainer/>
-   <App />
+  <Router>
+  <App />
+  </Router>
+  
   </Provider>
  
 </>);

@@ -9,7 +9,7 @@ module.exports = {
     //baseURL
     baseURL:BASE_URL,
 
-   //Login
+   //Login 
    userLogin:BASE_URL+"/auth/login", 
 
     //Assign Lead

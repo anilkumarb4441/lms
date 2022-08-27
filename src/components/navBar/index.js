@@ -44,7 +44,7 @@ function NavBar({routeData}) {
         <div className="navLinkContainer">
           {routeData &&
             routeData.map((item, i) => {
-              return (
+              return (item.name &&<>
               <div key = {i} className="paAnchor">
                 <p className={location.pathname===item.path?"active":""}></p>
                 <Link to={item.path} key={item.name} className={location.pathname===item.path?"active":""}>
@@ -52,7 +52,7 @@ function NavBar({routeData}) {
                   <p className={location.pathname===item.path?"active":""}>{item.name}</p>
                 </Link>
               </div>
-              );
+              </>);
             })}
         </div>
           <div className = "navButtons">

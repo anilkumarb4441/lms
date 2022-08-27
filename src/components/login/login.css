@@ -1,13 +1,12 @@
 .login-wrappper{
-    background:var(--primary);
+    background:#f3f6f9;
     display: flex;
-    align-items: center;
     justify-content: center;
     height:100vh;
 
 }
 
-.login-wrappper>form{
+/* .login-wrappper>form{
     width: 500px;
     margin: 0 auto;
     background: var(--wrapperColor);
@@ -30,4 +29,97 @@
 .login-wrappper>form>button{
     width:fit-content;
     margin:0 auto;
+} */
+
+.loginBackground{
+    height: 350px;
+    width: 100%;
+background-position: center;
+background-size: 100% 100%;
+position: relative;
+background-repeat: no-repeat;
+}
+.loginBackground>.templateName{
+    font-size: 40px;
+    font-weight: 500;
+    color: white;
+    text-align: center;
+    margin-top: 4%; 
+}
+.loginFormWraper{
+    position: absolute;
+    width: 30%;
+    padding: 15px 10px;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 1px 2px rgb(223, 223, 223);
+    bottom: -70%;
+    left: 35%;
+}
+.loginFormWraper>h4{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary);
+    text-align: center;
+}
+.loginFormWraper>p{
+    font-size: 13px;
+    margin-top: 10px;
+    text-align: center;
+    color: rgb(133, 133, 133);
+}
+
+.loginForm{
+    padding: 10% 10% 3% 10%;
+}
+.inputContainer{
+margin-bottom: 20px;
+}
+
+.inputContainer>label{
+    font-size: 13px;
+    color: rgb(117, 117, 117);
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.inputContainer>input{
+    margin-top: 8px;
+    width: 100%;
+    border: 1px solid #ced4da;
+    padding: 8px 5px;
+    border-radius: 3px;
+}
+.inputholder{
+    margin-top: 8px;
+    border: 1px solid #ced4da;
+    display: flex;
+    align-items: center;
+}
+.inputholder>input{
+   
+    border: none;
+    padding: 8px 5px;
+    width: 90%;
+}
+.inputContainer input:focus{
+    outline: none;
+}
+.loginButton{
+    background-color: var(--primary);
+    padding: 10px 5px;
+    color: white;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 14px;
+    margin-top: 10px;
+}
+.inputholder>img{
+    width: 14px;
+    cursor: pointer;
+}
+.loginForgot{
+    font-size: 12px;
+    color:rgb(117, 117, 117) ;
+    cursor: pointer;
 }
