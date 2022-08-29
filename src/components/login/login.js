@@ -108,7 +108,9 @@ function Login({ setToken, setIsToken }) {
 
             </>}
 
-            <Link to='/setPassword' className="loginForgot">Forgot Password?</Link>
+            {/* <Link to='/setPassword' className="loginForgot">Forgot Password?</Link>
+             */}
+             <a className="loginForgot"  href="https://customer.verzeo.com/employee/forgotpassword" target="_blank">Forgot Password?</a>
             <button type="submit" className="loginButton"> Sign in </button>
           </form>
         </div>
