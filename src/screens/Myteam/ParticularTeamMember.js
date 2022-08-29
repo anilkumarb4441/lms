@@ -415,7 +415,7 @@ function ParticularTeamMember({
                       // }}
                       data={leadShow === 'All'?filterleadsData:statsSaerch}
                       // tClass={'myteam perMyteam myTableLeads'}
-                      tClass={leadShow === 'All' ? 'myteam perMyteam myTableLeads' : 'myteam perMyteam '}
+                      tClass={leadShow === 'All' ? 'myteam perMyteam myTableLeads' : 'myteam perMyteam myTableLeads'}
 
                     />
                   </>
