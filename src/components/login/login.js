@@ -8,7 +8,6 @@ import Loader from "../loader/loader";
 import loginBack from '../../assets/login/background.png'
 import eyeon from '../../assets/login/eyeon.svg'
 import eyeoff from '../../assets/login/eyeoff.svg'
-import { Link } from "react-router-dom";
 import Lottie from 'react-lottie';
 import loginAnimation from '../../lottie/loginAnimation.json' 
 
@@ -63,7 +62,6 @@ function Login({ setToken, setIsToken }) {
   return (
     <div className="login-wrappper">
       <div className="loginBackground" style={{ backgroundImage: `url(${loginBack})` }}>
-        {/* <h2 className="templateName">Verzeo</h2> */}
         <div style={{display:'flex'}}>
         <Lottie 
 	    options={defaultOptions}
@@ -107,9 +105,6 @@ function Login({ setToken, setIsToken }) {
               </div>
 
             </>}
-
-            {/* <Link to='/setPassword' className="loginForgot">Forgot Password?</Link>
-             */}
              <a className="loginForgot"  href="https://customer.verzeo.com/employee/forgotpassword" target="_blank">Forgot Password?</a>
             <button type="submit" className="loginButton"> Sign in </button>
           </form>

@@ -8,7 +8,7 @@ import localStorageService from "./utils/localStorageService";
 //components
 import NavBar from "./components/navBar/index";
 import Login from "./components/login/login";
-import SetPassword from "./components/setPassword/setPassword";
+
 
 function App() {
   const location = useLocation()
@@ -43,9 +43,7 @@ function App() {
     setRouteData(newRoutes);
   }, [isToken]);
   
-  if(location.pathname.includes('/setPassword')){
-    return <SetPassword/>
-  }
+
 
   if (!getAccessToken()) {
     return <>
