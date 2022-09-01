@@ -30,7 +30,7 @@ module.exports = {
     // get leads based on filter
     getLeadsBasedOnFilter: "/leads/filterLeads",
    
-    // Lead Bulk Upload
+    // Lead Bulk oad
     leadBulkUpload:'/leads/bulk/upload',
 
     //get Unassigned leads count

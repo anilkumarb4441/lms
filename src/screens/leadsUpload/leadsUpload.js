@@ -33,6 +33,19 @@ function LeadsUpload() {
     range: null,
   });
 
+  const [tableOption, setTableOption] = useState(false);
+
+  var headerLabels = {
+    name:true,
+    id:true,
+    email:true,
+    phone:false,
+    level:true,
+    status:false,
+  }
+  const [tableHeader, setTableHeader] = useState(headerLabels)
+// console.log(tableHeader.name, 'ddddddddd')
+
   const mainFilterArr = [
     { name: "Today", value: "todayLeads" },
     { name: "Old", value: "oldLeads" },
@@ -41,11 +54,13 @@ function LeadsUpload() {
   const [sourceArr, setSourceArr] = useState([
     { name: "Facebook", value: "facebook" },
     { name: "Email", value: "email" },
-    { name: "RCB", value: "rcb" },
+    { name: "RCB", value: "rcb" },  
     { name: "Website", value: "website" },
     { name: "Google", value: "google" },
     { name: "All", value: "all" },
   ]);
+
+
 
   const [originalColumns, setOriginalColumns] = useState([
     {
@@ -105,7 +120,7 @@ function LeadsUpload() {
   };
 
   useEffect(() => {
-    if (!filterObj.source) {return;}
+    if (!filterObj.source) { return; }
 
     getLeadsByFilters(filterObj);
   }, [filterObj]);
@@ -114,9 +129,18 @@ function LeadsUpload() {
     // FOR CHANUKYA 62e8ff859bdb428db493cf69
     // FOR SHUBAM   62e8ffb79bdb428db493cf6a
     let source = userId === "630760fd92b9e26cc6572a76" ? "all" : "cgfl";
-    if (source === "cgfl"){ setSourceArr([]);}
+    if (source === "cgfl") { setSourceArr([]); }
     setFilterObj({ ...filterObj, source: source });
+
   }, []);
+
+  // const handleChange = e => {
+  //   const { name, value } = e.target;
+  //   setState(prevState => ({
+  //       ...prevState,
+  //       [name]: value
+  //   }));
+// };
 
   return (
     <>
@@ -203,6 +227,28 @@ function LeadsUpload() {
               >
                 Assign Leads
               </button>
+              {/* {
+                userId === '627906f71f94140a082ef297'&& <div className="optionWraper">
+                <div className="headerOption" onClick={()=>setTableOption(!tableOption)}>Options</div>
+                {tableOption&&  
+                  <div className="optionDropdown">{tableHeader.name&& 'ddddddddd'}
+                  <div>
+                    <input type='checkbox' name="name" checked={tableHeader.name}/>
+                    <label>Name</label>
+                  </div>
+                  <div>
+                    <input type='checkbox' />
+                    <label>email</label>
+                  </div>
+                  <div>
+                    <input type='checkbox' />
+                    <label>id</label>
+                  </div>
+                </div>
+                }
+              </div>
+              } */}
+
             </div>
           </div>
 
@@ -251,7 +297,7 @@ function LeadsUpload() {
             <AssignToModal
               rowObj={null}
               assignType={"bulk"}
-              assignLeadCallBack={()=>setOpenAssign(false)}
+              assignLeadCallBack={() => setOpenAssign(false)}
               show={openAssign}
               handleDisplay={() => {
                 setOpenAssign(false);

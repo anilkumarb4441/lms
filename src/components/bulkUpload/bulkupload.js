@@ -16,6 +16,7 @@ import Input from "../Input";
 import Loader from "../loader/loader";
 
 function BulkUpload({show,handleDisplay,callback,userId}) {
+
   const inputref = useRef();
   const formref = useRef();
   let sheetData = useRef(0);
@@ -32,13 +33,14 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
     { name: "Website", value: "website" },
     { name: "Google", value: "google" },
   ];
+ 
 
   function downloadCSV(e) {
     e.preventDefault();
     var csv = "name,phone,email\n";
-    var data = [
-      { name: "User 1", phone: "9999999999",whatsAppNo:"9999999999", email: "user1@gmail.com",college:'XYZ College',branch:'Computer Science',yearOfPassOut:'2020' },
-    ];
+    var csv_data_shivam = { name: "User 1", phone: "9999999999",whatsAppNo:"999998888", email: "user1@gmail.com",college:'XYZ College',yearOfPassOut:'2020', year:'3rd year',department:'Computer Science', technicalProgram:'Machine Learning', certifications:'Machine Learning with IBM', referralCode:'45GV56D' }
+    var csv_data = { name: "User 1", phone: "9999999999",whatsAppNo:"9999999999", email: "user1@gmail.com",college:'XYZ College',branch:'Computer Science',yearOfPassOut:'2020' }
+    var data = [ userId === '627906f71f94140a082ef297'?csv_data_shivam:csv_data];
     const fileName = "sheet1";
     const exportType = "csv";
     exportFromJSON({ data, fileName, exportType });
@@ -46,7 +48,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
 
   function sendBulkData(e) {
     e.preventDefault();
-    console.log(bulkData);
+    console.log(bulkData, 'bulk');
     setLoading(true);
     const sendBulkDataCallBack = (err, res) => {
       setLoading(false);
@@ -82,6 +84,7 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
 
   // file on change 
   const handleFile = (e) => {
+    console.log(e.target.value, 'eeeeee', e)
   
     if (!e.target.files[0]){ return}
       xlsxParser.onFileSelection(e.target.files[0]).then((data) => {
@@ -89,11 +92,13 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
         if (!checkForEmptyValues(sheetData)) {
           toastWarning("File contains invalid data");
           setbulkData({ ...bulkData, leads: null });
+          
           setfilename("");
           formref.current.reset();
           return;
         }
         setbulkData({ ...bulkData, ["leads"]: sheetData });
+        console.log({ ...bulkData, ["leads"]: sheetData }, 'ssssssdd')
         setfilename(e.target.files[0].name);
       }).catch((err)=>{
         console.log(err)
