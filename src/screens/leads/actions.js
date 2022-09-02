@@ -108,6 +108,7 @@ export const updateCallResponse = (rowData, formData) => {
 
 //action to assign lead
 export const assignLead = (rowObj, assignType) => {
+
   return {
     type: actionTypes.ASSIGN_LEAD,
     payload: {

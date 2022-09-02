@@ -90,7 +90,7 @@ export default class API_Services {
         }
         callback(err, null);
         console.log(err)
-        toastError(err?.message)
+        // toastError(err?.message)
       });
   }
 }

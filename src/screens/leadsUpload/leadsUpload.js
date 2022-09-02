@@ -37,14 +37,14 @@ function LeadsUpload() {
 
   var headerLabels = {
     name:true,
-    id:true,
     email:true,
     phone:false,
-    level:true,
     status:false,
+    whatsAppNo:true,
+
   }
   const [tableHeader, setTableHeader] = useState(headerLabels)
-// console.log(tableHeader.name, 'ddddddddd')
+console.log(tableHeader.email, 'ddddddddd')
 
   const mainFilterArr = [
     { name: "Today", value: "todayLeads" },
@@ -134,12 +134,12 @@ function LeadsUpload() {
 
   }, []);
 
-  // const handleChange = e => {
-  //   const { name, value } = e.target;
-  //   setState(prevState => ({
-  //       ...prevState,
-  //       [name]: value
-  //   }));
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setState(prevState => ({
+//         ...prevState,
+//         [name]: value
+//     }));
 // };
 
   return (
@@ -227,27 +227,59 @@ function LeadsUpload() {
               >
                 Assign Leads
               </button>
-              {/* {
+              {
                 userId === '627906f71f94140a082ef297'&& <div className="optionWraper">
                 <div className="headerOption" onClick={()=>setTableOption(!tableOption)}>Options</div>
                 {tableOption&&  
-                  <div className="optionDropdown">{tableHeader.name&& 'ddddddddd'}
+                  <div className="optionDropdown">
                   <div>
-                    <input type='checkbox' name="name" checked={tableHeader.name}/>
+                    <input type='checkbox' value={tableHeader.name} name="name" checked={tableHeader.name}/>
                     <label>Name</label>
                   </div>
                   <div>
-                    <input type='checkbox' />
+                    <input type='checkbox' value={tableHeader.email} onChange={(e)=>setTableHeader({...tableHeader, email:e.target.value})}/>
                     <label>email</label>
                   </div>
                   <div>
-                    <input type='checkbox' />
-                    <label>id</label>
+                    <input type='checkbox' value={tableHeader.Phone} />
+                    <label>Phone</label>
+                  </div>
+                  <div>
+                    <input type='checkbox' value={tableHeader.whatsAppNo} />
+                    <label>whatsAppNo</label>
+                  </div>
+                  <div>
+                    <input type='checkbox' value={tableHeader.college} />
+                    <label>college</label>
+                  </div>
+                  <div>
+                    <input type='checkbox' value={tableHeader.yearOfPassOut} />
+                    <label>yearOfPassOut</label>
+                  </div>
+                  <div>
+                    <input type='checkbox' value={tableHeader.year} />
+                    <label>year</label>
+                  </div>
+                  <div>
+                    <input type='checkbox' value={tableHeader.department} />
+                    <label>department</label>
+                  </div>
+                  <div>
+                    <input type='checkbox' value={tableHeader.technicalProgram} />
+                    <label>technicalProgram</label>
+                  </div>
+                  <div>
+                    <input type='checkbox' value={tableHeader.certifications} />
+                    <label>certifications</label>
+                  </div>
+                  <div>
+                    <input type='checkbox' value={tableHeader.referralCode} />
+                    <label>referralCode</label>
                   </div>
                 </div>
                 }
               </div>
-              } */}
+              }
 
             </div>
           </div>
