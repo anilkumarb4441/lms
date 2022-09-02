@@ -228,6 +228,19 @@ function Leads() {
       accessor: "phone",
     },
     {
+      Header: "Department",
+      accessor: "department",
+    },
+    {
+      Header: "Technical Program",
+      accessor: "technicalProgram",
+    },
+    {
+      Header: "Certifications",
+      accessor: "certifications",
+    },
+   
+    {
       Header: "Email",
       accessor: "email",
     },
@@ -236,12 +249,12 @@ function Leads() {
       accessor: "college",
     },
     {
-      Header: "Branch",
-      accessor: "branch",
-    },
-    {
       Header: "Year of Pass Out",
       accessor: "yearOfPassOut",
+    },
+    {
+      Header: "Whats App No",
+      accessor: "whatsAppNo",
     },
     {
       Header: "Current Year",
@@ -260,6 +273,10 @@ function Leads() {
     {
       Header: "Call Count",
       accessor: "callCount",
+    },
+    {
+      Header: "Referral Code",
+      accessor: "referralCode",
     },
 
     {
@@ -281,7 +298,7 @@ function Leads() {
 
   // function to handle table row action btns
   const handleAction = (name, rowData) => {
-    console.log(rowData, 'rrrrrrrrrrrrrrr')
+ 
     switch (name) {
       case "Edit Lead":
         dispatch(actions.editLead(rowData, formData));
