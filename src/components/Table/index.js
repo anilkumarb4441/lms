@@ -68,7 +68,9 @@ function Table(options) {
             )
           }
         ])
-      }, useGlobalFilter);
+      }, useGlobalFilter , 
+      
+      );
       const arrowRef = useRef(null);
       const showBodyRef = useRef(null);
       const {
@@ -137,6 +139,15 @@ function Table(options) {
 
     return (
         <>
+        <div>
+        <input type="checkbox" {...getToggleHideAllColumnsProps()} /> Toggle All
+        {allColumns.map((col) => (
+          <span key={col.id}>
+            <input type="checkbox" {...col.getToggleHiddenProps()} />{" "}
+            {col.Header}
+          </span>
+        ))}
+      </div>
         <div className="tableHeader">
           <div className="tableHeader1">
           {options.showColumns &&  <div className="showColumns">

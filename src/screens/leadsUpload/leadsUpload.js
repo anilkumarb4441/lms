@@ -50,7 +50,7 @@ function LeadsUpload() {
   
   
   })
-console.log(tableHeader.email, 'ddddddddd')
+console.log(tableHeader.name, 'ddddddddd')
 
   const mainFilterArr = [
     { name: "Today", value: "todayLeads" },
@@ -67,55 +67,36 @@ console.log(tableHeader.email, 'ddddddddd')
   ]);
 
 
-
-  const [originalColumns, setOriginalColumns] = useState([
-    // {
-    //   Header: "Lead Id",
-    //   accessor: "leadId",
-    // },
-    { Header: "Name", 
-    accessor: "name" },
+  const tableOpt = [
+    tableHeader.phone?
+    
     {
       Header: "Phone",
       accessor: "phone",
-    },
-    {
-      Header: "Email",
-      accessor: "email",
-    },
-    {
-      Header: "College",
-      accessor: "college",
-    },
-    {
-      Header: "Whats App No",
-      accessor: "whatsAppNo",
-    },
-    {
-      Header: "Year of Pass Out",
-      accessor: "yearOfPassOut",
-    },
-    {
-      Header: "Year",
-      accessor: "year",
-    },
+    }:tableHeader.department?
     {
       Header: "Department",
       accessor: "department",
+    }: {
+      Header: "Department",
+      accessor: "department",
     },
-    {
-      Header: "Technical Program",
-      accessor: "technicalProgram",
-    },
-    {
-      Header: "Certifications",
-      accessor: "certifications",
-    },
-    {
-      Header: "Referral Code",
-      accessor: "referralCode",
-    },
-  ]);
+   
+  ]
+
+  document.addEventListener('change', () => {
+    const checkedValues = [...document.querySelectorAll('.tcheck')]
+      .filter(input => input.checked)
+      .map(input => input.value);
+      console.log(checkedValues, 'yyyyyyyyy')
+      debugger;
+    const filteredStores = tableOpt.filter((val) => checkedValues.includes(val));
+    console.log(filteredStores, 'ssssssssssssssssssssssss');
+  });
+  
+
+
+  const [originalColumns, setOriginalColumns] = useState(tableOpt);
 
   const [columns, setColumns] = useState(originalColumns);
   const [tableData, setTableData] = useState([]);
@@ -260,48 +241,48 @@ console.log(tableHeader.email, 'ddddddddd')
                 {tableOption&&  
                   <div className="optionDropdown">
                   <div>
-                    <input type='checkbox' checked={tableHeader.name} name="name" onChange={(e)=>setTableHeader({...tableHeader, name:!tableHeader.name})}/>
+                    <input className="tcheck" type='checkbox' value='name' name="name" />
                     <label>Name</label>
                   </div>
                   
                   <div>
-                    <input type='checkbox'checked={tableHeader.email} name='email' onChange={(e)=>setTableHeader({...tableHeader, email:!tableHeader.email})}/>
+                    <input className="tcheck" type='checkbox'value='email' name='email' />
                     <label>email</label>
                   </div>
                   <div>
-                    <input type='checkbox' checked={tableHeader.phone} name='phone' onChange={(e)=>setTableHeader({...tableHeader, phone:!tableHeader.phone})}/>
+                    <input className="tcheck" type='checkbox' checked={tableHeader.phone} name='phone' onChange={(e)=>setTableHeader({...tableHeader, phone:!tableHeader.phone})}/>
                     <label>Phone</label>
                   </div>
                   <div>
-                    <input type='checkbox' checked={tableHeader.whatsAppNo} onChange={(e)=>setTableHeader({...tableHeader, whatsAppNo:!tableHeader.whatsAppNo})}/>
+                    <input className="tcheck" type='checkbox' checked={tableHeader.whatsAppNo} onChange={(e)=>setTableHeader({...tableHeader, whatsAppNo:!tableHeader.whatsAppNo})}/>
                     <label>whatsAppNo</label>
                   </div>
                   <div>
-                    <input type='checkbox' checked={tableHeader.college} onChange={(e)=>setTableHeader({...tableHeader, college:!tableHeader.college})}/>
+                    <input className="tcheck" type='checkbox' checked={tableHeader.college} onChange={(e)=>setTableHeader({...tableHeader, college:!tableHeader.college})}/>
                     <label>college</label>
                   </div>
                   <div>
-                    <input type='checkbox' checked={tableHeader.yearOfPassOut} onChange={(e)=>setTableHeader({...tableHeader, yearOfPassOut:!tableHeader.yearOfPassOut})}/>
+                    <input className="tcheck" type='checkbox' checked={tableHeader.yearOfPassOut} onChange={(e)=>setTableHeader({...tableHeader, yearOfPassOut:!tableHeader.yearOfPassOut})}/>
                     <label>yearOfPassOut</label>
                   </div>
                   <div>
-                    <input type='checkbox' checked={tableHeader.year} onChange={(e)=>setTableHeader({...tableHeader, year:!tableHeader.year})}/>
+                    <input className="tcheck" type='checkbox' checked={tableHeader.year} onChange={(e)=>setTableHeader({...tableHeader, year:!tableHeader.year})}/>
                     <label>year</label>
                   </div>
                   <div>
-                    <input type='checkbox' checked={tableHeader.department} onChange={(e)=>setTableHeader({...tableHeader, department:!tableHeader.department})}/>
+                    <input className="tcheck" type='checkbox' checked={tableHeader.department} onChange={(e)=>setTableHeader({...tableHeader, department:!tableHeader.department})}/>
                     <label>department</label>
                   </div>
                   <div>
-                    <input type='checkbox' checked={tableHeader.technicalProgram} onChange={(e)=>setTableHeader({...tableHeader, technicalProgram:!tableHeader.technicalProgram})}/>
+                    <input className="tcheck" type='checkbox' checked={tableHeader.technicalProgram} onChange={(e)=>setTableHeader({...tableHeader, technicalProgram:!tableHeader.technicalProgram})}/>
                     <label>technicalProgram</label>
                   </div>
                   <div>
-                    <input type='checkbox' checked={tableHeader.certifications} onChange={(e)=>setTableHeader({...tableHeader, certifications:!tableHeader.certifications})}/>
+                    <input className="tcheck" type='checkbox' checked={tableHeader.certifications} onChange={(e)=>setTableHeader({...tableHeader, certifications:!tableHeader.certifications})}/>
                     <label>certifications</label>
                   </div>
                   <div>
-                    <input type='checkbox' value={tableHeader.referralCode} onChange={(e)=>setTableHeader({...tableHeader, referralCode:!tableHeader.referralCode})}/>
+                    <input className="tcheck" type='checkbox' value={tableHeader.referralCode} onChange={(e)=>setTableHeader({...tableHeader, referralCode:!tableHeader.referralCode})}/>
                     <label>referralCode</label>
                   </div>
                 </div>
