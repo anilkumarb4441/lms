@@ -72,6 +72,7 @@ const reducer = (state = initialState, action) => {
 
     case actionTypes.ASSIGN_LEAD:
       return {
+     
         ...state,...action.payload,
        
       };

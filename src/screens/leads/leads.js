@@ -281,6 +281,7 @@ function Leads() {
 
   // function to handle table row action btns
   const handleAction = (name, rowData) => {
+    console.log(rowData, 'rrrrrrrrrrrrrrr')
     switch (name) {
       case "Edit Lead":
         dispatch(actions.editLead(rowData, formData));
@@ -364,6 +365,7 @@ function Leads() {
 
       case "Update Call":
         updateCallStatus(leadObject);
+        
         return;
     }
   };
@@ -402,6 +404,7 @@ function Leads() {
 
   // function to update call status
   const updateCallStatus = (data) => {
+    console.log(data, 'dataaaaaaaaaa')
     data =
       reducer.filter.subFilter === "preRegistration"
         ? { ...data, isPreg: true }
@@ -418,7 +421,14 @@ function Leads() {
         dispatch(actions.closeForm());
 
       }
+    
+      if(err){
+        utils.toastError(err?.response.data);
+        console.log(err?.response.data)
+      }
+      
     };
+    console.log(data, 'twwwwwwwwwwwwwwwwwww')
     API_SERVICES.httpPOSTWithToken(URLS.updateCallLog, data, callback);
   };
 
