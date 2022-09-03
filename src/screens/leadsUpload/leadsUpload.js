@@ -398,7 +398,7 @@ function LeadsUpload() {
               columns={[...columns]}
               data={tableData}
               tClass="bulkTable"
-              usId='627906f71f94140a082ef297'
+              usId={userId ==='627906f71f94140a082ef297'?'627906f71f94140a082ef297':''}
             />
           </div>
 
