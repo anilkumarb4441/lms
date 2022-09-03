@@ -32,6 +32,9 @@ function Table(options) {
     const columns = useMemo(() => options.columns, [options.columns]);
     const data = useMemo(() => options.data, [options.data]);
     const [cellWidth,setCellWidth] = useState('')
+    const [colOptions, setColOptions] = useState(false);
+
+
     const tableInstance = useTable({ columns, data },useRowSelect, hooks => {
         if(!options.selectRows){
           return
@@ -68,7 +71,9 @@ function Table(options) {
             )
           }
         ])
-      }, useGlobalFilter);
+      }, useGlobalFilter , 
+      
+      );
       const arrowRef = useRef(null);
       const showBodyRef = useRef(null);
       const {
@@ -134,9 +139,31 @@ function Table(options) {
      if(options.tableLoading){
        return <Loader/>
      }
+   
+     document.querySelector('*').addEventListener('click', (e) => {
+      let tarempbox = document.getElementById("empbox");
+  if (tarempbox.contains(e.target)) {
+      return
+  } else {
+    setColOptions(false);
+  }
+});
 
     return (
         <>
+        {options.usId &&<div className='tableopWrape' id='empbox'>
+        <div  onClick={()=>setColOptions(!colOptions)} className="tableOptin">Header Options</div>
+          {colOptions&&
+            <div  className="tabOptions">
+            {allColumns.map((col) => {
+              return( <span key={col.id}>
+                <input type="checkbox" {...col.getToggleHiddenProps()} />{" "}
+                <label>{col.Header}</label>
+              </span>)
+            })}
+          </div>
+          }
+        </div>}
         <div className="tableHeader">
           <div className="tableHeader1">
           {options.showColumns &&  <div className="showColumns">
@@ -198,15 +225,21 @@ function Table(options) {
                   <tr  {...headerGroup.getHeaderGroupProps()}>
                     {
                       // Loop over the headers in each row
-                      headerGroup.headers.map((column) => (
-                        // Apply the header cell props style = {{width:cellWidth+'%'}}
-                        <th  {...column.getHeaderProps()}>
-                          {
-                            // Render the header
-                            column.render("Header")
-                          }
-                        </th>
-                      ))
+                      headerGroup.headers.map((column) => {
+                        //condition for column hiding
+                        if(headerGroup.headers.length <= 2){
+                          alert('Please keep select atleast two table headers')
+                        } 
+                       return(
+                         // Apply the header cell props style = {{width:cellWidth+'%'}}
+                         <th  {...column.getHeaderProps()}>
+                         {
+                           // Render the header
+                           column.render("Header")
+                         }
+                       </th>
+                       )
+})
                     }
                   </tr>
                 ))
