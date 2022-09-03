@@ -219,7 +219,44 @@ min-width: 124px;
   background-color: #f0f0f5;
 }
 
+.tableopWrape{
+  width: fit-content;
+  position: relative;
+  margin-left: auto;
+}
 
+.tableOptin{
+  color: #646464;
+  background: var(--white);
+  padding: 8px 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 5px;
+  box-shadow: 0px 3px 6px #00000029;
+  width: fit-content;
+  cursor: pointer;
+  
+}
+
+.tabOptions{
+  width: 175px;
+  position: absolute;
+  right: 0%;
+  top: 100%;
+  background-color: white;
+  border-radius:2px ;
+  display: flex;  
+  flex-direction: column;
+  padding: 10px 20px 10px 20px;
+  box-shadow: 0px 3px 6px #00000029;
+}
+
+.tabOptions input{
+  margin-right: 15px;
+}
+.tabOptions label{
+  font-size: 12px;
+}
 
 
 
