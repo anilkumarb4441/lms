@@ -764,6 +764,7 @@ function Leads() {
                 columns={[...columns]}
                 data={tableData}
                 tClass="leadTable actionsTable"
+                columnHide={true}
               />
             </div>
 

@@ -151,7 +151,7 @@ function Table(options) {
 
     return (
         <>
-        {options.data && options.data.length >0 && 
+        {options.data && options.data.length >0 && options.columnHide &&
         <div className='tableopWrape' id='empbox'>
         <div  onClick={()=>setColOptions(!colOptions)} className="tableOptin">Table Options</div>
           {colOptions&&
