@@ -151,7 +151,7 @@ function Table(options) {
 
     return (
         <>
-        {options.usId &&<div className='tableopWrape' id='empbox'>
+       <div className='tableopWrape' id='empbox'>
         <div  onClick={()=>setColOptions(!colOptions)} className="tableOptin">Header Options</div>
           {colOptions&&
             <div  className="tabOptions">
@@ -163,7 +163,7 @@ function Table(options) {
             })}
           </div>
           }
-        </div>}
+        </div>
         <div className="tableHeader">
           <div className="tableHeader1">
           {options.showColumns &&  <div className="showColumns">
