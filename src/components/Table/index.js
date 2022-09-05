@@ -151,8 +151,9 @@ function Table(options) {
 
     return (
         <>
-       <div className='tableopWrape' id='empbox'>
-        <div  onClick={()=>setColOptions(!colOptions)} className="tableOptin">Header Options</div>
+        {options.data && options.data.length >0 && 
+        <div className='tableopWrape' id='empbox'>
+        <div  onClick={()=>setColOptions(!colOptions)} className="tableOptin">Table Options</div>
           {colOptions&&
             <div  className="tabOptions">
             {allColumns.map((col) => {
@@ -164,6 +165,8 @@ function Table(options) {
           </div>
           }
         </div>
+        }
+       
         <div className="tableHeader">
           <div className="tableHeader1">
           {options.showColumns &&  <div className="showColumns">
