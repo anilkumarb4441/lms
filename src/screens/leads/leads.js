@@ -49,6 +49,13 @@ function Leads() {
     { name: "Old", value: "oldLeads" },
   ];
 
+  const leadTypeFilterArr = [
+    { name: "Self Generated", value: "selfGenerated" },
+    { name: "CGFL", value: "CGFL" },
+    { name: "All", value: "All" },
+    { name: "Compaign Leads", value: "compaignLeads" },
+  ];
+
   const callFilterArr = [
     { name: "All", value: "all" },
     { name: "Attempting", value: "Attempting" },
@@ -567,7 +574,8 @@ function Leads() {
 
   return (
     <>
-      {reducer.title && <p className="screenTitle">{reducer.title}</p>}
+      {/* {reducer.title && <p className="screenTitle">{reducer.title}</p>}Leads */}
+      <h3 className="screenTitl">Leads</h3>
       <div className="leadsScreen">
         {/* MAIN LEAD PAGE */}
         {!reducer.openInner && (
@@ -591,7 +599,7 @@ function Leads() {
                 }
               />
 
-              <Dropdown
+              {/* <Dropdown
                 dropdownClass="lead-main-drop-down side-drop-down"
                 value={reducer.filter.dateFilter}
                 options={dateFilterArr}
@@ -607,9 +615,28 @@ function Leads() {
                     })
                   )
                 }
-              />
+              /> */}
+              <div className="horizontalBaseLine"></div>
             </div>
-
+            <div className="filterContainer">
+            <div className="filtersWraper"> 
+              <Dropdown
+                dropdownClass="lead-main-drop-down"
+                value={reducer.filter.dateFilter}
+                options={leadTypeFilterArr}
+                onchange={(item) =>
+                  dispatch(
+                    actions.setFilter({
+                      ...reducer.filter,
+                      dateFilter: item.value,
+                      searchData: "",
+                      pageNumber: 1,
+                      pageRows: 10,
+                      range: null,
+                    })
+                  )
+                }
+              />
             {reducer.filter.mainFilter === "paid" && (
               <div className="lead-main-filter-header">
                 <Tabs
@@ -672,7 +699,34 @@ function Leads() {
                 />
               </div>
             )}
-
+                </div>
+                <div>
+                <button
+                  className="leadbtnPrimary"
+                  onClick={() => {
+                    dispatch(actions.addLead(formData));
+                  }}
+                >
+                  Add Lead
+                </button>
+                <button
+                  className="leadbtnPrimary"
+                  onClick={() => {
+                    dispatch(actions.toggleBulkModal());
+                  }}
+                >
+                  Bulk Upload
+                </button>
+                <button
+                  onClick={() => {
+                    dispatch(actions.assignLead(null, "bulk"));
+                  }}
+                  className="leadbtnPrimary"
+                >
+                  Assign Leads
+                </button>
+              </div>
+            </div>
             <div className="lead-filter-header">
               <div>
                 <Input
@@ -691,11 +745,8 @@ function Leads() {
                     );
                   }}
                 />
-              </div>
-
-              <div>
-                {reducer.filter.dateFilter === "oldLeads" && (
-                  <CustomDateRange
+                   {/* {reducer.filter.dateFilter === "oldLeads" && ( */}
+                   <CustomDateRange
                     range={reducer.filter.range}
                     onChange={(arr) => {
                       dispatch(
@@ -708,39 +759,16 @@ function Leads() {
                       );
                     }}
                   />
-                )}
-
-                <button
-                  className="btnPrimary"
-                  onClick={() => {
-                    dispatch(actions.addLead(formData));
-                  }}
-                >
-                  Add Lead
-                </button>
-                <button
-                  className="btnPrimary"
-                  onClick={() => {
-                    dispatch(actions.toggleBulkModal());
-                  }}
-                >
-                  Bulk Upload
-                </button>
-                <button
-                  onClick={() => {
-                    dispatch(actions.assignLead(null, "bulk"));
-                  }}
-                  className="btnPrimary"
-                >
-                  Assign Leads
-                </button>
+                {/* // )} */}
               </div>
+
+              
             </div>
 
             <div>
-              <p className="count">
+              {/* <p className="count">
                 Total Count <span>{totalCount}</span>
-              </p>
+              </p> */}
               <Table
                 wrapperRef={wrapperRef}
                 search={false}

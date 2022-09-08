@@ -3,8 +3,9 @@ import noRecordImg from "../../assets/icons/noRecord.svg"
 import "./noRecord.css"
 
 function NoRecord() {
+
     return (
-        <div className="norecordMain ">
+        <div className={window.location.pathname === "/leads"?'leadnoContainer':"norecordMain "}>
             <div className="noimgparent">
                 <img src={noRecordImg} alt="No-Data Image" className="imgNodata"/>
                 </div>

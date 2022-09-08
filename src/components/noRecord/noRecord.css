@@ -5,17 +5,23 @@
     margin: 0% 0%;
     border: solid 2px #b6b6b7;
 }
-
-.norecordMain .noimgparent{
+.leadnoContainer{
+    color: var(--black);
+    border-radius: 12px;
+    padding: 9% 0%;
+    margin: 0% 0%;
+    border: solid 2px #b6b6b7;
+}
+ .noimgparent{
     text-align: center;
 }
 
-.norecordMain .imgNodata{
+ .imgNodata{
     width: 10%;
     animation: errorimg 1.5s infinite;
 }
 
-.norecordMain .textNo{
+ .textNo{
     text-align: center;
     font-size: 17px;
     margin: 3% 0% 0% 0%;

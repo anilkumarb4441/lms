@@ -5,9 +5,9 @@
 
 .tabsSection>button{
     padding: 10px 20px;
-    background-color: #EFF3FC;
+    background-color: #ffffff;
     color: var(--primary);
-    font-weight: 600;
+    font-weight: 500;
     transition:  background-color 0.5s;
     border: solid 1px #0000001f;
 

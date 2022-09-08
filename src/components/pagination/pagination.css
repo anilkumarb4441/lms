@@ -53,13 +53,25 @@
 .disabled .arrowLeft ,.disabled .arrowRight{
     color: #A6A6A6;
 }
-
+.arrowLeft:hover ,.arrowRight:hover{
+    color: white;
+}
 .pagination-bar{
    align-items: center;
-    padding:2%;
+    padding:1.5%;
     gap: 20px;
-    justify-content: center;
+    /* justify-content: center; */
     display: flex;
 
 }
-
+.pageSizeOpt{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* width: ; */
+}
+.pageSizeOpt>span{
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 500;
+}
