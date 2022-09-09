@@ -1,19 +1,26 @@
 import localStorageService from "../../utils/localStorageService";
 import * as actionTypes from "./actionTypes";
+//
+
+let dateObj = new Date()
+let date = new Date(dateObj.getTime() + 19800000).toISOString().split("T")[0];
+console.log(date, 'date');
 
 export const initialState = {
+  
   openInner: false,
   openForm: false,
   openAssignModal: false,
   showBulkModal:false,
   filter: {
     mainFilter: "new",
-    dateFilter: "oldLeads",
+    // dateFilter: "oldLeads",
     subFilter: "",
     pageRows: 10,
     pageNumber: 1,
     searchData: "",
-    range:null
+    range:null, 
+    generalFilter:'selfGenerated'
   },
   title: "",
   formHeading: "",

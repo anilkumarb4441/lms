@@ -19,6 +19,7 @@ import AssignToModal from "../../components/assignToModal/assignToModal";
 function LeadsUpload() {
   const { userId } = localStorageService.getTokenDecode();
   const [totalCount, setTotalCount] = useState(0);
+
   const [openBulk, setOpenBulk] = useState(false);
   const [tableLoading, setTableLoading] = useState(true);
   const [openAssign, setOpenAssign] = useState(false);
@@ -31,6 +32,7 @@ function LeadsUpload() {
     pageRows: 10,
     pageNumber: 1,
     range: null,
+    generalFilter:'selfGenerated'
   });
 
   const [tableOption, setTableOption] = useState(false);
@@ -54,6 +56,13 @@ function LeadsUpload() {
   const mainFilterArr = [
     { name: "Today", value: "todayLeads" },
     { name: "Old", value: "oldLeads" },
+  ];
+
+  const generalFilterArr = [
+    { name: "Self Generated", value: "selfGenerated" },
+    { name: "CGFL", value: "CGFL" },
+    { name: "All", value: "All" },
+    { name: "Compaign Leads", value: "compaignLeads" },
   ];
 
   const [sourceArr, setSourceArr] = useState([
@@ -151,6 +160,7 @@ function LeadsUpload() {
       if (res && res.status === 200) {
         setTableData(res.data.data);
         setTotalCount(res.data.totalCount);
+      
       }
     };
     API_SERVICES.httpPOSTWithToken(
@@ -175,13 +185,6 @@ function LeadsUpload() {
 
   }, []);
 
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setTableHeader(prevState => ({
-//         ...prevState,
-//         [name]: value
-//     }));
-// };
 
   return (
     <>
@@ -192,6 +195,21 @@ function LeadsUpload() {
               dropdownClass="lead-main-drop-down"
               value={filterObj.filter}
               options={mainFilterArr}
+              onchange={(item) =>
+                setFilterObj({
+                  ...filterObj,
+                  filter: item.value,
+                  searchData: "",
+                  pageNumber: 1,
+                  pageRows: 10,
+                  range: null,
+                })
+              }
+            />
+            <Dropdown
+              dropdownClass="lead-main-drop-down"
+              value={filterObj.filter}
+              options={generalFilterArr}
               onchange={(item) =>
                 setFilterObj({
                   ...filterObj,

@@ -49,7 +49,7 @@ function Leads() {
     { name: "Old", value: "oldLeads" },
   ];
 
-  const leadTypeFilterArr = [
+  const generalFilterArr = [
     { name: "Self Generated", value: "selfGenerated" },
     { name: "CGFL", value: "CGFL" },
     { name: "All", value: "All" },
@@ -521,7 +521,7 @@ function Leads() {
         setColumns(originalColumns);
         return;
     }
-  }, [reducer.filter.mainFilter]);
+  }, [reducer.filter.mainFilter, reducer.filter.range,]);
 
   // function to change columns and call Status DropDown when main filter is paid/lost  after switching b/w sub Tabs
   useEffect(() => {
@@ -563,6 +563,7 @@ function Leads() {
     reducer.filter.range,
     reducer.filter.searchData,
     reducer.filter.dateFilter,
+    reducer.filter.generalFilter,
   ]);
 
   // setting reducer state to default after component gets unmounted
@@ -622,13 +623,13 @@ function Leads() {
             <div className="filtersWraper"> 
               <Dropdown
                 dropdownClass="lead-main-drop-down"
-                value={reducer.filter.dateFilter}
-                options={leadTypeFilterArr}
+                value={reducer.filter.generalFilter}
+                options={generalFilterArr}
                 onchange={(item) =>
                   dispatch(
                     actions.setFilter({
                       ...reducer.filter,
-                      dateFilter: item.value,
+                      generalFilter: item.value,
                       searchData: "",
                       pageNumber: 1,
                       pageRows: 10,
