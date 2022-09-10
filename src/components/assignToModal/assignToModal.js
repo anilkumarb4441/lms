@@ -6,6 +6,7 @@ import API_SERVICES from "../../utils/API";
 import Input from "../Input";
 import { toastSuccess ,toastWarning} from "../../utils/constants";
 import Loader from "../loader/loader";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 function AssignToModal({
   show,
@@ -20,6 +21,14 @@ function AssignToModal({
   const [level, setLevel] = useState();
   const [untouchedCount, setUntouchedCount] = useState();
   const [loading,setLoading] = useState(false)
+  const [search, setSearch] = useState('')
+  const [searchData, setSearchData] = useState([]);
+  const [selectedLead, setSelectedLead] = useState('')
+  const [showDropdown, setShowDropDown] = useState(false);
+  // const [assignLead, setAssignLead] = useState('')
+
+  console.log(selectedLead, userId);
+
   const handleCount = (num) => {
     setLeadCount(num);
   };
@@ -49,7 +58,7 @@ function AssignToModal({
     };
     API_SERVICES.httpPOSTWithToken(
       URLS.myteammembers,
-      { userId: "" },
+      { userId: "", pagination:false },
       callback
     );
   };
@@ -102,6 +111,24 @@ function AssignToModal({
     getUnassignedLeadsCount();
   }, []);
 
+
+  // assign search
+  const onChangeAssignLeads = (e) => {
+    let text = e.target.value.toLowerCase();
+    setSearch(e.target.value)
+  
+    let filteredList = selectArr ?
+    selectArr.filter((item) => {
+        let serch = item.name?.toLowerCase().includes(text);
+        return serch
+      }) :[]
+
+      setSearchData([...filteredList]);
+  };
+
+
+const dropdownData = search !== ''?searchData:selectArr
+
   return (
     <Modal
       show={show}
@@ -114,17 +141,43 @@ function AssignToModal({
           <p>
             Total Unassigned leads : <span>{untouchedCount}</span>
           </p>
-          <Input
+          {/* <input type="search" value={search} onChange={(e)=>onChangeAssignLeads(e)} placeholder="Search by name"  className="assignSerchbar"/> */}
+          {/* <Input
             element="select"
             name="userId"
             value={userId}
             selectHeading="Assign To"
-            selectArr={selectArr}
+            selectArr={search===''?selectArr:searchData}
             change={(e) => {
               setUserId(e.target.value);
             }}
             required={true}
-          />
+            searchbar='anil'
+          /> */}
+       
+       <div className="assignLeadsWraper">
+            <div className="dropdownHead" onClick={()=>setShowDropDown(!showDropdown)}>
+              <p>{selectedLead ===''?'Assign To':selectedLead}</p>
+              <IoMdArrowDropdown />
+              </div>
+           { showDropdown === true?
+             <div className="assignLead-dropdown">
+             <input type="search" value={search} onChange={(e)=>onChangeAssignLeads(e)} placeholder="Search by name"  className="assignSerchbar"/>
+             <div className="leadsAssignContainer">
+               {
+                dropdownData.map((val)=>{
+                   return(
+                   <>
+                    <p className="leadName" onClick={()=>{setUserId(val.value);setSelectedLead(val.name); setShowDropDown(false)}}>{val.name}</p>
+                   </>
+                   )
+                 })
+               }
+             </div>
+             </div>:null
+           }
+       </div>
+
           {assignType === "bulk" && (
             <Input
               type="number"
@@ -136,6 +189,7 @@ function AssignToModal({
               max={untouchedCount}
               min={1}
               required={true}
+              
             />
           )}
 

@@ -77,7 +77,7 @@ function Myteam() {
         }
       }
     }
-    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, { ...filterQuery, userId: '' }, callback)
+    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, { ...filterQuery, userId: '', pagination:true }, callback)
   }
 
   return (
