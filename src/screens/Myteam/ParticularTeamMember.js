@@ -210,7 +210,7 @@ function ParticularTeamMember({
         }
       }
     };
-    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, { ...tableFilter, userId: obj.userId, level: obj.level }, callback);
+    API_SERVICES.httpPOSTWithToken(URLS.myteammembers, { ...tableFilter, userId: obj.userId, level: obj.level ,pagination:true }, callback);
   }
 
   useEffect(() => {

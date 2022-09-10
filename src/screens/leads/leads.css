@@ -11,10 +11,10 @@
     background-color:var(--primary);
 }
 
-.lead-main-drop-down.custom-dropdown.side-drop-down{
+/* .lead-main-drop-down.custom-dropdown.side-drop-down{
     position: absolute;
     right:0;
-}
+} */
 .lead-main-filter-header{
     display:flex;
     position: relative;

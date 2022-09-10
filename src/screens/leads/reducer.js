@@ -14,7 +14,7 @@ export const initialState = {
   showBulkModal:false,
   filter: {
     mainFilter: "new",
-    // dateFilter: "oldLeads",
+    dateFilter: "todayLeads",
     subFilter: "",
     pageRows: 10,
     pageNumber: 1,

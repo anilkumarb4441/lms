@@ -1,12 +1,18 @@
 
 .TableContainer::-webkit-scrollbar{
-    height:2px
+    height:2px;
  }
  
  .TableContainer{
-     border-radius: 10px;
+     border-radius:2px;
      overflow-x: scroll;
-     min-height: 220px; 
+     min-height: 290px; 
+     max-height: 310px;
+     padding-bottom: 30px;
+ }
+ .TableContainer .Table thead{
+  position: sticky;
+  top: 0  ;
  }
 
  .searchBar{ 

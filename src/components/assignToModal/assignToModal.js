@@ -49,7 +49,7 @@ function AssignToModal({
     };
     API_SERVICES.httpPOSTWithToken(
       URLS.myteammembers,
-      { userId: "" },
+      { userId: "", pagination:false},
       callback
     );
   };

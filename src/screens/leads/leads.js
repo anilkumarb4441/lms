@@ -746,7 +746,24 @@ function Leads() {
                     );
                   }}
                 />
-                   {/* {reducer.filter.dateFilter === "oldLeads" && ( */}
+                <Dropdown
+                dropdownClass="lead-main-drop-down side-drop-down"
+                value={reducer.filter.dateFilter}
+                options={dateFilterArr}
+                onchange={(item) =>
+                  dispatch(
+                    actions.setFilter({
+                      ...reducer.filter,
+                      dateFilter: item.value,
+                      searchData: "",
+                      pageNumber: 1,
+                      pageRows: 10,
+                      range: null,
+                    })
+                  )
+                }
+              />
+                   {reducer.filter.dateFilter === "oldLeads" && (
                    <CustomDateRange
                     range={reducer.filter.range}
                     onChange={(arr) => {
@@ -760,7 +777,7 @@ function Leads() {
                       );
                     }}
                   />
-                {/* // )} */}
+                )}
               </div>
 
               
