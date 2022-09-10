@@ -25,9 +25,8 @@ function AssignToModal({
   const [searchData, setSearchData] = useState([]);
   const [selectedLead, setSelectedLead] = useState('')
   const [showDropdown, setShowDropDown] = useState(false);
-  // const [assignLead, setAssignLead] = useState('')
 
-  console.log(selectedLead, userId);
+
 
   const handleCount = (num) => {
     setLeadCount(num);
