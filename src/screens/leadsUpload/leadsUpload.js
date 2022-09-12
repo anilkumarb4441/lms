@@ -32,26 +32,26 @@ function LeadsUpload() {
     pageRows: 10,
     pageNumber: 1,
     range: null,
-    generalFilter:'selfGenerated'
+    generalFilter: 'selfGenerated'
   });
 
   const [tableOption, setTableOption] = useState(false);
+  const [tableHeader, setTableHeader] = useState([])
+  // const [tableHeader, setTableHeader] = useState({
+  //   name:true,
+  //   email:true,
+  //   phone:false,
+  //   whatsAppNo:true,
+  //   college:true,
+  //   yearOfPassOut:false,
+  //   year:false,
+  //   department:true,
+  //   technicalProgram:false,
+  //   certifications:false,
+  //   referralCode:true
 
-  const [tableHeader, setTableHeader] = useState({
-    name:true,
-    email:true,
-    phone:false,
-    whatsAppNo:true,
-    college:true,
-    yearOfPassOut:false,
-    year:false,
-    department:true,
-    technicalProgram:false,
-    certifications:false,
-    referralCode:true
-  
-  
-  })
+
+  // })
 
   const mainFilterArr = [
     { name: "Today", value: "todayLeads" },
@@ -68,7 +68,7 @@ function LeadsUpload() {
   const [sourceArr, setSourceArr] = useState([
     { name: "Facebook", value: "facebook" },
     { name: "Email", value: "email" },
-    { name: "RCB", value: "rcb" },  
+    { name: "RCB", value: "rcb" },
     { name: "Website", value: "website" },
     { name: "Google", value: "google" },
     { name: "All", value: "all" },
@@ -76,8 +76,10 @@ function LeadsUpload() {
 
 
   const tableOpt = [
-    { Header: "Name", 
-    accessor: "name" },
+    {
+      Header: "Name",
+      accessor: "name"
+    },
     {
       Header: "Phone",
       accessor: "phone",
@@ -118,25 +120,39 @@ function LeadsUpload() {
       Header: "Referral Code",
       accessor: "referralCode",
     },
-   
+
   ]
 
+  let tabOpt = []
+
   document.addEventListener('change', () => {
-    const checkedValues = [...document.querySelectorAll('.tcheck')]
+    var checkedValues = [...document.querySelectorAll('.tcheck')]
       .filter(input => input.checked)
       .map(input => input.value);
-      // console.log(checkedValues, 'yyyyyyyyy')
-      // debugger;
-    // const filteredStores = tableOpt.filter((val) =>{
-      // console.log(val, 'vvvvvvvvv')
-    //  let sss = val.accessor?.toLowerCase().includes(checkedValues);
-    //  console.log(sss, 'ssssssssssss')
-    //  return sss;
-    // } );
-    // console.log(filteredStores, 'ssssssssssssssssssssssss');
+    // console.log(checkedValues, 'yyyyyyyyy')
+    
+     tableOpt.map((val)=>{ 
+     if(checkedValues.includes(val.accessor)){
+      
+      if(tabOpt.length!== 0){
+        tabOpt.map((item)=>{
+          console.log(item,"bg")
+          if(item.accessor !== val.accessor){
+            tabOpt.push(val);
+          }
+        })
+      }else{
+        tabOpt.push(val);
+      }
+   
+     }
+      
+    })
+    console.log(tabOpt, 'tabOpt');
+    setTableHeader()
   });
-  
 
+// console.log(tabOpt, 'tabOpt');
 
   const [originalColumns, setOriginalColumns] = useState(tableOpt);
 
@@ -160,7 +176,7 @@ function LeadsUpload() {
       if (res && res.status === 200) {
         setTableData(res.data.data);
         setTotalCount(res.data.totalCount);
-      
+
       }
     };
     API_SERVICES.httpPOSTWithToken(
@@ -193,12 +209,13 @@ function LeadsUpload() {
           <div className="lead-main-filter-header">
             <Dropdown
               dropdownClass="lead-main-drop-down"
-              value={filterObj.filter}
-              options={mainFilterArr}
+              value={filterObj.generalFilter}
+              options={generalFilterArr}
               onchange={(item) =>
                 setFilterObj({
                   ...filterObj,
-                  filter: item.value,
+                  generalFilter: item.value,
+
                   searchData: "",
                   pageNumber: 1,
                   pageRows: 10,
@@ -209,7 +226,7 @@ function LeadsUpload() {
             <Dropdown
               dropdownClass="lead-main-drop-down"
               value={filterObj.filter}
-              options={generalFilterArr}
+              options={mainFilterArr}
               onchange={(item) =>
                 setFilterObj({
                   ...filterObj,
@@ -218,9 +235,24 @@ function LeadsUpload() {
                   pageNumber: 1,
                   pageRows: 10,
                   range: null,
+
                 })
               }
             />
+            {filterObj.filter === "oldLeads" && (
+              <CustomDateRange
+                range={filterObj.range}
+                onChange={(arr) => {
+                  setFilterObj({
+                    ...filterObj,
+                    range: arr ? [...arr] : null,
+                    pageNumber: 1,
+                    pageRows: 10,
+                  });
+                }}
+              />
+            )}
+
           </div>
 
           <div className="lead-filter-header">
@@ -257,19 +289,7 @@ function LeadsUpload() {
             </div>
 
             <div>
-              {filterObj.filter === "oldLeads" && (
-                <CustomDateRange
-                  range={filterObj.range}
-                  onChange={(arr) => {
-                    setFilterObj({
-                      ...filterObj,
-                      range: arr ? [...arr] : null,
-                      pageNumber: 1,  
-                      pageRows: 10,
-                    });
-                  }}
-                />
-              )}
+
               <button
                 onClick={() => {
                   setOpenBulk(true);
@@ -286,9 +306,10 @@ function LeadsUpload() {
               >
                 Assign Leads
               </button>
-              {
-                userId === '627906f71f94140a082ef297'&& <div className="optionWraper">
-                {/* <div className="headerOption" onClick={()=>setTableOption(!tableOption)}>Options</div> */}
+
+              {/* userId === '627906f71f94140a082ef297'&&  */}
+              <div className="optionWraper">
+                <div className="headerOption" onClick={()=>setTableOption(!tableOption)}>Options</div>
                 {tableOption&&  
                 <div className="optionDropdown">
                 <div>
@@ -386,7 +407,7 @@ function LeadsUpload() {
                 // </div>
                 }
               </div>
-              }
+              {/* } */}
 
             </div>
           </div>

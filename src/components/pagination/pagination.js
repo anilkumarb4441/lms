@@ -12,6 +12,7 @@ const Pagination = (props) => {
     currentPage,
     pageSize,
     className,
+    dataLength
   } = { ...props };
 
   const paginationRange = usePagination({
@@ -38,7 +39,7 @@ const Pagination = (props) => {
   let lastPage = paginationRange[paginationRange?.length - 1];
   return (
     <div className ="pagination-bar" style={{justifyContent:pageSizeOptions?.length > 0?'space-between':'center'}}>
-      {pageSizeOptions?.length > 0 && (
+      {pageSizeOptions?.length > 0 &&  dataLength.length >0&&(
         <div className="pageSizeOpt" >
           <span>Show</span>
         <select className = "customInput" name = "pageSize" value={pageSize} onChange={(e)=>onPageChange(1, parseInt(e.target.value))}>

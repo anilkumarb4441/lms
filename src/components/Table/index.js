@@ -150,8 +150,6 @@ function Table(options) {
 });}
 
 
-   
-
     return (
         <>
         {options.data && options.data.length >0 && options.columnHide &&
@@ -295,6 +293,7 @@ function Table(options) {
         pageSize={options.pageSize}
         pageSizeOptions = {options.pageSizeOptions}
         onPageChange={(number,size) => {options.onPageChange(number,size)}}
+        dataLength={options.data}
       />
               
        }

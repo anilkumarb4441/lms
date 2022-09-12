@@ -17,7 +17,7 @@ function AssignToModal({
 }) {
   const [selectArr, setSelectArr] = useState([]);
   const [leadCount, setLeadCount] = useState(1);
-  const [userId, setUserId] = useState("");
+  const [userId, setUserId] = useState([]);
   const [level, setLevel] = useState();
   const [untouchedCount, setUntouchedCount] = useState();
   const [loading,setLoading] = useState(false)
@@ -26,7 +26,7 @@ function AssignToModal({
   const [selectedLead, setSelectedLead] = useState('')
   const [showDropdown, setShowDropDown] = useState(false);
 
-
+console.log(userId, 'userId')
 
   const handleCount = (num) => {
     setLeadCount(num);
@@ -128,6 +128,31 @@ function AssignToModal({
 
 const dropdownData = search !== ''?searchData:selectArr
 
+const onClickUserIds = (e) => {
+    if(e.target.checked==true){
+      setUserId([...userId,e.target.value])
+    }
+    else{
+      let present=userId
+       present = present.filter(item =>item != e.target.value)
+      setUserId([...present])
+    }
+  };
+
+{document.getElementById("closeDropdown") &&   document.querySelector('*').addEventListener('click', (e) => {
+  let tarempbox = document.getElementById("closeDropdown");
+if (tarempbox.contains(e.target)) {
+  return
+} else {
+  setShowDropDown(false);
+}
+});}
+
+// function inputDesable(){
+//   document.getElementById("inputCheck").disabled = true;
+// }
+// inputDesable();
+
   return (
     <Modal
       show={show}
@@ -140,34 +165,24 @@ const dropdownData = search !== ''?searchData:selectArr
           <p>
             Total Unassigned leads : <span>{untouchedCount}</span>
           </p>
-          {/* <input type="search" value={search} onChange={(e)=>onChangeAssignLeads(e)} placeholder="Search by name"  className="assignSerchbar"/> */}
-          {/* <Input
-            element="select"
-            name="userId"
-            value={userId}
-            selectHeading="Assign To"
-            selectArr={search===''?selectArr:searchData}
-            change={(e) => {
-              setUserId(e.target.value);
-            }}
-            required={true}
-            searchbar='anil'
-          /> */}
        
-       <div className="assignLeadsWraper">
+       <div id='closeDropdown' className="assignLeadsWraper" >
             <div className="dropdownHead" onClick={()=>setShowDropDown(!showDropdown)}>
               <p>{selectedLead ===''?'Assign To':selectedLead}</p>
               <IoMdArrowDropdown />
               </div>
            { showDropdown === true?
              <div className="assignLead-dropdown">
-             <input type="search" value={search} onChange={(e)=>onChangeAssignLeads(e)} placeholder="Search by name"  className="assignSerchbar"/>
+             <input  type="text" value={search}  onChange={(e)=>onChangeAssignLeads(e)} placeholder="Search by name"  className="assignSerchbar"/>
              <div className="leadsAssignContainer">
                {
                 dropdownData.map((val)=>{
                    return(
                    <>
-                    <p className="leadName" onClick={()=>{setUserId(val.value);setSelectedLead(val.name); setShowDropDown(false)}}>{val.name}</p>
+                    <div className="leadName" >
+                    <input  className="tcheck"  onChange={(e)=>onClickUserIds(e)} type='checkbox' value={val.value} name={val.name} checked={userId?.includes(val.value) ? 'checked' : ''} disabled={untouchedCount<1 ?'disabled':'' }/>
+                    <p>{val.name}</p>
+                    </div>
                    </>
                    )
                  })
@@ -200,7 +215,7 @@ const dropdownData = search !== ''?searchData:selectArr
             >
               Cancel
             </button>
-            {untouchedCount > 0 && (
+            {untouchedCount > 0 && userId.length > 0 && (
               <button className="saveBtn" type="submit">
                 Assign Lead
               </button>
