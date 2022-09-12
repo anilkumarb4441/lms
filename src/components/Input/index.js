@@ -21,13 +21,15 @@ function Input({
   min,
   checked,
   multiple,
-  disabled
+  disabled,
+  searchbar,
 })
-  
+ 
 {
   if(!type&&!element){
     return
   }
+
   return (
     <div
       className={
@@ -89,6 +91,8 @@ function Input({
           disabled = {disabled}
           required={required}
         >
+    
+          
           {selectHeading !== undefined && (
             <option value="" disabled selected hidden>
               {selectHeading}
@@ -97,7 +101,7 @@ function Input({
           {selectArr &&
             selectArr.map((item, i) => {
               return (
-                <option key={i} value={item.value}>
+             <option key={i} value={item.value}>
                   {item.name}
                 </option>
               );
