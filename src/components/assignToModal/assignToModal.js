@@ -74,12 +74,16 @@ console.log(userId, 'userId')
   const assignLeads = (e) => {
     e.preventDefault();
     setLoading(true);
+    if(leadCount<userId.length){
+      alert('Selected members should be equla or lessthen leadCount');
+      return;
+    }
     let data;
     if (assignType === "bulk") {
       data = {
         level: level,
         leadCount: parseInt(leadCount),
-        type: "single",
+        type: "group",
         userId: userId,
       };
       if (userId === "team") {
@@ -148,10 +152,6 @@ if (tarempbox.contains(e.target)) {
 }
 });}
 
-// function inputDesable(){
-//   document.getElementById("inputCheck").disabled = true;
-// }
-// inputDesable();
 
   return (
     <Modal
@@ -180,7 +180,7 @@ if (tarempbox.contains(e.target)) {
                    return(
                    <>
                     <div className="leadName" >
-                    <input  className="tcheck"  onChange={(e)=>onClickUserIds(e)} type='checkbox' value={val.value} name={val.name} checked={userId?.includes(val.value) ? 'checked' : ''} disabled={untouchedCount<1 ?'disabled':'' }/>
+                    <input  className="tcheck"  onChange={(e)=>onClickUserIds(e)} type='checkbox' value={val.value} name={val.name} checked={userId?.includes(val.value) ? 'checked' : ''}/>
                     <p>{val.name}</p>
                     </div>
                    </>
@@ -203,10 +203,9 @@ if (tarempbox.contains(e.target)) {
               max={untouchedCount}
               min={1}
               required={true}
-              
             />
           )}
-
+          <span>Total Seleted members : {userId.length}</span>
           <div className="modalFooter">
             <button
               className="cancelBtn"

@@ -106,6 +106,7 @@ function Myteam() {
                   setFilterQuery({ ...filterQuery, pageNumber: pageNumber, pageRows: pageRows, search: '' })
                 }}
                 data={tableData} tClass="myteam"
+                columnHide={true}
               />
             </div>
           </div>

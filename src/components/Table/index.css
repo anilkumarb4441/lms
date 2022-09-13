@@ -255,6 +255,7 @@ min-width: 124px;
   flex-direction: column;
   padding: 10px 20px 10px 20px;
   box-shadow: 0px 3px 6px #00000029;
+  z-index: 999;
 }
 
 .tabOptions input{

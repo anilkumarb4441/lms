@@ -75,84 +75,110 @@ function LeadsUpload() {
   ]);
 
 
-  const tableOpt = [
+  const [tableOpt, setTableOpt] = useState([
     {
       Header: "Name",
-      accessor: "name"
+      accessor: "name",
+      isChecked:true
     },
     {
       Header: "Phone",
       accessor: "phone",
+      isChecked:true
     },
     {
       Header: "Email",
       accessor: "email",
+      isChecked:true
     },
     {
       Header: "College",
       accessor: "college",
+      isChecked:true
     },
     {
       Header: "Whats App No",
       accessor: "whatsAppNo",
+      isChecked:true
     },
     {
       Header: "Year of Pass Out",
       accessor: "yearOfPassOut",
+      isChecked:true
     },
     {
       Header: "Year",
       accessor: "year",
+      isChecked:true
     },
     {
       Header: "Department",
       accessor: "department",
+      isChecked:true
     },
     {
       Header: "Technical Program",
       accessor: "technicalProgram",
+      isChecked:true
     },
     {
       Header: "Certifications",
       accessor: "certifications",
+      isChecked:true
     },
     {
       Header: "Referral Code",
       accessor: "referralCode",
+      isChecked:true
     },
 
-  ]
+  ])
+  const tableTesting = [...tableOpt];
 
-  let tabOpt = []
 
-  document.addEventListener('change', () => {
-    var checkedValues = [...document.querySelectorAll('.tcheck')]
-      .filter(input => input.checked)
-      .map(input => input.value);
-    // console.log(checkedValues, 'yyyyyyyyy')
-    
-     tableOpt.map((val)=>{ 
-     if(checkedValues.includes(val.accessor)){
+  const onSelecttableHeader = (i)=>{
+
+    tableOpt[i].isChecked = !tableOpt[i].isChecked;
+    console.log(tableOpt[i],{i});
+    if(tableOpt[i].isChecked){
+      tableTesting.splice(i, 0, tableOpt[i])
+      console.log('of')
+    }else{
+      tableTesting.splice(i, 1)
+      console.log('e')
       
-      if(tabOpt.length!== 0){
-        tabOpt.map((item)=>{
-          console.log(item,"bg")
-          if(item.accessor !== val.accessor){
-            tabOpt.push(val);
-          }
-        })
-      }else{
-        tabOpt.push(val);
-      }
-   
-     }
-      
-    })
-    console.log(tabOpt, 'tabOpt');
-    setTableHeader()
-  });
+    }
+    setTableOpt([...tableOpt])
 
-// console.log(tabOpt, 'tabOpt');
+      // if(e.target.checked==true){
+      //   setTableHeader([...tableHeader,e.target.value])
+      // }
+      // else{
+      //   let present=tableHeader
+      //    present = present.filter(item =>item != e.target.value)
+      //    setTableHeader([...present])
+      // }
+  
+      console.log(tableTesting.length)
+  }
+
+// console.log(tableOpt, 'tableDatatableData');
+
+// const hello = []
+
+//    tableOpt.map((val)=>{
+//     tableHeader.map((item)=>{
+//       if(val.accessor === item){
+//         hello.push(val)
+//       }
+//     })
+     
+//   })
+
+//   console.log(hello, 'hlllooooooooooo')
+
+
+  // console.log(tableHeader, 'tableHeader')
 
   const [originalColumns, setOriginalColumns] = useState(tableOpt);
 
@@ -171,12 +197,11 @@ function LeadsUpload() {
       setTableLoading(false);
       if (err) {
         setTableData([]);
-        setTotalCount(0);
+        setTotalCount(0); 
       }
       if (res && res.status === 200) {
         setTableData(res.data.data);
         setTotalCount(res.data.totalCount);
-
       }
     };
     API_SERVICES.httpPOSTWithToken(
@@ -188,7 +213,6 @@ function LeadsUpload() {
 
   useEffect(() => {
     if (!filterObj.source) { return; }
-
     getLeadsByFilters(filterObj);
   }, [filterObj]);
 
@@ -306,108 +330,23 @@ function LeadsUpload() {
               >
                 Assign Leads
               </button>
-
-              {/* userId === '627906f71f94140a082ef297'&&  */}
               <div className="optionWraper">
                 <div className="headerOption" onClick={()=>setTableOption(!tableOption)}>Options</div>
                 {tableOption&&  
                 <div className="optionDropdown">
-                <div>
-                  <input className="tcheck" type='checkbox' value='name' name="name" />
-                  <label>Name</label>
+                  {tableOpt.map((item,i)=>{
+                    return(
+                      <div>
+                    <input className="tcheck"  onChange={(e)=>onSelecttableHeader(i)} type='checkbox' value={item.accessor}  name={item.accessor} checked={item.isChecked} />
+                    <label>{item.Header}</label>
+                    {/* checked={tableHeader?.includes(item.accessor) ? 'checked' : ''} */}
                 </div>
-                
-                <div>
-                  <input className="tcheck" type='checkbox'value='email' name='email' />
-                  <label>email</label>
-                </div>
-                <div>
-                  <input className="tcheck" type='checkbox' value='phone'  name='phone' />
-                  <label>Phone</label>
-                </div>
-                <div>
-                  <input className="tcheck" type='checkbox' value='whatsAppNo' name="whatsAppNo" />
-                  <label>whatsAppNo</label>
-                </div>
-                <div>
-                  <input className="tcheck" type='checkbox' value='college' name='college'/>
-                  <label>college</label>
-                </div>
-                <div>
-                  <input className="tcheck" type='checkbox' value='yearOfPassOut'name="yearOfPassOut" />
-                  <label>yearOfPassOut</label>
-                </div>
-                <div>
-                  <input className="tcheck" type='checkbox' value='year' name="year" />
-                  <label>year</label>
-                </div>
-                <div>
-                  <input className="tcheck" type='checkbox' value='department' name="department" />
-                  <label>department</label>
-                </div>
-                <div>
-                  <input className="tcheck" type='checkbox'  value='technicalProgram' name='technicalProgram' />
-                  <label>technicalProgram</label>
-                </div>
-                <div>
-                  <input className="tcheck" type='checkbox' value='certifications' name='certifications' />
-                  <label>certifications</label>
-                </div>
-                <div>
-                  <input className="tcheck" type='checkbox' value='referralCode' name="referralCode" />
-                  <label>referralCode</label>
-                </div>
+                    )
+                  })}
               </div>
-                //   <div className="optionDropdown">
-                //   <div>
-                //     <input className="tcheck" type='checkbox' value='name' name="name" />
-                //     <label>Name</label>
-                //   </div>
-                  
-                //   <div>
-                //     <input className="tcheck" type='checkbox'value='email' name='email' />
-                //     <label>email</label>
-                //   </div>
-                //   <div>
-                //     <input className="tcheck" type='checkbox' checked={tableHeader.phone} name='phone' onChange={(e)=>setTableHeader({...tableHeader, phone:!tableHeader.phone})}/>
-                //     <label>Phone</label>
-                //   </div>
-                //   <div>
-                //     <input className="tcheck" type='checkbox' checked={tableHeader.whatsAppNo} onChange={(e)=>setTableHeader({...tableHeader, whatsAppNo:!tableHeader.whatsAppNo})}/>
-                //     <label>whatsAppNo</label>
-                //   </div>
-                //   <div>
-                //     <input className="tcheck" type='checkbox' checked={tableHeader.college} onChange={(e)=>setTableHeader({...tableHeader, college:!tableHeader.college})}/>
-                //     <label>college</label>
-                //   </div>
-                //   <div>
-                //     <input className="tcheck" type='checkbox' checked={tableHeader.yearOfPassOut} onChange={(e)=>setTableHeader({...tableHeader, yearOfPassOut:!tableHeader.yearOfPassOut})}/>
-                //     <label>yearOfPassOut</label>
-                //   </div>
-                //   <div>
-                //     <input className="tcheck" type='checkbox' checked={tableHeader.year} onChange={(e)=>setTableHeader({...tableHeader, year:!tableHeader.year})}/>
-                //     <label>year</label>
-                //   </div>
-                //   <div>
-                //     <input className="tcheck" type='checkbox' checked={tableHeader.department} onChange={(e)=>setTableHeader({...tableHeader, department:!tableHeader.department})}/>
-                //     <label>department</label>
-                //   </div>
-                //   <div>
-                //     <input className="tcheck" type='checkbox' checked={tableHeader.technicalProgram} onChange={(e)=>setTableHeader({...tableHeader, technicalProgram:!tableHeader.technicalProgram})}/>
-                //     <label>technicalProgram</label>
-                //   </div>
-                //   <div>
-                //     <input className="tcheck" type='checkbox' checked={tableHeader.certifications} onChange={(e)=>setTableHeader({...tableHeader, certifications:!tableHeader.certifications})}/>
-                //     <label>certifications</label>
-                //   </div>
-                //   <div>
-                //     <input className="tcheck" type='checkbox' value={tableHeader.referralCode} onChange={(e)=>setTableHeader({...tableHeader, referralCode:!tableHeader.referralCode})}/>
-                //     <label>referralCode</label>
-                //   </div>
-                // </div>
+               
                 }
               </div>
-              {/* } */}
 
             </div>
           </div>
@@ -434,7 +373,7 @@ function LeadsUpload() {
               pageSizeOptions={[5, 10, 15, 20, 50, 100]}
               page
               showColumns={false}
-              columns={[...columns]}
+              columns={[...tableTesting]}
               data={tableData}
               tClass="bulkTable"
               columnHide={true}
