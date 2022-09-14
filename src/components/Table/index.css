@@ -6,9 +6,10 @@
  .TableContainer{
      border-radius:2px;
      overflow-x: scroll;
-     min-height: 290px; 
+     min-height: 280px; 
      max-height: 310px;
      padding-bottom: 30px;
+     border: 1px solid #dbdbdb;
  }
  .TableContainer .Table thead{
   position: sticky;
@@ -203,7 +204,13 @@ min-width: 124px;
   background-color: var(--white);
   border-top: solid 10px var(--white);
 }
+.Table tbody>tr{
+  border-bottom: 1px solid #dbdbdb;
+}
 
+.Table tbody>tr:nth-last-child(1){
+  border-bottom: none;
+}
  /* .Table tbody>tr>td {
   font-size: 14px;
   color: var(--black);

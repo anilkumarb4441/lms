@@ -49,13 +49,14 @@
  
 }
 
-.count{
+.countlead{
     color:var(--black);
     font-weight:400;
     text-align: left;
+    font-size: 12px;
 }
 
-.count>span{
+.countlead>span{
     font-weight: 600;
 }
 

@@ -73,6 +73,9 @@ module.exports = {
 
          // dashboard analytics  revenue generated graph  
          analyticsRevenueGenerated:'/analytics/revenueGenerated',
+
+          // number of leads assign to whom
+          noOfleadsAssignToWhom:'/leads/numberOfLeadsAssignedToWhom',
   },
 };
 

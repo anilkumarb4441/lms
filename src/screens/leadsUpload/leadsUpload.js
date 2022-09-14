@@ -29,10 +29,10 @@ function LeadsUpload() {
     filter: "todayLeads",
     source: "",
     searchData: "",
-    pageRows: 10,
+    pageRows: 100,
     pageNumber: 1,
     range: null,
-    generalFilter: 'selfGenerated'
+    // source: 'selfGenerated'
   });
 
   const [tableOption, setTableOption] = useState(false);
@@ -58,12 +58,12 @@ function LeadsUpload() {
     { name: "Old", value: "oldLeads" },
   ];
 
-  const generalFilterArr = [
-    { name: "Self Generated", value: "selfGenerated" },
-    { name: "CGFL", value: "CGFL" },
-    { name: "All", value: "All" },
-    { name: "Compaign Leads", value: "compaignLeads" },
-  ];
+  // const generalFilterArr = [
+  //   { name: "Self Generated", value: "selfGenerated" },
+  //   { name: "CGFL", value: "CGFL" },
+  //   { name: "All", value: "All" },
+  //   { name: "Compaign Leads", value: "compaignLeads" },
+  // ];
 
   const [sourceArr, setSourceArr] = useState([
     { name: "Facebook", value: "facebook" },
@@ -75,7 +75,7 @@ function LeadsUpload() {
   ]);
 
 
-  const [tableOpt, setTableOpt] = useState([
+  const tableOpt = [
     {
       Header: "Name",
       accessor: "name",
@@ -132,35 +132,35 @@ function LeadsUpload() {
       isChecked:true
     },
 
-  ])
-  const tableTesting = [...tableOpt];
+  ]
+  // const tableTesting = [...tableOpt];
 
 
-  const onSelecttableHeader = (i)=>{
+  // const onSelecttableHeader = (i)=>{
 
-    tableOpt[i].isChecked = !tableOpt[i].isChecked;
-    console.log(tableOpt[i],{i});
-    if(tableOpt[i].isChecked){
-      tableTesting.splice(i, 0, tableOpt[i])
-      console.log('of')
-    }else{
-      tableTesting.splice(i, 1)
-      console.log('e')
+  //   tableOpt[i].isChecked = !tableOpt[i].isChecked;
+  //   console.log(tableOpt[i],{i});
+  //   if(tableOpt[i].isChecked){
+  //     tableTesting.splice(i, 0, tableOpt[i])
+  //     console.log('of')
+  //   }else{
+  //     tableTesting.splice(i, 1)
+  //     console.log('e')
       
-    }
-    setTableOpt([...tableOpt])
+  //   }
+  //   setTableOpt([...tableOpt])
 
-      // if(e.target.checked==true){
-      //   setTableHeader([...tableHeader,e.target.value])
-      // }
-      // else{
-      //   let present=tableHeader
-      //    present = present.filter(item =>item != e.target.value)
-      //    setTableHeader([...present])
-      // }
+  //     // if(e.target.checked==true){
+  //     //   setTableHeader([...tableHeader,e.target.value])
+  //     // }
+  //     // else{
+  //     //   let present=tableHeader
+  //     //    present = present.filter(item =>item != e.target.value)
+  //     //    setTableHeader([...present])
+  //     // }
   
-      console.log(tableTesting.length)
-  }
+  //     console.log(tableTesting.length)
+  // }
 
 // console.log(tableOpt, 'tableDatatableData');
 
@@ -211,10 +211,43 @@ function LeadsUpload() {
     );
   };
 
+   // number of leads assign to whom
+  const getLeadsAssignToWhom = (data) => {
+    setTableLoading(true);
+    let postObj = data;
+
+    // if (data.range) {
+    //   console.log(data.range[0], data.range[1]);
+    // }
+    let callback = (err, res) => {
+      setTableLoading(false);
+      if (err) {
+        // setTableData([]);
+        // setTotalCount(0);
+        console.log(err, 'errrrrrrrrrr') 
+      }
+      if (res && res.status === 200) {
+        console.log(res.data, 'getLeadsAssignToWhom')
+        // setTableData(res.data.data);
+        // setTotalCount(res.data.totalCount);
+      }
+    };
+    API_SERVICES.httpPOSTWithToken(
+      URLS.noOfleadsAssignToWhom,
+      postObj,
+      callback
+    );
+  };
+
+
   useEffect(() => {
     if (!filterObj.source) { return; }
     getLeadsByFilters(filterObj);
   }, [filterObj]);
+
+  useEffect(()=>{
+    getLeadsAssignToWhom(filterObj)
+  },[filterObj]);
 
   useEffect(() => {
     // FOR CHANUKYA 62e8ff859bdb428db493cf69
@@ -231,7 +264,7 @@ function LeadsUpload() {
       <div className="leadsScreen">
         <div>
           <div className="lead-main-filter-header">
-            <Dropdown
+            {/* <Dropdown
               dropdownClass="lead-main-drop-down"
               value={filterObj.generalFilter}
               options={generalFilterArr}
@@ -246,7 +279,7 @@ function LeadsUpload() {
                   range: null,
                 })
               }
-            />
+            /> */}
             <Dropdown
               dropdownClass="lead-main-drop-down"
               value={filterObj.filter}
@@ -331,13 +364,13 @@ function LeadsUpload() {
                 Assign Leads
               </button>
               <div className="optionWraper">
-                <div className="headerOption" onClick={()=>setTableOption(!tableOption)}>Options</div>
+                {/* <div className="headerOption" onClick={()=>setTableOption(!tableOption)}>Options</div> */}
                 {tableOption&&  
                 <div className="optionDropdown">
                   {tableOpt.map((item,i)=>{
                     return(
                       <div>
-                    <input className="tcheck"  onChange={(e)=>onSelecttableHeader(i)} type='checkbox' value={item.accessor}  name={item.accessor} checked={item.isChecked} />
+                    {/* <input className="tcheck"  onChange={(e)=>onSelecttableHeader(i)} type='checkbox' value={item.accessor}  name={item.accessor} checked={item.isChecked} /> */}
                     <label>{item.Header}</label>
                     {/* checked={tableHeader?.includes(item.accessor) ? 'checked' : ''} */}
                 </div>
@@ -373,7 +406,7 @@ function LeadsUpload() {
               pageSizeOptions={[5, 10, 15, 20, 50, 100]}
               page
               showColumns={false}
-              columns={[...tableTesting]}
+              columns={[...tableOpt]}
               data={tableData}
               tClass="bulkTable"
               columnHide={true}

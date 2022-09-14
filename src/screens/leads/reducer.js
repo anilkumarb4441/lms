@@ -20,7 +20,7 @@ export const initialState = {
     pageNumber: 1,
     searchData: "",
     range:null, 
-    generalFilter:'selfGenerated'
+    source:'all'
   },
   title: "",
   formHeading: "",

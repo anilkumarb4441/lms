@@ -50,10 +50,14 @@ function Leads() {
   ];
 
   const generalFilterArr = [
-    { name: "Self Generated", value: "selfGenerated" },
-    { name: "CGFL", value: "CGFL" },
-    { name: "All", value: "All" },
-    { name: "Compaign Leads", value: "compaignLeads" },
+    { name: "All", value: "all" },
+    { name: "Self Generated", value: "self" },
+    { name: "CGFL", value: "cgfl" },
+    { name: "Facebook", value: "facebook" },
+    { name: "Email", value: "email" },
+    { name: "RCB", value: "rcb" },
+    { name: "Website", value: "website" },
+    { name: "Google", value: "google" },
   ];
 
   const callFilterArr = [
@@ -563,7 +567,7 @@ function Leads() {
     reducer.filter.range,
     reducer.filter.searchData,
     reducer.filter.dateFilter,
-    reducer.filter.generalFilter,
+    reducer.filter.source,
   ]);
 
   // setting reducer state to default after component gets unmounted
@@ -623,13 +627,13 @@ function Leads() {
             <div className="filtersWraper"> 
               <Dropdown
                 dropdownClass="lead-main-drop-down"
-                value={reducer.filter.generalFilter}
+                value={reducer.filter.source}
                 options={generalFilterArr}
                 onchange={(item) =>
                   dispatch(
                     actions.setFilter({
                       ...reducer.filter,
-                      generalFilter: item.value,
+                      source: item.value,
                       searchData: "",
                       pageNumber: 1,
                       pageRows: 10,
@@ -777,7 +781,11 @@ function Leads() {
                       );
                     }}
                   />
+                  
                 )}
+                   <p className="countlead">
+                Total Count : <span>{totalCount}</span>
+              </p> 
               </div>
 
               
