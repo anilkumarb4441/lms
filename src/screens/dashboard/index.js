@@ -345,7 +345,7 @@ function DashBoard() {
   const selfRatingInPercent = selfrating.conversionCount >= 0 && selfrating.count >= 0  ? pecentageCalc(selfrating.count, selfrating.conversionCount) : 'loading...';
   const TeamRatingInPercent = teamRating.conversionCount >= 0 && teamRating.count >= 0 ? pecentageCalc(teamRating.count, teamRating.conversionCount) : 'loading...';
 
-
+  // const TeamRatingInPercent = 20;
   function perceConvertDeg(valu) {
     let calcValue = (valu / 100) * 360;
     return calcValue;
@@ -469,8 +469,8 @@ function DashBoard() {
               >
 
               </Doughnut>
-              <h2 className='abstexd'>{selfRatingInPercent >= 0 ? selfRatingInPercent : 0}%</h2>
-              <h2 className='pieName'>{selfrating.count}/{selfrating.conversionCount}</h2>
+              <h2 className='abstexd'>{selfRatingInPercent >= 0 ? selfRatingInPercent.toFixed(2) : 0} %</h2>
+              <h2 className='pieName'>{selfrating.conversionCount} / {selfrating.count}</h2>
             </div>
             <div>
               <Doughnut
@@ -489,10 +489,11 @@ function DashBoard() {
               >
 
               </Doughnut>
-              <h2 className='abstexd'>{TeamRatingInPercent >= 0 ? TeamRatingInPercent : 0}%</h2>
-              <h2 className='pieName'>{teamRating.count}/{teamRating.conversionCount}</h2>
+              <h2 className='abstexd'>{TeamRatingInPercent >= 0 ? TeamRatingInPercent.toFixed(2) : 0} %</h2>
+              <h2 className='pieName'>{teamRating.conversionCount} / {teamRating.count}</h2>
             </div>
           </div>
+          
         </div>
         <div className='userTicketsSection'>
           <div className='ticketHead'>

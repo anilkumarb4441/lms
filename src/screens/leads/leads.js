@@ -33,6 +33,10 @@ function Leads() {
   const [tableLoading, setTableLoading] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
+  const [showPhoneNu, setShowPhoneNu] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  const [targetValue, setTargetValue] = useState('')
+  console.log(targetValue, '.........',showEmail, '....', showPhoneNu );
   const dispatch = useDispatch();
   const wrapperRef = useRef(); //Table Wrapper Ref
 
@@ -163,7 +167,7 @@ function Leads() {
   // call form Data
   const [callFormData, setCallFormData] = useState([
     {
-      _index:0,
+      _index: 0,
       name: "status",
       value: "",
       required: true,
@@ -173,7 +177,7 @@ function Leads() {
       selectArr: originalCallStatusArr,
     },
     {
-      _index:1,
+      _index: 1,
       name: "response",
       value: "",
       required: true,
@@ -233,10 +237,19 @@ function Leads() {
         );
       },
     },
-    { Header: "Name", accessor: "name" },
+    {
+      Header: "Name",
+      accessor: "name"
+    },
     {
       Header: "Phone",
       accessor: "phone",
+      Cell:(props)=>{
+      console.log(showPhoneNu)
+        return(
+          <p style={{cursor: "pointer"}} onClick={(e)=>{ setShowPhoneNu(true); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && showPhoneNu?props.cell.row.original.phone:'**********'}</p>
+        )
+      }
     },
     {
       Header: "Department",
@@ -250,11 +263,17 @@ function Leads() {
       Header: "Certifications",
       accessor: "certifications",
     },
-   
+
     {
       Header: "Email",
       accessor: "email",
+      Cell:(props)=>{
+        return(
+          <>{props.cell.row.original.email?<p style={{cursor: "pointer"}} onClick={()=>{setShowEmail(true); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && showEmail?props.cell.row.original.email:'*******.com'}</p>:null}</>
+        )
+      }
     },
+    
     {
       Header: "College",
       accessor: "college",
@@ -309,7 +328,7 @@ function Leads() {
 
   // function to handle table row action btns
   const handleAction = (name, rowData) => {
- 
+
     switch (name) {
       case "Edit Lead":
         dispatch(actions.editLead(rowData, formData));
@@ -327,19 +346,19 @@ function Leads() {
           );
           return;
         }
-   
-    let callStatusInput = callFormData.find((el) => el.name === "status");
-    let newCallFormData = callFormData.filter((el) => el.name !== "status");
-      
-      if(rowData.category==="preRegistration"){  
-          newCallFormData = [...newCallFormData,{...callStatusInput,selectArr: [...preRegCallStatusArr,{ name: "Others", value: "Others" }]}]
+
+        let callStatusInput = callFormData.find((el) => el.name === "status");
+        let newCallFormData = callFormData.filter((el) => el.name !== "status");
+
+        if (rowData.category === "preRegistration") {
+          newCallFormData = [...newCallFormData, { ...callStatusInput, selectArr: [...preRegCallStatusArr, { name: "Others", value: "Others" }] }]
         }
-        else{
-          newCallFormData = [...newCallFormData,{...callStatusInput,selectArr:originalCallStatusArr}]
+        else {
+          newCallFormData = [...newCallFormData, { ...callStatusInput, selectArr: originalCallStatusArr }]
         }
-        
-        newCallFormData.sort((a,b)=>a._index-b._index);
-       
+
+        newCallFormData.sort((a, b) => a._index - b._index);
+
         dispatch(actions.updateCallResponse(rowData, newCallFormData));
         return;
     }
@@ -393,7 +412,7 @@ function Leads() {
 
       case "Update Call":
         updateCallStatus(leadObject);
-        
+
         return;
     }
   };
@@ -432,7 +451,7 @@ function Leads() {
 
   // function to update call status
   const updateCallStatus = (data) => {
-    console.log(data, 'dataaaaaaaaaa')
+
     data =
       reducer.filter.subFilter === "preRegistration"
         ? { ...data, isPreg: true }
@@ -449,14 +468,13 @@ function Leads() {
         dispatch(actions.closeForm());
 
       }
-    
-      if(err){
+
+      if (err) {
         utils.toastError(err?.response.data);
         console.log(err?.response.data)
       }
-      
+
     };
-    console.log(data, 'twwwwwwwwwwwwwwwwwww')
     API_SERVICES.httpPOSTWithToken(URLS.updateCallLog, data, callback);
   };
 
@@ -469,7 +487,7 @@ function Leads() {
     newData.referenceid = data.referenceId;
     newData.leadid = data.leadId;
     const callback = (err, res) => {
-   
+
       if (err) {
         utils.toastError(err?.response.data.msg);
       }
@@ -554,7 +572,7 @@ function Leads() {
   // calling Leads Filter API when any filter value is changing
   useMemo(() => {
     wrapperRef?.current?.scrollTo(0, 0);
-    if (reducer.filter.searchData) { 
+    if (reducer.filter.searchData) {
       debounceGetLeads(reducer.filter);
       return;
     }
@@ -624,88 +642,88 @@ function Leads() {
               <div className="horizontalBaseLine"></div>
             </div>
             <div className="filterContainer">
-            <div className="filtersWraper"> 
-              <Dropdown
-                dropdownClass="lead-main-drop-down"
-                value={reducer.filter.source}
-                options={generalFilterArr}
-                onchange={(item) =>
-                  dispatch(
-                    actions.setFilter({
-                      ...reducer.filter,
-                      source: item.value,
-                      searchData: "",
-                      pageNumber: 1,
-                      pageRows: 10,
-                      range: null,
-                    })
-                  )
-                }
-              />
-            {reducer.filter.mainFilter === "paid" && (
-              <div className="lead-main-filter-header">
-                <Tabs
-                  tabArr={paidFilterArr}
-                  activeValue={reducer.filter.subFilter}
-                  handleTab={(item) => {
+              <div className="filtersWraper">
+                <Dropdown
+                  dropdownClass="lead-main-drop-down"
+                  value={reducer.filter.source}
+                  options={generalFilterArr}
+                  onchange={(item) =>
                     dispatch(
                       actions.setFilter({
                         ...reducer.filter,
-                        subFilter: item.value,
+                        source: item.value,
                         searchData: "",
                         pageNumber: 1,
                         pageRows: 10,
                         range: null,
                       })
-                    );
-                  }}
+                    )
+                  }
                 />
-              </div>
-            )}
+                {reducer.filter.mainFilter === "paid" && (
+                  <div className="lead-main-filter-header">
+                    <Tabs
+                      tabArr={paidFilterArr}
+                      activeValue={reducer.filter.subFilter}
+                      handleTab={(item) => {
+                        dispatch(
+                          actions.setFilter({
+                            ...reducer.filter,
+                            subFilter: item.value,
+                            searchData: "",
+                            pageNumber: 1,
+                            pageRows: 10,
+                            range: null,
+                          })
+                        );
+                      }}
+                    />
+                  </div>
+                )}
 
-            {reducer.filter.mainFilter === "lost" && (
-              <div className="lead-main-filter-header">
-                <Tabs
-                  tabArr={lostFilterArr}
-                  activeValue={reducer.filter.subFilter}
-                  handleTab={(item) => {
-                    dispatch(
-                      actions.setFilter({
-                        ...reducer.filter,
-                        subFilter: item.value,
-                        searchData: "",
-                        pageNumber: 1,
-                        pageRows: 10,
-                        range: null,
-                      })
-                    );
-                  }}
-                />
-              </div>
-            )}
+                {reducer.filter.mainFilter === "lost" && (
+                  <div className="lead-main-filter-header">
+                    <Tabs
+                      tabArr={lostFilterArr}
+                      activeValue={reducer.filter.subFilter}
+                      handleTab={(item) => {
+                        dispatch(
+                          actions.setFilter({
+                            ...reducer.filter,
+                            subFilter: item.value,
+                            searchData: "",
+                            pageNumber: 1,
+                            pageRows: 10,
+                            range: null,
+                          })
+                        );
+                      }}
+                    />
+                  </div>
+                )}
 
-            {reducer.filter.mainFilter === "workInProgress" && (
-              <div className="lead-main-filter-header">
-                <Tabs
-                  tabArr={callFilterArr}
-                  activeValue={reducer.filter.subFilter}
-                  handleTab={(item) => {
-                    dispatch(
-                      actions.setFilter({
-                        ...reducer.filter,
-                        subFilter: item.value,
-                        searchData: "",
-                        pageNumber: 1,
-                        pageRows: 10,
-                        range: null,
-                      })
-                    );
-                  }}
-                />
+                {reducer.filter.mainFilter === "workInProgress" && (
+                  <div className="lead-main-filter-header">
+                    <Tabs
+                      tabArr={callFilterArr}
+                      activeValue={reducer.filter.subFilter}
+                      handleTab={(item) => {
+                        dispatch(
+                          actions.setFilter({
+                            ...reducer.filter,
+                            subFilter: item.value,
+                            searchData: "",
+                            pageNumber: 1,
+                            pageRows: 10,
+                            range: null,
+                          })
+                        );
+                      }}
+                    />
+                  </div>
+                )}
               </div>
-            )}
-                </div>
-                <div>
+              <div>
                 <button
                   className="leadbtnPrimary"
                   onClick={() => {
@@ -751,24 +769,24 @@ function Leads() {
                   }}
                 />
                 <Dropdown
-                dropdownClass="lead-main-drop-down side-drop-down"
-                value={reducer.filter.dateFilter}
-                options={dateFilterArr}
-                onchange={(item) =>
-                  dispatch(
-                    actions.setFilter({
-                      ...reducer.filter,
-                      dateFilter: item.value,
-                      searchData: "",
-                      pageNumber: 1,
-                      pageRows: 10,
-                      range: null,
-                    })
-                  )
-                }
-              />
-                   {reducer.filter.dateFilter === "oldLeads" && (
-                   <CustomDateRange
+                  dropdownClass="lead-main-drop-down side-drop-down"
+                  value={reducer.filter.dateFilter}
+                  options={dateFilterArr}
+                  onchange={(item) =>
+                    dispatch(
+                      actions.setFilter({
+                        ...reducer.filter,
+                        dateFilter: item.value,
+                        searchData: "",
+                        pageNumber: 1,
+                        pageRows: 10,
+                        range: null,
+                      })
+                    )
+                  }
+                />
+                {reducer.filter.dateFilter === "oldLeads" && (
+                  <CustomDateRange
                     range={reducer.filter.range}
                     onChange={(arr) => {
                       dispatch(
@@ -781,14 +799,14 @@ function Leads() {
                       );
                     }}
                   />
-                  
+
                 )}
-                   <p className="countlead">
-                Total Count : <span>{totalCount}</span>
-              </p> 
+                <p className="countlead">
+                  Total Count : <span>{totalCount}</span>
+                </p>
               </div>
 
-              
+
             </div>
 
             <div>

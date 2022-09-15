@@ -24,6 +24,13 @@ function LeadsUpload() {
   const [tableLoading, setTableLoading] = useState(true);
   const [openAssign, setOpenAssign] = useState(false);
   const [search, setSearch] = useState("");
+  const [showPhoneNu, setShowPhoneNu] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  const [targetValue, setTargetValue] = useState('')
+
+  
+
+
   const wrapperRef = useRef(); //Table Wrapper Ref
   const [filterObj, setFilterObj] = useState({
     filter: "todayLeads",
@@ -49,8 +56,6 @@ function LeadsUpload() {
   //   technicalProgram:false,
   //   certifications:false,
   //   referralCode:true
-
-
   // })
 
   const mainFilterArr = [
@@ -74,7 +79,6 @@ function LeadsUpload() {
     { name: "All", value: "all" },
   ]);
 
-
   const tableOpt = [
     {
       Header: "Name",
@@ -84,12 +88,24 @@ function LeadsUpload() {
     {
       Header: "Phone",
       accessor: "phone",
-      isChecked:true
+      isChecked:true,
+      Cell:(props)=>{
+      console.log(showPhoneNu, '....', targetValue)
+
+        return(
+          <p style={{cursor: "pointer"}} onClick={(e)=>{setShowPhoneNu(true); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && showPhoneNu?props.cell.row.original.phone:'**********'}</p>
+        )
+      }
     },
     {
       Header: "Email",
       accessor: "email",
-      isChecked:true
+      isChecked:true,
+      Cell:(props)=>{
+        return(
+          <>{props.cell.row.original.email?<p style={{cursor: "pointer"}} onClick={()=>{setShowEmail(true); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && showEmail?props.cell.row.original.email:'*******.com'}</p>:null}</>
+        )
+      }
     },
     {
       Header: "College",
@@ -212,32 +228,32 @@ function LeadsUpload() {
   };
 
    // number of leads assign to whom
-  const getLeadsAssignToWhom = (data) => {
-    setTableLoading(true);
-    let postObj = data;
+  // const getLeadsAssignToWhom = (data) => {
+  //   setTableLoading(true);
+  //   let postObj = data;
 
-    // if (data.range) {
-    //   console.log(data.range[0], data.range[1]);
-    // }
-    let callback = (err, res) => {
-      setTableLoading(false);
-      if (err) {
-        // setTableData([]);
-        // setTotalCount(0);
-        console.log(err, 'errrrrrrrrrr') 
-      }
-      if (res && res.status === 200) {
-        console.log(res.data, 'getLeadsAssignToWhom')
-        // setTableData(res.data.data);
-        // setTotalCount(res.data.totalCount);
-      }
-    };
-    API_SERVICES.httpPOSTWithToken(
-      URLS.noOfleadsAssignToWhom,
-      postObj,
-      callback
-    );
-  };
+  //   // if (data.range) {
+  //   //   console.log(data.range[0], data.range[1]);
+  //   // }
+  //   let callback = (err, res) => {
+  //     setTableLoading(false);
+  //     if (err) {
+  //       // setTableData([]);
+  //       // setTotalCount(0);
+  //       console.log(err, 'errrrrrrrrrr') 
+  //     }
+  //     if (res && res.status === 200) {
+  //       console.log(res.data, 'getLeadsAssignToWhom')
+  //       // setTableData(res.data.data);
+  //       // setTotalCount(res.data.totalCount);
+  //     }
+  //   };
+  //   API_SERVICES.httpPOSTWithToken(
+  //     URLS.noOfleadsAssignToWhom,
+  //     postObj,
+  //     callback
+  //   );
+  // };
 
 
   useEffect(() => {
@@ -245,9 +261,9 @@ function LeadsUpload() {
     getLeadsByFilters(filterObj);
   }, [filterObj]);
 
-  useEffect(()=>{
-    getLeadsAssignToWhom(filterObj)
-  },[filterObj]);
+  // useEffect(()=>{
+  //   getLeadsAssignToWhom(filterObj)
+  // },[filterObj]);
 
   useEffect(() => {
     // FOR CHANUKYA 62e8ff859bdb428db493cf69
@@ -343,6 +359,9 @@ function LeadsUpload() {
                   })
                 }
               />
+                 <p className="count">
+              Total Count : <span>{totalCount}</span>
+            </p>
             </div>
 
             <div>
@@ -385,9 +404,7 @@ function LeadsUpload() {
           </div>
 
           <div>
-            <p className="count">
-              Total Count <span>{totalCount}</span>
-            </p>
+         
             <Table
               wrapperRef={wrapperRef}
               search={false}
