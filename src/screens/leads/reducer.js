@@ -1,10 +1,6 @@
 import localStorageService from "../../utils/localStorageService";
 import * as actionTypes from "./actionTypes";
-//
 
-let dateObj = new Date()
-let date = new Date(dateObj.getTime() + 19800000).toISOString().split("T")[0];
-console.log(date, 'date');
 
 export const initialState = {
   
@@ -28,8 +24,8 @@ export const initialState = {
   rowObj: null,
   assignType: "",
 };
-
 const reducer = (state = initialState, action) => {
+
   switch (action.type) {
     case actionTypes.SET_FILTER:
       return { ...state, filter: action.filter };

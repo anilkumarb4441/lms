@@ -44,19 +44,6 @@ function LeadsUpload() {
 
   const [tableOption, setTableOption] = useState(false);
   const [tableHeader, setTableHeader] = useState([])
-  // const [tableHeader, setTableHeader] = useState({
-  //   name:true,
-  //   email:true,
-  //   phone:false,
-  //   whatsAppNo:true,
-  //   college:true,
-  //   yearOfPassOut:false,
-  //   year:false,
-  //   department:true,
-  //   technicalProgram:false,
-  //   certifications:false,
-  //   referralCode:true
-  // })
 
   const mainFilterArr = [
     { name: "Today", value: "todayLeads" },
@@ -102,6 +89,7 @@ function LeadsUpload() {
       accessor: "email",
       isChecked:true,
       Cell:(props)=>{
+        
         return(
           <>{props.cell.row.original.email?<p style={{cursor: "pointer"}} onClick={()=>{setShowEmail(true); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && showEmail?props.cell.row.original.email:'*******.com'}</p>:null}</>
         )
@@ -280,22 +268,7 @@ function LeadsUpload() {
       <div className="leadsScreen">
         <div>
           <div className="lead-main-filter-header">
-            {/* <Dropdown
-              dropdownClass="lead-main-drop-down"
-              value={filterObj.generalFilter}
-              options={generalFilterArr}
-              onchange={(item) =>
-                setFilterObj({
-                  ...filterObj,
-                  generalFilter: item.value,
-
-                  searchData: "",
-                  pageNumber: 1,
-                  pageRows: 10,
-                  range: null,
-                })
-              }
-            /> */}
+          
             <Dropdown
               dropdownClass="lead-main-drop-down"
               value={filterObj.filter}

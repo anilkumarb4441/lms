@@ -33,10 +33,7 @@ function Leads() {
   const [tableLoading, setTableLoading] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
-  const [showPhoneNu, setShowPhoneNu] = useState(false);
-  const [showEmail, setShowEmail] = useState(false);
-  const [targetValue, setTargetValue] = useState('')
-  console.log(targetValue, '.........',showEmail, '....', showPhoneNu );
+
   const dispatch = useDispatch();
   const wrapperRef = useRef(); //Table Wrapper Ref
 
@@ -196,6 +193,7 @@ function Leads() {
 
   // action options for untouched leads
   const [actionOptions, setActionOptions] = useState([
+
     {
       name: "Edit Lead",
       color: "orange",
@@ -212,6 +210,7 @@ function Leads() {
 
   // action options for pending leads
   const [openactionOptions, setopenactionOptions] = useState([
+    
     {
       name: "Edit Lead",
       color: "orange",
@@ -221,12 +220,24 @@ function Leads() {
       color: "red",
     },
   ]);
+  const [showPhoneNu, setShowPhoneNu] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  const [targetValue, setTargetValue] = useState('')
+  const  setPhone=(props)=>{
+    setShowPhoneNu(true); 
+    setTargetValue(props.cell.row.original.leadId)
+    console.log(props)
+  }
+ 
+  console.log(targetValue, '.........',showEmail, '....', showPhoneNu, 'aaaaaaaaa');
 
   const [originalColumns, setOriginalColumns] = useState([
+  
     {
       Header: "Lead Id",
       accessor: "leadId",
       Cell: (props) => {
+       
         return (
           <p
             style={{ textDecoration: "underline", cursor: "pointer" }}
@@ -244,10 +255,13 @@ function Leads() {
     {
       Header: "Phone",
       accessor: "phone",
-      Cell:(props)=>{
-      console.log(showPhoneNu)
+      Cell:(props)=>{ 
+        console.log(targetValue, '.........',showEmail, '....', showPhoneNu, )
         return(
-          <p style={{cursor: "pointer"}} onClick={(e)=>{ setShowPhoneNu(true); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && showPhoneNu?props.cell.row.original.phone:'**********'}</p>
+          <p style={{cursor: "pointer"}} onClick={(e)=>setPhone(props)}>
+            {
+            targetValue===props.cell.row.original.leadId && showPhoneNu?props.cell.row.original.phone:'**********'}
+            </p>
         )
       }
     },
@@ -323,8 +337,12 @@ function Leads() {
     },
   ]);
 
+
   const [columns, setColumns] = useState([]);
+
   const [tableData, setTableData] = useState([]);
+
+  
 
   // function to handle table row action btns
   const handleAction = (name, rowData) => {
@@ -332,7 +350,6 @@ function Leads() {
     switch (name) {
       case "Edit Lead":
         dispatch(actions.editLead(rowData, formData));
-
         return;
 
       case "Assign To":
@@ -419,7 +436,7 @@ function Leads() {
 
   // function to create new lead
   const createLead = (data) => {
-    // console.log(data, "checking for refrence ids");
+
     const callback = (err, res) => {
       setFormLoading(false);
       if (res && res.status === 201) {
@@ -511,55 +528,57 @@ function Leads() {
   };
 
   // function to change columns after switching b/w main Tabs
-  useEffect(() => {
-    switch (reducer.filter.mainFilter) {
-      case "workInProgress":
-        let newCol2 = originalColumns.filter(
-          (obj) => obj.accessor !== "actions"
-        );
-        let actionCol2 = {
-          Header: "Actions",
-          accessor: "actions",
-          Cell: (props) => {
-            return (
-              <Dots
-                options={openactionOptions}
-                onclick={(name) => handleAction(name, props.cell.row.original)}
-              />
-            );
-          },
-        };
-        newCol2 = [...newCol2, actionCol2];
-        setColumns(newCol2);
-        return;
+  // useEffect(() => {
+  //   switch (reducer.filter.mainFilter) {
+  //     case "workInProgress":
+  //       let newCol2 = originalColumns.filter(
+  //         (obj) => obj.accessor !== "actions"
+  //       );
+  //       let actionCol2 = {
+  //         Header: "Actions",
+  //         accessor: "actions",
+  //         Cell: (props) => {
+  //           return (
+  //             <Dots
+  //               options={openactionOptions}
+  //               onclick={(name) => handleAction(name, props.cell.row.original)}
+  //             />
+  //           );
+  //         },
+  //       };
+  //       newCol2 = [...newCol2, actionCol2];
+  //       setColumns(newCol2);
+  //       return;
 
-      case "lost":
-        return;
+  //     case "lost":
+  //       return;
 
-      case "paid":
-        return;
+  //     case "paid":
+  //       return;
 
-      default:
-        setColumns(originalColumns);
-        return;
-    }
-  }, [reducer.filter.mainFilter, reducer.filter.range,]);
+  //     default:
+  //       setColumns(originalColumns);
+  //       return;
+  //   }
+  // }, [reducer.filter.mainFilter, reducer.filter.range,]);
 
   // function to change columns and call Status DropDown when main filter is paid/lost  after switching b/w sub Tabs
-  useEffect(() => {
-    let subFilter = reducer.filter.subFilter;
-    let nonActionCol = originalColumns.filter(
-      (obj) => obj.accessor !== "actions"
-    );
+  // useEffect(() => {
 
-    if (subFilter === "L1" || subFilter === "fullPayment") {
-      setColumns(nonActionCol);
-    }
+  //   let subFilter = reducer.filter.subFilter;
+  //   let nonActionCol = originalColumns.filter(
+  //     (obj) => obj.accessor !== "actions"
+  //   );
 
-    if (subFilter === "L2" || subFilter === "preRegistration") {
-      setColumns(originalColumns);
-    }
-  }, [reducer.filter.subFilter]);
+  //   if (subFilter === "L1" || subFilter === "fullPayment") {
+  //     setColumns(nonActionCol);
+  //   }
+
+  //   if (subFilter === "L2" || subFilter === "preRegistration") {
+
+  //     setColumns(originalColumns);
+  //   }
+  // }, [reducer.filter.subFilter]);
 
   // debounce function when we are searching for data in the table using search bar
   const debounceGetLeads = useCallback(
@@ -833,7 +852,7 @@ function Leads() {
                 pageSizeOptions={[5, 10, 15, 20, 50, 100]}
                 page
                 showColumns={false}
-                columns={[...columns]}
+                columns={[...originalColumns]}
                 data={tableData}
                 tClass="leadTable actionsTable"
                 columnHide={true}
@@ -868,6 +887,7 @@ function Leads() {
 
         {/* LEAD INNER PAGE */}
         {reducer.openInner && (
+
           <LeadsInner
             leadObj={reducer.rowObj}
             goBack={() => dispatch(actions.closeInner())}
