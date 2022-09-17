@@ -14,6 +14,8 @@ function AssignToModal({
   assignLeadCallBack,
   rowObj,
   assignType = "",
+  setAssignRevert,
+  onassignUndo,
 }) {
   const [selectArr, setSelectArr] = useState([]);
   const [leadCount, setLeadCount] = useState(1);
@@ -25,8 +27,6 @@ function AssignToModal({
   const [searchData, setSearchData] = useState([]);
   const [selectedLead, setSelectedLead] = useState('')
   const [showDropdown, setShowDropDown] = useState(false);
-
-console.log(userId, 'userId')
 
   const handleCount = (num) => {
     setLeadCount(num);
@@ -71,6 +71,7 @@ console.log(userId, 'userId')
     API_SERVICES.httpGETWithToken(URLS.getUnassignedLeadsCount, callback);
   };
 
+
   const assignLeads = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -83,8 +84,8 @@ console.log(userId, 'userId')
       data = {
         level: level,
         leadCount: parseInt(leadCount),
-        type: "group",
-        userId: userId,
+        type:userId.length===1?"single": "group",
+        userId:userId.length===1 ? userId[0]:userId,
       };
       if (userId === "team") {
         data.type = "group";
@@ -94,11 +95,12 @@ console.log(userId, 'userId')
     } else {
       data = {
         referenceId: rowObj.referenceId,
-        userId: userId,
+        userId:userId.length===1 ? userId[0]:userId,
         type: "single",
       };
     }
-
+    onassignUndo();
+    setAssignRevert(true);
     const callback = (err, res) => {
       setLoading(false);
       if (res && res.status == 200) {
@@ -134,6 +136,10 @@ const dropdownData = search !== ''?searchData:selectArr
 
 const onClickUserIds = (e) => {
     if(e.target.checked==true){
+      if(e.target.value === 'team'){
+        setUserId([e.target.value]);
+        return;
+      }
       setUserId([...userId,e.target.value])
     }
     else{

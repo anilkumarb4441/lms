@@ -140,20 +140,20 @@ function Table(options) {
        return <Loader/>
      }
    
-     {document.getElementById("empbox") &&   document.querySelector('*').addEventListener('click', (e) => {
-      let tarempbox = document.getElementById("empbox");
-  if (tarempbox.contains(e.target)) {
-      return
-  } else {
-    setColOptions(false);
-  }
-});}
+//      {document.getElementById("empbox") &&   document.querySelector('*').addEventListener('click', (e) => {
+//       let tarempbox = document.getElementById("empbox");
+//   if (tarempbox.contains(e.target)) {
+//       return
+//   } else {
+//     setColOptions(false);
+//   }
+// });}
 
 
     return (
         <>
         {options.data && options.data.length >0 && options.columnHide &&
-        <div className='tableopWrape' id='empbox'>
+        <div  id='empbox' className='tableopWrape'>
         <div  onClick={()=>setColOptions(!colOptions)} className="tableOptin">Table Options</div>
           {colOptions&&
             <div  className="tabOptions">

@@ -15,6 +15,9 @@ import localStorageService from "../../utils/localStorageService.js";
 //css
 import "./leads.css";
 
+//assets
+import undo from '../../assets/undo.svg'
+
 //components
 import Input from "../../components/Input";
 import Table from "../../components/Table";
@@ -33,7 +36,11 @@ function Leads() {
   const [tableLoading, setTableLoading] = useState(true);
   const [formLoading, setFormLoading] = useState(false);
   const [totalCount, setTotalCount] = useState(0);
-
+  const [showPhoneNu, setShowPhoneNu] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  const [targetValue, setTargetValue] = useState('');
+  const [assignRevert, setAssignRevert] = useState(false);
+  const [counter, setCounter] = useState(15);
   const dispatch = useDispatch();
   const wrapperRef = useRef(); //Table Wrapper Ref
 
@@ -42,12 +49,16 @@ function Leads() {
     { name: "Work In Progress ", value: "workInProgress" },
     { name: "Lost Leads", value: "lost" },
     { name: "Paid Leads", value: "paid" },
-    // { name: "CA Leads", value: "campusAmbassador" },
   ];
 
   const dateFilterArr = [
     { name: "Today", value: "todayLeads" },
     { name: "Old", value: "oldLeads" },
+  ];
+
+  const assignFilterArr = [
+    { name: "Assigned", value: "assigned" },
+    { name: "Unassigned", value: "unAssined" },
   ];
 
   const generalFilterArr = [
@@ -220,18 +231,22 @@ function Leads() {
       color: "red",
     },
   ]);
-  const [showPhoneNu, setShowPhoneNu] = useState(false);
-  const [showEmail, setShowEmail] = useState(false);
-  const [targetValue, setTargetValue] = useState('')
+
   const  setPhone=(props)=>{
     setShowPhoneNu(true); 
+    setShowEmail(false)
     setTargetValue(props.cell.row.original.leadId)
-    console.log(props)
+   
   }
- 
-  console.log(targetValue, '.........',showEmail, '....', showPhoneNu, 'aaaaaaaaa');
 
-  const [originalColumns, setOriginalColumns] = useState([
+  const  onShowEmail=(props)=>{
+    setShowEmail(true); 
+    setShowPhoneNu(false)
+    setTargetValue(props.cell.row.original.leadId)
+    
+  }
+
+  const originalColumns =[
   
     {
       Header: "Lead Id",
@@ -256,7 +271,6 @@ function Leads() {
       Header: "Phone",
       accessor: "phone",
       Cell:(props)=>{ 
-        console.log(targetValue, '.........',showEmail, '....', showPhoneNu, )
         return(
           <p style={{cursor: "pointer"}} onClick={(e)=>setPhone(props)}>
             {
@@ -283,7 +297,7 @@ function Leads() {
       accessor: "email",
       Cell:(props)=>{
         return(
-          <>{props.cell.row.original.email?<p style={{cursor: "pointer"}} onClick={()=>{setShowEmail(true); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && showEmail?props.cell.row.original.email:'*******.com'}</p>:null}</>
+          <>{props.cell.row.original.email?<p style={{cursor: "pointer"}} onClick={()=>onShowEmail(props)}>{targetValue===props.cell.row.original.leadId && showEmail?props.cell.row.original.email:'*******.com'}</p>:null}</>
         )
       }
     },
@@ -322,23 +336,30 @@ function Leads() {
       Header: "Referral Code",
       accessor: "referralCode",
     },
-
     {
       Header: "Actions",
       accessor: "actions",
       Cell: (props) => {
         return (
-          <Dots
+         <>
+         {reducer.filter.mainFilter ==='workInProgress'?  
+           <Dots
+                options={openactionOptions}
+                onclick={(name) => handleAction(name, props.cell.row.original)}
+              /> 
+              :reducer.filter.mainFilter==='new'|| reducer.filter.subFilter==='L2'|| reducer.filter.subFilter==='preRegistration'?
+            <Dots
             options={actionOptions}
             onclick={(name) => handleAction(name, props.cell.row.original)}
-          />
+             />
+            :reducer.filter.mainFilter ==='lost' && reducer.filter.mainFilter === 'paid'?null:null}  
+         </>
         );
       },
     },
-  ]);
-
-
+  ];
   const [columns, setColumns] = useState([]);
+
 
   const [tableData, setTableData] = useState([]);
 
@@ -488,7 +509,6 @@ function Leads() {
 
       if (err) {
         utils.toastError(err?.response.data);
-        console.log(err?.response.data)
       }
 
     };
@@ -516,7 +536,7 @@ function Leads() {
   };
 
   // call back after assigning leads
-  const assignLeadCallBack = (err, res) => {
+  const assignLeadCallBack = (err, res) => {          
     getLeadsByFilters(reducer.filter);
     dispatch(actions.closeAssignModal());
   };
@@ -527,8 +547,31 @@ function Leads() {
     dispatch(actions.toggleBulkModal());
   };
 
+  // assign leads undo api
+  const getAssignUndo = () => {
+    setAssignRevert(false);
+    const callback = (err, res) => {
+      
+      if (err) {
+          utils.toastError(err);
+          return;
+       }
+      if (res.data=='SUCCESS' && res.status === 200) {
+        utils.toastSuccess("Assigned leads undo successfully");
+        return;
+      }
+      if(res.data=='FAILED' && res.status === 200)
+    return  utils.toastError("assign undo failed", res.data);
+
+      // }
+
+    };
+    API_SERVICES.httpGETWithToken(URLS.undoAssignedLeads, callback);
+  };
+
   // function to change columns after switching b/w main Tabs
   // useEffect(() => {
+       
   //   switch (reducer.filter.mainFilter) {
   //     case "workInProgress":
   //       let newCol2 = originalColumns.filter(
@@ -614,6 +657,53 @@ function Leads() {
     };
   }, []);
 
+  // for(let i=15; i>=0; i--){
+  //   // console.log(i, 'iii')
+  //   if(i<=0){
+  //     setTimeout(() => {
+  //       setCounter(i)
+  //     }, 1000)
+  //   }
+  // }
+  // let count=15
+  // var myFunc01 = function() {
+  //   var i = 15;
+  //   while (i!=0) {
+  //     (function(i) {
+  //       setTimeout(function() {
+  //        console.log(i)
+  //       //  counter=i
+  //        setCounter(i)
+  //       }, 1000* (15-i) )
+  //     })(i--)
+  //   }
+  // };
+  // // console.log({count})
+  // myFunc01()
+
+
+  const onassignUndo = (e)=>{
+    setTimeout(() => {
+      setAssignRevert(false);
+    }, 15000)
+
+
+
+    // if(counter>=0){
+    //   clearInterval(counter)
+    // setInterval(() => {
+    //    if (counter === 0) {
+    //       clearInterval(counter)
+    //       return;
+    //     }
+    //    setCounter(prev => prev-1)
+    //    counter--;
+       
+    // },1000)
+    // return () => clearInterval(counter)
+    // }
+  }
+console.log(counter, 'countereeee');
   return (
     <>
       {/* {reducer.title && <p className="screenTitle">{reducer.title}</p>}Leads */}
@@ -640,24 +730,12 @@ function Leads() {
                   )
                 }
               />
-
-              {/* <Dropdown
-                dropdownClass="lead-main-drop-down side-drop-down"
-                value={reducer.filter.dateFilter}
-                options={dateFilterArr}
-                onchange={(item) =>
-                  dispatch(
-                    actions.setFilter({
-                      ...reducer.filter,
-                      dateFilter: item.value,
-                      searchData: "",
-                      pageNumber: 1,
-                      pageRows: 10,
-                      range: null,
-                    })
-                  )
-                }
-              /> */}
+              {assignRevert && 
+              <div className="assignUndo" onClick={()=>getAssignUndo()}>
+                <p>Undo</p>
+                <img src={undo} alt="undoImg"/>
+                {/* <p>{counter}</p> */}
+              </div>}
               <div className="horizontalBaseLine"></div>
             </div>
             <div className="filterContainer">
@@ -699,7 +777,26 @@ function Leads() {
                     />
                   </div>
                 )}
-
+                {reducer.filter.mainFilter === "new" && (
+                  <div className="lead-main-filter-header">
+                    <Tabs
+                      tabArr={assignFilterArr}
+                      activeValue={reducer.filter.assigns}
+                      handleTab={(item) => {
+                        dispatch(
+                          actions.setFilter({
+                            ...reducer.filter,
+                            assigns: item.value,
+                            searchData: "",
+                            pageNumber: 1,
+                            pageRows: 10,
+                            range: null,
+                          })
+                        );
+                      }}
+                    />
+                  </div>
+                )}
                 {reducer.filter.mainFilter === "lost" && (
                   <div className="lead-main-filter-header">
                     <Tabs
@@ -821,7 +918,7 @@ function Leads() {
 
                 )}
                 <p className="countlead">
-                  Total Count : <span>{totalCount}</span>
+                  Total Count : <span>{counter}</span>
                 </p>
               </div>
 
@@ -829,9 +926,6 @@ function Leads() {
             </div>
 
             <div>
-              {/* <p className="count">
-                Total Count <span>{totalCount}</span>
-              </p> */}
               <Table
                 wrapperRef={wrapperRef}
                 search={false}
@@ -880,6 +974,8 @@ function Leads() {
                 assignType={reducer.assignType}
                 show={reducer.openAssignModal}
                 handleDisplay={() => dispatch(actions.closeAssignModal())}
+                setAssignRevert={setAssignRevert}
+                onassignUndo={onassignUndo}
               />
             )}
           </div>

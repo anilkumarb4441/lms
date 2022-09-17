@@ -18,9 +18,9 @@
 .lead-main-filter-header{
     display:flex;
     position: relative;
-    justify-content: start;
+    justify-content: space-between;
     gap: 20px;
-    margin: 0 0 15px 0;
+    margin: 0 0 0px 0;
 
 }
 
@@ -110,6 +110,7 @@ border-radius: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 10px 0 0 0;
 }
 
 .filtersWraper{
@@ -141,4 +142,33 @@ border-radius: 0;
 }
 .lead-main-drop-down>.dropdown-body>p:hover{
     color: white;
+}
+
+.assignUndo{
+    display: flex;
+    gap: 10px;
+    padding: 7px 15px;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid rgb(196, 196, 196);
+    background-color: white;
+    border-radius: 5px;
+}
+.assignUndo>p{
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.assignUndo>img{
+    width: 15px;
+    animation: undoAnim  2s linear infinite;
+}
+
+@keyframes undoAnim {
+    from{
+     transform: rotate(360deg);
+    }
+    to{
+       transform: rotate(0deg);
+    }
 }

@@ -16,7 +16,8 @@ export const initialState = {
     pageNumber: 1,
     searchData: "",
     range:null, 
-    source:'all'
+    source:'all',
+    assigns:'assigned'
   },
   title: "",
   formHeading: "",

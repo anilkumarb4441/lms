@@ -8,6 +8,9 @@ import * as utils from "../../utils/constants";
 import "../leads/leads.css";
 import "./leadsUpload.css";
 
+//assets
+import undo from '../../assets/undo.svg'
+
 //components
 import Input from "../../components/Input";
 import Table from "../../components/Table";
@@ -27,6 +30,8 @@ function LeadsUpload() {
   const [showPhoneNu, setShowPhoneNu] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
   const [targetValue, setTargetValue] = useState('')
+  const [assignRevert, setAssignRevert] = useState(false);
+  const [counter, setCounter] = useState(0);
 
   
 
@@ -262,6 +267,33 @@ function LeadsUpload() {
 
   }, []);
 
+  const getAssignUndo = () => {
+    setAssignRevert(false);
+    const callback = (err, res) => {
+      
+      if (err) {
+          utils.toastError(err);
+          return;
+       }
+      if (res.data=='SUCCESS' && res.status === 200) {
+        utils.toastSuccess("Assigned leads undo successfully");
+        return;
+      }
+      if(res.data=='FAILED' && res.status === 200)
+    return  utils.toastError("assign undo failed", res.data);
+
+      // }
+
+    };
+    API_SERVICES.httpGETWithToken(URLS.undoAssignedLeads, callback);
+  };
+
+  const onassignUndo = (e)=>{
+    setTimeout(() => {
+      setAssignRevert(false);
+    }, 15000)
+  }
+
 
   return (
     <>
@@ -285,6 +317,12 @@ function LeadsUpload() {
                 })
               }
             />
+            {assignRevert && 
+              <div className="assignUndo" onClick={()=>getAssignUndo()}>
+                <p>Undo</p>
+                <img src={undo} alt="undoImg"/>
+                {/* <p>{counter}</p> */}
+              </div>}
             {filterObj.filter === "oldLeads" && (
               <CustomDateRange
                 range={filterObj.range}
@@ -422,8 +460,11 @@ function LeadsUpload() {
               assignType={"bulk"}
               assignLeadCallBack={() => setOpenAssign(false)}
               show={openAssign}
+              setAssignRevert={setAssignRevert}
+                onassignUndo={onassignUndo}
               handleDisplay={() => {
                 setOpenAssign(false);
+                
               }}
             />
           )}
