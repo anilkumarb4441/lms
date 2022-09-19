@@ -305,7 +305,7 @@ function LeadsUpload() {
       <div className="leadsScreen">
         <div>
           <div className="lead-main-filter-header">
-          
+            <div className="leadMianFirst">
             <Dropdown
               dropdownClass="lead-main-drop-down"
               value={filterObj.filter}
@@ -322,12 +322,7 @@ function LeadsUpload() {
                 })
               }
             />
-            {assignRevert && 
-              <div className="assignUndo" onClick={()=>getAssignUndo()}>
-                <p>Undo</p>
-                <img src={undo} alt="undoImg"/>
-                {/* <p>{counter}</p> */}
-              </div>}
+            
             {filterObj.filter === "oldLeads" && (
               <CustomDateRange
                 range={filterObj.range}
@@ -341,6 +336,14 @@ function LeadsUpload() {
                 }}
               />
             )}
+            </div>
+
+             {assignRevert && 
+              <div className="assignUndo" onClick={()=>getAssignUndo()}>
+                <p>Undo</p>
+                <img src={undo} alt="undoImg"/>
+                <p>{counter}</p>
+              </div>}
 
           </div>
 
@@ -467,10 +470,9 @@ function LeadsUpload() {
               show={openAssign}
               setAssignRevert={setAssignRevert}
                 onassignUndo={onassignUndo}
+                setCounter={setCounter}
               handleDisplay={() => {
                 setOpenAssign(false);
-                setCounter={setCounter}
-                
               }}
             />
           )}

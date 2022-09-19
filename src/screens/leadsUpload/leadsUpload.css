@@ -40,3 +40,9 @@
     font-size: 14px;
     font-weight: 600;
 }
+
+.lead-main-filter-header>.leadMianFirst{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}

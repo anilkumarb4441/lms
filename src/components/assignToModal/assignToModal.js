@@ -85,7 +85,7 @@ function AssignToModal({
       data = {
         level: level,
         leadCount: parseInt(leadCount),
-        type:userId.length===1?"single": "group",
+        type:userId.length===1 && userId[0] !== 'team'?"single": "group",
         userId:userId.length===1 ? userId[0]:userId,
       };
       if (userId === "team") {
