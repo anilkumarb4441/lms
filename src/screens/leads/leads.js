@@ -352,7 +352,7 @@ function Leads() {
             options={actionOptions}
             onclick={(name) => handleAction(name, props.cell.row.original)}
              />
-            :reducer.filter.mainFilter ==='lost' && reducer.filter.mainFilter === 'paid'?null:null}  
+            :reducer.filter.mainFilter ==='lost' && reducer.filter.mainFilter === 'paid'?null:reducer.filter.subFilter==='L1'|| reducer.filter.subFilter==='fullPayment'?null:null}  
          </>
         );
       },
