@@ -15,21 +15,22 @@ import card4 from '../../assets/dashboard/card4.svg'
 import fullScreen from "../../assets/dashboard/fullScreen.svg"
 import ticketPhotoTemp from "../../assets/dashboard/ticketPhotoTemp.png"
 import tempPhoto from "../../assets/dashboard/tempPhoto.png"
-
+import searchIcon from '../../assets/icons/searchIcon.svg'
 
 import { MONTHS } from "../../utils/constants.js"
 import { WEEKDAYS } from "../../utils/constants.js"
-import Dropdown from "../../components/dropdown/dropdown.js";
-import Tabs from "../../components/tabs/tabs.js";
 
 //components
-import { Chart, registerables, ArcElement } from "chart.js";
-import { Bar } from "react-chartjs-2";
-import { Line } from "react-chartjs-2";
-import { Doughnut } from "react-chartjs-2";
-Chart.register(...registerables);
-Chart.register(ArcElement);
-
+import Dropdown from "../../components/dropdown/dropdown.js";
+import Tabs from "../../components/tabs/tabs.js";
+import CustomDateRange from "../../components/dateRangePicker/dateRangePicker";
+import Table from "../../components/Table";
+// import { Chart, registerables, ArcElement } from "chart.js";
+// import { Bar } from "react-chartjs-2";
+// import { Line } from "react-chartjs-2";
+// import { Doughnut } from "react-chartjs-2";
+// Chart.register(...registerables);
+// Chart.register(ArcElement);
 
 
 
@@ -269,7 +270,7 @@ function DashBoard() {
 
 
   function getAnalyticsSelfData() {
-    const callback = (err, res) => {
+    const callback = (err, res) => { 
       if (err) {
         setAnalyticData([]);
         setTotalCustomerData([]);
@@ -349,11 +350,63 @@ function DashBoard() {
   function perceConvertDeg(valu) {
     let calcValue = (valu / 100) * 360;
     return calcValue;
-  }
+  } 
+
 
   const selfDeg = perceConvertDeg(selfRatingInPercent);
   const teamDeg = perceConvertDeg(TeamRatingInPercent)
 
+
+  const tableData = [
+     {
+      dateRange:'primary',
+      callBacks:200,
+      totalLeads:40,
+      interested:10,
+      paymentLinks:10,
+      payments:20,
+      convRate:'10.00%'
+     },
+     {
+      dateRange:'primary',
+      callBacks:200,
+      totalLeads:40,
+      interested:10,
+      paymentLinks:10,
+      payments:20,
+      convRate:'10.00%'
+     }
+  ]
+  const [columns, setColumns] = useState([
+    {
+      Header: "Date Range",
+      accessor: "dateRange",
+    },
+    {
+      Header: "Call Backs",
+      accessor: "callBacks",
+    },
+    {
+      Header: "Total Leads",
+      accessor: "totalLeads",
+    },
+    {
+      Header: "Interested",
+      accessor: "interested",
+    },
+    {
+      Header: "Payment Links",
+      accessor: "paymentLinks",
+    },
+    {
+      Header: "Payments",
+      accessor: "payments",
+    },
+    {
+      Header: "conv Rate",
+      accessor: "convRate",
+    },
+  ])
 
   return (
     <div className='dashBoardScreen' ref={mainref}>
@@ -423,147 +476,105 @@ function DashBoard() {
           </div>
         </div>
       </div>
-      <div className='revenueTabs'>
-          <Tabs
-          tabArr={revenueTab}
-          activeValue={revenueToggle}
-          tabsClass="leadTabs"
-          handleTab={(e) => setRevenueToggle(e.value)}
-        />
+      <div className='funnelDashbord-wraper'>
+        <h4 className='dashHeadline'>Lead Funnel Dashbord</h4>
+        <div className='dashbordFilter-holer'>
+         <div className='filterbetween'>
+         <div className='searchHolder'>
+            <img  src={searchIcon} alt='search'/>
+            <input type='search' placeholder='Search By Name' />
           </div>
-      <div className='flexedgrapghParent'>
-     
-        <div className='dboardGraphContainer'>
-          {/* <DgraphHeader name = {'Total Revenue'} handleSelect = {(e)=>handleSelect(e)}/> */}
-          
-          <Line data={lineData} options={lineOptions} />
+          <Dropdown
+            dropdownClass="dashbordDropdown-filter"
+            value={charBartFilter}
+            options={barChartSelect}
+            onchange={(item) => setChartBarFilter(item.value)}
+          />
+         </div>
+        <div className='filterbetween'>
+             <div className='dateFilter'>
+              <p>Select Date</p>
+             <CustomDateRange />
+             </div>
+           
+             <div className='dateFilter'>
+             <p>Select Comparison Date Range</p>
+             <CustomDateRange />
+             </div>
         </div>
-        <div className='dboardGraphContainer'>
-          {/* <DgraphHeader name = {'Total Customers'} setChartBarFilter={setChartBarFilter}/>
-                 */}
-
-          <Bar data={barData} options={barOptions} />
         </div>
-      </div>
-      <div className='ticketsGrapghParent'>
-        <div className='chartPieConatiner'>
-          <div className='ticketHead'>
-            <h4>Conversion Ratings</h4>
-          </div>
-          <div className='pieParent'>
-            <div>
-              <Doughnut
-                data={{
-                  labels: ["Self"],
-                  datasets: [
-                    {
-                      data: [selfrating.conversionCount],
-                      backgroundColor: "red",
-                      circumference: selfDeg,
-                      cutout: 60,
-                      borderColor: "transparent",
 
-                    }
-                  ],
-                }}
-              >
-
-              </Doughnut>
-              <h2 className='abstexd'>{selfRatingInPercent >= 0 ? selfRatingInPercent.toFixed(2) : 0} %</h2>
-              <h2 className='pieName'>{selfrating.conversionCount} / {selfrating.count}</h2>
-            </div>
-            <div>
-              <Doughnut
-                data={{
-                  labels: ["Team"],
-                  datasets: [
-                    {
-                      data: teamRating ? [teamRating.conversionCount] : [0],
-                      backgroundColor: "skyblue",
-                      circumference: teamDeg,
-                      cutout: 60,
-                      borderColor: "transparent",
-                    }
-                  ],
-                }}
-              >
-
-              </Doughnut>
-              <h2 className='abstexd'>{TeamRatingInPercent >= 0 ? TeamRatingInPercent.toFixed(2) : 0} %</h2>
-              <h2 className='pieName'>{teamRating.conversionCount} / {teamRating.count}</h2>
-            </div>
-          </div>
-          
-        </div>
-        <div className='userTicketsSection'>
-          <div className='ticketHead'>
-            <h4>Data </h4>
-            <div className='checkParentBox'>
-              <div className='checkBox'>
-                <label>
-                  <div className='flexedtoggle'>
-                    <p className={ticketDisplay === "Client" ? "active" : null}>Hot</p>
-                    <p className={ticketDisplay === "Client" ? null : "active"}>Cold</p>
-                  </div>
-                  <input checked={ticketDisplay === "Client" ? false : true} type="checkbox" className='visbilityNone' onChange={(e) => ticketsDisplay(e)} />
-                </label>
-              </div>
-              {/* <Link to="#" className='linkfull'>
-                      <img src={fullScreen} alt="FullIcon" />
-                      <p>Full Screen</p>
-                    </Link> */}
-            </div>
-          </div>
-          <div className='tickets'>
-            {
-              ticketsData.map((val, key) => {
-                return (
-                  <div className='tickectParent' key={key}>
-                    <div className='tickImg'>
-                      <img src={val.img} alt="Photo" />
-                    </div>
-                    <div className='ticketContentHolder'>
-                      <h3 className='TuserName'>{val.name}</h3>
-                      <p className='ticketDescript'>{val.descrip}</p>
-                    </div>
-                  </div>
-                )
-              })
-            }
-          </div>
+        <div className='funnelTable'>
+        <Table
+                      columns={columns}
+                      // pagination={true}
+                      // currentPage={tableFilter.pageNumber}
+                      // pageSize={tableFilter.pageRows}
+                      // totalCount={totalRowCount}
+                      // tableLoading={tableLoading}
+                      // onPageChange={(pageNumber, pageRows) => {
+                      //   setTableFilter({
+                      //     ...tableFilter,
+                      //     pageNumber: pageNumber,
+                      //     pageRows: pageRows,
+                      //     search: "",
+                      //   });
+                      // }}
+                      data={tableData}
+                      tClass="myteam perMyteam"
+                    />
         </div>
       </div>
-      {/* <div className='recentConatiner'>
-        <h4>Recent Leads list</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>preview</th>
-              <th scope="col">ID</th>
-              <th scope="col">Name</th>
-              <th scope="col">Time</th>
-              <th scope="col">Date</th>
-              <th scope="col">Price</th>
-              <th scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recentTabdta.map((val, key) => {
-              return (
-                <tr key={key} >
-                  <td><img src={val.img} /></td>
-                  <td>{val.ID}</td>
-                  <td>{val.Name}</td>
-                  <td>{val.Time}</td>
-                  <td>{val.Date}</td>
-                  <td>{val.Price}</td>
-                  <td>{val.Status}</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div> */}
+      <div className='funnelDashbord-wraper'>
+        <h4 className='dashHeadline'>Revenue Dashbord</h4>
+        
+
+        <div className='funnelTable'>
+        <Table
+                      columns={columns}
+                      // pagination={true}
+                      // currentPage={tableFilter.pageNumber}
+                      // pageSize={tableFilter.pageRows}
+                      // totalCount={totalRowCount}
+                      // tableLoading={tableLoading}
+                      // onPageChange={(pageNumber, pageRows) => {
+                      //   setTableFilter({
+                      //     ...tableFilter,
+                      //     pageNumber: pageNumber,
+                      //     pageRows: pageRows,
+                      //     search: "",
+                      //   });
+                      // }}
+                      data={tableData}
+                      tClass="myteam perMyteam"
+                    />
+        </div>
+      </div>
+      <div className='funnelDashbord-wraper'>
+        <h4 className='dashHeadline'>Pending Payments Dashbord</h4>
+       
+
+        <div className='funnelTable'>
+        <Table
+                      columns={columns}
+                      // pagination={true}
+                      // currentPage={tableFilter.pageNumber}
+                      // pageSize={tableFilter.pageRows}
+                      // totalCount={totalRowCount}
+                      // tableLoading={tableLoading}
+                      // onPageChange={(pageNumber, pageRows) => {
+                      //   setTableFilter({
+                      //     ...tableFilter,
+                      //     pageNumber: pageNumber,
+                      //     pageRows: pageRows,
+                      //     search: "",
+                      //   });
+                      // }}
+                      data={tableData}
+                      tClass="myteam perMyteam"
+                    />
+        </div>
+      </div>
     </div>
   )
 }

@@ -32,259 +32,82 @@
     font-size: 11px;
 }
 
-.dboardGraphContainer{
-    margin:0% 0% 5% 0%;
-    width:75%;
-    padding:2%;
-    border-radius: 10px;
-    position: relative;
-}
-
-.dgraphHeader{
-    display:flex;
-    justify-content:space-between;
-    color:var(--white);  
-}
-
-.dashBoardScreen .flexedgrapghParent{
-    display: flex;
-    justify-content: space-between;
-}
-
-.flexedgrapghParent .dboardGraphContainer{
-    width: 47%;
-}
-
-.dashBoardScreen .ticketsGrapghParent{
-    display: flex;
-    justify-content: space-between;
-    margin: 0% 0% 3% 0%;
-}
-
-.ticketsGrapghParent .chartPieConatiner{
-    width: 40%;
-    box-shadow: 0px 3px 6px #00000029;
-    /* background-color: #1F1E26; */
-    border-radius: 10px;
-    padding: 2% 1%;
-}
-
-.chartPieConatiner .pieParent{
-    display: flex;
-}
-
-.pieParent .pieName{
-    font-size: 16px;
-    text-align: center;
-    color: var(--primary);
-    font-weight: 600;
-    margin: 15% 0% 0% 0%;
-}
-
-.pieParent>div{
-    width: 50% !important;
-    position: relative;
-}
-
-.ticketsGrapghParent .userTicketsSection{
-    width: 58%;
-    /* background-color: #1F1E26; */
-    border-radius: 10px;
-    box-shadow: 0px 3px 6px #00000029;
-    padding: 2% 2% 0% 2%;
-}
-
-.userTicketsSection .ticketHead{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.ticketsGrapghParent h4{
-    color: var(--textgrey);
-    font-weight: 500;
-    font-size: 15px;
-}
-
-.chartPieConatiner .ticketHead{
-    margin: 0% 0% 10% 0%;
-}
-
-.ticketHead .checkParentBox{
-    display: flex;
-    width: 62%;
-    justify-content: space-between;
-}
-
-.ticketHead .linkfull{
-    color: var(--primary);
-    display: flex;
-    align-items: center;
-    margin: 0%;
-    width: 35%;
-}
-
-.linkfull img{
-    width: 13%;
-    margin: 0% 5% 0% 0%;
-}
-
-
-.chartPieConatiner canvas{
-    width: 100% !important;
-}
-
-/* Toggle Btn */
-
-.checkParentBox .checkBox{
-    width: 120px;
-    position: relative;
-}
-
-.checkBox .flexedtoggle{
-    display: flex;
-    justify-content: space-between;
-    background-color: white;
-    border-radius: 20px;
-    border: 0.5px solid rgb(211, 211, 211);
-    /* padding: 2% 0%; */
-}
-
-.checkBox label{
-    width: 100%;
-}
-
-.checkBox .visbilityNone{
-    visibility: hidden;
-    position: absolute;
-}
-
-.flexedtoggle p{
-    color: var(--primary);
-    border-radius: 10px;
-    font-size: 13px;
-    /* padding: 2%; */
-    padding: 5% 12%;
-}
-
-.flexedtoggle p.active{
-    background-color: var(--primary);
-    color: white;
-}
-
-
-.tickets{
-    padding: 2% 0%;
-}
-
-.tickets .tickectParent{
-    display: flex;
-    padding: 2% 0%;
-    justify-content: space-between;
-    align-items: center;
-    margin: 2% 0%;
-}
-
-.tickectParent .tickImg{
-    width: 10%;
-}
-
-.tickImg img{
-    width: 100%;
-    border-radius: 50%;
-}
-
-.tickectParent .ticketContentHolder{
-    width: 86%;
-    padding: 0% 0% 0% 0%;
-}
-
-.ticketContentHolder .TuserName{
-    color: #A89D9D;
-    font-size: 14px;
-    margin: 0% 0% 2% 0%;
-}
-
-.ticketContentHolder .ticketDescript{
-    font-size: 12px;
-    color: #A89D9D;
-    margin: 0%;
-}
-
-.recentConatiner{
-    /* background: #1F1E26 0% 0% no-repeat padding-box; */
-    box-shadow: 0px 3px 6px #00000029;
-    border-radius: 8px;
-    padding: 3% 2%;
-    margin: 0% 0% 3% 0%;
-}
-
-.recentConatiner h4{
-    color: var(--primary);
-    font-size: 14px;
-}
-
-.recentConatiner table{
-    width: 100%;
-    background-color: #45444C;
-    border-radius: 8px;
-    margin: 3% 0% 0% 0%;
-}
-
-.recentConatiner th{
-    color: white;
-    font-size: 13px;
-    padding: 1.5% 0%; 
-}
-
-.pieParent .abstexd{
-    position: absolute;
-    top: 40%;
-    color: var(--primary);
-    font-size: 26px;
-    left: 35%;
-    font-weight: 400;
-}
-
-.recentConatiner td{
-    color: #DCDBDB;
-    text-align: center;
-    font-size: 13px;
-    padding: 1% 0%;
-}
-
-.recentConatiner tbody tr:hover{
-    background-color: #E6AA55;
-}
-
-.recentConatiner tbody tr:hover td{
-    color: black;
-}
-
 .dashbord-FilersWraper{
     display: flex;
-    gap: 30px;
+    justify-content: start;
+    gap: 20px;
     align-items: center;
 }
 
 .dashbordDropdown-filter{
-  width: 150px;
-}
+    width: 150px;
+  }
+  
+  .dashbordDropdown-filter .dropdown-header p{
+      font-size: 12px;
+  }
+  .dashbordDropdown-filter .dropdown-body p{
+      font-size: 12px;
+  } 
 
-.dashbordDropdown-filter .dropdown-header p{
-    font-size: 12px;
-}
-.dashbordDropdown-filter .dropdown-body p{
-    font-size: 12px;
-} 
-
-.revenueTabs{
-    width: fit-content;
-    margin: 5% 0 0 0;
-}
-.revenueTabs .leadTabs>button{
-    padding: 5px 5px;
-    font-size: 11px;
+  .funnelDashbord-wraper{
+    background-color:#F0F2FC ;
+    margin: 3% 0 0 0;
+    padding: 20px 30px;
+    border-radius: 10px;
+  }
+  .funnelDashbord-wraper .dashHeadline{
+    font-size: 16px;
     font-weight: 500;
-    border-radius: 1px;
+    margin-bottom: 10px;
+
+  }
+
+  .funnelDashbord-wraper .dashbordFilter-holer{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+  }
+
+  .dashbordFilter-holer .filterbetween{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .filterbetween .searchHolder{
+  padding: 0px 5px;
+  border: solid 1px #70707099;
+  border-radius: 5px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  width: fit-content;
 }
+.filterbetween .searchHolder>input{
+    border: none;
+    width: 150px;
+    padding: 8px ;
+}
+.filterbetween .searchHolder>input{
+    outline: none;
+}
+.searchHolder>img{
+    width: 15px;
+}
+
+.filterbetween .dateFilter{
+width: fit-content;
+position: relative;
+}
+
+.filterbetween .dateFilter>p{
+    position: relative;
+    top: -8px;
+    left: 0;
+    color: #4D00FF;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+  
