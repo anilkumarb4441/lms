@@ -68,7 +68,6 @@ function Leads() {
     { name: "Facebook", value: "facebook" },
     { name: "Email", value: "email" },
     { name: "RCB", value: "rcb" },
-    { name: "Website", value: "website" },
     { name: "Google", value: "google" },
   ];
 
