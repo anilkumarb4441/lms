@@ -358,7 +358,7 @@ function Leads() {
       },
     },
   ];
-  const [columns, setColumns] = useState([]);
+  // const [columns, setColumns] = useState([]);
 
 
   const [tableData, setTableData] = useState([]);

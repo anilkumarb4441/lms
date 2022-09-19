@@ -135,7 +135,7 @@ function AssignToModal({
 
 
 const dropdownData = search !== ''?searchData:selectArr
-
+console.log(userId, 'userId');
 const onClickUserIds = (e) => {
     if(e.target.checked==true){
       if(e.target.value === 'team'){
@@ -149,6 +149,9 @@ const onClickUserIds = (e) => {
        present = present.filter(item =>item != e.target.value)
       setUserId([...present])
     }
+    if(userId.includes('team')){
+      setUserId([e.target.value]);
+     }
   };
 
 {document.getElementById("closeDropdown") &&   document.querySelector('*').addEventListener('click', (e) => {
