@@ -40,7 +40,7 @@ function Leads() {
   const [showEmail, setShowEmail] = useState(false);
   const [targetValue, setTargetValue] = useState('');
   const [assignRevert, setAssignRevert] = useState(false);
-  const [counter, setCounter] = useState(15);
+  const [counter, setCounter] = useState(0);
   const dispatch = useDispatch();
   const wrapperRef = useRef(); //Table Wrapper Ref
 
@@ -657,53 +657,21 @@ function Leads() {
     };
   }, []);
 
-  // for(let i=15; i>=0; i--){
-  //   // console.log(i, 'iii')
-  //   if(i<=0){
-  //     setTimeout(() => {
-  //       setCounter(i)
-  //     }, 1000)
-  //   }
-  // }
-  // let count=15
-  // var myFunc01 = function() {
-  //   var i = 15;
-  //   while (i!=0) {
-  //     (function(i) {
-  //       setTimeout(function() {
-  //        console.log(i)
-  //       //  counter=i
-  //        setCounter(i)
-  //       }, 1000* (15-i) )
-  //     })(i--)
-  //   }
-  // };
-  // // console.log({count})
-  // myFunc01()
-
 
   const onassignUndo = (e)=>{
     setTimeout(() => {
       setAssignRevert(false);
     }, 15000)
-
-
-
-    // if(counter>=0){
-    //   clearInterval(counter)
-    // setInterval(() => {
-    //    if (counter === 0) {
-    //       clearInterval(counter)
-    //       return;
-    //     }
-    //    setCounter(prev => prev-1)
-    //    counter--;
-       
-    // },1000)
-    // return () => clearInterval(counter)
-    // }
   }
-console.log(counter, 'countereeee');
+
+useEffect(() => {
+  if (counter > 0) {
+    setTimeout(() => {
+      setCounter((counter) => counter - 1);
+    }, 1000);
+  }
+}, [counter]);
+
   return (
     <>
       {/* {reducer.title && <p className="screenTitle">{reducer.title}</p>}Leads */}
@@ -734,7 +702,7 @@ console.log(counter, 'countereeee');
               <div className="assignUndo" onClick={()=>getAssignUndo()}>
                 <p>Undo</p>
                 <img src={undo} alt="undoImg"/>
-                {/* <p>{counter}</p> */}
+                <p>{counter}</p>
               </div>}
               <div className="horizontalBaseLine"></div>
             </div>
@@ -777,7 +745,7 @@ console.log(counter, 'countereeee');
                     />
                   </div>
                 )}
-                {reducer.filter.mainFilter === "new" && (
+                {/* {reducer.filter.mainFilter === "new" && (
                   <div className="lead-main-filter-header">
                     <Tabs
                       tabArr={assignFilterArr}
@@ -796,7 +764,7 @@ console.log(counter, 'countereeee');
                       }}
                     />
                   </div>
-                )}
+                )} */}
                 {reducer.filter.mainFilter === "lost" && (
                   <div className="lead-main-filter-header">
                     <Tabs
@@ -918,7 +886,7 @@ console.log(counter, 'countereeee');
 
                 )}
                 <p className="countlead">
-                  Total Count : <span>{counter}</span>
+                  Total Count : <span>{totalCount}</span>
                 </p>
               </div>
 
@@ -976,6 +944,7 @@ console.log(counter, 'countereeee');
                 handleDisplay={() => dispatch(actions.closeAssignModal())}
                 setAssignRevert={setAssignRevert}
                 onassignUndo={onassignUndo}
+                setCounter={setCounter}
               />
             )}
           </div>

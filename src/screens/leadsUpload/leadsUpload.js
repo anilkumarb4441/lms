@@ -184,8 +184,6 @@ function LeadsUpload() {
      
 //   })
 
-//   console.log(hello, 'hlllooooooooooo')
-
 
   // console.log(tableHeader, 'tableHeader')
 
@@ -294,6 +292,13 @@ function LeadsUpload() {
     }, 15000)
   }
 
+  useEffect(() => {
+    if (counter > 0) {
+      setTimeout(() => {
+        setCounter((counter) => counter - 1);
+      }, 1000);
+    }
+  }, [counter]);
 
   return (
     <>
@@ -464,6 +469,7 @@ function LeadsUpload() {
                 onassignUndo={onassignUndo}
               handleDisplay={() => {
                 setOpenAssign(false);
+                setCounter={setCounter}
                 
               }}
             />

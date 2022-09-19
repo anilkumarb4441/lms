@@ -16,6 +16,7 @@ function AssignToModal({
   assignType = "",
   setAssignRevert,
   onassignUndo,
+  setCounter,
 }) {
   const [selectArr, setSelectArr] = useState([]);
   const [leadCount, setLeadCount] = useState(1);
@@ -101,6 +102,7 @@ function AssignToModal({
     }
     onassignUndo();
     setAssignRevert(true);
+    setCounter(15);
     const callback = (err, res) => {
       setLoading(false);
       if (res && res.status == 200) {
@@ -156,7 +158,7 @@ if (tarempbox.contains(e.target)) {
 } else {
   setShowDropDown(false);
 }
-});}
+});}  
 
 
   return (
