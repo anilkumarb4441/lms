@@ -52,11 +52,12 @@ function DashBoard() {
   // version 2
   const [search, setSearch] = useState('');
   const [singleDate, setSingleDate] = useState('');
-  const [dateRange, setDateRange] = useState('');
+  const [dateRange, setDateRange] = useState(null);
   const [revenueLeads, setRevenueLeads] = useState([]);
 
 
-
+console.log(dateRange, 'dateRange')
+console.log(dateRange === null?'': dateRange[0].toISOString().slice(0, 10)+ 'to'+dateRange[1].toISOString().slice(0, 10));
 
   const YEARS = [
     '2022',
@@ -509,7 +510,12 @@ function DashBoard() {
            
              <div className='dateFilter'>
              <p>Select Comparison Date Range</p>
-             <CustomDateRange />
+             <CustomDateRange 
+              range={dateRange}
+              onChange={(arr) => {
+                setDateRange(arr)
+              }}
+             />
              </div>
         </div>
         </div>
