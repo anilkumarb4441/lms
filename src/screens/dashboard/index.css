@@ -111,3 +111,26 @@ position: relative;
 }
 
   
+/* table */
+
+.dashbordRevenueTable{
+    border-radius:2px;
+    overflow-x: scroll;
+    min-height: 50px !important; 
+    max-height: 300px ;
+    padding-bottom: 0px !important;
+    /* border: 1px solid #dbdbdb; */
+   
+}
+
+.dashbordRevenueTable>.Table tbody>tr>td {
+    font-size: 12px;
+    color: var(--black);
+    font-weight: 400;
+    text-align: center;
+    align-self: center;
+    padding: 8px 5px;
+  }
+  .dashbordRevenueTable .Table tbody>tr:nth-last-child(1) {
+    border-top: none !important;
+}

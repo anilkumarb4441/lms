@@ -10,6 +10,7 @@
      max-height: 310px;
      padding-bottom: 30px;
      border: 1px solid #dbdbdb;
+     background-color: white;
  }
  .TableContainer .Table thead{
   position: sticky;
@@ -202,7 +203,7 @@ min-width: 124px;
 
  .Table tbody {
   background-color: var(--white);
-  border-top: solid 10px var(--white);
+  /* border-top: solid 10px var(--white); */
 }
 .Table tbody>tr{
   border-bottom: 1px solid #dbdbdb;

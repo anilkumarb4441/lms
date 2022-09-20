@@ -24,6 +24,7 @@ import { WEEKDAYS } from "../../utils/constants.js"
 import Dropdown from "../../components/dropdown/dropdown.js";
 import Tabs from "../../components/tabs/tabs.js";
 import CustomDateRange from "../../components/dateRangePicker/dateRangePicker";
+
 import Table from "../../components/Table";
 // import { Chart, registerables, ArcElement } from "chart.js";
 // import { Bar } from "react-chartjs-2";
@@ -47,6 +48,14 @@ function DashBoard() {
   const [teamRating, setteamRating] = useState([]);
   const [revenueProjeceted, setRevenueProjected] = useState([]);
   const [revenueToggle, setRevenueToggle] = useState('projected')
+
+  // version 2
+  const [search, setSearch] = useState('');
+  const [singleDate, setSingleDate] = useState('');
+  const [dateRange, setDateRange] = useState('');
+  const [revenueLeads, setRevenueLeads] = useState([]);
+
+
 
 
   const YEARS = [
@@ -494,7 +503,8 @@ function DashBoard() {
         <div className='filterbetween'>
              <div className='dateFilter'>
               <p>Select Date</p>
-             <CustomDateRange />
+       
+
              </div>
            
              <div className='dateFilter'>
@@ -521,7 +531,7 @@ function DashBoard() {
                       //   });
                       // }}
                       data={tableData}
-                      tClass="myteam perMyteam"
+                      tClass="myteam dashbordRevenueTable"
                     />
         </div>
       </div>
@@ -546,7 +556,8 @@ function DashBoard() {
                       //   });
                       // }}
                       data={tableData}
-                      tClass="myteam perMyteam"
+                      tClass="myteam dashbordRevenueTable"
+                      
                     />
         </div>
       </div>
@@ -571,7 +582,7 @@ function DashBoard() {
                       //   });
                       // }}
                       data={tableData}
-                      tClass="myteam perMyteam"
+                      tClass="myteam dashbordRevenueTable"
                     />
         </div>
       </div>
