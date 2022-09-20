@@ -1,7 +1,7 @@
 import React,{useState} from 'react'
 import * as utils from "../../utils/constants";
 //css
-import "./dateRangePicker.css"
+// import "./customCalender.css"
 import "react-calendar/dist/Calendar.css";
 
 //components
@@ -13,9 +13,9 @@ import {HiChevronDoubleRight} from "react-icons/hi"
 import {GrPowerReset} from "react-icons/gr"
 import {BsCalendar} from "react-icons/bs"
 
-function CustomDateRange({onChange,range}) {
+function CustomCalender({onChange,range}) {
     const [show,toggleCalendar] = useState(false);
-    const [value,setValue] = useState()
+    const [value,setValue] = useState();
     const reset =()=>{
         onChange(null)
         setValue()
@@ -27,18 +27,19 @@ function CustomDateRange({onChange,range}) {
                  { range?
                  <>
                  <GrPowerReset onClick = {()=>reset()}/>
-                 <p>{utils.DateObjectToString(range[0])} to {utils.DateObjectToString(range[1])}</p></>:<p>Select Date</p>}
+                 <p>{utils.DateObjectToString(range)}</p></>:<p>Select Date</p>
+                 }
                     <BsCalendar onClick = {()=>toggleCalendar(show=>!show)} /> 
             </div>
            {show &&
            <div className = "date-range-body">
                <Calendar
-            selectRange = {true}
+            selectRange = {false}
             value = {value}
             onChange = {setValue}
             maxDate  = {new Date()}
-            maxDetail = {'month'}
-            returnValue = {'range'}                          
+            // maxDetail = {'month'}
+            // returnValue = {'range'}
             prevLabel = {<IoIosArrowBack/>}
             nextLabel = {<IoIosArrowForward/>}
             prev2Label = {<HiChevronDoubleLeft/>}
@@ -54,6 +55,6 @@ function CustomDateRange({onChange,range}) {
     )
 }
 
-export default CustomDateRange
+export default CustomCalender;
 
 
