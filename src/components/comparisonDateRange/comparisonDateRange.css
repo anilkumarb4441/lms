@@ -17,7 +17,7 @@
 
 }
 
-.date-range-header{
+.comparison-date-range-picker .date-range-header{
     display: flex;
     align-items: center;
     gap:10px;
@@ -28,6 +28,7 @@
     font-weight: 500;
     border-radius: 5px;
     border: 1px solid #70707045;
+    justify-content: space-between;
 }
 .date-range-header>svg{
     height: 18px;

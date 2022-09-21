@@ -77,7 +77,13 @@ module.exports = {
           // number of leads assign to whom
           noOfleadsAssignToWhom:'/leads/numberOfLeadsAssignedToWhom',
 
-          undoAssignedLeads:'/leads/assign/undo'
+          undoAssignedLeads:'/leads/assign/undo',
+
+          // version 2 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+          
+          // dashbord funnel leads for single date data
+
+          getFunnelLeadsforSingle:'/dashboard'
   },
 };
 

@@ -1,10 +1,11 @@
 import * as actionTypes from "./actionTypes"
+
 const initialState = {
     arr:[],
     openInner:false,
 }
 
-const reducer = (state=initialState,action)=>{        
+const reducer = (state=initialState, action)=>{        
         switch(action.type){
         case actionTypes.GET_TEAM_MEMBER:
             let newState = {}                                                                   
