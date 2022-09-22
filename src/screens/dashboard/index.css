@@ -76,18 +76,19 @@
   }
 
   .filterbetween .searchHolder{
-  padding: 0px 5px;
+  padding: 8px 5px;
   border: solid 1px #70707099;
   border-radius: 5px;
   background-color: white;
   display: flex;
   align-items: center;
-  width: fit-content;
+  width: 180px;
+  gap: 10px;
 }
 .filterbetween .searchHolder>input{
     border: none;
-    width: 150px;
-    padding: 8px ;
+    width: 90%;
+    padding: 0px ;
 }
 .filterbetween .searchHolder>input{
     outline: none;
@@ -109,11 +110,13 @@ position: relative;
     font-size: 12px;
     font-weight: 500;
 }
-
+.filterbetween>.custom-dropdown{
+    min-width: 140px ;
+}
   
 /* table */
 
-.dashbordRevenueTable{
+.dashbordRevenueTable, .dashbordComparisonTable{
     border-radius:2px;
     overflow-x: scroll;
     min-height: 50px !important; 
@@ -131,6 +134,14 @@ position: relative;
     align-self: center;
     padding: 8px 5px;
   }
+  .dashbordComparisonTable>.Table tbody>tr>td{
+    font-size: 12px;
+    color: var(--black);
+    font-weight: 400;
+    text-align: center;
+    align-self: center;
+    padding: 0px 5px 0px 0px;
+  }
   .dashbordRevenueTable .Table tbody>tr:nth-last-child(1) {
     border-top: none !important;
 }
@@ -145,9 +156,18 @@ position: relative;
     position: relative;
     width: 100%;
 }
-/* .searchHolder>p{
-    width: 150px;
-} */
+.searchHolder>p{
+    width: 80%;
+    font-size: 13px;
+}
+.searchHolder>span{
+    font-size: 16px;
+    width: 15%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    font-weight: 600;
+}
 
 .memberHolder{
     width: 200px;

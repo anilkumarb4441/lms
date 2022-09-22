@@ -17,7 +17,7 @@ function CustomCalender({onChange,range}) {
     const [show,toggleCalendar] = useState(false);
     const [value,setValue] = useState();
     const reset =()=>{
-        onChange(null)
+        onChange(new Date())
         setValue()
     }
     return (

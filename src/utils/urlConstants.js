@@ -6,7 +6,7 @@ const BASE_URL ="https://leadserver.verzeo.com"
 
 module.exports = {
   URLS: {  
-    //baseURL
+    //baseURL              
     baseURL:BASE_URL,
 
    //Login 
@@ -82,8 +82,10 @@ module.exports = {
           // version 2 \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
           
           // dashbord funnel leads for single date data
+          getFunnelLeadsforSingle:'/dashboard',
 
-          getFunnelLeadsforSingle:'/dashboard'
+           // dashbord funnel comparison leads on Range date data
+           getComparisonLeads:'/dashboard/comparison'
   },
 };
 
