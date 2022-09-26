@@ -147,7 +147,6 @@ function DashBoard() {
     API_SERVICES.httpPOSTWithToken(URLS.getFunnelLeadsforSingle + `?q=${analyticToggle}&type=${setobjValue}&userId=${analyticToggle ==='team'?memberId:''}`, {date:objDate}, callback)
   }
 
-  
   function getComparisonLeads() {
     let dateObj = {
       date1:dateRange1,
@@ -170,7 +169,7 @@ function DashBoard() {
           let delCallback = (inData[0].CallBack-inData[1].CallBack)/inData[0].CallBack;
           let delCInterested = (inData[0].Interested-inData[1].Interested)/inData[0].Interested;
           let delclosed = (inData[0].closed-inData[1].closed)/inData[0].closed;
-          let delta = { Primary:'Delta', count: delCount, CallBack: delCallback, Interested: delCInterested, closed: delclosed}
+          let delta = { Primary:'Delta', count: delCount?delCount:0, CallBack: delCallback?delCallback:0, Interested: delCInterested?delCInterested:0, closed: delclosed?delclosed:0}
           let objData = [...inData, delta]
           setLeadComaprison(objData);
          
@@ -188,13 +187,15 @@ function DashBoard() {
     getFunnelLeads();
     let memIdd = analyticToggle === 'self'? '': memberId
     setMemberId(memIdd);
-    setCompRange1(charBartFilter === 'today'? null :comprange1);
-  setCompRange2(charBartFilter === 'today'? null :comprange1);
+    let memName = analyticToggle === 'self'? 'Team':memberName
+    setMemberName(memName)
+    setCompRange1(charBartFilter === 'today'? null :charBartFilter === 'range'?null:comprange1);
+  setCompRange2(charBartFilter === 'today'? null :charBartFilter === 'range'?null:comprange2);
   }, [analyticToggle, memberId, singleDate, rangeDate])
 
 useEffect(()=>{
   getComparisonLeads();
-},[comprange1, comprange2])
+},[comprange1, comprange2, analyticToggle, memberId])
 
   function getMyTeamData() {
     const callback = (err, res) => {
