@@ -17,6 +17,33 @@ function ComparisonDateRange({onChange, onChangerange,range, range2}) {
     const [show,toggleCalendar] = useState(false);
     const [value,setValue] = useState();
     const [value2,setValue2] = useState();
+    const [errorMsg, setErorMsg] = useState('');
+    const [open, setOpen] = useState(false);
+
+    
+
+    let valDate1 = value && value[1].getDate();
+    let valDate2 = value2 && value2[1].getDate();
+    let valMonth1 = value && value[1].getMonth() +1;
+    let valMonth2 = value2 && value2[1].getMonth()+ 1;
+
+
+
+    const errorHandle = ()=>{
+        if(valMonth1 >= valMonth2){
+            if( valDate1 > valDate2){
+                setErorMsg('Date Two should be greater then Date One');
+                setOpen(true)
+            }else{
+                toggleCalendar(show=>!show);
+                return;
+            }
+        }else{
+            toggleCalendar(show=>!show);
+            return;
+        }
+    }
+
     const reset =()=>{
         onChange(null)
         setValue();
@@ -35,8 +62,13 @@ function ComparisonDateRange({onChange, onChangerange,range, range2}) {
                  </>:<p>Select Date</p>}
                     <BsCalendar onClick = {()=>toggleCalendar(show=>!show)} /> 
             </div>
+            {errorMsg !== ''&& open && <div className='calErrorMsg'>
+                <p className='Calerr'>{errorMsg}</p>
+                <p className='calClose' onClick={()=>setOpen(false)}>x</p>
+                </div>}
            {show &&
-           <div className = "date-range-body-wraper">
+           <div className = "date-range-body-wraper rangeCal-parent">
+            
             <div className='dateCalenderHolder'>
             <div>
             <Calendar
@@ -69,7 +101,7 @@ function ComparisonDateRange({onChange, onChangerange,range, range2}) {
             </div>
             <div className = 'date-range-footer'>
               <button onClick = {()=>toggleCalendar(show=>!show)} style = {{color:'#FF4B4B'}}>Cancel</button>
-                <button onClick = {()=>{onChange(value); onChangerange(value2); toggleCalendar(show=>!show)}} style = {{color:'#1294F2'}}>OK</button>
+                <button onClick = {()=>{onChange(value); onChangerange(value2); errorHandle()}} style = {{color:'#1294F2'}}>OK</button>
             </div>
            </div>
            }

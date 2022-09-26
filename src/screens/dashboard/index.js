@@ -34,11 +34,12 @@ function DashBoard() {
 
 
   const [analyticToggle, setAnalyticToggle] = useState('self')
-  const [charBartFilter, setChartBarFilter] = useState('month')
+  const [charBartFilter, setChartBarFilter] = useState('today')
 
   // version 2
   const [search, setSearch] = useState('');
   const [singleDate, setSingleDate] = useState(new Date());
+  const [rangeDate, setRangeDate] = useState(null);
   const [funnelLeads, setFunnelLeads] = useState([]);
   const [leadsComparison, setLeadComaprison] = useState([])
   const [comprange1, setCompRange1] = useState(null);
@@ -49,20 +50,18 @@ function DashBoard() {
   const [memberSow, setMemberShow] = useState(false);
   const [filterData, setFilterData] = useState([]);
   const  [showMember, setShowMember] = useState(false);
-  const [memberName, setMemberName] = useState('Team')
+  const [memberName, setMemberName] = useState('Team');
 
-
-console.log(leadsComparison, 'leadsComparison')
 
   let dateRange1 = [comprange1 && comprange1.length > 0 ? utils.DateObjectToString(comprange1[0]) : '', comprange1 && comprange1.length > 0 ? utils.DateObjectToString(comprange1[1]) : '']
   let dateRange2 = [comprange2 && comprange2.length > 0 ? utils.DateObjectToString(comprange2[0]) : '', comprange2 && comprange2.length > 0 ? utils.DateObjectToString(comprange2[1]) : '']
+  let rangeDateValue =  [rangeDate && rangeDate.length > 0 ? utils.DateObjectToString(rangeDate[0]) : '', rangeDate && rangeDate.length > 0 ? utils.DateObjectToString(rangeDate[1]) : '']
   let dailyDate = singleDate !== '' ? utils.DateObjectToString(singleDate) : ""
+
 
   const isBelowThreshold = (currentValue) => currentValue  === '';
 
   const tableData = dateRange1.every(isBelowThreshold) && dateRange2.every(isBelowThreshold) ?funnelLeads:leadsComparison;
-
-console.log(tableData, 'tableData')
 
   useEffect(() => {
     mainref.current.scrollIntoView();
@@ -76,47 +75,10 @@ console.log(tableData, 'tableData')
   ];
 
   const barChartSelect = [
-    { name: "Monthly", value: "month" },
-    { name: "Yearly", value: "year" },
     { name: "Daily", value: "today" },
+    { name: "Range", value: "range" },
+    { name: "comparison Range", value: "compRange" },
   ];
-
-  // const [columns, setColumns] = useState([
-  //   {
-  //     Header: "Date Range",
-  //     accessor: "Primary",
-  //   },
-  //   {
-  //     Header: "Call Backs",
-  //     accessor: "CallBack",
-  //   },
-  //   {
-  //     Header: "Total Leads",
-  //     accessor: "count",
-  //   },
-  //   {
-  //     Header: "Interested",
-  //     accessor: "Interested",
-  //   },
-  //   {
-  //     Header: "Payment Links",
-  //     accessor: "paymentLinks",
-  //   },
-  //   {
-  //     Header: "Payments",
-  //     accessor: "payments",
-  //   },
-  //   {
-  //     Header: "conv Rate",
-  //     accessor: "convRate",
-  //     Cell:(props)=>{
-  //       let convCount = (props.cell.row.original.closed/props.cell.row.original.count)*100
-  //       return(
-  //        <p >{convCount>0?convCount:0} %</p>
-  //       )
-  //     }
-  //   },
-  // ])
 
   const [comparisonCoulumn, setComparisonCoulumn] = useState([
     {
@@ -163,7 +125,8 @@ console.log(tableData, 'tableData')
   ])
 
   function getFunnelLeads() {
-    const objDate = dailyDate;
+    const objDate = charBartFilter === 'today'?dailyDate:rangeDateValue;
+    const setobjValue = charBartFilter === 'today'? 'today':'range'
     setTableLoading({...tableLoading, funnelTable:true})
     const callback = (err, res) => {
       setTableLoading({...tableLoading, funnelTable:false})
@@ -181,7 +144,7 @@ console.log(tableData, 'tableData')
        
       }
     }
-    API_SERVICES.httpGETWithToken(URLS.getFunnelLeadsforSingle + `?q=${analyticToggle}&type=today&date=${objDate}&userId=${analyticToggle ==='team'?memberId:''}`, callback)
+    API_SERVICES.httpPOSTWithToken(URLS.getFunnelLeadsforSingle + `?q=${analyticToggle}&type=${setobjValue}&userId=${analyticToggle ==='team'?memberId:''}`, {date:objDate}, callback)
   }
 
   
@@ -203,10 +166,10 @@ console.log(tableData, 'tableData')
       if (res && res.status === 200) {
         if (res.data && res.data.status === "SUCCESS") {
           let inData = res.data.data;
-          let delCount = (inData[0].count+inData[1].count)/2;
-          let delCallback = (inData[0].CallBack+inData[1].CallBack)/2;
-          let delCInterested = (inData[0].Interested+inData[1].Interested)/2;
-          let delclosed = (inData[0].closed+inData[1].closed)/2;
+          let delCount = (inData[0].count-inData[1].count)/inData[0].count;
+          let delCallback = (inData[0].CallBack-inData[1].CallBack)/inData[0].CallBack;
+          let delCInterested = (inData[0].Interested-inData[1].Interested)/inData[0].Interested;
+          let delclosed = (inData[0].closed-inData[1].closed)/inData[0].closed;
           let delta = { Primary:'Delta', count: delCount, CallBack: delCallback, Interested: delCInterested, closed: delclosed}
           let objData = [...inData, delta]
           setLeadComaprison(objData);
@@ -227,7 +190,7 @@ console.log(tableData, 'tableData')
     setMemberId(memIdd);
     setCompRange1(charBartFilter === 'today'? null :comprange1);
   setCompRange2(charBartFilter === 'today'? null :comprange1);
-  }, [analyticToggle, charBartFilter, memberId, singleDate])
+  }, [analyticToggle, memberId, singleDate, rangeDate])
 
 useEffect(()=>{
   getComparisonLeads();
@@ -241,7 +204,8 @@ useEffect(()=>{
       }
       if (res && res.status === 200) {
         if (res.data[0]?.directMembers) {
-          setTeamMebers(res.data[0].directMembers)
+          let team = {userId: '', name: 'Team',}
+          setTeamMebers([team, ...res.data[0].directMembers])
         } else {
           setTeamMebers([]);
         }
@@ -260,6 +224,7 @@ useEffect(()=>{
         }
         )
         : [];
+       
         setFilterData([...filteredList]);
 };
  
@@ -316,7 +281,7 @@ useEffect(()=>{
           <div className='filterbetween'>
             {charBartFilter === 'today' ?
               <div className='dateFilter'>
-                <p>Select Date</p>
+                <p>Select Single Date</p>
 
                 <CustomCalender
                   range={singleDate}
@@ -324,7 +289,16 @@ useEffect(()=>{
                     setSingleDate(arr)
                   }} />
               </div>
-              :
+              :charBartFilter === 'range'?
+              <div className='dateFilter'>
+              <p>Select range Date</p>
+
+              <CustomDateRange
+                range={rangeDate}
+                onChange={(arr) => {
+                  setRangeDate(arr)
+                }} />
+            </div>:
               <div className='dateFilter'>
                 <p>Select Comparison Date Range</p>
                 <ComparisonDateRange range={comprange1}
@@ -342,18 +316,10 @@ useEffect(()=>{
         </div>
 
         <div className='funnelTable'>
-          {/* <Table
-            columns={[...columns]}
-            data={funnelLeads}
-            tableLoading={tableLoading.funnelTable}
-            tClass="myteam dashbordRevenueTable"
-          />
-          <br />
-          <br /> */}
            <Table
             columns={[...comparisonCoulumn]}
             data={tableData}
-            // tableLoading={tableLoading.comparisonTable}
+            tableLoading={tableLoading.funnelTable}
             tClass="myteam dashbordComparisonTable"
           />
         </div>
