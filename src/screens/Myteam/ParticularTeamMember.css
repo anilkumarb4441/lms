@@ -437,3 +437,25 @@
 .leadInputHide{
     visibility:visible;
 }
+
+.customStatLoader{
+    margin: 90px auto 50px auto;
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    border-top: 0px solid rgb(171, 171, 177);
+    border-right: 1px solid rgb(152, 152, 172);
+    border-bottom: 3px solid rgb(93, 93, 184);
+    border-left: 10px solid rgb(59, 59, 167);
+    animation: loadRotate 2s infinite linear;
+}
+
+
+@keyframes loadRotate{
+    from {
+        transform: rotate(0);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+}

@@ -29,6 +29,7 @@ function LeadsUpload() {
   const [search, setSearch] = useState("");
   const [showPhoneNu, setShowPhoneNu] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
+  const [whatSAppNo, setWhatSAppNo] = useState(false);
   const [targetValue, setTargetValue] = useState('')
   const [assignRevert, setAssignRevert] = useState(false);
   const [counter, setCounter] = useState(0);
@@ -75,70 +76,78 @@ function LeadsUpload() {
     {
       Header: "Name",
       accessor: "name",
-      isChecked:true
+      
     },
     {
       Header: "Phone",
       accessor: "phone",
-      isChecked:true,
+      
       Cell:(props)=>{
       console.log(showPhoneNu, '....', targetValue)
 
         return(
-          <p style={{cursor: "pointer"}} onClick={(e)=>{setShowPhoneNu(true); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && showPhoneNu?props.cell.row.original.phone:'**********'}</p>
+          <p style={{cursor: "pointer"}} onClick={(e)=>{setShowPhoneNu(true); setShowEmail(false); setWhatSAppNo(false); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && showPhoneNu?props.cell.row.original.phone:'**********'}</p>
         )
       }
     },
     {
       Header: "Email",
       accessor: "email",
-      isChecked:true,
+      
       Cell:(props)=>{
         
         return(
-          <>{props.cell.row.original.email?<p style={{cursor: "pointer"}} onClick={()=>{setShowEmail(true); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && showEmail?props.cell.row.original.email:'*******.com'}</p>:null}</>
+          <>{props.cell.row.original.email?<p style={{cursor: "pointer"}} onClick={()=>{setShowEmail(true); setShowPhoneNu(false); setWhatSAppNo(false); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && showEmail?props.cell.row.original.email:'*******.com'}</p>:null}</>
         )
       }
     },
     {
       Header: "College",
       accessor: "college",
-      isChecked:true
+      
     },
     {
       Header: "Whats App No",
       accessor: "whatsAppNo",
-      isChecked:true
+      Cell:(props)=>{
+        return(
+          <>{props.cell.row.original.whatsAppNo?
+          <p style={{cursor: "pointer"}} 
+          onClick={()=>{setShowEmail(false); setWhatSAppNo(true); setShowPhoneNu(false); setTargetValue(props.cell.row.original.leadId)}}>{targetValue===props.cell.row.original.leadId && whatSAppNo?props.cell.row.original.whatsAppNo:'*********'}
+          </p>:null}</>
+        )
+      }
+      
     },
     {
       Header: "Year of Pass Out",
       accessor: "yearOfPassOut",
-      isChecked:true
+      
     },
     {
       Header: "Year",
       accessor: "year",
-      isChecked:true
+      
     },
     {
       Header: "Department",
       accessor: "department",
-      isChecked:true
+      
     },
     {
       Header: "Technical Program",
       accessor: "technicalProgram",
-      isChecked:true
+      
     },
     {
       Header: "Certifications",
       accessor: "certifications",
-      isChecked:true
+      
     },
     {
       Header: "Referral Code",
       accessor: "referralCode",
-      isChecked:true
+      
     },
 
   ]

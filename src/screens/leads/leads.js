@@ -38,6 +38,7 @@ function Leads() {
   const [totalCount, setTotalCount] = useState(0);
   const [showPhoneNu, setShowPhoneNu] = useState(false);
   const [showEmail, setShowEmail] = useState(false);
+  const [whatsAppNo, setwhatsAppNo] = useState(false);
   const [targetValue, setTargetValue] = useState('');
   const [assignRevert, setAssignRevert] = useState(false);
   const [counter, setCounter] = useState(0);
@@ -234,6 +235,7 @@ function Leads() {
   const  setPhone=(props)=>{
     setShowPhoneNu(true); 
     setShowEmail(false)
+    setwhatsAppNo(false);
     setTargetValue(props.cell.row.original.leadId)
    
   }
@@ -241,8 +243,17 @@ function Leads() {
   const  onShowEmail=(props)=>{
     setShowEmail(true); 
     setShowPhoneNu(false)
+    setwhatsAppNo(false);
     setTargetValue(props.cell.row.original.leadId)
     
+  }
+
+  const onShowWatsApp = (props)=>{
+    setwhatsAppNo(true);
+    setShowEmail(false); 
+    setShowPhoneNu(false)
+    setTargetValue(props.cell.row.original.leadId)
+
   }
 
   const originalColumns =[
@@ -312,6 +323,11 @@ function Leads() {
     {
       Header: "Whats App No",
       accessor: "whatsAppNo",
+      Cell:(props)=>{
+        return(
+          <>{props.cell.row.original.whatsAppNo?<p style={{cursor: "pointer"}} onClick={()=>onShowWatsApp(props)}>{targetValue===props.cell.row.original.leadId && whatsAppNo?props.cell.row.original.whatsAppNo:'**********'}</p>:null}</>
+        )
+      }
     },
     {
       Header: "Current Year",

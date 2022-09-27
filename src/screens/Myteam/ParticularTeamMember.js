@@ -45,16 +45,19 @@ function ParticularTeamMember({
 
   // states for table
   const [teamTabledata, setTeamTabledata] = useState([]);
-  const [memberAnalytics, setMemberAnalytics] = useState([])
+  const [memberAnalytics, setMemberAnalytics] = useState([]);
   const [onClkAnalyticData, setOnClkAnalyticData] = useState([]);
   const [tableLoading, setTableLoading] = useState(true);
-  const [leadSearch, setLeadsearch] = useState('')
-  const [allLeads, setAllLeads] = useState([])
-  const [leadShow, setLeadShow] = useState('All')
-  const [filterleadsData, setFilterLeadsData] = useState([])
-  const [leadStatFilter, setLeadStatFilter] = useState('')
-  const [statsSaerch, setStatsSaerch] = useState([])
-
+  const [leadSearch, setLeadsearch] = useState('');
+  const [allLeads, setAllLeads] = useState([]);
+  const [leadShow, setLeadShow] = useState('All');
+  const [filterleadsData, setFilterLeadsData] = useState([]);
+  const [leadStatFilter, setLeadStatFilter] = useState('');
+  const [statsSaerch, setStatsSaerch] = useState([]);
+  const [phoneNu, setPhoneNu] = useState(false);
+  const [showEmail, setShowEmail] = useState(false);
+  const [targetVal, setTargetVal] = useState('');
+  const [statsLoader, setStatsLoader] = useState(false)
 
 
   let onLoadPIData = [memberAnalytics.length > 0 ? memberAnalytics[0].new.length : 0, memberAnalytics.length > 0 ? memberAnalytics[0].workInProgress.length : 0, memberAnalytics.length > 0 ? memberAnalytics[0].lost.length : 0, memberAnalytics.length > 0 ? memberAnalytics[0].paid.length : 0];
@@ -99,13 +102,13 @@ function ParticularTeamMember({
       Header: "Phone Number",
       accessor: "phone",
     },
-    {
-      Header: "Level",
-      accessor: "level",
-    },
+    // {
+    //   Header: "Level",
+    //   accessor: "level",
+    // },
   ]);
 
-  const [leadcolumns, setLeadColumns] = useState([
+ const leadcolumns = [
 
     // {
     //   Header: "Member name",
@@ -125,12 +128,28 @@ function ParticularTeamMember({
     {
       Header: "Phone Number",
       accessor: "phone",
+      Cell:(props)=>{
+        return(
+          <p style={{cursor:'pointer'}} onClick={()=>{setTargetVal(props.cell.row.original.phone); setPhoneNu(true); setShowEmail(false)}}>
+            {targetVal === props.cell.row.original.phone && phoneNu?props.cell.row.original.phone:'**********'}
+            </p>
+        )
+      }
     },
     {
-      Header: "Email",
+      Header: "Email",  
       accessor: "email",
+      Cell:(props)=>{
+        return(
+        <>
+         {props.cell.row.original.email? <p style={{cursor:'pointer'}} onClick={()=>{setTargetVal(props.cell.row.original.phone); setPhoneNu(false); setShowEmail(true)}}>
+            {targetVal === props.cell.row.original.phone && showEmail?props.cell.row.original.email:'*****@gmail.com'}
+            </p>:null}
+        </>
+        )
+      }
     },
-  ]);
+  ];
 
 
 
@@ -170,8 +189,9 @@ function ParticularTeamMember({
   // }, [leadFilter])
 
   function getPerticularMemberAnalytics(obj) {
-
+    setStatsLoader(true)
     const callback = (err, res) => {
+      setStatsLoader(false);
       if (err) {
         setMemberAnalytics([]);
         return;
@@ -219,7 +239,7 @@ function ParticularTeamMember({
     getPerticularMember(lastObject);
     getPerticularMemberAnalytics(lastObject);
   }, [myTeamReducer.arr, tableFilter]);
-
+  
 
   const isBelowThreshold = (currentValue) => currentValue < 1;
   const chartShow = onLoadPIData.every(isBelowThreshold);
@@ -250,7 +270,6 @@ function ParticularTeamMember({
 
       setStatsSaerch([...filteredList]);
   };
-
   return (
     <div className="mainParticular" ref={mainref}>
       <div className="partiMyTeam-firstHL">
@@ -290,11 +309,14 @@ function ParticularTeamMember({
             </div>
             <div className="tickets">
               <div className="teckWrape">
+                {statsLoader?<div className="customStatLoader"></div>:
+               <>
                 {chartShow === true ?
                   <div className="emptyChart-parent"><div className="emptyChart-child">leads not Found</div></div> :
                   <DoughnutComp donughtfor="doughnut" pieData={dataToBeSent} />
                 }
-
+              
+           
                 <div className="status-wraper">
                   {memberAnalytics.length > 0 && Object.entries(...memberAnalytics).map(([key, val]) => {
                     return (
@@ -319,6 +341,8 @@ function ParticularTeamMember({
                     <p className="statusCount">{allLeads.length}</p>
                   </div>}
                 </div>
+                </> 
+                 }
               </div>
             </div>
           </div>

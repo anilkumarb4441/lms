@@ -118,11 +118,18 @@ function DashBoard() {
       Cell:(props)=>{
         let convCount = (props.cell.row.original.closed/props.cell.row.original.count)*100
         return(
-         <p >{convCount>0?convCount:0} %</p>
+         <p >{convCount>0?convCount.toFixed(3):0} %</p>
         )
       }
     },
   ])
+
+  function calcDelta(prim, seco){
+    let calc = (prim-seco)/seco;
+    let calValue = calc?calc.toFixed(3):0
+    return calValue;
+  }
+
 
   function getFunnelLeads() {
     const objDate = charBartFilter === 'today'?dailyDate:rangeDateValue;
@@ -159,20 +166,21 @@ function DashBoard() {
     const callback = (err, res) => {
       setTableLoading({...tableLoading, comparisonTable:false})
     if (err) {
-      setLeadComaprison([])
+      setLeadComaprison([]);
         return;
       }
       if (res && res.status === 200) {
         if (res.data && res.data.status === "SUCCESS") {
           let inData = res.data.data;
-          let delCount = (inData[0].count-inData[1].count)/inData[0].count;
-          let delCallback = (inData[0].CallBack-inData[1].CallBack)/inData[0].CallBack;
-          let delCInterested = (inData[0].Interested-inData[1].Interested)/inData[0].Interested;
-          let delclosed = (inData[0].closed-inData[1].closed)/inData[0].closed;
-          let delta = { Primary:'Delta', count: delCount?delCount:0, CallBack: delCallback?delCallback:0, Interested: delCInterested?delCInterested:0, closed: delclosed?delclosed:0}
+          let delta = {
+             Primary:'Delta',
+            count: `${calcDelta(inData[0].count, inData[1].count)} %`,
+            CallBack: `${calcDelta(inData[0].CallBack, inData[1].CallBack)} %`,
+            Interested: `${calcDelta(inData[0].Interested, inData[1].Interested)} %`,
+            closed: `${calcDelta(inData[0].closed, inData[1].closed)} %`,
+            }
           let objData = [...inData, delta]
           setLeadComaprison(objData);
-         
         }else{
           setLeadComaprison([]);
         }
