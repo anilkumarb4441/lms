@@ -1,1 +1,1 @@
-export const GET_FUNNEL_LEADS = "GET_FUNNEL_LEADS";
+export const GET_FUNNEL_LEADS = "GET_FUNNEL_LEADS"

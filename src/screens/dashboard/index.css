@@ -195,3 +195,15 @@ position: relative;
  cursor: pointer;
 }
 
+[data-status~='Primary']{
+    background-color: #FFF9E9;
+    padding: 10px 5px;
+}
+[data-status~='Comparsion']{
+    background-color: #DFFFEF;
+    padding: 10px 5px;
+}
+[data-status~='Delta']{
+    background-color: #FEEB8C;
+    padding: 10px 5px;
+}
