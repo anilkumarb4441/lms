@@ -56,15 +56,12 @@ function LeadsUpload() {
     { name: "Old", value: "oldLeads" },
   ];
 
-  // const generalFilterArr = [
-  //   { name: "Self Generated", value: "selfGenerated" },
-  //   { name: "CGFL", value: "CGFL" },
-  //   { name: "All", value: "All" },
-  //   { name: "Compaign Leads", value: "compaignLeads" },
-  // ];
 
   const [sourceArr, setSourceArr] = useState([
-    { name: "Facebook", value: "facebook" },
+    { name: "Facebook-JobGuarantee", value: "facebookJobGuarantee" },
+    { name: "Facebook-Internship", value: "facebookInternsheep" },
+    { name: "Facebook-IBM", value: "facebookIBM" },
+    { name: "Facebook-CA", value: "facebookCA "},
     { name: "Email", value: "email" },
     { name: "RCB", value: "rcb" },
     { name: "Website", value: "website" },
@@ -362,6 +359,7 @@ function LeadsUpload() {
                 <Dropdown
                   value={filterObj.source}
                   options={sourceArr}
+                  dropdownClass="lead-main-drop-down side-drop-down"
                   onchange={(item) => {
                     setFilterObj({
                       ...filterObj,

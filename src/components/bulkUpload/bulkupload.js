@@ -27,7 +27,10 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
   const [loading,setLoading] = useState(false);
   //email,facebook,rcb,website,google
   const sourceArr1 = [
-    { name: "Facebook", value: "facebook" },
+    { name: "Facebook-JobGuarantee", value: "facebookJobGuarantee" },
+    { name: "Facebook-Internship", value: "facebookInternsheep" },
+    { name: "Facebook-IBM", value: "facebookIBM" },
+    { name: "Facebook-CA", value: "facebookCA "},
     { name: "Email", value: "email" },
     { name: "RCB", value: "rcb" },
     { name: "Website", value: "website" },
