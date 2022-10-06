@@ -32,7 +32,9 @@ function BulkUpload({show,handleDisplay,callback,userId}) {
     { name: "Facebook-IBM", value: "facebookIBM" },
     { name: "Facebook-CA", value: "facebookCA "},
     { name: "Email", value: "email" },
-    { name: "RCB", value: "rcb" },
+    { name: "Website-InternShip", value: "websiteInternship" },
+    { name: "Website-IBM", value: "websiteIMB" },
+    { name: "Website-ProDegree", value: "websiteProDegree" },
     { name: "Website", value: "website" },
     { name: "Google", value: "google" },
   ];

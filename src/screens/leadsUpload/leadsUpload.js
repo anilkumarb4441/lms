@@ -18,6 +18,7 @@ import BulkUpload from "../../components/bulkUpload/bulkupload.js";
 import Dropdown from "../../components/dropdown/dropdown.js";
 import CustomDateRange from "../../components/dateRangePicker/dateRangePicker";
 import AssignToModal from "../../components/assignToModal/assignToModal";
+import Tabs from "../../components/tabs/tabs.js";
 
 function LeadsUpload() {
   const { userId } = localStorageService.getTokenDecode();
@@ -45,7 +46,7 @@ function LeadsUpload() {
     pageRows: 100,
     pageNumber: 1,
     range: null,
-    // source: 'selfGenerated'
+    assigns:'assigned'
   });
 
   const [tableOption, setTableOption] = useState(false);
@@ -56,6 +57,10 @@ function LeadsUpload() {
     { name: "Old", value: "oldLeads" },
   ];
 
+  const assignFilterArr = [
+    { name: "Assigned", value: "assigned" },
+    { name: "Unassigned", value: "unAssined" },
+  ];
 
   const [sourceArr, setSourceArr] = useState([
     { name: "Facebook-JobGuarantee", value: "facebookJobGuarantee" },
@@ -63,7 +68,9 @@ function LeadsUpload() {
     { name: "Facebook-IBM", value: "facebookIBM" },
     { name: "Facebook-CA", value: "facebookCA "},
     { name: "Email", value: "email" },
-    { name: "RCB", value: "rcb" },
+    { name: "Website-InternShip", value: "websiteInternship" },
+    { name: "Website-IBM", value: "websiteIMB" },
+    { name: "Website-ProDegree", value: "websiteProDegree" },
     { name: "Website", value: "website" },
     { name: "Google", value: "google" },
     { name: "All", value: "all" },
@@ -328,6 +335,24 @@ function LeadsUpload() {
                 })
               }
             />
+           
+            {/* <div className="lead-main-filter-header">
+                    <Tabs
+                      tabArr={assignFilterArr}
+                      activeValue={filterObj.assigns}
+                      handleTab={(item) => {
+                        setFilterObj({
+                          ...filterObj,
+                          assigns: item.value,
+                          searchData: "",
+                          pageNumber: 1,
+                          pageRows: 10,
+                          range: null,
+        
+                        })
+                      }}
+                    />
+                  </div> */}
             
             {filterObj.filter === "oldLeads" && (
               <CustomDateRange

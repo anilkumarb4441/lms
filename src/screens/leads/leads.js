@@ -71,7 +71,9 @@ function Leads() {
     { name: "Facebook-IBM", value: "facebookIBM" },
     { name: "Facebook-CA", value: "facebookCA "},
     { name: "Email", value: "email" },
-    { name: "RCB", value: "rcb" },
+    { name: "Website-InternShip", value: "websiteInternship" },
+    { name: "Website-IBM", value: "websiteIMB" },
+    { name: "Website-ProDegree", value: "websiteProDegree" },
     { name: "Google", value: "google" },
   ];
 
@@ -666,6 +668,7 @@ function Leads() {
     reducer.filter.searchData,
     reducer.filter.dateFilter,
     reducer.filter.source,
+    reducer.filter.assigns,
   ]);
 
   // setting reducer state to default after component gets unmounted
