@@ -66,7 +66,7 @@ function LeadsUpload() {
     { name: "Facebook-JobGuarantee", value: "facebookJobGuarantee" },
     { name: "Facebook-Internship", value: "facebookInternsheep" },
     { name: "Facebook-IBM", value: "facebookIBM" },
-    { name: "Facebook-CA", value: "facebookCA "},
+    { name: "Facebook-CA", value: "facebookCA"},
     { name: "Email", value: "email" },
     { name: "Website-InternShip", value: "websiteInternship" },
     { name: "Website-IBM", value: "websiteIMB" },
